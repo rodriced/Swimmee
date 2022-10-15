@@ -3,10 +3,30 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC1037F028F72D75005E5B57 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* AuthView.swift */; };
+		DC3C887C28F2FB8D0065CBD6 /* RoutedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C887B28F2FB8D0065CBD6 /* RoutedView.swift */; };
+		DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */; };
+		DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */; };
+		DC3C888428F426250065CBD6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888328F426250065CBD6 /* Message.swift */; };
+		DC3C888628F426890065CBD6 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888528F426890065CBD6 /* MessageView.swift */; };
+		DC3C888828F42BAE0065CBD6 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888728F42BAE0065CBD6 /* Profile.swift */; };
+		DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888928F449140065CBD6 /* CoachMainView.swift */; };
+		DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888B28F455970065CBD6 /* SettingsView.swift */; };
+		DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */; };
+		DC3C889228F4AA2B0065CBD6 /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889128F4AA2B0065CBD6 /* ViewHelpers.swift */; };
+		DC3C889628F4AD8D0065CBD6 /* CoachMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889528F4AD8D0065CBD6 /* CoachMessagesView.swift */; };
+		DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */; };
+		DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */; };
+		DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889C28F4C5830065CBD6 /* Workout.swift */; };
+		DC3C889F28F4D4040065CBD6 /* SwimmerWorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889E28F4D4040065CBD6 /* SwimmerWorkoutsView.swift */; };
+		DC3C88A128F4DFCF0065CBD6 /* CoachWorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C88A028F4DFCF0065CBD6 /* CoachWorkoutsView.swift */; };
+		DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C88A228F4E1430065CBD6 /* EditWorkoutView.swift */; };
+		DC3C88A528F4E8EA0065CBD6 /* CoachTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */; };
+		DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */; };
 		DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88597F28E269E20032E0FB /* SwimmeeApp.swift */; };
 		DC88598228E269E20032E0FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88598128E269E20032E0FB /* ContentView.swift */; };
 		DC88598428E269E20032E0FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598328E269E20032E0FB /* Assets.xcassets */; };
@@ -14,6 +34,13 @@
 		DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599028E269E20032E0FB /* SwimmeeTests.swift */; };
 		DC88599B28E269E20032E0FB /* SwimmeeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599A28E269E20032E0FB /* SwimmeeUITests.swift */; };
 		DC88599D28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */; };
+		DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859A928E26F2B0032E0FB /* SignInView.swift */; };
+		DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859AB28E26FE00032E0FB /* ProfileView.swift */; };
+		DCA62DF528EF32A400F87C9B /* NotEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DF428EF32A400F87C9B /* NotEmptyView.swift */; };
+		DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DF628EF64E200F87C9B /* MainView.swift */; };
+		DCA62DF928F00E0900F87C9B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DF828F00E0900F87C9B /* SignUpView.swift */; };
+		DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */; };
+		DCF3237B28FAEEAD0030626C /* EditMessageView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF3237A28FAEEAD0030626C /* EditMessageView2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +61,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DC1037EF28F72D75005E5B57 /* AuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		DC3C887B28F2FB8D0065CBD6 /* RoutedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutedView.swift; sourceTree = "<group>"; };
+		DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMainView.swift; sourceTree = "<group>"; };
+		DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesView.swift; sourceTree = "<group>"; };
+		DC3C888328F426250065CBD6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		DC3C888528F426890065CBD6 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		DC3C888728F42BAE0065CBD6 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		DC3C888928F449140065CBD6 /* CoachMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMainView.swift; sourceTree = "<group>"; };
+		DC3C888B28F455970065CBD6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
+		DC3C889128F4AA2B0065CBD6 /* ViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHelpers.swift; sourceTree = "<group>"; };
+		DC3C889528F4AD8D0065CBD6 /* CoachMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesView.swift; sourceTree = "<group>"; };
+		DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMessageView.swift; sourceTree = "<group>"; };
+		DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
+		DC3C889C28F4C5830065CBD6 /* Workout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
+		DC3C889E28F4D4040065CBD6 /* SwimmerWorkoutsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerWorkoutsView.swift; sourceTree = "<group>"; };
+		DC3C88A028F4DFCF0065CBD6 /* CoachWorkoutsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachWorkoutsView.swift; sourceTree = "<group>"; };
+		DC3C88A228F4E1430065CBD6 /* EditWorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
+		DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachTeamView.swift; sourceTree = "<group>"; };
+		DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachView.swift; sourceTree = "<group>"; };
 		DC88597C28E269E20032E0FB /* Swimmee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swimmee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88597F28E269E20032E0FB /* SwimmeeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeApp.swift; sourceTree = "<group>"; };
 		DC88598128E269E20032E0FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +91,13 @@
 		DC88599628E269E20032E0FB /* SwimmeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwimmeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88599A28E269E20032E0FB /* SwimmeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeUITests.swift; sourceTree = "<group>"; };
 		DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		DC8859A928E26F2B0032E0FB /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		DC8859AB28E26FE00032E0FB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		DCA62DF428EF32A400F87C9B /* NotEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotEmptyView.swift; sourceTree = "<group>"; };
+		DCA62DF628EF64E200F87C9B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		DCA62DF828F00E0900F87C9B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitleView.swift; sourceTree = "<group>"; };
+		DCF3237A28FAEEAD0030626C /* EditMessageView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMessageView2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,9 +125,88 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC3C887D28F355040065CBD6 /* Not used */ = {
+			isa = PBXGroup;
+			children = (
+				DCA62DF428EF32A400F87C9B /* NotEmptyView.swift */,
+				DC88598128E269E20032E0FB /* ContentView.swift */,
+				DC3C887B28F2FB8D0065CBD6 /* RoutedView.swift */,
+			);
+			path = "Not used";
+			sourceTree = "<group>";
+		};
+		DC3C888228F424640065CBD6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC3C888328F426250065CBD6 /* Message.swift */,
+				DC3C889C28F4C5830065CBD6 /* Workout.swift */,
+				DC3C888728F42BAE0065CBD6 /* Profile.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DC3C888D28F47C210065CBD6 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
+				DCA62DF628EF64E200F87C9B /* MainView.swift */,
+				DC1037EF28F72D75005E5B57 /* AuthView.swift */,
+				DC8859A928E26F2B0032E0FB /* SignInView.swift */,
+				DCA62DF828F00E0900F87C9B /* SignUpView.swift */,
+			);
+			path = Start;
+			sourceTree = "<group>";
+		};
+		DC3C888E28F47C7D0065CBD6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */,
+				DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */,
+				DC3C889128F4AA2B0065CBD6 /* ViewHelpers.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		DC3C889328F4ACF80065CBD6 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				DC8859AB28E26FE00032E0FB /* ProfileView.swift */,
+				DC3C888B28F455970065CBD6 /* SettingsView.swift */,
+				DC3C888528F426890065CBD6 /* MessageView.swift */,
+				DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		DC3C889428F4AD370065CBD6 /* Swimmer */ = {
+			isa = PBXGroup;
+			children = (
+				DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */,
+				DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */,
+				DC3C889E28F4D4040065CBD6 /* SwimmerWorkoutsView.swift */,
+				DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */,
+			);
+			path = Swimmer;
+			sourceTree = "<group>";
+		};
+		DC3C889728F4AD9C0065CBD6 /* Coach */ = {
+			isa = PBXGroup;
+			children = (
+				DC3C888928F449140065CBD6 /* CoachMainView.swift */,
+				DC3C889528F4AD8D0065CBD6 /* CoachMessagesView.swift */,
+				DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */,
+				DCF3237A28FAEEAD0030626C /* EditMessageView2.swift */,
+				DC3C88A028F4DFCF0065CBD6 /* CoachWorkoutsView.swift */,
+				DC3C88A228F4E1430065CBD6 /* EditWorkoutView.swift */,
+				DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */,
+			);
+			path = Coach;
+			sourceTree = "<group>";
+		};
 		DC88597328E269E10032E0FB = {
 			isa = PBXGroup;
 			children = (
+				DC3C887D28F355040065CBD6 /* Not used */,
 				DC88597E28E269E20032E0FB /* Swimmee */,
 				DC88598F28E269E20032E0FB /* SwimmeeTests */,
 				DC88599928E269E20032E0FB /* SwimmeeUITests */,
@@ -94,10 +227,14 @@
 		DC88597E28E269E20032E0FB /* Swimmee */ = {
 			isa = PBXGroup;
 			children = (
-				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
-				DC88598128E269E20032E0FB /* ContentView.swift */,
 				DC88598328E269E20032E0FB /* Assets.xcassets */,
 				DC88598528E269E20032E0FB /* Preview Content */,
+				DC3C888228F424640065CBD6 /* Model */,
+				DC3C888E28F47C7D0065CBD6 /* Helpers */,
+				DC3C888D28F47C210065CBD6 /* Start */,
+				DC3C889328F4ACF80065CBD6 /* Common */,
+				DC3C889728F4AD9C0065CBD6 /* Coach */,
+				DC3C889428F4AD370065CBD6 /* Swimmer */,
 			);
 			path = Swimmee;
 			sourceTree = "<group>";
@@ -207,7 +344,7 @@
 				};
 			};
 			buildConfigurationList = DC88597728E269E10032E0FB /* Build configuration list for PBXProject "Swimmee" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -257,8 +394,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */,
+				DC3C88A128F4DFCF0065CBD6 /* CoachWorkoutsView.swift in Sources */,
+				DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */,
+				DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */,
+				DC3C888828F42BAE0065CBD6 /* Profile.swift in Sources */,
+				DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */,
+				DCA62DF928F00E0900F87C9B /* SignUpView.swift in Sources */,
+				DC3C888628F426890065CBD6 /* MessageView.swift in Sources */,
+				DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */,
+				DC3C887C28F2FB8D0065CBD6 /* RoutedView.swift in Sources */,
+				DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */,
+				DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */,
+				DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */,
 				DC88598228E269E20032E0FB /* ContentView.swift in Sources */,
+				DC3C889F28F4D4040065CBD6 /* SwimmerWorkoutsView.swift in Sources */,
+				DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */,
+				DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */,
+				DC3C889228F4AA2B0065CBD6 /* ViewHelpers.swift in Sources */,
 				DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */,
+				DCF3237B28FAEEAD0030626C /* EditMessageView2.swift in Sources */,
+				DC3C888428F426250065CBD6 /* Message.swift in Sources */,
+				DC3C889628F4AD8D0065CBD6 /* CoachMessagesView.swift in Sources */,
+				DC3C88A528F4E8EA0065CBD6 /* CoachTeamView.swift in Sources */,
+				DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */,
+				DCA62DF528EF32A400F87C9B /* NotEmptyView.swift in Sources */,
+				DC1037F028F72D75005E5B57 /* AuthView.swift in Sources */,
+				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
+				DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */,
+				DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +509,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -399,7 +563,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -424,6 +588,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,6 +617,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -473,7 +639,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rodriced.SwimmeeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -492,7 +658,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rodriced.SwimmeeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

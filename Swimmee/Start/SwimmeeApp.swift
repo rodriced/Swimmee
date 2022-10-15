@@ -7,11 +7,16 @@
 
 import SwiftUI
 
+
 @main
 struct SwimmeeApp: App {
+//    @StateObject var session = Session()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            MainView()
+//                .environmentObject(session)
         }
     }
 }
