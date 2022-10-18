@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-enum Setting: String, CaseIterable, Identifiable {
-    case myProfile, myCoach, logout
-    var id: Self { self }
-}
+//enum Setting: String, CaseIterable, Identifiable {
+//    case myProfile, myCoach, logout
+//    var id: Self { self }
+//}
 
 struct SettingsView: View {
-    @EnvironmentObject var session: Session
+    @EnvironmentObject var userSession: UserSession
 
-    @State var selectedMenu: Setting?
+    @State var signOutError = false
 
     var body: some View {
         NavigationView {
@@ -23,7 +23,7 @@ struct SettingsView: View {
                 NavigationLink(destination: { ProfileView() }) {
                     MenuLabel(title: "My profile", systemImage: "person", color: Color.mint)
                 }
-                switch session.userTypeTest {
+                switch userSession.profile.userType {
                 case .coach:
                     NavigationLink(destination: { CoachTeamView() }) {
                         MenuLabel(title: "My team", systemImage: "person.3", color: Color.blue)
@@ -33,11 +33,12 @@ struct SettingsView: View {
                         MenuLabel(title: "My coach", systemImage: "person.2", color: Color.blue)
                     }
                 }
-                Button(action: { session.userProfile = nil }) {
+                Button(action: { signOutError = !Service.shared.auth.signOut() }) {
                     MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
                 }
             }
             .navigationBarTitle("Settings")
+            .alert("Sign out Error", isPresented: $signOutError) {}
         }
     }
 }
