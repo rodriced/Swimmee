@@ -64,7 +64,7 @@ final class FirebaseAuthService {
 //    func signUp(email: String, password: String, userType: UserType, firstName: String, lastName: String) async -> Bool {
         func signUp(email: String, password: String) async -> Bool {
         do {
-            let result = try await auth.createUser(withEmail: email, password: password)
+           try await auth.createUser(withEmail: email, password: password)
             
             return true
         } catch {
@@ -72,6 +72,11 @@ final class FirebaseAuthService {
             return false
         }
     }
+    
+//    func updateUser() {
+//        let user = auth.currentUser
+//        user.
+//    }
     
     func signOut() -> Bool {
         do {

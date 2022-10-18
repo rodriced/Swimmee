@@ -7,23 +7,8 @@
 
 import SwiftUI
 
-// class SignInViewModel: ObservableObject {
-//    @Published var email: String = ""
-//    @Published var password: String = ""
-//
-//    func authenticateUser() -> Profile? {
-//        Profile(userType: .swimmer, firstName: "Max", lastName: "Laroche", email: "max.laroche@ggmail.com")
-//    }
-// }
-
 struct SignInView: View {
-    @EnvironmentObject var session: Session
-
-//    @StateObject var viewModel = SignInViewModel()
-//    @State var userTypeTest = UserType.coach
-
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = CommonAccountViewModel()
 
     var body: some View {
         VStack {
@@ -32,11 +17,17 @@ struct SignInView: View {
             Spacer()
 
             VStack(spacing: 30) {
-                TextField("Email", text: $email)
+                TextField("Email", text: $viewModel.email)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
+                    .if(viewModel.emailError) {
+                        $0.border(Color.red)
+                    }
 
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
+                    .if(viewModel.passwordError) {
+                        $0.border(Color.red)
+                    }
 
 //                Picker("UserType", selection: $session.userTypeTest) {
 //                    ForEach(UserType.allCases) { userType in
@@ -50,18 +41,21 @@ struct SignInView: View {
             Spacer()
 
             Button {
-                Task {
-                    await Service.shared.auth.signIn(email: email, password: password)
+                viewModel.signIn()
+            } label: {
+                if viewModel.submiting {
+                    ProgressView().frame(maxWidth: .infinity)
+                } else {
+                    Text("Sign in").frame(maxWidth: .infinity)
                 }
             }
-                label: {
-                Text("Sign in").frame(maxWidth: .infinity)
-            }
             .buttonStyle(.borderedProminent)
+            .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
             .keyboardShortcut(.defaultAction)
 
             NavigationLink("I have lost my password...", destination: Text("Lost password"))
         }
+        .alert("Sign in Error", isPresented: $viewModel.errorAlertIsPresenting) {}
         .padding()
         .navigationBarTitle("Sign In", displayMode: .inline)
     }

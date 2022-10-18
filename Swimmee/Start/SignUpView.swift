@@ -25,7 +25,7 @@ class FieldValidation {
     }
 }
 
-class SignUpViewModel: ObservableObject {
+class CommonAccountViewModel: ObservableObject {
     @Published var firstName = ""
     @Published var lastName = ""
     @Published var userType = UserType.coach
@@ -35,9 +35,9 @@ class SignUpViewModel: ObservableObject {
     @Published var emailError = false
     @Published var passwordError = false
 
-    @Published var signingUp = false
+    @Published var submiting = false
 
-    @Published var signUpAlertIsPresenting = false
+    @Published var errorAlertIsPresenting = false
 
     func signUp() async -> Bool {
         await Service.shared.auth.signUp(email: email, password: password)
@@ -48,13 +48,29 @@ class SignUpViewModel: ObservableObject {
             return
         }
 
-        signingUp = true
+        submiting = true
         Task {
             let isSignUpSuccess = await Service.shared.auth.signUp(email: email, password: password)
             
             DispatchQueue.main.sync {
-                signingUp = false
-                signUpAlertIsPresenting = !isSignUpSuccess
+                submiting = false
+                errorAlertIsPresenting = !isSignUpSuccess
+            }
+        }
+    }
+
+    func signIn() {
+        guard validateForm() else {
+            return
+        }
+
+        submiting = true
+        Task {
+            let isSignInSuccess = await Service.shared.auth.signIn(email: email, password: password)
+            
+            DispatchQueue.main.sync {
+                submiting = false
+                errorAlertIsPresenting = !isSignInSuccess
             }
         }
     }
@@ -88,7 +104,7 @@ class SignUpViewModel: ObservableObject {
 }
 
 struct SignUpView: View {
-    @StateObject var viewModel = SignUpViewModel()
+    @StateObject var viewModel = CommonAccountViewModel()
 
     var body: some View {
         NavigationView {
@@ -147,7 +163,7 @@ struct SignUpView: View {
 //                    }
                     viewModel.signUp2()
                 } label: {
-                    if viewModel.signingUp {
+                    if viewModel.submiting {
                         ProgressView().frame(maxWidth: .infinity)
                     } else {
                         Text("Sign up").frame(maxWidth: .infinity)
@@ -160,7 +176,7 @@ struct SignUpView: View {
                 Text("I already have an account...")
                 NavigationLink("Let me in!", destination: SignInView())
             }
-            .alert("Sign up Error", isPresented: $viewModel.signUpAlertIsPresenting) {}
+            .alert("Sign up Error", isPresented: $viewModel.errorAlertIsPresenting) {}
             .padding()
         }
     }
