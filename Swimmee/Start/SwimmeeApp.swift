@@ -10,8 +10,6 @@ import SwiftUI
 
 @main
 struct SwimmeeApp: App {
-//    @StateObject var session = Session()
-
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
 //    init() {
@@ -20,9 +18,7 @@ struct SwimmeeApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            ContentView()
             MainView()
-//                .environmentObject(session)
         }
     }
 }

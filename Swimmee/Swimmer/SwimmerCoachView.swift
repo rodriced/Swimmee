@@ -8,13 +8,7 @@
 import SwiftUI
 
 class SwimmerCoachViewModel: ObservableObject {
-    @Published var coachs: [Profile] = [
-        Profile(userType: .coach, firstName: "Laurent1", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .coach, firstName: "Laurent2", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .coach, firstName: "Laurent3", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .coach, firstName: "Laurent4", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .coach, firstName: "Laurent5", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-    ]
+    @Published var coachs: [Profile] = Profile.coachSample.toSamples(with: 4)
     
 //    @Published var chosenCoach: Profile?
 }

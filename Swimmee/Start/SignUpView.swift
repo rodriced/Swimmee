@@ -16,72 +16,147 @@ class FieldValidation {
     static func validatePassword(password: String) -> Bool {
         return password != ""
     }
-    
+
     static func validateFirstName(firstName: String) -> Bool {
         return firstName != ""
     }
+
     static func validateLastName(lastName: String) -> Bool {
         return lastName != ""
     }
 }
 
 class CommonAccountViewModel: ObservableObject {
+    enum FormType { case signUp, signIn }
+
+    var formType: FormType
+
+    init(formType: FormType) {
+        self.formType = formType
+    }
+
     @Published var firstName = ""
     @Published var lastName = ""
     @Published var userType = UserType.coach
     @Published var email = ""
     @Published var password = ""
 
-    @Published var emailError = false
-    @Published var passwordError = false
+    @Published var firstNameInError = false
+    @Published var lastNameInError = false
+    @Published var emailInError = false
+    @Published var passwordInError = false
 
     @Published var submiting = false
 
-    @Published var errorAlertIsPresenting = false
-
-    func signUp() async -> Bool {
-        await Service.shared.auth.signUp(email: email, password: password)
+    @Published var errorAlertIsPresenting = false {
+        didSet {
+            if errorAlertIsPresenting == false {
+                errorAlertMessage = ""
+            }
+        }
     }
-
-    func signUp2() {
+    var errorAlertMessage: String = "" {
+        didSet {
+            if !errorAlertMessage.isEmpty {
+                errorAlertIsPresenting = true
+            }
+        }
+    }
+    
+    private func submitForm(action: @escaping () async throws -> Void) {
         guard validateForm() else {
             return
         }
 
         submiting = true
         Task {
-            let isSignUpSuccess = await Service.shared.auth.signUp(email: email, password: password)
-            
-            DispatchQueue.main.sync {
-                submiting = false
-                errorAlertIsPresenting = !isSignUpSuccess
+            do {
+                try await action()
+
+                await MainActor.run {
+                    submiting = false
+                }
+            } catch {
+                await MainActor.run {
+                    submiting = false
+                    errorAlertMessage = error.localizedDescription
+                }
             }
+        }
+
+    }
+    
+    func signUp() {
+        submitForm { [self] in
+            _ = try await Account.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
         }
     }
 
     func signIn() {
-        guard validateForm() else {
-            return
-        }
-
-        submiting = true
-        Task {
-            let isSignInSuccess = await Service.shared.auth.signIn(email: email, password: password)
-            
-            DispatchQueue.main.sync {
-                submiting = false
-                errorAlertIsPresenting = !isSignInSuccess
-            }
+        submitForm { [self] in
+            try await Service.shared.auth.signIn(email: email, password: password)
         }
     }
 
-    @MainActor
-    func resetForm() {
-        email = ""
-        password = ""
+//    func signUp() {
+//        guard validateForm() else {
+//            return
+//        }
+//
+//        submiting = true
+//        Task {
+//            do {
+//                _ = try await Account.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
+//
+//                await MainActor.run {
+//                    submiting = false
+//                }
+//            } catch {
+//                await MainActor.run {
+//                    submiting = false
+//                    errorAlertMessage = error.localizedDescription
+//                }
+//            }
+//        }
+//    }
 
-        emailError = false
-        passwordError = false
+//    func signIn() {
+//        guard validateForm() else {
+//            return
+//        }
+//
+//        submiting = true
+//        Task {
+//            do {
+//                try await Service.shared.auth.signIn(email: email, password: password)
+//
+//                    await MainActor.run {
+//                    submiting = false
+//                }
+//            } catch {
+//                await MainActor.run {
+//                    submiting = false
+//                    errorAlertMessage = error.localizedDescription
+//                }
+//            }
+//        }
+//    }
+
+//    @MainActor
+//    func resetForm() {
+//        email = ""
+//        password = ""
+//
+//        emailError = false
+//        passwordError = false
+//    }
+
+    var isFirstNameValidated: Bool {
+        return firstName != ""
+    }
+
+    var isLastNameValidated: Bool {
+        return lastName != ""
     }
 
     var isEmailValidated: Bool {
@@ -93,18 +168,32 @@ class CommonAccountViewModel: ObservableObject {
     }
 
     var isReadyToSubmit: Bool {
-        isEmailValidated && isPasswordValidated
+        switch formType {
+        case .signUp:
+            return isFirstNameValidated && isLastNameValidated && isEmailValidated && isPasswordValidated
+        case .signIn:
+            return isEmailValidated && isPasswordValidated
+        }
     }
 
     func validateForm() -> Bool {
-        emailError = !isEmailValidated
-        passwordError = !isPasswordValidated
+        switch formType {
+        case .signUp:
+            firstNameInError = !isFirstNameValidated
+            lastNameInError = !isLastNameValidated
+            emailInError = !isEmailValidated
+            passwordInError = !isPasswordValidated
+        case .signIn:
+            emailInError = !isEmailValidated
+            passwordInError = !isPasswordValidated
+        }
+
         return isReadyToSubmit
     }
 }
 
 struct SignUpView: View {
-    @StateObject var viewModel = CommonAccountViewModel()
+    @StateObject var viewModel = CommonAccountViewModel(formType: .signUp)
 
     var body: some View {
         NavigationView {
@@ -119,8 +208,12 @@ struct SignUpView: View {
                 VStack(spacing: 30) {
                     VStack {
                         TextField("First name", text: $viewModel.firstName)
+                            .disableAutocorrection(true)
+                            .modifier(WithErrorIndicator(inError: $viewModel.firstNameInError))
 
                         TextField("Last name", text: $viewModel.lastName)
+                            .disableAutocorrection(true)
+                            .modifier(WithErrorIndicator(inError: $viewModel.lastNameInError))
                     }
 
                     HStack {
@@ -137,13 +230,10 @@ struct SignUpView: View {
                         TextField("Email", text: $viewModel.email)
                             .disableAutocorrection(true)
                             .autocapitalization(.none)
-                            .if(viewModel.emailError) {
-                                $0.border(Color.red)
-                            }
+                            .modifier(WithErrorIndicator(inError: $viewModel.emailInError))
+
                         SecureField("Password", text: $viewModel.password)
-                            .if(viewModel.passwordError) {
-                                $0.border(Color.red)
-                            }
+                            .modifier(WithErrorIndicator(inError: $viewModel.passwordInError))
                     }
                 }
                 .textFieldStyle(.roundedBorder)
@@ -151,17 +241,7 @@ struct SignUpView: View {
                 Spacer()
 
                 Button {
-//                    guard viewModel.validateForm() else {
-//                        return
-//                    }
-//
-//                    viewModel.signingUp = true
-//                    Task {
-//                        let isSignUpSuccess = await viewModel.signUp()
-//                        viewModel.signingUp = false
-//                        viewModel.signUpAlertIsPresenting = !isSignUpSuccess
-//                    }
-                    viewModel.signUp2()
+                    viewModel.signUp()
                 } label: {
                     if viewModel.submiting {
                         ProgressView().frame(maxWidth: .infinity)
@@ -175,9 +255,10 @@ struct SignUpView: View {
 
                 Text("I already have an account...")
                 NavigationLink("Let me in!", destination: SignInView())
+
             }
-            .alert("Sign up Error", isPresented: $viewModel.errorAlertIsPresenting) {}
             .padding()
+            .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
         }
     }
 }

@@ -8,13 +8,7 @@
 import SwiftUI
 
 class CoachTeamViewModel: ObservableObject {
-    @Published var swimmers: [Profile] = [
-        Profile(userType: .swimmer, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .swimmer, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .swimmer, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .swimmer, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-        Profile(userType: .swimmer, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com"),
-    ]
+    @Published var swimmers: [Profile] = Profile.swimmerSample.toSamples(with: 5)
 }
 
 struct CoachTeamView: View {

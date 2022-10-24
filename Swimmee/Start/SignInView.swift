@@ -7,8 +7,23 @@
 
 import SwiftUI
 
+struct WithErrorIndicator: ViewModifier {
+    var inError: Binding<Bool>
+
+    func body(content: Content) -> some View {
+        content
+            .textFieldStyle(.roundedBorder)
+            .if(inError.wrappedValue) {
+                $0.overlay(RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color.red, lineWidth: 1))
+            }
+    }
+}
+
 struct SignInView: View {
-    @StateObject var viewModel = CommonAccountViewModel()
+    @StateObject var viewModel = CommonAccountViewModel(formType: .signIn)
+
+    var defaultBorderColor = RoundedBorderTextFieldStyle()
 
     var body: some View {
         VStack {
@@ -20,23 +35,11 @@ struct SignInView: View {
                 TextField("Email", text: $viewModel.email)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
-                    .if(viewModel.emailError) {
-                        $0.border(Color.red)
-                    }
+                    .modifier(WithErrorIndicator(inError: $viewModel.emailInError))
 
                 SecureField("Password", text: $viewModel.password)
-                    .if(viewModel.passwordError) {
-                        $0.border(Color.red)
-                    }
-
-//                Picker("UserType", selection: $session.userTypeTest) {
-//                    ForEach(UserType.allCases) { userType in
-//                        Text(userType.rawValue.capitalized)
-//                    }
-//                }
-//                .pickerStyle(.segmented)
+                    .modifier(WithErrorIndicator(inError: $viewModel.passwordInError))
             }
-            .textFieldStyle(.roundedBorder)
 
             Spacer()
 
@@ -55,7 +58,7 @@ struct SignInView: View {
 
             NavigationLink("I have lost my password...", destination: Text("Lost password"))
         }
-        .alert("Sign in Error", isPresented: $viewModel.errorAlertIsPresenting) {}
+        .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
         .padding()
         .navigationBarTitle("Sign In", displayMode: .inline)
     }
@@ -63,7 +66,6 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView()
-            .environmentObject(Session())
+        SignInView(viewModel: CommonAccountViewModel(formType: .signIn))
     }
 }
