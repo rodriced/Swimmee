@@ -73,7 +73,6 @@ final class FirebaseAuthService {
 //            user.updateEmail(to: profile.email)
 //        }
 //    }
-    
     func signOut() -> Bool {
         do {
             try auth.signOut()
@@ -84,19 +83,24 @@ final class FirebaseAuthService {
         }
     }
     
-    func deleteCurrentUser() async -> Bool {
-        return await withCheckedContinuation { continuation in
+    func reauthenticate(email: String, password: String) async throws {
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        _ = try await auth.currentUser?.reauthenticate(with: credential)
+    }
+    
+    func deleteCurrentUser() async throws {
+        return try await withCheckedThrowingContinuation { continuation in
             guard let user = auth.currentUser else {
-                continuation.resume(returning: false)
+                continuation.resume()
                 return
             }
             
             user.delete { error in
                 if let error = error {
                     print("Delete current user error : \(String(describing: error))")
-                    continuation.resume(returning: false)
+                    continuation.resume(throwing: error)
                 } else {
-                    continuation.resume(returning: true)
+                    continuation.resume()
                 }
             }
         }

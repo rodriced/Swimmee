@@ -31,8 +31,9 @@ class CommonAccountViewModel: ObservableObject {
 
     var formType: FormType
 
-    init(formType: FormType) {
+    init(formType: FormType, submitSuccess: Binding<Bool>? = nil) {
         self.formType = formType
+        self.submitSuccess = submitSuccess
     }
 
     @Published var firstName = ""
@@ -40,14 +41,20 @@ class CommonAccountViewModel: ObservableObject {
     @Published var userType = UserType.coach
     @Published var email = ""
     @Published var password = ""
+    @Published var photoUrl: URL?
 
     @Published var firstNameInError = false
     @Published var lastNameInError = false
     @Published var emailInError = false
     @Published var passwordInError = false
 
+//    enum FormState { case editing, submiting, submited(success: Bool)}
+    
+//    @Published var formState = FormState.editing
     @Published var submiting = false
 
+    var submitSuccess: Binding<Bool>?
+    
     @Published var errorAlertIsPresenting = false {
         didSet {
             if errorAlertIsPresenting == false {
@@ -69,16 +76,22 @@ class CommonAccountViewModel: ObservableObject {
         }
 
         submiting = true
+//        formState = .submiting
         Task {
             do {
                 try await action()
 
                 await MainActor.run {
                     submiting = false
+//                    formState = .submited(success: true)
+                    if let submitSuccess = self.submitSuccess {
+                        submitSuccess.wrappedValue = true
+                    }
                 }
             } catch {
                 await MainActor.run {
                     submiting = false
+//                    formState = .submited(success: false)
                     errorAlertMessage = error.localizedDescription
                 }
             }
@@ -98,58 +111,11 @@ class CommonAccountViewModel: ObservableObject {
         }
     }
 
-//    func signUp() {
-//        guard validateForm() else {
-//            return
-//        }
-//
-//        submiting = true
-//        Task {
-//            do {
-//                _ = try await Account.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
-//
-//                await MainActor.run {
-//                    submiting = false
-//                }
-//            } catch {
-//                await MainActor.run {
-//                    submiting = false
-//                    errorAlertMessage = error.localizedDescription
-//                }
-//            }
-//        }
-//    }
-
-//    func signIn() {
-//        guard validateForm() else {
-//            return
-//        }
-//
-//        submiting = true
-//        Task {
-//            do {
-//                try await Service.shared.auth.signIn(email: email, password: password)
-//
-//                    await MainActor.run {
-//                    submiting = false
-//                }
-//            } catch {
-//                await MainActor.run {
-//                    submiting = false
-//                    errorAlertMessage = error.localizedDescription
-//                }
-//            }
-//        }
-//    }
-
-//    @MainActor
-//    func resetForm() {
-//        email = ""
-//        password = ""
-//
-//        emailError = false
-//        passwordError = false
-//    }
+    func reauthenticate() {
+        submitForm { [self] in
+            try await Service.shared.auth.reauthenticate(email: email, password: password)
+        }
+    }
 
     var isFirstNameValidated: Bool {
         return firstName != ""

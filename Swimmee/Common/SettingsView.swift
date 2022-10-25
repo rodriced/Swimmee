@@ -20,7 +20,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                NavigationLink(destination: { ProfileView() }) {
+                NavigationLink(destination: { ProfileViewInit() }) {
                     MenuLabel(title: "My profile", systemImage: "person", color: Color.mint)
                 }
                 switch userSession.profile.userType {
@@ -38,6 +38,7 @@ struct SettingsView: View {
                 }
             }
             .navigationBarTitle("Settings")
+//            .navigationViewStyle(StackNavigationViewStyle())
             .alert("Sign out Error", isPresented: $signOutError) {}
         }
     }

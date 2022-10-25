@@ -14,13 +14,12 @@ class Service {
     static var shared = Service()
 
     let auth: FirebaseAuthService
-//    let storage: StorageService
+    let storage: StorageService
     let store: StoreService
 
-//    init(auth: FirebaseAuthService = FirebaseAuthService(), storage: StorageService = StorageService(), store: StoreService = StoreService()) {
-    init(auth: FirebaseAuthService = FirebaseAuthService(), store: StoreService = StoreService()) {
+    init(auth: FirebaseAuthService = FirebaseAuthService(), storage: StorageService = StorageService(), store: StoreService = StoreService()) {
         self.auth = auth
-//        self.storage = storage
+        self.storage = storage
         self.store = store
     }
 }

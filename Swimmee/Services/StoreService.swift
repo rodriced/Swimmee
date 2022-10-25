@@ -20,4 +20,8 @@ class StoreService {
         return try await Self.store.collection("Profiles").document(userId).getDocument(as: Profile?.self)
     }
     
+    func deleteProfile(userId: String) async throws {
+        return try await Self.store.collection("Profiles").document(userId).delete()
+    }
+
 }

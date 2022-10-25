@@ -53,30 +53,92 @@ class ProfileViewModel: ObservableObject {
 //    let userType = UserType.swimmer
 //    var email = ""
 
-//    @Published var profile = Profile.swimmerSample
-    @Published var userId = Service.shared.auth.currentUserId!
-    @Published var profile = Profile.coachSample
-//    @Published var profile
-
-    @Published var password = ""
+    @Published var profile: Profile
 
     @Published var isShowPhotoLibrary = false
     @Published var imageSourceType = UIImagePickerController.SourceType.photoLibrary
     @Published var image: UIImage? = nil
+
+    @Published var authenticationSheet = false
+    @Published var confirmationActionSheet = false
+
+    init(profile: Profile) {
+        self.profile = profile
+
+        if profile.hasPhoto {
+            Task {
+                let photoData = try? await Service.shared.storage.downloaddPhoto(uid: profile.userId)
+                guard let photoData = photoData else {
+                    return
+                }
+                await MainActor.run {
+                    image = UIImage(data: photoData)
+                }
+            }
+        }
+    }
+
+    func saveProfile() {
+        Task {
+            if let image = image {
+                try? await Service.shared.storage.uploadPhoto(uid: profile.userId, photo: image)
+                await MainActor.run {
+                    profile.hasPhoto = true
+                }
+            }
+
+            try? await Service.shared.store.saveProfile(profile: profile)
+        }
+    }
+
+//    func reauthenticate() {
+//        Service.shared.auth.reauthenticate(email: , password: <#T##String#>)
+//    }
+
+    func deleteAccount() {
+        Task {
+            try await Account.deleteCurrrentAccount()
+        }
+    }
+}
+
+struct ProfileViewInit: View {
+    @EnvironmentObject var userSession: UserSession
+    @State var profile: Profile?
+
+    func getProfile() async -> Profile? {
+        guard let userId = Service.shared.auth.currentUserId else {
+            return nil
+        }
+        return try? await Service.shared.store.loadProfile(userId: userId)
+    }
+
+    var body: some View {
+        Group {
+            if let profile = profile {
+                ProfileView(vm: ProfileViewModel(profile: profile))
+            } else {
+                ProgressView()
+            }
+        }
+        .task {
+            profile = await getProfile()
+        }
+    }
 }
 
 struct ProfileView: View {
-    @StateObject var vm = ProfileViewModel()
-//    let photo = UIImage(data: Data())
+    @StateObject var vm: ProfileViewModel
+    @Environment(\.presentationMode) private var presentationMode
 
     var body: some View {
-//        NavigationView {
         VStack {
             ZStack(alignment: .bottomTrailing) {
                 Group {
                     if let image = vm.image {
                         Image(uiImage: image)
                             .resizable()
+                            .aspectRatio(contentMode: .fill)
                     } else {
                         Image("ProfilePhoto")
                             .resizable()
@@ -86,7 +148,7 @@ struct ProfileView: View {
                 .clipShape(Circle())
                 .overlay(Circle().stroke(.blue, lineWidth: 4))
                 .shadow(radius: 6)
-                
+
                 HStack {
                     Button {
                         vm.isShowPhotoLibrary = true
@@ -122,14 +184,16 @@ struct ProfileView: View {
 
                 VStack {
                     TextField("Email", text: $vm.profile.email)
-                    SecureField("Password", text: $vm.password)
                 }
             }
             .textFieldStyle(.roundedBorder)
 
             Spacer()
 
-            Button(action: {}) {
+            Button {
+                vm.saveProfile()
+                presentationMode.wrappedValue.dismiss()
+            } label: {
                 Text("Update").frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
@@ -137,7 +201,25 @@ struct ProfileView: View {
 //        }
             Divider().overlay(Color.red).frame(height: 30)
 //                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-            NavigationLink("Delete my account", destination: Text("Account deleted")).foregroundColor(Color.red)
+
+            Button {
+                vm.authenticationSheet = true
+            } label: {
+                Text("Delete my account")
+            }
+            .foregroundColor(Color.red)
+            .sheet(isPresented: $vm.authenticationSheet) {
+                AuthenticationView(viewModel: CommonAccountViewModel(formType: .signIn, submitSuccess: $vm.confirmationActionSheet)
+                )
+                .actionSheet(isPresented: $vm.confirmationActionSheet) {
+                    ActionSheet(title: Text("Confirm your account deletion"), message: nil, buttons: [
+                        .destructive(Text("Delete"), action: {
+                            vm.deleteAccount()
+                        }),
+                        .cancel()
+                    ])
+                }
+            }
         }
         .navigationTitle("My profile")
         .padding()
@@ -150,7 +232,7 @@ struct ProfileView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ProfileView()
+            ProfileView(vm: ProfileViewModel(profile: Profile.coachSample))
         }
     }
 }

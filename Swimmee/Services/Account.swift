@@ -21,6 +21,16 @@ class Account {
             throw AccountErr.profileSaveError(error)
         }
     }
+    
+    static func deleteCurrrentAccount() async throws{
+        try await Service.shared.auth.deleteCurrentUser()
+        let userId = Service.shared.auth.currentUserId
+        guard let userId = userId else {
+            return
+        }
+        try await Service.shared.store.deleteProfile(userId: userId)
+        try await Service.shared.storage.removePhoto(uid: userId)
+    }
 
 //    static func signedInUserProfilePublisher() -> AnyPublisher<Result<Profile?,Error>, Never> {
 //        Service.shared.auth.signedInStateChangePublisher()

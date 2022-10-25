@@ -7,19 +7,6 @@
 
 import SwiftUI
 
-struct WithErrorIndicator: ViewModifier {
-    var inError: Binding<Bool>
-
-    func body(content: Content) -> some View {
-        content
-            .textFieldStyle(.roundedBorder)
-            .if(inError.wrappedValue) {
-                $0.overlay(RoundedRectangle(cornerRadius: 5)
-                    .stroke(Color.red, lineWidth: 1))
-            }
-    }
-}
-
 struct SignInView: View {
     @StateObject var viewModel = CommonAccountViewModel(formType: .signIn)
 
@@ -30,6 +17,10 @@ struct SignInView: View {
             AppTitleView()
 
             Spacer()
+            
+//            AuthenticationView(viewModel: viewModel, reauthenticating: false)
+//                .navigationBarTitle("Sign In", displayMode: .inline)
+
 
             VStack(spacing: 30) {
                 TextField("Email", text: $viewModel.email)
@@ -44,7 +35,7 @@ struct SignInView: View {
             Spacer()
 
             Button {
-                viewModel.signIn()
+                    viewModel.signIn()
             } label: {
                 if viewModel.submiting {
                     ProgressView().frame(maxWidth: .infinity)

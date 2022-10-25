@@ -5,7 +5,6 @@
 //  Created by Rodolphe Desruelles on 06/10/2022.
 //
 
-import FirebaseAuth
 import SwiftUI
 
 class Session: ObservableObject {

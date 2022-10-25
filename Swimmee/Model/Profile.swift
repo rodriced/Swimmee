@@ -20,7 +20,7 @@ struct Profile: Identifiable, Hashable, Codable {
     var firstName: String
     var lastName: String
     var email: String
-    var photoUrl: String?
+    var hasPhoto = false
 
     var fullname: String {
         "\(firstName) \(lastName)"

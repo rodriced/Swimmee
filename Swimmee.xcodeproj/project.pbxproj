@@ -54,6 +54,9 @@
 		DCF3238A28FB37180030626C /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3238928FB37180030626C /* FirebaseStorageCombine-Community */; };
 		DCF3239028FC88360030626C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCF3238F28FC88360030626C /* GoogleService-Info.plist */; };
 		DCF3239228FC8C060030626C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF3239128FC8C060030626C /* AuthService.swift */; };
+		DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */; };
+		DCFBCF4E29074B1900F0BF35 /* FormHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */; };
+		DCFBCF5029074B7D00F0BF35 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4F29074B7D00F0BF35 /* AuthenticationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +120,9 @@
 		DCF3237A28FAEEAD0030626C /* EditMessageView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMessageView2.swift; sourceTree = "<group>"; };
 		DCF3238F28FC88360030626C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCF3239128FC8C060030626C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugHelpers.swift; sourceTree = "<group>"; };
+		DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHelpers.swift; sourceTree = "<group>"; };
+		DCFBCF4F29074B7D00F0BF35 /* AuthenticationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +176,7 @@
 				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
 				DC8859A928E26F2B0032E0FB /* SignInView.swift */,
 				DCA62DF828F00E0900F87C9B /* SignUpView.swift */,
+				DCFBCF4F29074B7D00F0BF35 /* AuthenticationView.swift */,
 			);
 			path = Start;
 			sourceTree = "<group>";
@@ -182,6 +189,8 @@
 				DC3C889128F4AA2B0065CBD6 /* ViewHelpers.swift */,
 				DC3E9994290064E7008E274C /* FirestoreHelpers.swift */,
 				DC3E999A2905143C008E274C /* CodableHelpers.swift */,
+				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
+				DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -452,12 +461,14 @@
 				DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */,
 				DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */,
 				DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */,
+				DCFBCF5029074B7D00F0BF35 /* AuthenticationView.swift in Sources */,
 				DC3E998D28FDF29A008E274C /* Service.swift in Sources */,
 				DC3C889F28F4D4040065CBD6 /* SwimmerWorkoutsView.swift in Sources */,
 				DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */,
 				DC3E99992902C95B008E274C /* Account.swift in Sources */,
 				DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */,
 				DC3E9995290064E7008E274C /* FirestoreHelpers.swift in Sources */,
+				DCFBCF4E29074B1900F0BF35 /* FormHelpers.swift in Sources */,
 				DC3C889228F4AA2B0065CBD6 /* ViewHelpers.swift in Sources */,
 				DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */,
 				DCF3237B28FAEEAD0030626C /* EditMessageView2.swift in Sources */,
@@ -470,6 +481,7 @@
 				DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */,
 				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
 				DC3E999B2905143C008E274C /* CodableHelpers.swift in Sources */,
+				DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */,
 				DCF3239228FC8C060030626C /* AuthService.swift in Sources */,
 				DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */,
 				DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */,
@@ -631,8 +643,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Swimmee/Preview Content\"";
+				DEVELOPMENT_TEAM = WX78P38A6L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "The camera will be used for the profile photo.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -660,8 +674,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Swimmee/Preview Content\"";
+				DEVELOPMENT_TEAM = WX78P38A6L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "The camera will be used for the profile photo.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
