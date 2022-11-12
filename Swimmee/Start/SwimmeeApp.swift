@@ -38,7 +38,9 @@ extension SwimmeeApp {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        
+        //
+        guard !SwimmeeApp.isUnitTesting() else { return true }
+
         FirebaseApp.configure()
 
         return true
