@@ -175,11 +175,11 @@ struct SignUpView: View {
                 VStack {
                     TextField("First name", text: $viewModel.firstName)
                         .disableAutocorrection(true)
-                        .modifier(WithErrorIndicator(inError: $viewModel.firstNameInError))
+                        .roundedStyleWithErrorIndicator(inError: viewModel.firstNameInError)
 
                     TextField("Last name", text: $viewModel.lastName)
                         .disableAutocorrection(true)
-                        .modifier(WithErrorIndicator(inError: $viewModel.lastNameInError))
+                        .roundedStyleWithErrorIndicator(inError: viewModel.lastNameInError)
                 }
 
                 HStack {
@@ -196,10 +196,10 @@ struct SignUpView: View {
                     TextField("Email", text: $viewModel.email)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                        .modifier(WithErrorIndicator(inError: $viewModel.emailInError))
+                        .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
 
                     SecureField("Password", text: $viewModel.password)
-                        .modifier(WithErrorIndicator(inError: $viewModel.passwordInError))
+                        .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
                 }
             }
             .textFieldStyle(.roundedBorder)

@@ -26,10 +26,10 @@ struct SignInView: View {
                 TextField("Email", text: $viewModel.email)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
-                    .modifier(WithErrorIndicator(inError: $viewModel.emailInError))
+                    .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
 
                 SecureField("Password", text: $viewModel.password)
-                    .modifier(WithErrorIndicator(inError: $viewModel.passwordInError))
+                    .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
             }
 
             Spacer()
