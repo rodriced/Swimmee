@@ -17,7 +17,7 @@
 		DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888928F449140065CBD6 /* CoachMainView.swift */; };
 		DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888B28F455970065CBD6 /* SettingsView.swift */; };
 		DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */; };
-		DC3C889228F4AA2B0065CBD6 /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889128F4AA2B0065CBD6 /* ViewHelpers.swift */; };
+		DC3C889228F4AA2B0065CBD6 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */; };
 		DC3C889628F4AD8D0065CBD6 /* CoachMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889528F4AD8D0065CBD6 /* CoachMessagesView.swift */; };
 		DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */; };
 		DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */; };
@@ -92,7 +92,7 @@
 		DC3C888928F449140065CBD6 /* CoachMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMainView.swift; sourceTree = "<group>"; };
 		DC3C888B28F455970065CBD6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
-		DC3C889128F4AA2B0065CBD6 /* ViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHelpers.swift; sourceTree = "<group>"; };
+		DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		DC3C889528F4AD8D0065CBD6 /* CoachMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesView.swift; sourceTree = "<group>"; };
 		DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMessageView.swift; sourceTree = "<group>"; };
 		DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 			children = (
 				DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */,
 				DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */,
-				DC3C889128F4AA2B0065CBD6 /* ViewHelpers.swift */,
+				DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */,
 				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
 				DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */,
 				DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */,
@@ -501,7 +501,7 @@
 				DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */,
 				DC6CCE30290E8CD800DB8427 /* FirestoreCoachCollectionAPI.swift in Sources */,
 				DCFBCF4E29074B1900F0BF35 /* FormHelpers.swift in Sources */,
-				DC3C889228F4AA2B0065CBD6 /* ViewHelpers.swift in Sources */,
+				DC3C889228F4AA2B0065CBD6 /* ViewModifiers.swift in Sources */,
 				DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */,
 				DC1604B42911C74500FB71EF /* SwimmerCoachView2.swift in Sources */,
 				DC3E998F28FF42C3008E274C /* FirebaseImageStorageAPI.swift in Sources */,

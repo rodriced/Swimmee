@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: View modifier roundedStyleWithErrorIndicator to stylize form text fields
+
 struct RoundedStyleWithErrorIndicator: ViewModifier {
     var inError: Bool
 

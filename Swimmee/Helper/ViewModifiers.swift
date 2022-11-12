@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// MARK: Modifiers if and ifLet to apply modifier conditionnally
+
 extension View {
     @ViewBuilder
     func `if`<Content: View>(_ condition: Bool, modify: (Self) -> Content) -> some View {
@@ -25,5 +27,25 @@ extension View {
         } else {
             self
         }
+    }
+}
+
+// MARK: topBorder modifier
+
+struct TopBorder: ViewModifier {
+    let color: Color
+    let height: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(Rectangle()
+                .frame(maxWidth: .infinity, maxHeight: height)
+                .foregroundColor(Color.mint), alignment: .top)
+    }
+}
+
+extension View {
+    func topBorder(color: Color, height: CGFloat = 5) -> some View {
+        modifier(TopBorder(color: color, height: height))
     }
 }
