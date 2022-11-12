@@ -6,19 +6,33 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
-struct Message: Identifiable {
-    let id = UUID()
-    let date: Date = .now
+struct Message: Identifiable, Codable, DbIdentifiable {
+    var dbId: String?
+    var id = UUID()
+    var userId: String
+    var date: Date = .now
     var title: String
     var content: String
     var isUnread: Bool
+    var isSended: Bool = false
     
-    static var sample = Message(title: "Message", content: "Bla bla bla\nBlalbla blaaaaaa", isUnread: true)
+    init(dbId: String? = nil, id: UUID = UUID(), userId: String, date: Date = .now, title: String = "", content: String = "", isUnread: Bool) {
+        self.dbId = dbId
+        self.id = id
+        self.userId = userId
+        self.date = date
+        self.title = title
+        self.content = content
+        self.isUnread = isUnread
+    }
+    
+    static var sample = Message(userId: UUID().uuidString, title: "Message", content: "Bla bla bla\nBlalbla blaaaaaa", isUnread: true)
     
     func toSamples(_ nbElements: Int) -> [Message] {
         (1 ... nbElements).map {
-            Message(title: title + String($0), content: content, isUnread: isUnread)
+            Message(userId: UUID().uuidString, title: title + String($0), content: content, isUnread: isUnread)
         }
     }
 }

@@ -44,6 +44,8 @@ struct CoachWorkoutsView: View {
             }
             .navigationBarTitle("Workouts", displayMode: .inline)
         }
+        .navigationViewStyle(.stack)
+
 
 //            VStack(spacing: 30) {
         ////                Text("You have 1 new message(s)")

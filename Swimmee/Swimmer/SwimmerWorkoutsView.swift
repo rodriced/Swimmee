@@ -52,6 +52,7 @@ struct SwimmerWorkoutsView: View {
             .padding()
             .navigationBarTitle("Workouts", displayMode: .inline)
         }
+        .navigationViewStyle(.stack)
     }
 }
 

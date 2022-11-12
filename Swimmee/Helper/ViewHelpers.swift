@@ -19,7 +19,7 @@ extension View {
     }
     
     @ViewBuilder
-    func `ifLet1`<Content: View, T: Any>(_ optional: Optional<T>, modify: (Self, T) -> Content) -> some View {
+    func ifLet1<Content: View, T: Any>(_ optional: Optional<T>, modify: (Self, T) -> Content) -> some View {
         if let value = optional {
             modify(self, value)
         } else {

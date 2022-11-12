@@ -7,20 +7,29 @@
 
 import Foundation
 
-enum UserType: String, CaseIterable, Identifiable, Codable {
-    var id: Self { self }
+public enum UserType: String, CaseIterable, Identifiable, Codable {
+    public var id: Self { self }
 
     case coach, swimmer
+    
+    var isCoach: Bool {self == .coach}
+    var isSwimmer: Bool {self == .swimmer}
 }
 
-struct Profile: Identifiable, Hashable, Codable {
-    var id = UUID()
+public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatable {
+//        static func == (lhs: Self, rhs: Self) -> Bool {
+//            lhs.userId == rhs.userId
+//        }
+
+    var dbId: String?
+    public var id = UUID()
     var userId: String
     let userType: UserType
     var firstName: String
     var lastName: String
     var email: String
     var hasPhoto = false
+    var coachId: String?
 
     var fullname: String {
         "\(firstName) \(lastName)"

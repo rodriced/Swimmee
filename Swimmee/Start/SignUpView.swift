@@ -5,7 +5,6 @@
 //  Created by Rodolphe Desruelles on 07/10/2022.
 //
 
-import FirebaseAuth
 import SwiftUI
 
 class FieldValidation {
@@ -29,11 +28,15 @@ class FieldValidation {
 class CommonAccountViewModel: ObservableObject {
     enum FormType { case signUp, signIn }
 
-    var formType: FormType
+    private var formType: FormType
+    private var submitSuccess: Binding<Bool>?
+    private let accountManager: AccountManager
 
-    init(formType: FormType, submitSuccess: Binding<Bool>? = nil) {
+
+    init(formType: FormType, submitSuccess: Binding<Bool>? = nil, authService: AccountManager = FirebaseAccountManager()) {
         self.formType = formType
         self.submitSuccess = submitSuccess
+        self.accountManager = authService
     }
 
     @Published var firstName = ""
@@ -49,12 +52,11 @@ class CommonAccountViewModel: ObservableObject {
     @Published var passwordInError = false
 
 //    enum FormState { case editing, submiting, submited(success: Bool)}
-    
+
 //    @Published var formState = FormState.editing
     @Published var submiting = false
 
-    var submitSuccess: Binding<Bool>?
-    
+
     @Published var errorAlertIsPresenting = false {
         didSet {
             if errorAlertIsPresenting == false {
@@ -62,6 +64,7 @@ class CommonAccountViewModel: ObservableObject {
             }
         }
     }
+
     var errorAlertMessage: String = "" {
         didSet {
             if !errorAlertMessage.isEmpty {
@@ -69,7 +72,7 @@ class CommonAccountViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func submitForm(action: @escaping () async throws -> Void) {
         guard validateForm() else {
             return
@@ -96,40 +99,39 @@ class CommonAccountViewModel: ObservableObject {
                 }
             }
         }
-
     }
-    
+
     func signUp() {
         submitForm { [self] in
-            _ = try await Account.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
+            try await accountManager.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
         }
     }
 
     func signIn() {
         submitForm { [self] in
-            try await Service.shared.auth.signIn(email: email, password: password)
+            try await accountManager.signIn(email: email, password: password)
         }
     }
 
     func reauthenticate() {
         submitForm { [self] in
-            try await Service.shared.auth.reauthenticate(email: email, password: password)
+            try await accountManager.reauthenticate(email: email, password: password)
         }
     }
 
-    var isFirstNameValidated: Bool {
+    private var isFirstNameValidated: Bool {
         return firstName != ""
     }
 
-    var isLastNameValidated: Bool {
+    private var isLastNameValidated: Bool {
         return lastName != ""
     }
 
-    var isEmailValidated: Bool {
+    private var isEmailValidated: Bool {
         return email != ""
     }
 
-    var isPasswordValidated: Bool {
+    private var isPasswordValidated: Bool {
         return password != ""
     }
 
@@ -162,70 +164,74 @@ struct SignUpView: View {
     @StateObject var viewModel = CommonAccountViewModel(formType: .signUp)
 
     var body: some View {
-        NavigationView {
-            VStack {
-                AppTitleView()
-                    .navigationBarTitle("Join swimmee", displayMode: .inline)
+        VStack {
+            AppTitleView()
 
-                Spacer(minLength: 20)
+            Spacer(minLength: 20)
 
-                Text("I create my account:").padding()
+            Text("I create my account:").padding()
 
-                VStack(spacing: 30) {
-                    VStack {
-                        TextField("First name", text: $viewModel.firstName)
-                            .disableAutocorrection(true)
-                            .modifier(WithErrorIndicator(inError: $viewModel.firstNameInError))
+            VStack(spacing: 30) {
+                VStack {
+                    TextField("First name", text: $viewModel.firstName)
+                        .disableAutocorrection(true)
+                        .modifier(WithErrorIndicator(inError: $viewModel.firstNameInError))
 
-                        TextField("Last name", text: $viewModel.lastName)
-                            .disableAutocorrection(true)
-                            .modifier(WithErrorIndicator(inError: $viewModel.lastNameInError))
-                    }
+                    TextField("Last name", text: $viewModel.lastName)
+                        .disableAutocorrection(true)
+                        .modifier(WithErrorIndicator(inError: $viewModel.lastNameInError))
+                }
 
-                    HStack {
-                        Text("I'm a ")
-                        Picker("UserType", selection: $viewModel.userType) {
-                            ForEach(UserType.allCases) { userType in
-                                Text(userType.rawValue.capitalized)
-                            }
+                HStack {
+                    Text("I'm a ")
+                    Picker("UserType", selection: $viewModel.userType) {
+                        ForEach(UserType.allCases) { userType in
+                            Text(userType.rawValue.capitalized)
                         }
-                        .pickerStyle(.segmented)
                     }
-
-                    VStack {
-                        TextField("Email", text: $viewModel.email)
-                            .disableAutocorrection(true)
-                            .autocapitalization(.none)
-                            .modifier(WithErrorIndicator(inError: $viewModel.emailInError))
-
-                        SecureField("Password", text: $viewModel.password)
-                            .modifier(WithErrorIndicator(inError: $viewModel.passwordInError))
-                    }
+                    .pickerStyle(.segmented)
                 }
-                .textFieldStyle(.roundedBorder)
 
-                Spacer()
+                VStack {
+                    TextField("Email", text: $viewModel.email)
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
+                        .modifier(WithErrorIndicator(inError: $viewModel.emailInError))
 
-                Button {
-                    viewModel.signUp()
-                } label: {
-                    if viewModel.submiting {
-                        ProgressView().frame(maxWidth: .infinity)
-                    } else {
-                        Text("Sign up").frame(maxWidth: .infinity)
-                    }
+                    SecureField("Password", text: $viewModel.password)
+                        .modifier(WithErrorIndicator(inError: $viewModel.passwordInError))
                 }
-                .buttonStyle(.borderedProminent)
-                .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
-                .keyboardShortcut(.defaultAction)
-
-                Text("I already have an account...")
-                NavigationLink("Let me in!", destination: SignInView())
-
             }
-            .padding()
-            .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
+            .textFieldStyle(.roundedBorder)
+
+            Spacer()
+
+            Button {
+                viewModel.signUp()
+            } label: {
+                if viewModel.submiting {
+                    ProgressView().frame(maxWidth: .infinity)
+                } else {
+                    Text("Create account").frame(maxWidth: .infinity)
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
+            .keyboardShortcut(.defaultAction)
+
+            Text("I already have an account...")
+            NavigationLink("Let me in!", destination: SignInView())
         }
+        .padding()
+//        .navigationBarTitle("Join swimmee", displayMode: .inline)
+        //        .navigationTitle("Join Swimmee")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Join swimmee")
+            }
+        }
+        .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
     }
 }
 

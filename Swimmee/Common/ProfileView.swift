@@ -6,46 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
-
-struct ImagePicker: UIViewControllerRepresentable {
-    var sourceType: UIImagePickerController.SourceType = .photoLibrary
-
-    @Binding var selectedImage: UIImage?
-    @Environment(\.presentationMode) private var presentationMode
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
-        let imagePicker = UIImagePickerController()
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = sourceType
-        imagePicker.delegate = context.coordinator
-
-        return imagePicker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {}
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        var parent: ImagePicker
-
-        init(_ parent: ImagePicker) {
-            self.parent = parent
-        }
-
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-//            if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-//                parent.selectedImage = image
-//            }
-            parent.selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-
-            parent.presentationMode.wrappedValue.dismiss()
-        }
-    }
-}
 
 class ProfileViewModel: ObservableObject {
 //    var firstName = ""
@@ -67,7 +27,7 @@ class ProfileViewModel: ObservableObject {
 
         if profile.hasPhoto {
             Task {
-                let photoData = try? await Service.shared.storage.downloaddPhoto(uid: profile.userId)
+                let photoData = try? await API.shared.imageStorage.downloadd(uid: profile.userId)
                 guard let photoData = photoData else {
                     return
                 }
@@ -76,63 +36,105 @@ class ProfileViewModel: ObservableObject {
                 }
             }
         }
+        debugPrint("---- ProfileViewModel created")
     }
+    
+    deinit {
+        debugPrint("---- ProfileViewModel deinit")
+    }
+
 
     func saveProfile() {
         Task {
             if let image = image {
-                try? await Service.shared.storage.uploadPhoto(uid: profile.userId, photo: image)
+                try? await API.shared.imageStorage.upload(uid: profile.userId, photo: image)
                 await MainActor.run {
                     profile.hasPhoto = true
                 }
             }
 
-            try? await Service.shared.store.saveProfile(profile: profile)
+//            try? await API.shared.store.saveProfile(profile: profile)
+            try? await API.shared.profile.save(profile)
         }
     }
 
-//    func reauthenticate() {
-//        Service.shared.auth.reauthenticate(email: , password: <#T##String#>)
-//    }
-
     func deleteAccount() {
-        Task {
-            try await Account.deleteCurrrentAccount()
+        // TODO Implement this with Firebase function
+        // To test. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
+        _ = DispatchQueue.main.sync {
+            Task {
+                try await FirebaseAccountManager().deleteCurrrentAccount()
+            }
         }
     }
 }
 
 struct ProfileViewInit: View {
-    @EnvironmentObject var userSession: UserSession
-    @State var profile: Profile?
+    @EnvironmentObject var session: UserSession
 
-    func getProfile() async -> Profile? {
-        guard let userId = Service.shared.auth.currentUserId else {
-            return nil
-        }
-        return try? await Service.shared.store.loadProfile(userId: userId)
+    enum LodingState { case loading, loaded(Profile), failure(String) }
+    @State var loadingState = LodingState.loading
+
+    func getProfile() async throws -> Profile? {
+//        return try await API.shared.store.loadProfile(userId: session.userId)
+        return try await API.shared.profile.load(userId: session.userId)
     }
 
     var body: some View {
         Group {
-            if let profile = profile {
-                ProfileView(vm: ProfileViewModel(profile: profile))
-            } else {
+            switch loadingState {
+            case .loading:
                 ProgressView()
+            case .loaded(let profile):
+                ProfileView(vm: ProfileViewModel(profile: profile))
+            case .failure(let errorMsg):
+                Text("\(errorMsg)\nVerify your connectivity\nand come back on this page.")
             }
         }
         .task {
-            profile = await getProfile()
+            do {
+                loadingState = .loading
+                let profile = try await getProfile()
+                guard let profile = profile else {
+                    loadingState = .failure("No profile (impossible error)")
+                    return
+                }
+                loadingState = .loaded(profile)
+            } catch {
+                loadingState = .failure(error.localizedDescription)
+            }
         }
     }
 }
 
 struct ProfileView: View {
-    @StateObject var vm: ProfileViewModel
     @Environment(\.presentationMode) private var presentationMode
+
+    @StateObject var vm: ProfileViewModel
+
+    init(vm: @autoclosure @escaping () -> ProfileViewModel) {
+        _vm = StateObject(wrappedValue: vm())
+        debugPrint("---- ProfileView created")
+    }
+    
+//        init(vm: ProfileViewModel) {
+//            _vm = StateObject(wrappedValue: vm)
+//            debugPrint("---- ProfileView created")
+//        }
+
+//    @ObservedObject var vm: ProfileViewModel
+//
+//    init(vm: ProfileViewModel) {
+//        _vm = ObservedObject(wrappedValue: vm)
+//        debugPrint("---- ProfileView created")
+//    }
 
     var body: some View {
         VStack {
+            { () -> EmptyView in
+                debugPrint("---- ProfileView.body executed")
+                return EmptyView()
+            }()
             ZStack(alignment: .bottomTrailing) {
                 Group {
                     if let image = vm.image {
@@ -229,10 +231,10 @@ struct ProfileView: View {
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ProfileView(vm: ProfileViewModel(profile: Profile.coachSample))
-        }
-    }
-}
+//struct ProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            ProfileView(vm: ProfileViewModel(profile: Profile.coachSample))
+//        }
+//    }
+//}

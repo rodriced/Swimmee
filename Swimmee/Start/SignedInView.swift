@@ -12,7 +12,7 @@ struct SignedInView: View {
 
     var body: some View {
         Group {
-            switch session.profile.userType {
+            switch session.userType {
             case .coach:
                 CoachMainView()
             case .swimmer:

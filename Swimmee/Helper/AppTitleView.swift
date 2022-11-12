@@ -11,7 +11,8 @@ struct AppTitleView: View {
     var body: some View {
         ZStack {
             Image("SwimmeeLogo")
-                .resizable(capInsets: EdgeInsets(), resizingMode: .stretch)
+//                .resizable(capInsets: EdgeInsets(), resizingMode: .stretch)
+                .resizable(resizingMode: .stretch)
                 .frame(width: 200, height: 150)
             Text("swimmee")
                 .font(.system(size: 34, weight: .regular))

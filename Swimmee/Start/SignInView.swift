@@ -40,7 +40,7 @@ struct SignInView: View {
                 if viewModel.submiting {
                     ProgressView().frame(maxWidth: .infinity)
                 } else {
-                    Text("Sign in").frame(maxWidth: .infinity)
+                    Text("Log in").frame(maxWidth: .infinity)
                 }
             }
             .buttonStyle(.borderedProminent)
@@ -51,7 +51,13 @@ struct SignInView: View {
         }
         .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
         .padding()
-        .navigationBarTitle("Sign In", displayMode: .inline)
+//        .navigationBarTitle("Sign In", displayMode: .inline)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Sign in")
+            }
+        }
     }
 }
 

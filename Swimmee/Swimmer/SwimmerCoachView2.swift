@@ -5,12 +5,12 @@
 //  Created by Rodolphe Desruelles on 11/10/2022.
 //
 
-import Combine
 import SwiftUI
 
-class SwimmerCoachViewModel: ObservableObject {
+class SwimmerCoachViewModel2: ObservableObject {
+//    @Published var coachs: [Profile] = Profile.coachSample.toSamples(with: 4)
     @Published var coachs: [Profile] = []
-    @Published var chosenCoach: Profile?
+    @Published var chosenCoachId: String?
 
     @Published var errorAlertDisplayed = false {
         didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
@@ -19,41 +19,30 @@ class SwimmerCoachViewModel: ObservableObject {
     @Published var errorAlertMessage: String = "" {
         didSet { if !errorAlertMessage.isEmpty { errorAlertDisplayed = true } }
     }
-
-    @MainActor
-    func loadCoachs() async {
-        do {
-            print("load coachs")
-            coachs = try await API.shared.profile.loadCoachs()
-//                    editMode?.wrappedValue.isEditing = true
-        } catch {
-            errorAlertMessage = error.localizedDescription
-        }
+    
+    
+    var chosenCoach: Profile? {
+        print("find coach")
+        guard let userId = chosenCoachId else { return nil }
+        return coachs.first {$0.userId == userId}
     }
 
-    func coachsPublisher() -> AnyPublisher<Result<[Profile], Error>, Never> {
-        API.shared.profile.coachsPublisher()
-            .map { Result.success($0) }
-            .catch { Just(Result.failure($0)) }
-            .eraseToAnyPublisher()
-    }
-
-    func saveChosenCoach(for userId: String) {
+    func saveCoach(for userId: String) {
         Task {
             do {
-                try await API.shared.profile.updateCoach(for: userId, with: chosenCoach?.userId)
+                try await API.shared.profile.updateCoach(for: userId, with: chosenCoachId)
             } catch {
-                await MainActor.run {
-                    errorAlertMessage = error.localizedDescription
-                }
+                errorAlertMessage = error.localizedDescription
             }
         }
     }
+
 //    @Published var chosenCoach: Profile?
 }
 
-struct SwimmerCoachView: View {
-    @StateObject var vm = SwimmerCoachViewModel()
+struct SwimmerCoachView2: View {
+//    @Environment(\.editMode) var editMode
+    @StateObject var vm = SwimmerCoachViewModel2()
 
     var body: some View {
         VStack {
@@ -61,15 +50,15 @@ struct SwimmerCoachView: View {
                 HStack(alignment: .firstTextBaseline) {
                     Text("You have chosen")
                     Text("\(chosenCoach.fullname)").font(.title3).foregroundColor(Color.mint)
-                    Button(action: { vm.chosenCoach = nil }) {
+                    Button(action: { vm.chosenCoachId = nil }) {
                         Image(systemName: "trash").foregroundColor(Color.red)
                     }
                 }
             } else {
                 Text("Choose a coach in the list")
             }
-//            List
-            List(vm.coachs) { coach in
+
+            List(vm.coachs, id: \.userId, selection: $vm.chosenCoachId) { coach in
                 HStack(spacing: 20) {
                     Image("ProfilePhoto").resizable().frame(width: 60, height: 60).cornerRadius(8)
                     VStack(alignment: .leading, spacing: 5) {
@@ -78,19 +67,19 @@ struct SwimmerCoachView: View {
                     }
                     //                .padding(EdgeInsets(leading:10 ))
                 }
-                .if(coach == vm.chosenCoach) {
+                .if(coach.userId == vm.chosenCoachId) {
                     $0.listRowBackground(Color.mint.opacity(0.5))
                 }
-                .onTapGesture {
-                    vm.chosenCoach = coach
-                }
             }
-//            .task { await vm.loadCoachs() }
-            .onReceive(vm.coachsPublisher()) { result in
-                switch result {
-                case .success(let coachs):
-                    vm.coachs = coachs
-                case .failure(let error):
+//            .onChange(of: vm.chosenCoach) {coach in
+//
+//            }
+            .task {
+                do {
+                    print("load coachs")
+                    vm.coachs = try await API.shared.profile.loadCoachs()
+//                    editMode?.wrappedValue.isEditing = true
+                } catch {
                     vm.errorAlertMessage = error.localizedDescription
                 }
             }
@@ -103,10 +92,10 @@ struct SwimmerCoachView: View {
     }
 }
 
-struct SwimmerCoachView_Previews: PreviewProvider {
+struct SwimmerCoachView2_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            SwimmerCoachView()
+            SwimmerCoachView2()
         }
     }
 }

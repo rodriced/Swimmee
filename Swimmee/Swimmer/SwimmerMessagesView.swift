@@ -9,10 +9,10 @@ import SwiftUI
 
 class SwimmerMessagesViewModel: ObservableObject {
     @Published var items: [Message] = [
-        Message(title: "Title 1", content: "Content 1", isUnread: true),
-        Message(title: "Title 2", content: "Content 2\nBla bla bla", isUnread: false)
+        Message(userId: "1", title: "Title 1", content: "Content 1", isUnread: true),
+        Message(userId: "1", title: "Title 2", content: "Content 2\nBla bla bla", isUnread: false)
     ]
-    
+
     func removeItem(at offsets: IndexSet) {
         items.remove(atOffsets: offsets)
     }
@@ -42,7 +42,6 @@ struct SwimmerMessagesView: View {
                         ForEach($vm.items) { $message in
 
                             MessageView(message: message)
-
                         }
                         .onDelete(perform: vm.removeItem)
                     }
@@ -51,6 +50,7 @@ struct SwimmerMessagesView: View {
             .padding()
             .navigationBarTitle("Messages", displayMode: .inline)
         }
+        .navigationViewStyle(.stack)
     }
 }
 
