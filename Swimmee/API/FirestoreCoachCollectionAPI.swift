@@ -18,9 +18,8 @@ import Foundation
 // }
 
 protocol DbIdentifiable: Codable {
-    var dbId: String? {get set}
+    var dbId: String? { get set }
 }
-
 
 class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
     enum CollectionFilter {
@@ -28,33 +27,30 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
         case user(UserId)
         case all
     }
-
-    var currentUserId: UserId? {
-        API.shared.auth.currentUserId
-    }
+    
+    var currentUserId: () -> UserId?
     
     let store = Firestore.firestore()
     let collectionName: String
     
-    init(collectionName: String) {
+    init(collectionName: String,
+         currentUserId: @escaping () -> UserId?)
+    {
         self.collectionName = collectionName
+        self.currentUserId = currentUserId
     }
     
     lazy var collection: CollectionReference =
-    store.collection(collectionName)
+        store.collection(collectionName)
     
     func document(_ id: String? = nil) -> DocumentReference {
-        id.map {collection.document($0)} ?? collection.document()
+        id.map { collection.document($0) } ?? collection.document()
     }
-    
-    //    func getDocument(id: String) -> Future<DocumentSnapshot, Error> {
-    //        collection.document(id).getDocument()
-    //    }
     
     private func query(filter: CollectionFilter) -> Query {
         switch filter {
         case .currentUser:
-            guard let userId = currentUserId else {
+            guard let userId = currentUserId() else {
                 return collection.limit(to: 0)
             }
             return collection.whereField("userId", isEqualTo: userId)
@@ -65,7 +61,6 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
         }
     }
 
-    
     func save(_ item: Item) async throws -> String {
         if let dbId = item.dbId {
             try document(dbId).setData(from: item) as Void
@@ -90,21 +85,13 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
         try await document(id).delete()
     }
     
-    func loadList(userId: String? = nil) async throws -> [Item] {
-        let documentsSnapshot: QuerySnapshot = try await {
-            if let userId = userId {
-                return try await collection.whereField("userId", isEqualTo: userId).getDocuments()
-            } else {
-                return try await collection.getDocuments()
-            }
-        }()
-        
-        return try documentsSnapshot
+    func loadList(filter: CollectionFilter = .currentUser) async throws -> [Item] {
+        try await query(filter: filter).getDocuments()
             .documents.map { doc in
                 try doc.data(as: Item.self, decoder: Firestore.Decoder())
             }
     }
-    
+
     func future(id: String) -> AnyPublisher<Item, Error> {
         (document(id).getDocument() as Future<DocumentSnapshot, Error>)
             .tryMap { documentSnapshot in
@@ -159,7 +146,7 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
     func listPublisherTest(filter: CollectionFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
         query(filter: filter).snapshotPublisher()
             .tryMap { querySnapshot in
-                if (0...9).randomElement() ?? 0 < 4 { throw ListPublisherTestError() }
+                if (0 ... 9).randomElement() ?? 0 < 4 { throw ListPublisherTestError() }
                 return try querySnapshot.documents.map { document in
                     try document.data(as: Item.self)
                 }
@@ -168,10 +155,9 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
             .eraseToAnyPublisher()
     }
     
-
     func listPublisherBuilder(filter: CollectionFilter = .currentUser) -> (() -> AnyPublisher<Result<[Item], Error>, Never>) {
         { [self] in
-            return query(filter: filter).snapshotPublisher()
+            query(filter: filter).snapshotPublisher()
                 .tryMap { querySnapshot in
                     try querySnapshot.documents.map { document in
                         try document.data(as: Item.self)
