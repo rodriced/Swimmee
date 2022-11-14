@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct CoachMainView: View {
-    
     var body: some View {
         TabView {
             CoachWorkoutsView()
                 .tabItem {
                     Label("Workouts", systemImage: "stopwatch")
                 }
-            CoachMessagesView()
-                .tabItem {
-                    Label("Messages", systemImage: "mail.stack")
-                    
-                }
+            NavigationView {
+                CoachMessagesLoadingView()
+            }
+            .navigationViewStyle(.stack)
+            .tabItem {
+                Label("Messages", systemImage: "mail.stack")
+            }
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")

@@ -5,27 +5,121 @@
 //  Created by Rodolphe Desruelles on 09/10/2022.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
+
+class CoachMessagesLoadingViewModel: ObservableObject {
+    enum LodingState: Equatable {
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case (.idle, .idle), (.loading, .loading), (.loaded, .loaded), (.failure(_), .failure(_)):
+                return true
+            default:
+                return false
+            }
+        }
+
+        case idle, loading, loaded, failure(Error)
+
+//        func assignIfNecessary(to newState: Self) {
+//            if self != newState { self = newState }
+//        }
+    }
+
+    @Published var state = LodingState.idle
+
+//    @Published var targetVM = CoachMessagesViewModel()
+    let targetVM = CoachMessagesViewModel()
+
+    var cancellable: Cancellable?
+
+    func load() {
+        print("CoachMessagesLoadingViewModel.load")
+
+        state = .loading
+
+        cancellable = API.shared.message.listPublisher()
+//        cancellable = API.shared.message.listPublisherTest()
+            .sink { [weak self] result in
+                switch result {
+                case .success(let messages):
+                    self?.targetVM.messages = messages
+                    if self?.state != .loaded { self?.state = .loaded }
+//                    state.assignIfNecessary(to: .loaded)
+
+                case .failure(let error):
+                    self?.state = .failure(error)
+                }
+            }
+
+//        cancellable = API.shared.message.listPublisher()
+        ////        cancellable = API.shared.message.listPublisherTest()
+//            .sink { [weak self] result in
+//                switch result {
+//                case .success(let messages):
+//                    self?.targetVM.messages = messages
+//                    if self?.state != .loaded { self?.state = .loaded }
+        ////                    state.assignIfNecessary(to: .loaded)
+//
+//                case .failure(let error):
+//                    self?.state = .failure(error)
+//                }
+//            }
+    }
+
+    init() {
+        print("CoachMessagesLoadingViewModel.init")
+    }
+}
+
+struct CoachMessagesLoadingView: View {
+    @StateObject var loadingVM = CoachMessagesLoadingViewModel()
+
+    init() {
+        print("CoachMessagesLoadingView.init")
+    }
+
+    var body: some View {
+        Group {
+            DebugHelper.viewBodyPrint("CoachMessagesLoadingView.body state = \(loadingVM.state)")
+            switch loadingVM.state {
+            case .idle:
+                Color.clear
+                    .onAppear(perform: loadingVM.load)
+            case .loading:
+                ProgressView()
+            case .loaded:
+                CoachMessagesView(vm: loadingVM.targetVM)
+            case .failure(let error):
+                VStack {
+                    Text("\(error.localizedDescription)\nVerify your connectivity\nand come back on this page.")
+                    Button("Retry") {
+                        loadingVM.state = .idle
+                    }
+                }
+            }
+        }
+    }
+}
 
 class CoachMessagesViewModel: ObservableObject {
-    @Published var messages: [Message] = {
-        var messages = Message.sample.toSamples(2)
-        messages[1].isUnread = false
-        return messages
-    }()
+    @Published var messages: [Message]
 
-    @Published var errorAlertDisplayed = false {
-        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
-    }
-
-    @Published var errorAlertMessage: String = "" {
-        didSet { errorAlertDisplayed = !errorAlertMessage.isEmpty }
-    }
-
-//    func loadMessages() {
-//
+//    @Published var errorAlertDisplayed = false
+//    {
+//        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
 //    }
+
+//    var errorAlertMessage: String = ""
+//    {
+//        didSet { if !errorAlertMessage.isEmpty {errorAlertDisplayed = true} }
+//    }
+
+    init(messages: [Message] = []) {
+        print("CoachMessagesViewModel.init")
+
+        self.messages = messages
+    }
 
     func removeMessage(at offsets: IndexSet) {
         messages.remove(atOffsets: offsets)
@@ -34,88 +128,47 @@ class CoachMessagesViewModel: ObservableObject {
 
 struct CoachMessagesView: View {
     @EnvironmentObject var session: UserSession
-    @StateObject var vm = CoachMessagesViewModel()
+    @ObservedObject var vm: CoachMessagesViewModel
+//    @StateObject var vm: CoachMessagesViewModel
+
+    init(vm: CoachMessagesViewModel) {
+        print("CoachMessagesViewModel.init")
+//        self._vm = StateObject(wrappedValue: vm)
+        self._vm = ObservedObject(wrappedValue: vm)
+    }
 
     var body: some View {
-        NavigationView {
-            VStack(spacing: 30) {
-//                Text("You have 1 new message(s)")
-                List {
-                    ForEach($vm.messages) { $message in
-
-//                        NavigationLink(destination: {EditMessageView(vm: EditMessageViewModel())}) {
-//                            MessageView(message: message)
-//                        }
-                        NavigationLink {
-                            EditMessageView(vm: EditMessageViewModel(message: message))
-
-                        } label: {
-                            MessageView(message: message)
-                        }
-                        .listRowSeparator(.hidden)
-                    }
-                    .onDelete(perform: vm.removeMessage)
-                }
-//                .task {
-//                    do {
-//                        print("load messages")
-//                        vm.messages = try await API.shared.message.loadList(userId: session.userId)
-//                    } catch {
-//                        vm.errorAlertMessage = error.localizedDescription
-//                    }
-//                }
-                .onReceive(
-//                    API.shared.message.listPublisher(userId: session.userId)
-                    API.shared.message.listPublisher()
-//                    .catch { Just([Message(userId: "", title: "Error", content: $0.localizedDescription, isUnread: false)])}
-                        .map {Result.success($0)}
-                        .catch {Just(Result.failure($0))}
-                ){ result in
-                    print("listPublisher reveive : \(String(describing: result))")
-                    switch result {
-                    case .success(let messages):
-                        vm.messages = messages
-                    case .failure(let error):
-                        vm.errorAlertMessage = error.localizedDescription
-                    }
-//                    messages in
-                }
-                .listStyle(.plain)
-                .toolbar {
+        VStack(spacing: 30) {
+            DebugHelper.viewBodyPrint("CoachMessagesViewModel.body")
+            List {
+                ForEach($vm.messages) { $message in
                     NavigationLink {
-                        EditMessageView(vm: EditMessageViewModel(userId: session.userId))
+                        EditMessageView(vm: EditMessageViewModel(message: message))
                     } label: {
-                        Image(systemName: "plus")
+                        MessageView(message: message)
                     }
+                    .listRowSeparator(.hidden)
                 }
-                .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
+                .onDelete(perform: vm.removeMessage)
             }
-//            .padding()
-            .navigationBarTitle("Messages", displayMode: .inline)
-
-//            VStack(spacing: 30) {
-//                Text("You have 1 new message(s)")
-//                ScrollView {
-//                    VStack(spacing: 20) {
-//                        ForEach($vm.items) { $message in
-//
-//                            MessageView(message: message)
-//
-//                        }
-//                        .onDelete(perform: vm.removeItem)
-//                    }
-//                }
-//            }
-//            .padding()
-//            .navigationBarTitle("Messages", displayMode: .inline)
+            .listStyle(.plain)
+            .toolbar {
+                NavigationLink {
+                    EditMessageView(vm: EditMessageViewModel(userId: session.userId))
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+//                .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
         }
-        .navigationViewStyle(.stack)
+//            .padding()
+        .navigationBarTitle("Messages", displayMode: .inline)
     }
 }
 
 struct CoachMessagesView_Previews: PreviewProvider {
     static var previews: some View {
-        CoachMessagesView()
+        CoachMessagesView(vm: CoachMessagesViewModel())
             .environmentObject(UserSession(profile: Profile.coachSample))
     }
 }
