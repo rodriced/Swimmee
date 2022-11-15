@@ -22,10 +22,16 @@ protocol DbIdentifiable: Codable {
 }
 
 class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
-    enum CollectionFilter {
+    enum OwnerFilter {
         case currentUser
         case user(UserId)
-        case all
+        case any
+    }
+    
+    enum IsSendedFilter {
+        case sended
+        case notSended
+        case any
     }
     
     var currentUserId: () -> UserId?
@@ -47,17 +53,28 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
         id.map { collection.document($0) } ?? collection.document()
     }
     
-    private func query(filter: CollectionFilter) -> Query {
-        switch filter {
-        case .currentUser:
-            guard let userId = currentUserId() else {
-                return collection.limit(to: 0)
+    private func queryBy(owner: OwnerFilter, isSended: IsSendedFilter = .sended) -> Query {
+        let query = {
+            switch owner {
+            case .currentUser:
+                guard let userId = currentUserId() else {
+                    return collection.limit(to: 0)
+                }
+                return collection.whereField("userId", isEqualTo: userId)
+            case .user(let userId):
+                return collection.whereField("userId", isEqualTo: userId)
+            case .any:
+                return collection
             }
-            return collection.whereField("userId", isEqualTo: userId)
-        case .user(let userId):
-            return collection.whereField("userId", isEqualTo: userId)
-        case .all:
-            return collection
+        }()
+        
+        switch isSended {
+        case .sended:
+            return query.whereField("isSended", isEqualTo: true)
+        case .notSended:
+            return query.whereField("isSended", isEqualTo: false)
+        case .any:
+            return query
         }
     }
 
@@ -85,8 +102,8 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
         try await document(id).delete()
     }
     
-    func loadList(filter: CollectionFilter = .currentUser) async throws -> [Item] {
-        try await query(filter: filter).getDocuments()
+    func loadList(owner: OwnerFilter = .currentUser) async throws -> [Item] {
+        try await queryBy(owner: owner).getDocuments()
             .documents.map { doc in
                 try doc.data(as: Item.self, decoder: Firestore.Decoder())
             }
@@ -108,8 +125,8 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
             .eraseToAnyPublisher()
     }
     
-    func listFuture(filter: CollectionFilter = .currentUser) -> AnyPublisher<[Item], Error> {
-        query(filter: filter).getDocuments()
+    func listFuture(owner: OwnerFilter = .currentUser) -> AnyPublisher<[Item], Error> {
+        queryBy(owner: owner).getDocuments()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { documentSnapshot in
                     try documentSnapshot.data(as: Item.self)
@@ -118,8 +135,8 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
             .eraseToAnyPublisher()
     }
     
-    func listPublisher(filter: CollectionFilter = .currentUser) -> AnyPublisher<[Item], Error> {
-        query(filter: filter).snapshotPublisher()
+    func listPublisher(owner: OwnerFilter = .currentUser, isSended: IsSendedFilter = .sended) -> AnyPublisher<[Item], Error> {
+        queryBy(owner: owner).snapshotPublisher()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Item.self)
@@ -128,8 +145,8 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
             .eraseToAnyPublisher()
     }
     
-    func listPublisher(filter: CollectionFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
-        query(filter: filter).snapshotPublisher()
+    func listPublisher(owner: OwnerFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
+        queryBy(owner: owner).snapshotPublisher()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Item.self)
@@ -143,8 +160,8 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
         var errorDescription = "Erroro : ListPublisherTestError"
     }
     
-    func listPublisherTest(filter: CollectionFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
-        query(filter: filter).snapshotPublisher()
+    func listPublisherTest(owner: OwnerFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
+        queryBy(owner: owner).snapshotPublisher()
             .tryMap { querySnapshot in
                 if (0 ... 9).randomElement() ?? 0 < 4 { throw ListPublisherTestError() }
                 return try querySnapshot.documents.map { document in
@@ -155,9 +172,9 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
             .eraseToAnyPublisher()
     }
     
-    func listPublisherBuilder(filter: CollectionFilter = .currentUser) -> (() -> AnyPublisher<Result<[Item], Error>, Never>) {
+    func listPublisherBuilder(owner: OwnerFilter = .currentUser) -> (() -> AnyPublisher<Result<[Item], Error>, Never>) {
         { [self] in
-            query(filter: filter).snapshotPublisher()
+            queryBy(owner: owner).snapshotPublisher()
                 .tryMap { querySnapshot in
                     try querySnapshot.documents.map { document in
                         try document.data(as: Item.self)

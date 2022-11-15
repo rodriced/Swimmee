@@ -7,55 +7,57 @@
 
 import SwiftUI
 
-class SwimmerMessagesViewModel: ObservableObject {
-    @Published var items: [Message] = [
-        Message(userId: "1", title: "Title 1", content: "Content 1", isUnread: true),
-        Message(userId: "1", title: "Title 2", content: "Content 2\nBla bla bla", isUnread: false)
-    ]
+class SwimmerMessagesViewModel: LoadableViewModel {
+    @Published var messages: [Message] = []
 
-    func removeItem(at offsets: IndexSet) {
-        items.remove(atOffsets: offsets)
+    required init() {}
+
+    func injectLoadedData(_ loadedData: [Message]) {
+        messages = loadedData
     }
 }
 
 struct SwimmerMessagesView: View {
-    @StateObject var vm = SwimmerMessagesViewModel()
+    typealias ViewModel = SwimmerMessagesViewModel
+    
+    @ObservedObject var vm: SwimmerMessagesViewModel
+    
+    init(_ vm: SwimmerMessagesViewModel) {
+//        print("SwimmerhMessagesViewModel.init")
+        self._vm = ObservedObject(wrappedValue: vm)
+    }
+
 
     var body: some View {
-        NavigationView {
-//            VStack(spacing: 30) {
-//                Text("You have 1 new message(s)")
-//                List {
-//                    ForEach($vm.items) { $message in
-//
-//                        MessageView(message: message)
-//                    }
-//                    .onDelete(perform: vm.removeItem)
-//                }
-//
-//            }
-
-            VStack(spacing: 30) {
-                Text("You have 1 new message(s)")
-                ScrollView {
-                    VStack(spacing: 20) {
-                        ForEach($vm.items) { $message in
-
-                            MessageView(message: message)
-                        }
-                        .onDelete(perform: vm.removeItem)
-                    }
+        VStack(spacing: 30) {
+            Text("You have 1 new message(s)")
+            List {
+                ForEach(vm.messages) { message in
+                    MessageView(message: message)
+                        .listRowSeparator(.hidden)
                 }
             }
-            .padding()
-            .navigationBarTitle("Messages", displayMode: .inline)
         }
-        .navigationViewStyle(.stack)
+        .listStyle(.plain)
+
+//            VStack(spacing: 30) {
+//                Text("You have 1 new message(s)")
+//                ScrollView {
+//                    VStack(spacing: 20) {
+//                        ForEach($vm.items) { $message in
+//
+//                            MessageView(message: message)
+//                        }
+//                    }
+//                }
+//            }
+        .padding()
+        .navigationBarTitle("Messages", displayMode: .inline)
     }
 }
 
-struct SwimmerMessagesView_Previews: PreviewProvider {
-    static var previews: some View {
-        SwimmerMessagesView()
-    }
-}
+//struct SwimmerMessagesView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SwimmerMessagesView()
+//    }
+//}

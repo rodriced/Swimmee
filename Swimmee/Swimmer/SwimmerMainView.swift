@@ -14,7 +14,7 @@ class SwimmerMainVM: ObservableObject {
 
 struct SwimmerMainView: View {
     @StateObject var vm = SwimmerMainVM()
-    
+
     var body: some View {
         TabView {
             SwimmerWorkoutsView()
@@ -22,17 +22,19 @@ struct SwimmerMainView: View {
                 .tabItem {
                     Label("Workouts", systemImage: "stopwatch")
                 }
-            SwimmerMessagesView()
-                .badge(vm.unreadMessagescount)
-                .tabItem {
-                    Label("Messages", systemImage: "mail.stack")
-                    
-                }
+            NavigationView {
+                LoadingView(publisherBuiler: { API.shared.message.listPublisher(owner: .user("F0VE3g0aZCbjmuK4GzUkO6KxkPI2"), isSended: .sended) }, content: SwimmerMessagesView.init)
+            }
+            .badge(vm.unreadMessagescount)
+            .tabItem {
+                Label("Messages", systemImage: "mail.stack")
+            }
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")
                 }
         }
+        .navigationViewStyle(.stack)
 //            .animation(.easeIn, value: 1)
     }
 }
