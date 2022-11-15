@@ -10,15 +10,15 @@ import FirebaseFirestoreSwift
 
 struct Message: Identifiable, Codable, DbIdentifiable {
     var dbId: String?
-    var id = UUID()
+    var id: UUID
     var userId: String
-    var date: Date = .now
+    var date: Date
     var title: String
     var content: String
     var isUnread: Bool
-    var isSended: Bool = false
+    var isSended: Bool
     
-    init(dbId: String? = nil, id: UUID = UUID(), userId: String, date: Date = .now, title: String = "", content: String = "", isUnread: Bool) {
+    init(dbId: String? = nil, id: UUID = UUID(), userId: String, date: Date = .now, title: String = "", content: String = "", isUnread: Bool, isSended: Bool = false) {
         self.dbId = dbId
         self.id = id
         self.userId = userId
@@ -26,6 +26,7 @@ struct Message: Identifiable, Codable, DbIdentifiable {
         self.title = title
         self.content = content
         self.isUnread = isUnread
+        self.isSended = isSended
     }
     
     static var sample = Message(userId: UUID().uuidString, title: "Message", content: "Bla bla bla\nBlalbla blaaaaaa", isUnread: true)

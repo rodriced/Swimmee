@@ -10,6 +10,12 @@ import SwiftUI
 struct MessageView: View {
     @EnvironmentObject var session: UserSession
     let message: Message
+    var indicatorColor: Color {
+        session.isCoach ?
+            (message.isSended ? Color.mint : Color.orange)
+            :
+            (message.isUnread ? Color.mint : Color.white)
+    }
 
     var body: some View {
         Label {
@@ -24,15 +30,16 @@ struct MessageView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(Color.gray.opacity(0.1))
-        .if(session.isSwimmer && message.isUnread) {
-            $0.topBorder(color: Color.mint)
-        }
+        .topBorder(color: indicatorColor)
+//        .if(session.isSwimmer && message.isUnread) {
+//            $0.topBorder(color: Color.mint)
+//        }
 //        { view in
 //            view.overlay(Rectangle().frame(maxWidth: .infinity, maxHeight: 5).foregroundColor(Color.mint), alignment: .top)
 //        }
-        .if(session.isCoach) {
-            $0.topBorder(color: message.isSended ? Color.mint : Color.orange)
-        }
+//        .if(session.isCoach) {
+//            $0.topBorder(color: message.isSended ? Color.mint : Color.orange)
+//        }
 //        { view in
 //            view.overlay(Rectangle().frame(maxWidth: .infinity, maxHeight: 5).foregroundColor(Color.orange), alignment: .top)
 //        }
@@ -42,19 +49,26 @@ struct MessageView: View {
 
 struct MessageView_Previews: PreviewProvider {
     static var previews: some View {
-        let message = Message.sample
+        let notSendedMessage = Message.sample
         let sendedMessage: Message = {
             var msg = Message.sample
             msg.isSended = true
             return msg
         }()
+        let readMessage: Message = {
+            var msg = sendedMessage
+            msg.isUnread = false
+            return msg
+        }()
 
         Group {
-            MessageView(message: message)
+            MessageView(message: notSendedMessage)
                 .environmentObject(UserSession(userId: "", userType: .coach))
             MessageView(message: sendedMessage)
                 .environmentObject(UserSession(userId: "", userType: .coach))
-            MessageView(message: message)
+            MessageView(message: readMessage)
+                .environmentObject(UserSession(userId: "", userType: .swimmer))
+            MessageView(message: sendedMessage)
                 .environmentObject(UserSession(userId: "", userType: .swimmer))
         }
     }

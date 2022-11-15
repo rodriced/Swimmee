@@ -40,7 +40,7 @@ struct TopBorder: ViewModifier {
         content
             .overlay(Rectangle()
                 .frame(maxWidth: .infinity, maxHeight: height)
-                .foregroundColor(Color.mint), alignment: .top)
+                .foregroundColor(color), alignment: .top)
     }
 }
 
