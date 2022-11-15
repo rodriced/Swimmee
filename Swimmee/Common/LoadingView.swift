@@ -12,19 +12,14 @@ import SwiftUI
 
 protocol LoadableViewModel: ObservableObject {
     associatedtype LoadedData
+//    : Equatable
     init()
     func injectLoadedData(_ loadedData: LoadedData)
 }
 
-protocol LoadableView: View {
-    associatedtype ViewModel: LoadableViewModel
-//    var vm: ViewModel {get set}
-//    init(_ vm: ViewModel)
-}
-
-class LoadingViewModel<TargetViewModel: LoadableViewModel> : ObservableObject {
+class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     typealias LoadPublisher = AnyPublisher<TargetViewModel.LoadedData, Error>
-    
+
     enum LodingState: Equatable {
         static func == (lhs: Self, rhs: Self) -> Bool {
             switch (lhs, rhs) {
@@ -41,17 +36,17 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel> : ObservableObject {
 //            if self != newState { self = newState }
 //        }
     }
-    
+
     init(publisherBuiler: @escaping () -> LoadPublisher) {
         print("ViewModel.init")
         self.publisherBuilder = publisherBuiler
     }
-    
+
     let publisherBuilder: () -> LoadPublisher
 
     @Published var state = LodingState.idle
 
-//    @Published var targetVM = CoachMessagesViewModel()
+//    @Published var targetVM = TargetViewModel()
     let targetVM = TargetViewModel()
 
     var cancellable: Cancellable?
@@ -61,25 +56,11 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel> : ObservableObject {
 
         state = .loading
 
-        cancellable = publisherBuilder().asResult()
-            .sink { [weak self] result in
-                switch result {
-                case .success(let item):
-                    self?.targetVM.injectLoadedData(item)
-                    if self?.state != .loaded { self?.state = .loaded }
-//                    state.assignIfNecessary(to: .loaded)
-
-                case .failure(let error):
-                    self?.state = .failure(error)
-                }
-            }
-
-//        cancellable = API.shared.message.listPublisher()
-        ////        cancellable = API.shared.message.listPublisherTest()
+//        cancellable = publisherBuilder().asResult()
 //            .sink { [weak self] result in
 //                switch result {
-//                case .success(let messages):
-//                    self?.targetVM.messages = messages
+//                case .success(let item):
+//                    self?.targetVM.injectLoadedData(item)
 //                    if self?.state != .loaded { self?.state = .loaded }
         ////                    state.assignIfNecessary(to: .loaded)
 //
@@ -87,22 +68,33 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel> : ObservableObject {
 //                    self?.state = .failure(error)
 //                }
 //            }
+
+        cancellable = publisherBuilder()
+//            .removeDuplicates()
+            .sink { [weak self] completion in
+                if case let .failure(error) = completion {
+                    self?.state = .failure(error)
+                }
+            } receiveValue: { [weak self] in
+                self?.targetVM.injectLoadedData($0)
+                if self?.state != .loaded { self?.state = .loaded }
+            }
     }
 }
 
-struct LoadingView<TargetView: LoadableView>: View
-{
-    @StateObject var loadingVM: LoadingViewModel<TargetView.ViewModel>
-    
-    let content: (TargetView.ViewModel) -> TargetView
+struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
+    @StateObject var loadingVM: LoadingViewModel<TargetViewModel>
 
-    init(publisherBuiler: @escaping () -> LoadingViewModel<TargetView.ViewModel>.LoadPublisher,
-         content: @escaping (TargetView.ViewModel) -> TargetView) {
+    let content: (TargetViewModel) -> TargetView
+
+    init(publisherBuiler: @escaping () -> LoadingViewModel<TargetViewModel>.LoadPublisher,
+         @ViewBuilder content: @escaping (TargetViewModel) -> TargetView)
+    {
         print("View.init")
         self._loadingVM = StateObject(wrappedValue: LoadingViewModel(publisherBuiler: publisherBuiler))
         self.content = content
     }
-        
+
     var body: some View {
         Group {
             DebugHelper.viewBodyPrint("View.body state = \(loadingVM.state)")
@@ -114,7 +106,7 @@ struct LoadingView<TargetView: LoadableView>: View
                 ProgressView()
             case .loaded:
                 content(loadingVM.targetVM)
-            case .failure(let error):
+            case let .failure(error):
                 VStack {
                     Text("\(error.localizedDescription)\nVerify your connectivity\nand come back on this page.")
                     Button("Retry") {
