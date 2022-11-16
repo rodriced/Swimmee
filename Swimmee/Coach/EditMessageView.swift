@@ -66,10 +66,7 @@ struct EditMessageView: View {
                 Section {
                     TextField("Title", text: $vm.message.title)
                 }
-                ZStack(alignment: .topLeading) {
-                    TextEditor(text: $vm.message.content).frame(height: 400)
-                    Text("Content").opacity(0.2)
-                }
+                TextEditorWithPlaceholder(text: $vm.message.content, placeholder: "Content", height: 400)
             }
 
             HStack {
