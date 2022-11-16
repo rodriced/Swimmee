@@ -202,12 +202,9 @@
 		DC3C888E28F47C7D0065CBD6 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */,
-				DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */,
 				DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */,
 				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
 				DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */,
-				DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */,
 				DC6CCE2B290AB4A500DB8427 /* ViewLoader.swift */,
 				DCDBE7E62915D77A00386076 /* AlertManager.swift */,
 				DC863A502920531900934B62 /* CombineExtension.swift */,
@@ -330,6 +327,9 @@
 		DCBAD88F29246B0800376A3E /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */,
+				DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */,
+				DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */,
 				DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */,
 			);
 			path = Component;
