@@ -136,7 +136,7 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
     }
     
     func listPublisher(owner: OwnerFilter = .currentUser, isSended: IsSendedFilter = .sended) -> AnyPublisher<[Item], Error> {
-        queryBy(owner: owner).snapshotPublisher()
+        queryBy(owner: owner, isSended: isSended).snapshotPublisher()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Item.self)

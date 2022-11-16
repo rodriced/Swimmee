@@ -38,7 +38,7 @@ class CoachMessagesLoadingViewModel: ObservableObject {
 
         state = .loading
 
-        cancellable = API.shared.message.listPublisher()
+        cancellable = API.shared.message.listPublisher(isSended: .any).asResult()
 //        cancellable = API.shared.message.listPublisherTest()
             .sink { [weak self] result in
                 switch result {

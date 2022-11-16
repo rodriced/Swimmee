@@ -24,7 +24,7 @@ class EditMessageViewModel: ObservableObject {
     }
 
     init(userId: String) {
-        self.message = Message(userId: userId, isUnread: false)
+        self.message = Message(userId: userId)
     }
 
     func saveMessage(andSendIt: Bool, presentationMode: Binding<PresentationMode>) {
