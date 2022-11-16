@@ -51,6 +51,7 @@
 		DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */; };
 		DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA8F82919AF0000F936E7 /* SessionTests.swift */; };
 		DCAEA8FC291AAB9C00F936E7 /* ConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA8FB291AAB9C00F936E7 /* ConnectionService.swift */; };
+		DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */; };
 		DCDBE7E72915D77A00386076 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDBE7E62915D77A00386076 /* AlertManager.swift */; };
 		DCF3237E28FB37180030626C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237D28FB37180030626C /* FirebaseAuth */; };
 		DCF3238028FB37180030626C /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237F28FB37180030626C /* FirebaseAuthCombine-Community */; };
@@ -132,6 +133,7 @@
 		DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitleView.swift; sourceTree = "<group>"; };
 		DCAEA8F82919AF0000F936E7 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		DCAEA8FB291AAB9C00F936E7 /* ConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionService.swift; sourceTree = "<group>"; };
+		DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
 		DCDBE7E62915D77A00386076 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		DCF3238F28FC88360030626C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCF3239128FC8C060030626C /* FirebaseAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthAPI.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				DCAEA8FA291AAA7C00F936E7 /* Service */,
 				DC3C888228F424640065CBD6 /* Model */,
 				DC3C888E28F47C7D0065CBD6 /* Helper */,
+				DCBAD88F29246B0800376A3E /* Component */,
 				DC3C888D28F47C210065CBD6 /* Start */,
 				DC3C889328F4ACF80065CBD6 /* Common */,
 				DC3C889728F4AD9C0065CBD6 /* Coach */,
@@ -322,6 +325,14 @@
 				DCAEA8FB291AAB9C00F936E7 /* ConnectionService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		DCBAD88F29246B0800376A3E /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 		DCDBE7E8291844F600386076 /* Protocol */ = {
@@ -493,6 +504,7 @@
 				DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */,
 				DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */,
 				DC3C888828F42BAE0065CBD6 /* Profile.swift in Sources */,
+				DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */,
 				DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */,
 				DCFBCF522908B1DE00F0BF35 /* ImagePicker.swift in Sources */,
 				DCA62DF928F00E0900F87C9B /* SignUpView.swift in Sources */,
