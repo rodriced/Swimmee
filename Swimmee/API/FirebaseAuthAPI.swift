@@ -12,6 +12,10 @@ import Foundation
 
 typealias UserId = String
 
+enum AuthError: LocalizedError {
+    case notAuthenticated
+}
+
 protocol AuthAPI {
     var isSgnedIn: Bool { get }
     var currentUserId: UserId? { get }
@@ -33,6 +37,13 @@ final class FirebaseAuthAPI: AuthAPI {
     
     var currentUserId: UserId? {
         auth.currentUser?.uid
+    }
+    
+    func getCurrentUserId() throws -> UserId {
+        guard let userId = auth.currentUser?.uid else {
+            throw AuthError.notAuthenticated
+        }
+        return userId
     }
     
     func signedInStatePublisher() -> AnyPublisher<UserId?, Never> {

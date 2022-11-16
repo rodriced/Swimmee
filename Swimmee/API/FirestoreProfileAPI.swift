@@ -17,38 +17,59 @@ import Foundation
 //    func save(model: Model) async throws
 // }
 
-class FirestoreProfileAPI {
-    let store = Firestore.firestore()
-    let collectionName = "Profiles"
+//enum ProfileError: LocalizedError {
+//    case profileNotFound
+//}
 
-    lazy var collection: CollectionReference =
+class FirestoreProfileAPI {
+    private let store = Firestore.firestore()
+    private let collectionName = "Profiles"
+
+    private lazy var collection: CollectionReference =
         store.collection(collectionName)
 
-    func document(_ id: String? = nil) -> DocumentReference {
-        id.map { collection.document($0) } ?? collection.document()
+    private var currentUserId: () throws -> UserId
+    
+    init(currentUserId: @escaping () throws -> UserId)
+    {
+        self.currentUserId = currentUserId
+    }
+
+    private func documentReference(_ userId: String? = nil) throws -> DocumentReference {
+        let userId = try {
+            guard let userId else {
+                return try self.currentUserId()
+            }
+            return userId
+        }()
+//        guard let userId = userId ?? currentUserId() else {
+//            throw AuthError.notAuthenticated
+//        }
+        return collection.document(userId)
     }
 
     func save(_ profile: Profile) async throws {
-        try document(profile.userId).setData(from: profile) as Void
+        try documentReference(profile.userId).setData(from: profile) as Void
     }
 
     func load(userId: String) async throws -> Profile {
-        return try await document(userId).getDocument(as: Profile.self)
+        return try await documentReference(userId).getDocument(as: Profile.self)
     }
 
     func delete(userId: String) async throws {
-        return try await document(userId).delete()
+        return try await documentReference(userId).delete()
     }
 
-//    func profileFuture(userId: String) -> Future<Profile, Error> {
-    func future(userId: String) -> AnyPublisher<Profile, Error> {
-        (document(userId).getDocument() as Future<DocumentSnapshot, Error>)
-            .tryMap { document in
-                try document.data(as: Profile.self)
-            }
-//            .decode(type: Profile.self, decoder: Firestore.Decoder())
-//            .eraseToAnyPublisher()
-            .eraseToAnyPublisher()
+    func future(userId: String?) -> AnyPublisher<Profile, Error> {
+        do {
+            return (try documentReference(userId).getDocument() as Future<DocumentSnapshot, Error>)
+                .tryMap { document in
+                    try document.data(as: Profile.self)
+                }
+                .eraseToAnyPublisher()
+        } catch {
+            return Fail(error: error).eraseToAnyPublisher()
+        }
     }
 
     func loadCoachs() async throws -> [Profile] {
@@ -83,12 +104,12 @@ class FirestoreProfileAPI {
             }
     }
 
-    func updateCoach(for userId: String, with coachId: String?) async throws {
-        try await document(userId).setData(["coachId": coachId as Any], merge: true)
+    func updateCoach(for userId: String? = nil, with coachId: String?) async throws {
+        try await documentReference(userId).setData(["coachId": coachId as Any], merge: true)
     }
 
     func updateCoach(for profile: inout Profile, with coachId: String?) async throws {
-        try await document(profile.userId).setData(["coachId": coachId as Any], merge: true)
+        try await documentReference(profile.userId).setData(["coachId": coachId as Any], merge: true)
         profile.coachId = coachId
     }
 }
