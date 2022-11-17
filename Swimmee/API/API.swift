@@ -14,5 +14,5 @@ class API {
     let auth = FirebaseAuthAPI()
     let imageStorage = FirebaseImageStorageAPI()
     let profile = FirestoreProfileAPI(currentUserId: { try API.shared.auth.getCurrentUserId() } )
-    let message = FirestoreCoachCollectionAPI<Message>(collectionName: "Messages", currentUserId: { API.shared.auth.currentUserId })
+    let message = FirestoreCollectionAPI<Message>(collectionName: "Messages", currentUserId: { API.shared.auth.currentUserId })
 }

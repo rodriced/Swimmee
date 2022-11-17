@@ -21,7 +21,11 @@ protocol DbIdentifiable: Codable {
     var dbId: String? { get set }
 }
 
-class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
+//protocol OwnedByUser: Codable {
+//    var userId: UserId {get set}
+//}
+
+class FirestoreCollectionAPI<Item: DbIdentifiable> {
     enum OwnerFilter {
         case currentUser
         case user(UserId)
@@ -53,7 +57,7 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
         id.map { collection.document($0) } ?? collection.document()
     }
     
-    private func queryBy(owner: OwnerFilter, isSended: IsSendedFilter = .sended) -> Query {
+    func queryBy(owner: OwnerFilter, isSended: IsSendedFilter = .sended) -> Query {
         let query = {
             switch owner {
             case .currentUser:
@@ -158,18 +162,6 @@ class FirestoreCoachCollectionAPI<Item: DbIdentifiable> {
     
     class ListPublisherTestError: LocalizedError {
         var errorDescription = "Erroro : ListPublisherTestError"
-    }
-    
-    func listPublisherTest(owner: OwnerFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
-        queryBy(owner: owner).snapshotPublisher()
-            .tryMap { querySnapshot in
-                if (0 ... 9).randomElement() ?? 0 < 4 { throw ListPublisherTestError() }
-                return try querySnapshot.documents.map { document in
-                    try document.data(as: Item.self)
-                }
-            }
-            .asResult()
-            .eraseToAnyPublisher()
     }
     
     func listPublisherBuilder(owner: OwnerFilter = .currentUser) -> (() -> AnyPublisher<Result<[Item], Error>, Never>) {
