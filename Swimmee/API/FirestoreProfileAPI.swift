@@ -72,6 +72,18 @@ class FirestoreProfileAPI {
         }
     }
 
+    func publisher(userId: String?) -> AnyPublisher<Profile, Error> {
+        do {
+            return try documentReference(userId).snapshotPublisher()
+                .tryMap { document in
+                    try document.data(as: Profile.self)
+                }
+                .eraseToAnyPublisher()
+        } catch {
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+    }
+
     func loadCoachs() async throws -> [Profile] {
         return try await collection.whereField("userType", isEqualTo: "coach").getDocuments()
             .documents.map { doc in
