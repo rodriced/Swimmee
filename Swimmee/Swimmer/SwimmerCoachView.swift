@@ -10,7 +10,7 @@ import SwiftUI
 
 class SwimmerCoachViewModel: ObservableObject {
     @Published var coachs: [Profile] = []
-    @Published var chosenCoach: Profile?
+    @Published var selectedCoach: Profile?
 
     @Published var errorAlertDisplayed = false {
         didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
@@ -21,10 +21,18 @@ class SwimmerCoachViewModel: ObservableObject {
     }
 
     @MainActor
-    func loadCoachs() async {
+    func loadCoachs(andSelect coachId: UserId?) async {
         do {
             print("load coachs")
             coachs = try await API.shared.profile.loadCoachs()
+            
+            guard let coachId else {
+                selectedCoach = nil
+                return
+            }
+            selectedCoach = coachs.first {profile in
+                profile.userId == coachId
+            }
 //                    editMode?.wrappedValue.isEditing = true
         } catch {
             errorAlertMessage = error.localizedDescription
@@ -38,10 +46,10 @@ class SwimmerCoachViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    func saveChosenCoach(for userId: String) {
+    func saveSelectedCoach() {
         Task {
             do {
-                try await API.shared.profile.updateCoach(for: userId, with: chosenCoach?.userId)
+                try await API.shared.profile.updateCoach(with: selectedCoach?.userId)
             } catch {
                 await MainActor.run {
                     errorAlertMessage = error.localizedDescription
@@ -49,19 +57,24 @@ class SwimmerCoachViewModel: ObservableObject {
             }
         }
     }
-//    @Published var chosenCoach: Profile?
+    
+    func selectCoach(_ coach: Profile?) {
+        self.selectedCoach = coach
+        saveSelectedCoach()
+    }
 }
 
 struct SwimmerCoachView: View {
+    @EnvironmentObject var session: UserSession
     @StateObject var vm = SwimmerCoachViewModel()
 
     var body: some View {
         VStack {
-            if let chosenCoach = vm.chosenCoach {
+            if let selectedCoach = vm.selectedCoach {
                 HStack(alignment: .firstTextBaseline) {
-                    Text("You have chosen")
-                    Text("\(chosenCoach.fullname)").font(.title3).foregroundColor(Color.mint)
-                    Button(action: { vm.chosenCoach = nil }) {
+                    Text("You have selected")
+                    Text("\(selectedCoach.fullname)").font(.title3).foregroundColor(Color.mint)
+                    Button(action: { vm.selectCoach(nil) }) {
                         Image(systemName: "trash").foregroundColor(Color.red)
                     }
                 }
@@ -78,22 +91,22 @@ struct SwimmerCoachView: View {
                     }
                     //                .padding(EdgeInsets(leading:10 ))
                 }
-                .if(coach == vm.chosenCoach) {
+                .if(coach == vm.selectedCoach) {
                     $0.listRowBackground(Color.mint.opacity(0.5))
                 }
                 .onTapGesture {
-                    vm.chosenCoach = coach
+                    vm.selectCoach(coach)
                 }
             }
-//            .task { await vm.loadCoachs() }
-            .onReceive(vm.coachsPublisher()) { result in
-                switch result {
-                case .success(let coachs):
-                    vm.coachs = coachs
-                case .failure(let error):
-                    vm.errorAlertMessage = error.localizedDescription
-                }
-            }
+            .task { await vm.loadCoachs(andSelect: session.coachId) }
+//            .onReceive(vm.coachsPublisher()) { result in
+//                switch result {
+//                case .success(let coachs):
+//                    vm.coachs = coachs
+//                case .failure(let error):
+//                    vm.errorAlertMessage = error.localizedDescription
+//                }
+//            }
 //            .toolbar() {
 //                EditButton()
 //            }
