@@ -62,25 +62,6 @@ class Session: ObservableObject {
     }
 }
 
-class UserSession: ObservableObject {
-    let userId: String
-    let userType: UserType
-
-    init(userId: UserId, userType: UserType) {
-        self.userId = userId
-        self.userType = userType
-    }
-
-    convenience init(profile: Profile) {
-        self.init(userId: profile.userId, userType: profile.userType)
-//        self.userId = profile.userId
-//        self.userType = profile.userType
-    }
-
-    var isCoach: Bool { userType == .coach }
-    var isSwimmer: Bool { userType == .swimmer }
-}
-
 struct MainView: View {
     @StateObject var session = Session()
 
@@ -93,9 +74,8 @@ struct MainView: View {
                 NavigationView {
                     SignUpView()
                 }
-            case .loggedIn(let profile):
-                SignedInView()
-                    .environmentObject(UserSession(profile: profile))
+            case .loggedIn(let initialProfile):
+                SignedInView(profile: initialProfile)
             case .failure:
 //                Text(error.localizedDescription)
                 Color.clear
