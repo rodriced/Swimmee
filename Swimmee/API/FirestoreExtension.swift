@@ -8,10 +8,10 @@
 import Combine
 import FirebaseFirestore
 
-@available(swift 5.0)
-@available(iOS 13.0, macOS 10.15, macCatalyst 13.0, tvOS 13.0, watchOS 6.0, *)
-public extension Query {
+public extension Query
+{
     // MARK: - Snapshot Publisher alternatives with better behaviour than the one from Firebase (see below)
+
     // The custom one is the chosen default
 
     /// Registers a publisher that publishes query snapshot changes.
@@ -26,7 +26,7 @@ public extension Query {
     }
 
     // MARK: - Snapshot Publisher 1 (snapshot listener is created on subscription and not at instanciation time)
-    
+
     func snapshotOnSubscriptionPublisher(includeMetadataChanges: Bool = false)
         -> AnyPublisher<QuerySnapshot, Error>
     {
@@ -37,11 +37,15 @@ public extension Query {
 
         let newSnapshotListener = { [self] in
 //            print("snapshotOnSubscriptionPublisher.newSnapshotListener")
-            return addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { snapshot, error in
-                if let error = error {
+            addSnapshotListener(includeMetadataChanges: includeMetadataChanges)
+            { snapshot, error in
+                if let error = error
+                {
                     isListenerEnabled = false
                     subject.send(completion: .failure(error))
-                } else if let snapshot = snapshot {
+                }
+                else if let snapshot = snapshot
+                {
                     subject.send(snapshot)
                 }
             }
@@ -78,20 +82,24 @@ public extension Query {
         var currentValue: QuerySnapshot?
 
         let listenerHandle =
-            addSnapshotListener(includeMetadataChanges: includeMetadataChanges) { snapshot, error in
-                if let error = error {
-                    subject.send(completion: .failure(error))
-                } else if let snapshot = snapshot {
+            addSnapshotListener(includeMetadataChanges: includeMetadataChanges)
+                { snapshot, error in
+                    if let error = error
+                    {
+                        subject.send(completion: .failure(error))
+                    }
+                    else if let snapshot = snapshot
+                    {
 //                    print("snapshotBufferedPublisher : currentValue updated")
-                    currentValue = snapshot
-                    subject.send(snapshot)
+                        currentValue = snapshot
+                        subject.send(snapshot)
+                    }
                 }
-            }
 
         return subject
             .handleEvents(
                 receiveCancel: listenerHandle.remove,
-                receiveRequest: { demand in
+                receiveRequest: { _ in
 //                    print("snapshotBufferedPublisher.receivedRequest \(demand.description)")
                     guard let currentValue else { return }
                     subject.send(currentValue)

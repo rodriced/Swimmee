@@ -11,16 +11,6 @@ import FirebaseFirestoreCombineSwift
 import FirebaseFirestoreSwift
 import Foundation
 
-// protocol ModelAPI {
-//    associatedtype Model
-//
-//    func save(model: Model) async throws
-// }
-
-//enum ProfileError: LocalizedError {
-//    case profileNotFound
-//}
-
 class FirestoreProfileAPI {
     private let store = Firestore.firestore()
     private let collectionName = "Profiles"
@@ -29,9 +19,8 @@ class FirestoreProfileAPI {
         store.collection(collectionName)
 
     private var currentUserId: () throws -> UserId
-    
-    init(currentUserId: @escaping () throws -> UserId)
-    {
+
+    init(currentUserId: @escaping () throws -> UserId) {
         self.currentUserId = currentUserId
     }
 
@@ -42,9 +31,6 @@ class FirestoreProfileAPI {
             }
             return userId
         }()
-//        guard let userId = userId ?? currentUserId() else {
-//            throw AuthError.notAuthenticated
-//        }
         return collection.document(userId)
     }
 
@@ -90,9 +76,9 @@ class FirestoreProfileAPI {
                 try doc.data(as: Profile.self, decoder: Firestore.Decoder())
             }
     }
-    
+
     func coachsPublisher() -> AnyPublisher<[Profile], Error> {
-        return collection.whereField("userType", isEqualTo: "coach").snapshotPublisher()
+        return collection.whereField("userType", isEqualTo: "coach").snapshotPublisherCustom()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Profile.self)
@@ -100,7 +86,6 @@ class FirestoreProfileAPI {
             }
             .eraseToAnyPublisher()
     }
-
 
     func loadSwimmers() async throws -> [Profile] {
         return try await collection.whereField("userType", isEqualTo: "swimmer").getDocuments()

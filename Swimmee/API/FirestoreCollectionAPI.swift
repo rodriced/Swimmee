@@ -11,19 +11,9 @@ import FirebaseFirestoreCombineSwift
 import FirebaseFirestoreSwift
 import Foundation
 
-// protocol ModelAPI {
-//    associatedtype Model
-//
-//    func save(model: Model) async throws
-// }
-
 protocol DbIdentifiable: Codable {
     var dbId: String? { get set }
 }
-
-//protocol OwnedByUser: Codable {
-//    var userId: UserId {get set}
-//}
 
 class FirestoreCollectionAPI<Item: DbIdentifiable> {
     enum OwnerFilter {
@@ -94,8 +84,6 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
             try document.setData(from: item) as Void
             return dbId
         }
-        //        try document(item[keyPath: idKeyPath]).setData(from: item) as Void
-        //        try document(item[keyPath: idKeyPath]).setData(from: item) as Void
     }
     
     func load(id: String) async throws -> Item {
@@ -140,7 +128,7 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
     }
     
     func listPublisher(owner: OwnerFilter = .currentUser, isSended: IsSendedFilter = .sended) -> AnyPublisher<[Item], Error> {
-        queryBy(owner: owner, isSended: isSended).snapshotPublisher()
+        queryBy(owner: owner, isSended: isSended).snapshotPublisherCustom()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Item.self)
@@ -150,7 +138,7 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
     }
     
     func listPublisher(owner: OwnerFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
-        queryBy(owner: owner).snapshotPublisher()
+        queryBy(owner: owner).snapshotPublisherCustom()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Item.self)
@@ -158,22 +146,5 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
             }
             .asResult()
             .eraseToAnyPublisher()
-    }
-    
-    class ListPublisherTestError: LocalizedError {
-        var errorDescription = "Erroro : ListPublisherTestError"
-    }
-    
-    func listPublisherBuilder(owner: OwnerFilter = .currentUser) -> (() -> AnyPublisher<Result<[Item], Error>, Never>) {
-        { [self] in
-            queryBy(owner: owner).snapshotPublisher()
-                .tryMap { querySnapshot in
-                    try querySnapshot.documents.map { document in
-                        try document.data(as: Item.self)
-                    }
-                }
-                .asResult()
-                .eraseToAnyPublisher()
-        }
     }
 }
