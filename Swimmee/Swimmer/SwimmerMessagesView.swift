@@ -9,7 +9,7 @@ import SwiftUI
 
 class SwimmerMessagesViewModel {
     @Published var messages: [Message] = []
-
+    @Published var newMessagesCount: Int = 0
     //    @AppStorage("read_messages_ids_string") var readMessagesIdsString: String?
     //
     //    var readMessagesIds: [String] {
@@ -32,6 +32,8 @@ class SwimmerMessagesViewModel {
         let readMessagesIdsString = UserDefaults.standard.string(forKey: "read_messages_ids_string") ?? ""
         readMessagesIds = Set(readMessagesIdsString.components(separatedBy: ","))
     }
+    
+    var reload: (() -> Void)?
 
     func setMessageRead(_ message: Message) {
         guard let dbId = message.dbId else { return }
@@ -76,6 +78,7 @@ struct SwimmerMessagesView: View {
                         vm.setMessageRead(message)
                     }
             }
+            .refreshable { vm.reload?() }
         }
         .listStyle(.plain)
 

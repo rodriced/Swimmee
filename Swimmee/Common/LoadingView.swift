@@ -15,7 +15,17 @@ protocol LoadableViewModel: ObservableObject {
 //    : Equatable
     init()
     func injectLoadedData(_ loadedData: LoadedData)
+    var reload: (() -> Void)? { get set }
 }
+
+#if DEBUG
+    var _debugStreamRef = 0
+    var debugStreamRef: Int {
+        let current = _debugStreamRef
+        _debugStreamRef += 1
+        return current
+    }
+#endif
 
 class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     typealias LoadPublisher = AnyPublisher<TargetViewModel.LoadedData, Error>
@@ -23,14 +33,14 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     enum LodingState: Equatable {
         static func == (lhs: Self, rhs: Self) -> Bool {
             switch (lhs, rhs) {
-            case (.idle, .idle), (.loading, .loading), (.loaded, .loaded), (.failure(_), .failure(_)):
+            case (.idle, .idle), (.loading, .loading), (.reloading, .reloading), (.loaded, .loaded), (.failure(_), .failure(_)):
                 return true
             default:
                 return false
             }
         }
 
-        case idle, loading, loaded, failure(Error)
+        case idle, loading, reloading, loaded, failure(Error)
 
 //        func assignIfNecessary(to newState: Self) {
 //            if self != newState { self = newState }
@@ -38,8 +48,12 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     }
 
     init(publisherBuiler: @escaping () -> LoadPublisher) {
-        print("ViewModel.init")
+        print("LoadingViewModel.init")
         self.publisherBuilder = publisherBuiler
+    }
+    
+    deinit {
+        print("LoadingViewModel.deinit")
     }
 
     let publisherBuilder: () -> LoadPublisher
@@ -47,38 +61,70 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     @Published var state = LodingState.idle
 
 //    @Published var targetVM = TargetViewModel()
-    let targetVM = TargetViewModel()
+    lazy var targetVM = {
+        var vm = TargetViewModel()
+        vm.reload = self.reload
+        return vm
+    }()
 
-    var cancellable: Cancellable?
+    var cancellable: Cancellable? {
+        didSet {
+            print("LoadingViewModel.cancellable set ? \(cancellable != nil)")
+        }
+    }
 
     func load() {
-        print("ViewModel.load")
+        print("LoadingViewModel.load")
 
         state = .loading
 
-//        cancellable = publisherBuilder().asResult()
-//            .sink { [weak self] result in
-//                switch result {
-//                case .success(let item):
-//                    self?.targetVM.injectLoadedData(item)
-//                    if self?.state != .loaded { self?.state = .loaded }
-        ////                    state.assignIfNecessary(to: .loaded)
-//
-//                case .failure(let error):
-//                    self?.state = .failure(error)
-//                }
-//            }
+        startLoader()
+    }
 
+    func reload() {
+        print("LoadingViewModel.reload")
+
+        state = .reloading
+
+        startLoader()
+    }
+
+    func startLoader() {
         cancellable = publisherBuilder()
-//            .removeDuplicates()
-            .sink { [weak self] completion in
-                if case let .failure(error) = completion {
+        #if DEBUG
+            .print("LoadingViewModel loader stream ref \(debugStreamRef)")
+        #endif
+//            .retry(1)
+            .asResult()
+            .handleEvents(receiveCompletion: {completion in
+                print("LoadingViewModel loader handleEvents \(String(describing: completion))")
+            })
+            .sink { [weak self] result in
+                switch result {
+                case .success(let item):
+                    self?.targetVM.injectLoadedData(item)
+                    if self?.state != .loaded { self?.state = .loaded }
+                //                    state.assignIfNecessary(to: .loaded)
+
+                case .failure(let error):
                     self?.state = .failure(error)
                 }
-            } receiveValue: { [weak self] in
-                self?.targetVM.injectLoadedData($0)
-                if self?.state != .loaded { self?.state = .loaded }
             }
+
+//        cancellable = publisherBuilder()
+//        #if DEBUG
+//            .print("Debug publish count \(debugStreamRef)")
+//        #endif
+//            .retry(3)
+//            //            .removeDuplicates()
+//            .sink { [weak self] completion in
+//                if case .failure(let error) = completion {
+//                    self?.state = .failure(error)
+//                }
+//            } receiveValue: { [weak self] in
+//                self?.targetVM.injectLoadedData($0)
+//                if self?.state != .loaded { self?.state = .loaded }
+//            }
     }
 }
 
@@ -90,23 +136,23 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
     init(publisherBuiler: @escaping () -> LoadingViewModel<TargetViewModel>.LoadPublisher,
          @ViewBuilder content: @escaping (TargetViewModel) -> TargetView)
     {
-        print("View.init")
+        print("LoadingView.init")
         self._loadingVM = StateObject(wrappedValue: LoadingViewModel(publisherBuiler: publisherBuiler))
         self.content = content
     }
 
     var body: some View {
         Group {
-            DebugHelper.viewBodyPrint("View.body state = \(loadingVM.state)")
+            DebugHelper.viewBodyPrint("LoadingView.body state = \(loadingVM.state)")
             switch loadingVM.state {
             case .idle:
                 Color.clear
                     .onAppear(perform: loadingVM.load)
             case .loading:
                 ProgressView()
-            case .loaded:
+            case .loaded, .reloading:
                 content(loadingVM.targetVM)
-            case let .failure(error):
+            case .failure(let error):
                 VStack {
                     Text("\(error.localizedDescription)\nVerify your connectivity\nand come back on this page.")
                     Button("Retry") {
