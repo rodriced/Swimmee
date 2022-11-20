@@ -5,6 +5,7 @@
 //  Created by Rodolphe Desruelles on 09/10/2022.
 //
 
+import Combine
 import SwiftUI
 
 class SwimmerMainVM: ObservableObject {
@@ -13,6 +14,7 @@ class SwimmerMainVM: ObservableObject {
 }
 
 struct SwimmerMainView: View {
+    @EnvironmentObject var session: UserSession
     @StateObject var vm = SwimmerMainVM()
 
     var body: some View {
@@ -23,7 +25,24 @@ struct SwimmerMainView: View {
                     Label("Workouts", systemImage: "stopwatch")
                 }
             NavigationView {
-                LoadingView(publisherBuiler: { API.shared.message.listPublisher(owner: .user("F0VE3g0aZCbjmuK4GzUkO6KxkPI2"), isSended: .sended) }, content: SwimmerMessagesView.init)
+                LoadingView(
+                    publisherBuiler: {
+                        session.$coachId.flatMap { coachId -> AnyPublisher<[Message], Error> in
+                            API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSended: .sended)
+                        }
+                        .eraseToAnyPublisher()
+                    }, // TODO: Manage error when there is no chosen coach
+                    content: SwimmerMessagesView.init
+                )
+//                LoadingView2(
+//                    publisher:
+//                    session.$coachId.flatMap { coachId -> AnyPublisher<[Message], Error> in
+//                        API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSended: .sended)
+//                    }
+//                    .eraseToAnyPublisher(),
+//                    // TODO: Manage error when there is no chosen coach
+//                    content: SwimmerMessagesView.init
+//                )
             }
             .badge(vm.unreadMessagescount)
             .tabItem {
