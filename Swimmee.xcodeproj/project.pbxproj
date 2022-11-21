@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
 		DC1604B42911C74500FB71EF /* SwimmerCoachView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1604B32911C74500FB71EF /* SwimmerCoachView2.swift */; };
+		DC232BCC29281F73007BC2ED /* Session2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCB29281F73007BC2ED /* Session2.swift */; };
+		DC232BCE2929128C007BC2ED /* LoadingView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCD2929128C007BC2ED /* LoadingView2.swift */; };
+		DC232BD0292967A6007BC2ED /* LoadingView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCF292967A6007BC2ED /* LoadingView3.swift */; };
+		DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD32929AC95007BC2ED /* MainView2.swift */; };
+		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
 		DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */; };
 		DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */; };
 		DC3C888428F426250065CBD6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888328F426250065CBD6 /* Message.swift */; };
@@ -89,6 +94,10 @@
 /* Begin PBXFileReference section */
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
 		DC1604B32911C74500FB71EF /* SwimmerCoachView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachView2.swift; sourceTree = "<group>"; };
+		DC232BCB29281F73007BC2ED /* Session2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session2.swift; sourceTree = "<group>"; };
+		DC232BCD2929128C007BC2ED /* LoadingView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView2.swift; sourceTree = "<group>"; };
+		DC232BCF292967A6007BC2ED /* LoadingView3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView3.swift; sourceTree = "<group>"; };
+		DC232BD32929AC95007BC2ED /* MainView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView2.swift; sourceTree = "<group>"; };
 		DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMainView.swift; sourceTree = "<group>"; };
 		DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesView.swift; sourceTree = "<group>"; };
 		DC3C888328F426250065CBD6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -154,6 +163,7 @@
 				DCF3238A28FB37180030626C /* FirebaseStorageCombine-Community in Frameworks */,
 				DCF3237E28FB37180030626C /* FirebaseAuth in Frameworks */,
 				DCF3238428FB37180030626C /* FirebaseFirestoreCombine-Community in Frameworks */,
+				DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */,
 				DCF3238028FB37180030626C /* FirebaseAuthCombine-Community in Frameworks */,
 				DCF3238228FB37180030626C /* FirebaseFirestore in Frameworks */,
 				DCF3238828FB37180030626C /* FirebaseStorage in Frameworks */,
@@ -177,6 +187,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC232BCA29281F40007BC2ED /* DataController */ = {
+			isa = PBXGroup;
+			children = (
+				DC232BCB29281F73007BC2ED /* Session2.swift */,
+			);
+			path = DataController;
+			sourceTree = "<group>";
+		};
 		DC3C888228F424640065CBD6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +211,7 @@
 			children = (
 				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
 				DCA62DF628EF64E200F87C9B /* MainView.swift */,
+				DC232BD32929AC95007BC2ED /* MainView2.swift */,
 				DCA62DF828F00E0900F87C9B /* SignUpView.swift */,
 				DC8859A928E26F2B0032E0FB /* SignInView.swift */,
 				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
@@ -222,6 +241,8 @@
 				DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */,
 				DC3C888528F426890065CBD6 /* MessageView.swift */,
 				DC9A435C292394A800485B1F /* LoadingView.swift */,
+				DC232BCD2929128C007BC2ED /* LoadingView2.swift */,
+				DC232BCF292967A6007BC2ED /* LoadingView3.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -280,6 +301,7 @@
 				DCF3238E28FB5BCE0030626C /* API */,
 				DCAEA8FA291AAA7C00F936E7 /* Service */,
 				DC3C888228F424640065CBD6 /* Model */,
+				DC232BCA29281F40007BC2ED /* DataController */,
 				DC3C888E28F47C7D0065CBD6 /* Helper */,
 				DCBAD88F29246B0800376A3E /* Component */,
 				DC3C888D28F47C210065CBD6 /* Start */,
@@ -383,6 +405,7 @@
 				DCF3238528FB37180030626C /* FirebaseFirestoreSwift */,
 				DCF3238728FB37180030626C /* FirebaseStorage */,
 				DCF3238928FB37180030626C /* FirebaseStorageCombine-Community */,
+				DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */,
 			);
 			productName = Swimmee;
 			productReference = DC88597C28E269E20032E0FB /* Swimmee.app */;
@@ -458,6 +481,7 @@
 			mainGroup = DC88597328E269E10032E0FB;
 			packageReferences = (
 				DCF3237C28FB37180030626C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				DC232BD5292B0D84007BC2ED /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = DC88597D28E269E20032E0FB /* Products */;
 			projectDirPath = "";
@@ -515,8 +539,10 @@
 				DC3C888628F426890065CBD6 /* MessageView.swift in Sources */,
 				DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */,
 				DC6CCE2C290AB4A500DB8427 /* ViewLoader.swift in Sources */,
+				DC232BCE2929128C007BC2ED /* LoadingView2.swift in Sources */,
 				DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */,
 				DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */,
+				DC232BCC29281F73007BC2ED /* Session2.swift in Sources */,
 				DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */,
 				DCFBCF5029074B7D00F0BF35 /* AuthenticationView.swift in Sources */,
 				DC3C889F28F4D4040065CBD6 /* SwimmerWorkoutsView.swift in Sources */,
@@ -525,6 +551,7 @@
 				DCBAD89329268FA100376A3E /* FirestoreCollectionTestAPI.swift in Sources */,
 				DC9A435D292394A800485B1F /* LoadingView.swift in Sources */,
 				DC3E99992902C95B008E274C /* FirebaseAccountManager.swift in Sources */,
+				DC232BD0292967A6007BC2ED /* LoadingView3.swift in Sources */,
 				DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */,
 				DC6CCE30290E8CD800DB8427 /* FirestoreCollectionAPI.swift in Sources */,
 				DCFBCF4E29074B1900F0BF35 /* FormHelpers.swift in Sources */,
@@ -542,6 +569,7 @@
 				DCDBE7E72915D77A00386076 /* AlertManager.swift in Sources */,
 				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
 				DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */,
+				DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */,
 				DCF3239228FC8C060030626C /* FirebaseAuthAPI.swift in Sources */,
 				DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */,
 				DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */,
@@ -877,6 +905,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DC232BD5292B0D84007BC2ED /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		DCF3237C28FB37180030626C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -888,6 +924,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DC232BD5292B0D84007BC2ED /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
 		DCF3237D28FB37180030626C /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DCF3237C28FB37180030626C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

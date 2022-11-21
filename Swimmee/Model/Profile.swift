@@ -28,7 +28,7 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
     var firstName: String
     var lastName: String
     var email: String
-    var hasPhoto = false
+    var photoUrl: URL?
     var coachId: String?
 
     var fullname: String {

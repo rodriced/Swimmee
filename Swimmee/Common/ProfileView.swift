@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 class ProfileViewModel: ObservableObject {
 //    var firstName = ""
@@ -18,25 +19,28 @@ class ProfileViewModel: ObservableObject {
     @Published var isShowPhotoLibrary = false
     @Published var imageSourceType = UIImagePickerController.SourceType.photoLibrary
     @Published var image: UIImage? = nil
+//    @Published var photoUrl: URL?
 
     @Published var authenticationSheet = false
     @Published var confirmationActionSheet = false
 
     init(profile: Profile) {
-        self.profile = profile
+        debugPrint("---- ProfileViewModel.init")
 
-        if profile.hasPhoto {
-            Task {
-                let photoData = try? await API.shared.imageStorage.downloadd(uid: profile.userId)
-                guard let photoData = photoData else {
-                    return
-                }
-                await MainActor.run {
-                    image = UIImage(data: photoData)
-                }
-            }
-        }
-        debugPrint("---- ProfileViewModel created")
+        self.profile = profile
+//        self.photoUrl = profile.photoUrl
+
+//        if let photoUrl = profile.photoUrl {
+//            Task {
+//                let photoData = try? await API.shared.imageStorage.downloadd(uid: profile.userId)
+//                guard let photoData = photoData else {
+//                    return
+//                }
+//                await MainActor.run {
+//                    image = UIImage(data: photoData)
+//                }
+//            }
+//        }
     }
     
     deinit {
@@ -47,14 +51,15 @@ class ProfileViewModel: ObservableObject {
     func saveProfile() {
         Task {
             if let image = image {
-                try? await API.shared.imageStorage.upload(uid: profile.userId, photo: image)
-                await MainActor.run {
-                    profile.hasPhoto = true
+                do {
+                    profile.photoUrl = try await API.shared.imageStorage.upload(uid: profile.userId, photo: image)
+                } catch {
+                    print("API.shared.imageStorage.upload error \(error.localizedDescription)")
                 }
             }
 
-//            try? await API.shared.store.saveProfile(profile: profile)
             try? await API.shared.profile.save(profile)
+//            self.photoUrl = profile.photoUrl
         }
     }
 
@@ -131,16 +136,22 @@ struct ProfileView: View {
 
     var body: some View {
         VStack {
-            { () -> EmptyView in
-                debugPrint("---- ProfileView.body executed")
-                return EmptyView()
-            }()
+//            { () -> EmptyView in
+//                debugPrint("---- ProfileView.body executed")
+//                return EmptyView()
+//            }()
             ZStack(alignment: .bottomTrailing) {
                 Group {
                     if let image = vm.image {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
+                    } else if let photoUrl = vm.profile.photoUrl {
+                        WebImage(url: photoUrl)
+                            .resizable()
+                            .placeholder(Image(systemName: "ProfilePhoto"))
+                            .scaledToFill()
+//                            .aspectRatio(contentMode: .fill)
                     } else {
                         Image("ProfilePhoto")
                             .resizable()

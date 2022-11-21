@@ -37,11 +37,15 @@ class FirebaseImageStorageAPI {
         return resizedImage
     }
     
+//    func imageStorageUrl(uid: String) throws -> URL {
+//        imageStorageRef(uid: ui).downloadURL()
+//    }
+    
     func imageStorageRef(uid: String) -> StorageReference {
         storage.reference().child("\(folderName)/\(uid).png")
     }
 
-    func upload(uid: String, photo: UIImage) async throws {
+    func upload(uid: String, photo: UIImage) async throws -> URL {
         let resizedPhoto = resize(uiimage: photo)
         guard let png = resizedPhoto.pngData() else {
             throw Err.pngConversionError
@@ -49,8 +53,9 @@ class FirebaseImageStorageAPI {
         guard png.count <= imageMaxSize else {
             throw Err.imageMaxSizeExceeded
         }
-        _ = try await imageStorageRef(uid: uid).putDataAsync(png)
-//        return try await photoStorageRef(uid: uid).downloadURL()
+        let storageRef = imageStorageRef(uid: uid)
+        _ = try await storageRef.putDataAsync(png)
+        return try await storageRef.downloadURL()
     }
 
     func downloadd(uid: String) async throws -> Data {
