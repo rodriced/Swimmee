@@ -25,12 +25,12 @@ class SwimmerCoachViewModel: ObservableObject {
         do {
             print("load coachs")
             coachs = try await API.shared.profile.loadCoachs()
-            
+
             guard let coachId else {
                 selectedCoach = nil
                 return
             }
-            selectedCoach = coachs.first {profile in
+            selectedCoach = coachs.first { profile in
                 profile.userId == coachId
             }
 //                    editMode?.wrappedValue.isEditing = true
@@ -57,9 +57,9 @@ class SwimmerCoachViewModel: ObservableObject {
             }
         }
     }
-    
+
     func selectCoach(_ coach: Profile?) {
-        self.selectedCoach = coach
+        selectedCoach = coach
         saveSelectedCoach()
     }
 }
@@ -81,22 +81,15 @@ struct SwimmerCoachView: View {
             } else {
                 Text("Choose a coach in the list")
             }
-//            List
+
             List(vm.coachs) { coach in
-                HStack(spacing: 20) {
-                    Image("ProfilePhoto").resizable().frame(width: 60, height: 60).cornerRadius(8)
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("\(coach.fullname)").font(.title2)
-                        Text("\(coach.email)").font(.callout)
+                UserCellView(profile: coach)
+                    .if(coach == vm.selectedCoach) {
+                        $0.listRowBackground(Color.mint.opacity(0.5))
                     }
-                    //                .padding(EdgeInsets(leading:10 ))
-                }
-                .if(coach == vm.selectedCoach) {
-                    $0.listRowBackground(Color.mint.opacity(0.5))
-                }
-                .onTapGesture {
-                    vm.selectCoach(coach)
-                }
+                    .onTapGesture {
+                        vm.selectCoach(coach)
+                    }
             }
             .task { await vm.loadCoachs(andSelect: session.coachId) }
 //            .onReceive(vm.coachsPublisher()) { result in

@@ -14,6 +14,7 @@
 		DC232BD0292967A6007BC2ED /* LoadingView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCF292967A6007BC2ED /* LoadingView3.swift */; };
 		DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD32929AC95007BC2ED /* MainView2.swift */; };
 		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
+		DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD8292B7D81007BC2ED /* UserCellView.swift */; };
 		DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */; };
 		DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */; };
 		DC3C888428F426250065CBD6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888328F426250065CBD6 /* Message.swift */; };
@@ -98,6 +99,7 @@
 		DC232BCD2929128C007BC2ED /* LoadingView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView2.swift; sourceTree = "<group>"; };
 		DC232BCF292967A6007BC2ED /* LoadingView3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView3.swift; sourceTree = "<group>"; };
 		DC232BD32929AC95007BC2ED /* MainView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView2.swift; sourceTree = "<group>"; };
+		DC232BD8292B7D81007BC2ED /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
 		DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMainView.swift; sourceTree = "<group>"; };
 		DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesView.swift; sourceTree = "<group>"; };
 		DC3C888328F426250065CBD6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 				DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */,
 				DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */,
 				DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */,
+				DC232BD8292B7D81007BC2ED /* UserCellView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				DC863A512920531900934B62 /* CombineExtension.swift in Sources */,
 				DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */,
 				DCBAD89329268FA100376A3E /* FirestoreCollectionTestAPI.swift in Sources */,
+				DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */,
 				DC9A435D292394A800485B1F /* LoadingView.swift in Sources */,
 				DC3E99992902C95B008E274C /* FirebaseAccountManager.swift in Sources */,
 				DC232BD0292967A6007BC2ED /* LoadingView3.swift in Sources */,
