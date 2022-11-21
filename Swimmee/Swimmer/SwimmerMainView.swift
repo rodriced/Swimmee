@@ -30,19 +30,11 @@ struct SwimmerMainView: View {
                         session.$coachId.flatMap { coachId -> AnyPublisher<[Message], Error> in
                             API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSended: .sended)
                         }
+                        .combineLatest(session.$readMessagesIds.setFailureType(to: Error.self))
                         .eraseToAnyPublisher()
                     }, // TODO: Manage error when there is no chosen coach
-                    content: SwimmerMessagesView.init
+                   content: SwimmerMessagesView.init
                 )
-//                LoadingView2(
-//                    publisher:
-//                    session.$coachId.flatMap { coachId -> AnyPublisher<[Message], Error> in
-//                        API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSended: .sended)
-//                    }
-//                    .eraseToAnyPublisher(),
-//                    // TODO: Manage error when there is no chosen coach
-//                    content: SwimmerMessagesView.init
-//                )
             }
             .badge(vm.unreadMessagescount)
             .tabItem {

@@ -23,10 +23,10 @@ class FirestoreProfileAPI {
     init(currentUserId: @escaping () throws -> UserId) {
         self.currentUserId = currentUserId
     }
-    
+
     func resolveArg(userId: UserId?) throws -> UserId {
         guard let userId else {
-            return try self.currentUserId()
+            return try currentUserId()
         }
         return userId
     }
@@ -112,5 +112,13 @@ class FirestoreProfileAPI {
     func updateCoach(for profile: inout Profile, with coachId: String?) async throws {
         try await documentReference(profile.userId).setData(["coachId": coachId as Any], merge: true)
         profile.coachId = coachId
+    }
+
+    func setMessageAsRead(_ messageDbId: Message.DbId, for userId: String? = nil) async throws {
+        let userId = try resolveArg(userId: userId)
+
+        try await documentReference(userId).updateData(
+            [Profile.CodingKeys.readMessagesIds.stringValue: FieldValue.arrayUnion([messageDbId])]
+        )
     }
 }

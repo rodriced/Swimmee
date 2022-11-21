@@ -5,19 +5,26 @@
 //  Created by Rodolphe Desruelles on 10/10/2022.
 //
 
-import Foundation
 import FirebaseFirestoreSwift
+import Foundation
 
 struct Message: Identifiable, Codable, DbIdentifiable {
-    var dbId: String?
+    typealias DbId = String
+    
+    private enum CodingKeys: CodingKey {
+        case dbId, id, userId, date, title, content, isSended
+    }
+    
+    var dbId: DbId?
     var id: UUID
-    var userId: String
+    var userId: UserId
     var date: Date
     var title: String
     var content: String
     var isSended: Bool
+    var isRead = false
     
-    init(dbId: String? = nil, id: UUID = UUID(), userId: String, date: Date = .now, title: String = "", content: String = "", isSended: Bool = false) {
+    init(dbId: DbId? = nil, id: UUID = UUID(), userId: UserId, date: Date = .now, title: String = "", content: String = "", isSended: Bool = false) {
         self.dbId = dbId
         self.id = id
         self.userId = userId

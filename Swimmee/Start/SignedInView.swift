@@ -5,36 +5,34 @@
 //  Created by Rodolphe Desruelles on 06/10/2022.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 class UserSession: ObservableObject {
     let userId: String
     let userType: UserType
     @Published var coachId: UserId?
-//    {
-//        didSet { print("UserSession.coachId updated to \(coachId.debugDescription)") }
-//    }
+    @Published var readMessagesIds: Set<Message.DbId> {
+        didSet {
+            print("readMessagesIds  = \(readMessagesIds.debugDescription)")
+        }
+    }
 
 //    #if DEBUG
 //        var debugCancellable: AnyCancellable?
 //    #endif
-    init(userId: UserId, userType: UserType, coachId: UserId?) {
+
+    init(initialProfile: Profile) {
         print("UserSession.init")
 
-        self.userId = userId
-        self.userType = userType
-        self.coachId = coachId
+        self.userId = initialProfile.userId
+        self.userType = initialProfile.userType
+        self.coachId = initialProfile.coachId
+        self.readMessagesIds = initialProfile.readMessagesIds ?? []
 
-//        #if DEBUG
-//            debugCancellable = self.$coachId.sink { print("UserSession.$coachId receive \($0.debugDescription)") }
-//        #endif
-    }
-
-    convenience init(profile: Profile) {
-        self.init(userId: profile.userId, userType: profile.userType, coachId: profile.coachId)
-//        self.userId = profile.userId
-//        self.userType = profile.userType
+        //        #if DEBUG
+        //            debugCancellable = self.$coachId.sink { print("UserSession.$coachId receive \($0.debugDescription)") }
+        //        #endif
     }
 
     var cancellable: AnyCancellable?
@@ -47,6 +45,7 @@ class UserSession: ObservableObject {
                 if profile.coachId != self.coachId {
                     self.coachId = profile.coachId
                 }
+                self.readMessagesIds = profile.readMessagesIds ?? []
             }
     }
 
@@ -59,7 +58,7 @@ struct SignedInView: View {
 
     init(profile: Profile) {
 //        print("SignedInView.init")
-        _session = StateObject(wrappedValue: UserSession(profile: profile))
+        _session = StateObject(wrappedValue: UserSession(initialProfile: profile))
     }
 
     var body: some View {
