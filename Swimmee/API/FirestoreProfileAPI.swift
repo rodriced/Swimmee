@@ -23,14 +23,16 @@ class FirestoreProfileAPI {
     init(currentUserId: @escaping () throws -> UserId) {
         self.currentUserId = currentUserId
     }
+    
+    func resolveArg(userId: UserId?) throws -> UserId {
+        guard let userId else {
+            return try self.currentUserId()
+        }
+        return userId
+    }
 
     private func documentReference(_ userId: String? = nil) throws -> DocumentReference {
-        let userId = try {
-            guard let userId else {
-                return try self.currentUserId()
-            }
-            return userId
-        }()
+        let userId = try resolveArg(userId: userId)
         return collection.document(userId)
     }
 
@@ -94,8 +96,10 @@ class FirestoreProfileAPI {
             }
     }
 
-    func loadTeam(coachId: String) async throws -> [Profile] {
-        return try await collection.whereField("coachId", isEqualTo: coachId).getDocuments()
+    func loadTeam(userId: UserId? = nil) async throws -> [Profile] {
+        let userId = try resolveArg(userId: userId)
+
+        return try await collection.whereField("coachId", isEqualTo: userId).getDocuments()
             .documents.map { doc in
                 try doc.data(as: Profile.self, decoder: Firestore.Decoder())
             }
