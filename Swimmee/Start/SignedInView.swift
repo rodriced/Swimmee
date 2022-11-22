@@ -18,9 +18,24 @@ class UserSession: ObservableObject {
         }
     }
 
-//    #if DEBUG
-//        var debugCancellable: AnyCancellable?
-//    #endif
+    lazy var messagePublisher: AnyPublisher<[Message], Error> = $coachId.flatMap {
+        coachId -> AnyPublisher<[Message], Error> in
+        API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSended: .sended)
+    }
+    .eraseToAnyPublisher()
+
+    lazy var unreadMessagesCountPublisher: AnyPublisher<Int, Error> =
+        messagePublisher
+            .map { messages in
+                messages.map(\.dbId)
+            }
+            .combineLatest($readMessagesIds.setFailureType(to: Error.self))
+            .map { messagesIds, readMessagesIds in
+                Set(messagesIds).subtracting(readMessagesIds).count
+            }
+            .removeDuplicates()
+            .print("unreadMessagesCountPublisher")
+            .eraseToAnyPublisher()
 
     init(initialProfile: Profile) {
         print("UserSession.init")
@@ -29,10 +44,6 @@ class UserSession: ObservableObject {
         self.userType = initialProfile.userType
         self.coachId = initialProfile.coachId
         self.readMessagesIds = initialProfile.readMessagesIds ?? []
-
-        //        #if DEBUG
-        //            debugCancellable = self.$coachId.sink { print("UserSession.$coachId receive \($0.debugDescription)") }
-        //        #endif
     }
 
     var cancellable: AnyCancellable?
