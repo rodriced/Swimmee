@@ -27,28 +27,29 @@ class EditMessageViewModel: ObservableObject {
         self.message = Message(userId: userId)
     }
 
-    func saveMessage(andSendIt: Bool, presentationMode: Binding<PresentationMode>) {
+    func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
         Task {
             message.isSended = andSendIt
             do {
-                _ = try await API.shared.message.save(message)
-                presentationMode.wrappedValue.dismiss()
+                let ifMessageSavedAsDraft = !message.isSended
+                _ = try await API.shared.message.save(message, asNew: ifMessageSavedAsDraft)
+                completion?()
             } catch {
                 errorAlertMessage = error.localizedDescription
             }
         }
     }
 
-    func deleteMessage(presentationMode: Binding<PresentationMode>) {
+    func deleteMessage(completion: (() -> Void)?) {
         guard let dbId = message.dbId else {
-            presentationMode.wrappedValue.dismiss()
+            completion?()
             return
         }
 
         Task {
             do {
                 try await API.shared.message.delete(id: dbId)
-                presentationMode.wrappedValue.dismiss()
+                completion?()
             } catch {
                 errorAlertMessage = error.localizedDescription
             }
@@ -59,6 +60,10 @@ class EditMessageViewModel: ObservableObject {
 struct EditMessageView: View {
     @ObservedObject var vm: EditMessageViewModel
     @Environment(\.presentationMode) private var presentationMode
+    
+    func dismiss() {
+        presentationMode.wrappedValue.dismiss()
+    }
 
     var body: some View {
         VStack {
@@ -71,7 +76,7 @@ struct EditMessageView: View {
 
             HStack {
                 Button {
-                    vm.saveMessage(andSendIt: false, presentationMode: presentationMode)
+                    vm.saveMessage(andSendIt: false, completion: dismiss)
                 } label: {
                     Text("Save as draft").frame(maxWidth: .infinity)
                 }
@@ -79,7 +84,7 @@ struct EditMessageView: View {
                 .tint(Color.orange.opacity(0.7))
 
                 Button {
-                    vm.saveMessage(andSendIt: true, presentationMode: presentationMode)
+                    vm.saveMessage(andSendIt: true, completion: dismiss)
                 } label: {
                     Text("Send").frame(maxWidth: .infinity)
                 }
@@ -92,7 +97,7 @@ struct EditMessageView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    vm.deleteMessage(presentationMode: presentationMode)
+                    vm.deleteMessage(completion: dismiss)
                 } label: {
                     Image(systemName: "trash").foregroundColor(Color.red)
                 }

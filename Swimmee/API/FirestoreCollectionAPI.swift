@@ -71,18 +71,39 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
             return query
         }
     }
+    
+    private func saveAsNew(oldId: String, _ item: Item, asNew : Bool = false) async throws -> String {
+        try await delete(id: oldId)
+        return try await saveNew(item)
+    }
+    
+//    private func saveAsNew(oldId: String, _ item: Item, asNew : Bool = false) async throws -> String {
+//        store.runTransaction { transaction, errorPointer in
+//            try await transaction. deleteDocument(id)
+//            try await saveNew(item)
+//        }
+//    }
 
-    func save(_ item: Item) async throws -> String {
+    
+    private func saveNew(_ item: Item) async throws -> String {
+        let document = self.document()
+        var item = item
+        let dbId = document.documentID
+        item.dbId = dbId
+//        try document.setData(from: item) as Void
+        try await document.setData(from: item).value
+        return dbId
+    }
+
+    func save(_ item: Item, asNew : Bool = false) async throws -> String {
         if let dbId = item.dbId {
-            try document(dbId).setData(from: item) as Void
+            if asNew {
+                return try await saveAsNew(oldId: dbId, item)
+            }
+            try await document(dbId).setData(from: item).value
             return dbId
         } else {
-            let document = self.document()
-            var item = item
-            let dbId = document.documentID
-            item.dbId = dbId
-            try document.setData(from: item) as Void
-            return dbId
+            return try await saveNew(item)
         }
     }
     
