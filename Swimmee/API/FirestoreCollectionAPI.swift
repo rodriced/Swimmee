@@ -47,8 +47,8 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
         id.map { collection.document($0) } ?? collection.document()
     }
     
-    func queryBy(owner: OwnerFilter, isSended: IsSendedFilter = .sended) -> Query {
-        let query = {
+    func queryBy(owner: OwnerFilter, isSended: IsSendedFilter = .sended, orderingByDate: Bool = true) -> Query {
+        var query = {
             switch owner {
             case .currentUser:
                 guard let userId = currentUserId() else {
@@ -62,17 +62,25 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
             }
         }()
         
-        switch isSended {
-        case .sended:
-            return query.whereField("isSended", isEqualTo: true)
-        case .notSended:
-            return query.whereField("isSended", isEqualTo: false)
-        case .any:
-            return query
-        }
+        query = {
+            switch isSended {
+            case .sended:
+                return query.whereField("isSended", isEqualTo: true)
+            case .notSended:
+                return query.whereField("isSended", isEqualTo: false)
+            case .any:
+                return query
+            }
+        }()
+        
+        query = orderingByDate ?
+            query.order(by: "date", descending: true)
+            : query
+        
+        return query
     }
     
-    private func saveAsNew(oldId: String, _ item: Item, asNew : Bool = false) async throws -> String {
+    private func saveAsNew(oldId: String, _ item: Item, asNew: Bool = false) async throws -> String {
         try await delete(id: oldId)
         return try await saveNew(item)
     }
@@ -84,7 +92,6 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
 //        }
 //    }
 
-    
     private func saveNew(_ item: Item) async throws -> String {
         let document = self.document()
         var item = item
@@ -95,7 +102,7 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
         return dbId
     }
 
-    func save(_ item: Item, asNew : Bool = false) async throws -> String {
+    func save(_ item: Item, asNew: Bool = false) async throws -> String {
         if let dbId = item.dbId {
             if asNew {
                 return try await saveAsNew(oldId: dbId, item)

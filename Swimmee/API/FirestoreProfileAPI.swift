@@ -73,14 +73,20 @@ class FirestoreProfileAPI {
     }
 
     func loadCoachs() async throws -> [Profile] {
-        return try await collection.whereField("userType", isEqualTo: "coach").getDocuments()
+        return try await collection
+            .whereField("userType", isEqualTo: "coach")
+            .order(by: "lastName")
+            .getDocuments()
             .documents.map { doc in
                 try doc.data(as: Profile.self, decoder: Firestore.Decoder())
             }
     }
 
     func coachsPublisher() -> AnyPublisher<[Profile], Error> {
-        return collection.whereField("userType", isEqualTo: "coach").snapshotPublisherCustom()
+        return collection
+            .whereField("userType", isEqualTo: "coach")
+            .order(by: "lastName")
+            .snapshotPublisherCustom()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Profile.self)
@@ -90,7 +96,10 @@ class FirestoreProfileAPI {
     }
 
     func loadSwimmers() async throws -> [Profile] {
-        return try await collection.whereField("userType", isEqualTo: "swimmer").getDocuments()
+        return try await collection
+            .whereField("userType", isEqualTo: "swimmer")
+            .order(by: "lastName")
+            .getDocuments()
             .documents.map { doc in
                 try doc.data(as: Profile.self, decoder: Firestore.Decoder())
             }
@@ -99,7 +108,10 @@ class FirestoreProfileAPI {
     func loadTeam(userId: UserId? = nil) async throws -> [Profile] {
         let userId = try resolveArg(userId: userId)
 
-        return try await collection.whereField("coachId", isEqualTo: userId).getDocuments()
+        return try await collection
+            .whereField("coachId", isEqualTo: userId)
+            .order(by: "lastName")
+            .getDocuments()
             .documents.map { doc in
                 try doc.data(as: Profile.self, decoder: Firestore.Decoder())
             }
