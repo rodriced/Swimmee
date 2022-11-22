@@ -17,11 +17,11 @@ struct UserCellView: View {
                 if let photoUrl = profile.photoUrl {
                     WebImage(url: photoUrl)
                         .resizable()
-                        .placeholder(Image(systemName: "ProfilePhoto"))
+                        .placeholder(Image("UserPhotoPlaceholder"))
                         .scaledToFill()
 //                        .aspectRatio(contentMode: .fill)
                 } else {
-                    Image("ProfilePhoto")
+                    Image("UserPhotoPlaceholder")
                         .resizable()
                 }
             }

@@ -5,8 +5,8 @@
 //  Created by Rodolphe Desruelles on 23/09/2022.
 //
 
-import SwiftUI
 import SDWebImageSwiftUI
+import SwiftUI
 
 class ProfileViewModel: ObservableObject {
 //    var firstName = ""
@@ -42,11 +42,10 @@ class ProfileViewModel: ObservableObject {
 //            }
 //        }
     }
-    
+
     deinit {
         debugPrint("---- ProfileViewModel deinit")
     }
-
 
     func saveProfile() {
         Task {
@@ -64,7 +63,7 @@ class ProfileViewModel: ObservableObject {
     }
 
     func deleteAccount() {
-        // TODO Implement this with Firebase function
+        // TODO: Implement this with Firebase function
         // To test. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
         _ = DispatchQueue.main.sync {
             Task {
@@ -121,7 +120,7 @@ struct ProfileView: View {
         _vm = StateObject(wrappedValue: vm())
         debugPrint("---- ProfileView created")
     }
-    
+
 //        init(vm: ProfileViewModel) {
 //            _vm = StateObject(wrappedValue: vm)
 //            debugPrint("---- ProfileView created")
@@ -149,11 +148,11 @@ struct ProfileView: View {
                     } else if let photoUrl = vm.profile.photoUrl {
                         WebImage(url: photoUrl)
                             .resizable()
-                            .placeholder(Image(systemName: "ProfilePhoto"))
+                            .placeholder(Image("UserPhotoPlaceholder"))
                             .scaledToFill()
 //                            .aspectRatio(contentMode: .fill)
                     } else {
-                        Image("ProfilePhoto")
+                        Image("UserPhotoPlaceholder")
                             .resizable()
                     }
                 }
@@ -242,10 +241,10 @@ struct ProfileView: View {
     }
 }
 
-//struct ProfileView_Previews: PreviewProvider {
+// struct ProfileView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        NavigationView {
 //            ProfileView(vm: ProfileViewModel(profile: Profile.coachSample))
 //        }
 //    }
-//}
+// }
