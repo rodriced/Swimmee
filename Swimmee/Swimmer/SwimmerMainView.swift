@@ -46,10 +46,8 @@ class SwimmerMainVM: ObservableObject {
 struct SwimmerMainView: View {
     @EnvironmentObject var session: UserSession
     @StateObject var vm = SwimmerMainVM()
-//    @StateObject var vm: SwimmerMainVM
 
     init() {
-//        _vm = StateObject(wrappedValue: SwimmerMainVM(unreadMessagesCountPublisher: UserSession(initialProfile: Profile.coachSample).unreadMessagesCountPublisher))
         print("SwimmerMainView.init")
     }
 
@@ -60,13 +58,14 @@ struct SwimmerMainView: View {
                 .tabItem {
                     Label("Workouts", systemImage: "stopwatch")
                 }
+            
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
-                        session.$coachId.flatMap { coachId -> AnyPublisher<[Message], Error> in
-                            API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSended: .sended)
-                        }
-                        .combineLatest(session.$readMessagesIds.setFailureType(to: Error.self))
+                        Publishers.CombineLatest(
+                            session.messagePublisher,
+                            session.readMessagesIdsPublisher
+                        )
                         .eraseToAnyPublisher()
                     }, // TODO: Manage error when there is no chosen coach
                     content: SwimmerMessagesView.init
@@ -76,6 +75,7 @@ struct SwimmerMainView: View {
             .tabItem {
                 Label("Messages", systemImage: "mail.stack")
             }
+            
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")

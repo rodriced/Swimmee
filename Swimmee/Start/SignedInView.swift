@@ -24,12 +24,16 @@ class UserSession: ObservableObject {
     }
     .eraseToAnyPublisher()
 
+    lazy var readMessagesIdsPublisher: AnyPublisher<Set<Message.DbId>, Error> =
+        $readMessagesIds.setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+
     lazy var unreadMessagesCountPublisher: AnyPublisher<Int, Error> =
         messagePublisher
             .map { messages in
                 messages.map(\.dbId)
             }
-            .combineLatest($readMessagesIds.setFailureType(to: Error.self))
+            .combineLatest(readMessagesIdsPublisher)
             .map { messagesIds, readMessagesIds in
                 Set(messagesIds).subtracting(readMessagesIds).count
             }
