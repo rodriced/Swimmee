@@ -58,18 +58,18 @@ struct MessageView: View {
 
 struct MessageView_Previews: PreviewProvider {
     static var previews: some View {
-        let notSendedMessage = Message.sample
-        let sendedMessage: Message = {
+        let notSentMessage = Message.sample
+        let sentMessage: Message = {
             var msg = Message.sample
             msg.isSent = true
             return msg
         }()
 
         Group {
-            MessageView(message: notSendedMessage, inReception: false)
-            MessageView(message: sendedMessage, inReception: false)
-            MessageView(message: sendedMessage, inReception: true, isRead: false)
-            MessageView(message: sendedMessage, inReception: true, isRead: true)
+            MessageView(message: notSentMessage, inReception: false)
+            MessageView(message: sentMessage, inReception: false)
+            MessageView(message: sentMessage, inReception: true, isRead: false)
+            MessageView(message: sentMessage, inReception: true, isRead: true)
         }
     }
 }
