@@ -106,15 +106,13 @@ struct CoachMessagesLoadingView: View {
 class CoachMessagesViewModel: ObservableObject {
     @Published var messages: [Message]
 
-//    @Published var errorAlertDisplayed = false
-//    {
-//        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
-//    }
+    @Published var errorAlertDisplayed = false {
+        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
+    }
 
-//    var errorAlertMessage: String = ""
-//    {
-//        didSet { if !errorAlertMessage.isEmpty {errorAlertDisplayed = true} }
-//    }
+    var errorAlertMessage: String = "" {
+        didSet { if !errorAlertMessage.isEmpty { errorAlertDisplayed = true } }
+    }
 
     init(messages: [Message] = []) {
         print("CoachMessagesViewModel.init")
@@ -122,8 +120,21 @@ class CoachMessagesViewModel: ObservableObject {
         self.messages = messages
     }
 
-    func removeMessage(at offsets: IndexSet) {
-        messages.remove(atOffsets: offsets)
+    func deleteMessage(at offsets: IndexSet) {
+        guard let index = offsets.first else { return }
+        
+        let messageToDelete = messages[index]
+                
+        Task {
+            do {
+                if let dbId = messageToDelete.dbId {
+                    try await API.shared.message.delete(id: dbId)
+                }
+                messages.remove(atOffsets: offsets)
+            } catch {
+                errorAlertMessage = error.localizedDescription
+            }
+        }
     }
 }
 
@@ -150,7 +161,7 @@ struct CoachMessagesView: View {
                     }
                     .listRowSeparator(.hidden)
                 }
-                .onDelete(perform: vm.removeMessage)
+                .onDelete(perform: vm.deleteMessage)
             }
             .listStyle(.plain)
             .toolbar {
@@ -160,7 +171,7 @@ struct CoachMessagesView: View {
                     Image(systemName: "plus")
                 }
             }
-//                .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
+            .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
         }
 //            .padding()
         .navigationBarTitle("Messages", displayMode: .inline)
