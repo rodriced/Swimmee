@@ -29,12 +29,22 @@ class EditMessageViewModel: ObservableObject {
 
     func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
         Task {
+            var saveAsNewMessage = false
+
+            switch (message.isSent, andSendIt) {
+                case (true, _):
+                    saveAsNewMessage = true
+                    message.date = .now
+                case (false, true):
+                    message.date = .now
+                case (false, false):
+                    ()
+            }
+
             message.isSent = andSendIt
-            message.date = .now
 
             do {
-                let ifMessageSavedAsDraft = !message.isSent
-                _ = try await API.shared.message.save(message, asNew: ifMessageSavedAsDraft)
+                _ = try await API.shared.message.save(message, asNew: saveAsNewMessage)
                 completion?()
             } catch {
                 errorAlertMessage = error.localizedDescription
@@ -62,7 +72,7 @@ class EditMessageViewModel: ObservableObject {
 struct EditMessageView: View {
     @ObservedObject var vm: EditMessageViewModel
     @Environment(\.presentationMode) private var presentationMode
-    
+
     func dismiss() {
         presentationMode.wrappedValue.dismiss()
     }
