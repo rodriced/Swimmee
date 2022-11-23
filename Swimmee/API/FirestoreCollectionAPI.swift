@@ -47,7 +47,7 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
         id.map { collection.document($0) } ?? collection.document()
     }
     
-    func queryBy(owner: OwnerFilter, isSended: IsSendedFilter = .sended, orderingByDate: Bool = true) -> Query {
+    func queryBy(owner: OwnerFilter, isSent: IsSendedFilter = .sended, orderingByDate: Bool = true) -> Query {
         var query = {
             switch owner {
             case .currentUser:
@@ -63,11 +63,11 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
         }()
         
         query = {
-            switch isSended {
+            switch isSent {
             case .sended:
-                return query.whereField("isSended", isEqualTo: true)
+                return query.whereField("isSent", isEqualTo: true)
             case .notSended:
-                return query.whereField("isSended", isEqualTo: false)
+                return query.whereField("isSent", isEqualTo: false)
             case .any:
                 return query
             }
@@ -155,8 +155,8 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
             .eraseToAnyPublisher()
     }
     
-    func listPublisher(owner: OwnerFilter = .currentUser, isSended: IsSendedFilter = .sended) -> AnyPublisher<[Item], Error> {
-        queryBy(owner: owner, isSended: isSended).snapshotPublisherCustom()
+    func listPublisher(owner: OwnerFilter = .currentUser, isSent: IsSendedFilter = .sended) -> AnyPublisher<[Item], Error> {
+        queryBy(owner: owner, isSent: isSent).snapshotPublisherCustom()
             .tryMap { querySnapshot in
                 try querySnapshot.documents.map { document in
                     try document.data(as: Item.self)

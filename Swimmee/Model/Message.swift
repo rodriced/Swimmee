@@ -12,26 +12,25 @@ struct Message: Identifiable, Codable, DbIdentifiable {
     typealias DbId = String
     
     private enum CodingKeys: CodingKey {
-        case dbId, id, userId, date, title, content, isSended
+        case dbId, id, userId, date, title, content, isSent
     }
     
     var dbId: DbId?
-    var id: UUID
+    var id = UUID()
     var userId: UserId
     var date: Date
     var title: String
     var content: String
-    var isSended: Bool
+    var isSent: Bool
     var isRead = false
     
-    init(dbId: DbId? = nil, id: UUID = UUID(), userId: UserId, date: Date = .now, title: String = "", content: String = "", isSended: Bool = false) {
+    init(dbId: DbId? = nil, userId: UserId, date: Date = .now, title: String = "", content: String = "", isSent: Bool = false) {
         self.dbId = dbId
-        self.id = id
         self.userId = userId
         self.date = date
         self.title = title
         self.content = content
-        self.isSended = isSended
+        self.isSent = isSent
     }
     
     static var sample = Message(userId: UUID().uuidString, title: "Message", content: "Bla bla bla\nBlalbla blaaaaaa")

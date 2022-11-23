@@ -23,7 +23,7 @@ struct MessageView: View {
                 return isRead ?
                     (Color.white, "") : (Color.mint, "")
             } else {
-                return message.isSended ?
+                return message.isSent ?
                     (Color.mint, "sent") : (Color.orange, "draft")
             }
         }()
@@ -61,7 +61,7 @@ struct MessageView_Previews: PreviewProvider {
         let notSendedMessage = Message.sample
         let sendedMessage: Message = {
             var msg = Message.sample
-            msg.isSended = true
+            msg.isSent = true
             return msg
         }()
 
