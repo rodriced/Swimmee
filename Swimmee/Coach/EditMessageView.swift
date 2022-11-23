@@ -30,6 +30,8 @@ class EditMessageViewModel: ObservableObject {
     func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
         Task {
             message.isSended = andSendIt
+            message.date = .now
+
             do {
                 let ifMessageSavedAsDraft = !message.isSended
                 _ = try await API.shared.message.save(message, asNew: ifMessageSavedAsDraft)
