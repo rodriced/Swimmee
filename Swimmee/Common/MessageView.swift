@@ -8,63 +8,68 @@
 import SwiftUI
 
 struct MessageView: View {
-    @EnvironmentObject var session: UserSession
     let message: Message
     let isRead: Bool
-    
-    init(message: Message, isRead: Bool = false) {
+
+    let typeColor: Color
+    let typeText: String
+
+    init(message: Message, inReception: Bool, isRead: Bool = false) {
         self.message = message
         self.isRead = isRead
-    }
-    
-    var indicatorColor: Color {
-        session.isCoach ?
-            (message.isSended ? Color.mint : Color.orange)
-            :
-        (isRead ? Color.white : Color.mint)
+
+        (typeColor, typeText) = {
+            if inReception {
+                return isRead ?
+                    (Color.white, "") : (Color.mint, "")
+            } else {
+                return message.isSended ?
+                    (Color.mint, "sent") : (Color.orange, "draft")
+            }
+        }()
     }
 
     var body: some View {
         Label {
             VStack(alignment: .leading, spacing: 10) {
-                Text(message.date, style: .date).font(.caption)
+                HStack(alignment: .firstTextBaseline) {
+                    Text(message.date, style: .date).font(.caption)
+                    Text(message.date, style: .time).font(.caption)
+                    Spacer()
+                    Text(typeText)
+                        .font(.headline)
+                        .foregroundColor(typeColor)
+                }
                 Text(message.title).font(.headline)
                 Text(message.content).font(.body)
             }
         } icon: {
             Image(systemName: "message")
+                .font(Font.headline)
+                .foregroundColor(Color.gray)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(Color.gray.opacity(0.1))
-        .topBorder(color: indicatorColor)
+        .topBorder(color: typeColor)
         .cornerRadius(10)
     }
 }
 
-//struct MessageView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        let notSendedMessage = Message.sample
-//        let sendedMessage: Message = {
-//            var msg = Message.sample
-//            msg.isSended = true
-//            return msg
-//        }()
-//        let readMessage: Message = {
-//            var msg = sendedMessage
-//            msg.isUnread = false
-//            return msg
-//        }()
-//
-//        Group {
-//            MessageView(message: notSendedMessage)
-//                .environmentObject(UserSession(userId: "", userType: .coach))
-//            MessageView(message: sendedMessage)
-//                .environmentObject(UserSession(userId: "", userType: .coach))
-//            MessageView(message: readMessage)
-//                .environmentObject(UserSession(userId: "", userType: .swimmer))
-//            MessageView(message: sendedMessage)
-//                .environmentObject(UserSession(userId: "", userType: .swimmer))
-//        }
-//    }
-//}
+struct MessageView_Previews: PreviewProvider {
+    static var previews: some View {
+        let notSendedMessage = Message.sample
+        let sendedMessage: Message = {
+            var msg = Message.sample
+            msg.isSended = true
+            return msg
+        }()
+
+        Group {
+            MessageView(message: notSendedMessage, inReception: false)
+            MessageView(message: sendedMessage, inReception: false)
+            MessageView(message: sendedMessage, inReception: true, isRead: false)
+            MessageView(message: sendedMessage, inReception: true, isRead: true)
+        }
+    }
+}

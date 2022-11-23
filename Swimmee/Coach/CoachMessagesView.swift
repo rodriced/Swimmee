@@ -38,7 +38,8 @@ class CoachMessagesLoadingViewModel: ObservableObject {
 
         state = .loading
 
-        cancellable = API.shared.message.listPublisher(isSended: .any).asResult()
+//        cancellable = API.shared.message.listPublisher(isSended: .any).asResult()
+        cancellable = API.shared.message.listPublisherTest(isSended: .any).asResult()
 //        cancellable = API.shared.message.listPublisherTest()
             .sink { [weak self] result in
                 switch result {
@@ -145,7 +146,7 @@ struct CoachMessagesView: View {
                     NavigationLink {
                         EditMessageView(vm: EditMessageViewModel(message: message))
                     } label: {
-                        MessageView(message: message)
+                        MessageView(message: message, inReception: session.isSwimmer)
                     }
                     .listRowSeparator(.hidden)
                 }
@@ -169,6 +170,6 @@ struct CoachMessagesView: View {
 struct CoachMessagesView_Previews: PreviewProvider {
     static var previews: some View {
         CoachMessagesView(vm: CoachMessagesViewModel())
-            .environmentObject(UserSession(profile: Profile.coachSample))
+            .environmentObject(UserSession(initialProfile: Profile.coachSample))
     }
 }

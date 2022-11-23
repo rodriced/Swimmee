@@ -41,6 +41,7 @@ extension SwimmerMessagesViewModel: LoadableViewModel {
 struct SwimmerMessagesView: View {
     typealias ViewModel = SwimmerMessagesViewModel
 
+    @EnvironmentObject var session: UserSession
     @ObservedObject var vm: SwimmerMessagesViewModel
 
     init(_ vm: SwimmerMessagesViewModel) {
@@ -58,7 +59,7 @@ struct SwimmerMessagesView: View {
                 Text("You have \(vm.newMessagesCount) new messages")
             }
             List(vm.messagesConfigs, id: \.0.id) { message, isRead in
-                MessageView(message: message, isRead: isRead)
+                MessageView(message: message, inReception: session.isSwimmer, isRead: isRead)
                     .listRowSeparator(.hidden)
                     .onTapGesture {
                         vm.setMessageAsRead(message)
