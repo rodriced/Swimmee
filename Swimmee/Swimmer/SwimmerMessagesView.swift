@@ -48,15 +48,16 @@ struct SwimmerMessagesView: View {
 //        print("SwimmerhMessagesViewModel.init")
         _vm = ObservedObject(wrappedValue: vm)
     }
+    
+    var newMessagesCountInfo: String {
+        let plural = vm.newMessagesCount > 1 ? "s":""
+        return "You have \(vm.newMessagesCount) new message\(plural)"
+    }
 
     var body: some View {
         VStack(spacing: 30) {
-            if vm.newMessagesCount == 0 {
-                Text("No new message")
-            } else if vm.newMessagesCount == 1 {
-                Text("You have 1 new message")
-            } else {
-                Text("You have \(vm.newMessagesCount) new messages")
+            if vm.newMessagesCount > 0 {
+                Text(newMessagesCountInfo)
             }
             List(vm.messagesConfigs, id: \.0.id) { message, isRead in
                 MessageView(message: message, inReception: session.isSwimmer, isRead: isRead)
@@ -68,7 +69,6 @@ struct SwimmerMessagesView: View {
             .refreshable { vm.reload?() }
         }
         .listStyle(.plain)
-        .padding()
         .navigationBarTitle("Messages", displayMode: .inline)
     }
 }

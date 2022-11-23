@@ -39,7 +39,7 @@ class CoachMessagesLoadingViewModel: ObservableObject {
         state = .loading
 
 //        cancellable = API.shared.message.listPublisher(isSent: .any).asResult()
-        cancellable = API.shared.message.listPublisherTest(isSent: .any).asResult()
+        cancellable = API.shared.message.listPublisher(isSent: .any).asResult()
 //        cancellable = API.shared.message.listPublisherTest()
             .sink { [weak self] result in
                 switch result {
@@ -173,7 +173,6 @@ struct CoachMessagesView: View {
             }
             .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
         }
-//            .padding()
         .navigationBarTitle("Messages", displayMode: .inline)
     }
 }

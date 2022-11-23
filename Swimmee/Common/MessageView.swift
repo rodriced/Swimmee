@@ -13,38 +13,43 @@ struct MessageView: View {
 
     let typeColor: Color
     let typeText: String
+    let icon: String
 
     init(message: Message, inReception: Bool, isRead: Bool = false) {
         self.message = message
         self.isRead = isRead
 
-        (typeColor, typeText) = {
+        (typeColor, typeText, icon) = {
             if inReception {
                 return isRead ?
-                    (Color.white, "") : (Color.mint, "")
+                    (.clear, "", "message") : (.mint, "", "message.fill")
             } else {
                 return message.isSent ?
-                    (Color.mint, "sent") : (Color.orange, "draft")
+                    (.mint, "sent", "arrow.up.message.fill") : (.orange, "draft", "message")
             }
         }()
+    }
+
+    var headerView: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(message.date, style: .date).font(.caption)
+            Text(message.date, style: .time).font(.caption)
+            Spacer()
+            Text(typeText)
+                .font(.headline)
+                .foregroundColor(typeColor)
+        }
     }
 
     var body: some View {
         Label {
             VStack(alignment: .leading, spacing: 10) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(message.date, style: .date).font(.caption)
-                    Text(message.date, style: .time).font(.caption)
-                    Spacer()
-                    Text(typeText)
-                        .font(.headline)
-                        .foregroundColor(typeColor)
-                }
+                headerView
                 Text(message.title).font(.headline)
                 Text(message.content).font(.body)
             }
         } icon: {
-            Image(systemName: "message")
+            Image(systemName: icon)
                 .font(Font.headline)
                 .foregroundColor(Color.gray)
         }
