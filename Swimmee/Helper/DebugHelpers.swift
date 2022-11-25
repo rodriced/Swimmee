@@ -10,7 +10,7 @@ import SwiftUI
 
 class DebugHelper {
     static func viewBodyPrint(_ message: String = "") -> EmptyView {
-        debugPrint(message)
+        print("<<View.body debug>> \(message)")
         return EmptyView()
     }
 }
