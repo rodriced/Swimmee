@@ -18,17 +18,32 @@ class UserSession: ObservableObject {
         }
     }
 
-    lazy var messagePublisher: AnyPublisher<[Message], Error> = $coachId.flatMap {
-        coachId -> AnyPublisher<[Message], Error> in
-        API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSent: .sent)
-    }
-    .eraseToAnyPublisher()
+    let allMessagesPublisher =
+        API.shared.message.listPublisher(isSent: .any)
+            .share()
 
-    lazy var readMessagesIdsPublisher: AnyPublisher<Set<Message.DbId>, Error> =
-        $readMessagesIds.setFailureType(to: Error.self)
-        .eraseToAnyPublisher()
+    lazy var messagePublisher =
+        $coachId
+            .flatMap {
+                coachId -> AnyPublisher<[Message], Error> in
+                API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSent: .sent)
+                    .print("message.listPublisher")
+                    .eraseToAnyPublisher()
+            }
+            .print("messagePublisher")
+            .multicast { CurrentValueSubject([]) }
+            .autoconnect()
 
-    lazy var unreadMessagesCountPublisher: AnyPublisher<Int, Error> =
+
+    lazy var readMessagesIdsPublisher =
+        $readMessagesIds
+            .setFailureType(to: Error.self)
+            .print("unreadMessagesPublisher")
+            .multicast { CurrentValueSubject([]) }
+            .autoconnect()
+
+
+    lazy var unreadMessagesCountPublisher =
         messagePublisher
             .map { messages in
                 messages.map(\.dbId)
@@ -38,8 +53,8 @@ class UserSession: ObservableObject {
                 Set(messagesIds).subtracting(readMessagesIds).count
             }
             .removeDuplicates()
-            .print("unreadMessagesCountPublisher")
-            .eraseToAnyPublisher()
+            .multicast { CurrentValueSubject(0) }
+            .autoconnect()
 
     init(initialProfile: Profile) {
         print("UserSession.init")

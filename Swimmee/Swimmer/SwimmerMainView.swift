@@ -9,10 +9,10 @@ import Combine
 import SwiftUI
 
 class SwimmerMainVM: ObservableObject {
-    @Published var newWorkoutsCount = 2
+    @Published var newWorkoutsCount: String?
     @Published var unreadMessagesCount: String? {
         didSet {
-            print("SwimmerMainVM.unreadMessagesCount.didSet : \(unreadMessagesCount.debugDescription)")
+//            print("SwimmerMainVM.unreadMessagesCount.didSet : \(unreadMessagesCount.debugDescription)")
         }
     }
 
@@ -58,7 +58,7 @@ struct SwimmerMainView: View {
                 .tabItem {
                     Label("Workouts", systemImage: "stopwatch")
                 }
-            
+
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
@@ -75,13 +75,13 @@ struct SwimmerMainView: View {
             .tabItem {
                 Label("Messages", systemImage: "mail.stack")
             }
-            
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")
                 }
         }
-        .task { vm.startListeners(unreadMessagesCountPublisher: session.unreadMessagesCountPublisher) }
+        .task { vm.startListeners(unreadMessagesCountPublisher: session.unreadMessagesCountPublisher.eraseToAnyPublisher()) }
         .navigationViewStyle(.stack)
 //            .animation(.easeIn, value: 1)
     }
