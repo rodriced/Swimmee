@@ -11,6 +11,14 @@ import SwiftUI
 class EditMessageViewModel: ObservableObject {
     @Published var message: Message
 
+    var saveButtonTitle: String {
+        message.isSent ? "Unpublish and save as draft" : "Save as draft"
+    }
+
+    var senButtonTitle: String {
+        message.isSent ? "Re-send" : "Send"
+    }
+
     @Published var errorAlertDisplayed = false {
         didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
     }
@@ -79,6 +87,10 @@ struct EditMessageView: View {
 
     var body: some View {
         VStack {
+            if vm.message.isSent {
+                Label("Message is published", systemImage: "exclamationmark.triangle").foregroundColor(.mint)
+            }
+
             Form {
                 Section {
                     TextField("Title", text: $vm.message.title)
@@ -90,7 +102,7 @@ struct EditMessageView: View {
                 Button {
                     vm.saveMessage(andSendIt: false, completion: dismiss)
                 } label: {
-                    Text("Save as draft").frame(maxWidth: .infinity)
+                    Text(vm.saveButtonTitle).frame(maxWidth: .infinity)
                 }
                 .foregroundColor(Color.black)
                 .tint(Color.orange.opacity(0.7))
@@ -98,7 +110,7 @@ struct EditMessageView: View {
                 Button {
                     vm.saveMessage(andSendIt: true, completion: dismiss)
                 } label: {
-                    Text("Send").frame(maxWidth: .infinity)
+                    Text(vm.senButtonTitle).frame(maxWidth: .infinity)
                 }
                 .keyboardShortcut(.defaultAction)
             }
@@ -106,6 +118,8 @@ struct EditMessageView: View {
             .padding()
         }
         .navigationTitle("Edit message")
+        .navigationBarBackButtonHidden()
+
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
@@ -114,7 +128,11 @@ struct EditMessageView: View {
                     Image(systemName: "trash").foregroundColor(Color.red)
                 }
             }
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") { presentationMode.wrappedValue.dismiss() }
+            }
         }
+
         .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
     }
 }
