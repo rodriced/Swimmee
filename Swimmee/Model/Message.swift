@@ -12,7 +12,7 @@ struct Message: Identifiable, Codable, DbIdentifiable {
     typealias DbId = String
     
     private enum CodingKeys: CodingKey {
-        case dbId, id, userId, date, title, content, isSent
+        case dbId, userId, date, title, content, isSent
     }
     
     var dbId: DbId?
@@ -22,7 +22,6 @@ struct Message: Identifiable, Codable, DbIdentifiable {
     var title: String
     var content: String
     var isSent: Bool
-    var isRead = false
     
     init(dbId: DbId? = nil, userId: UserId, date: Date = .now, title: String = "", content: String = "", isSent: Bool = false) {
         self.dbId = dbId
