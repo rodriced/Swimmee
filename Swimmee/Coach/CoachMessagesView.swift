@@ -111,6 +111,10 @@ struct CoachMessagesLoadingView: View {
 class CoachMessagesViewModel: ObservableObject {
     @Published var messages: [Message]
 
+    @Published var selectedMessage: Message?
+    @Published var confirmationDialogOpened = false
+    @Published var navigatingToEditView = false
+
     @Published var errorAlertDisplayed = false {
         didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
     }
@@ -125,11 +129,20 @@ class CoachMessagesViewModel: ObservableObject {
         self.messages = messages
     }
 
+    func goEditingMessage(_ message: Message) {
+        if message.isSent {
+            selectedMessage = message
+            confirmationDialogOpened = true
+        } else {
+            navigatingToEditView = true
+        }
+    }
+
     func deleteMessage(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
-        
+
         let messageToDelete = messages[index]
-                
+
         Task {
             do {
                 if let dbId = messageToDelete.dbId {
@@ -157,18 +170,31 @@ struct CoachMessagesView: View {
     var body: some View {
         VStack(spacing: 30) {
             DebugHelper.viewBodyPrint("CoachMessagesViewModel.body")
+
+            if let selectedMessage = vm.selectedMessage {
+                NavigationLink("", isActive: $vm.navigatingToEditView) {
+                    EditMessageView(vm: EditMessageViewModel(message: selectedMessage))
+                }
+            }
+
             List {
                 ForEach($vm.messages) { $message in
-                    NavigationLink {
-                        EditMessageView(vm: EditMessageViewModel(message: message))
+                    Button {
+                        vm.goEditingMessage(message)
                     } label: {
-                        MessageView(message: message, inReception: session.isSwimmer)
+                        HStack {
+                            MessageView(message: message, inReception: session.isSwimmer)
+                            Image(systemName: "chevron.forward")
+                                .font(Font.system(.footnote))
+                                .foregroundColor(Color.gray)
+                        }
                     }
                     .listRowSeparator(.hidden)
                 }
                 .onDelete(perform: vm.deleteMessage)
             }
             .listStyle(.plain)
+
             .toolbar {
                 NavigationLink {
                     EditMessageView(vm: EditMessageViewModel(userId: session.userId))
@@ -176,6 +202,19 @@ struct CoachMessagesView: View {
                     Image(systemName: "plus")
                 }
             }
+
+            .actionSheet(isPresented: $vm.confirmationDialogOpened) {
+                ActionSheet(
+                    title: Text("Edit an already sent message ?"),
+                    message: Text("Message will stay sent until you save, re-send or delete it."),
+                    buttons: [ // 4
+                        .default(Text("Yes, edit the message"), action: {
+                            vm.navigatingToEditView = true
+                        }),
+                        .cancel()
+                    ])
+            }
+
             .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
         }
         .navigationBarTitle("Messages", displayMode: .inline)
