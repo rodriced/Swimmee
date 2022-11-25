@@ -33,13 +33,14 @@ class CoachMessagesLoadingViewModel: ObservableObject {
 
     var cancellable: Cancellable?
 
-    func load() {
+    func load(messagesPublisher: AnyPublisher<[Message], Error>) {
         print("CoachMessagesLoadingViewModel.load")
 
         state = .loading
 
 //        cancellable = API.shared.message.listPublisher(isSent: .any).asResult()
-        cancellable = API.shared.message.listPublisher(isSent: .any).asResult()
+//        cancellable = API.shared.message.listPublisher(isSent: .any).asResult()
+        cancellable = messagesPublisher.asResult()
 //        cancellable = API.shared.message.listPublisherTest()
             .sink { [weak self] result in
                 switch result {
@@ -74,6 +75,8 @@ class CoachMessagesLoadingViewModel: ObservableObject {
 }
 
 struct CoachMessagesLoadingView: View {
+    @EnvironmentObject var session: UserSession
+
     @StateObject var loadingVM = CoachMessagesLoadingViewModel()
 
     init() {
@@ -86,7 +89,9 @@ struct CoachMessagesLoadingView: View {
             switch loadingVM.state {
             case .idle:
                 Color.clear
-                    .onAppear(perform: loadingVM.load)
+                    .onAppear {
+                        loadingVM.load(messagesPublisher: session.allMessagesPublisher.eraseToAnyPublisher())
+                    }
             case .loading:
                 ProgressView()
             case .loaded:
