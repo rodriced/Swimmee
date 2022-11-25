@@ -130,8 +130,9 @@ class CoachMessagesViewModel: ObservableObject {
     }
 
     func goEditingMessage(_ message: Message) {
+        selectedMessage = message
+        
         if message.isSent {
-            selectedMessage = message
             confirmationDialogOpened = true
         } else {
             navigatingToEditView = true
@@ -172,8 +173,10 @@ struct CoachMessagesView: View {
             DebugHelper.viewBodyPrint("CoachMessagesViewModel.body")
 
             if let selectedMessage = vm.selectedMessage {
-                NavigationLink("", isActive: $vm.navigatingToEditView) {
+                NavigationLink(isActive: $vm.navigatingToEditView) {
                     EditMessageView(vm: EditMessageViewModel(message: selectedMessage))
+                } label: {
+                    EmptyView()
                 }
             }
 
