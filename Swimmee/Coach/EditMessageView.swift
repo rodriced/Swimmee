@@ -37,12 +37,13 @@ class EditMessageViewModel: ObservableObject {
             var saveAsNewMessage = false
 
             switch (message.isSent, andSendIt) {
-            case (true, _):
+            case (_, true):
                 saveAsNewMessage = true
                 messageToSave.date = .now
-            case (false, true):
-                messageToSave.date = .now
-            case (false, false):
+                // TODO: A draft message sent for the first time should not be send as new message because it has never been read by anyone (we track read message with dbId and there is no reason here to generate a new one to set as unread for all swimmers)
+//            case (false, true):
+//                messageToSave.date = .now
+            case (_, false):
                 ()
             }
 
