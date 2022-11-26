@@ -45,30 +45,45 @@ struct SwimmerMessagesView: View {
     @ObservedObject var vm: SwimmerMessagesViewModel
 
     init(_ vm: SwimmerMessagesViewModel) {
-//        print("SwimmerhMessagesViewModel.init")
+        print("SwimmerhMessagesViewModel.init")
         _vm = ObservedObject(wrappedValue: vm)
     }
-    
+
     var newMessagesCountInfo: String {
-        let plural = vm.newMessagesCount > 1 ? "s":""
+        let plural = vm.newMessagesCount > 1 ? "s" : ""
         return "You have \(vm.newMessagesCount) new message\(plural)"
+    }
+
+    var messagesList: some View {
+        List(vm.messagesConfigs, id: \.0.id) { message, isRead in
+            MessageView(message: message, inReception: session.isSwimmer, isRead: isRead)
+                .listRowSeparator(.hidden)
+                .onTapGesture {
+                    vm.setMessageAsRead(message)
+                }
+        }
+        .refreshable { vm.reload?() }
+        .listStyle(.plain)
     }
 
     var body: some View {
         VStack(spacing: 30) {
-            if vm.newMessagesCount > 0 {
-                Text(newMessagesCountInfo)
+            if vm.messagesConfigs.isEmpty {
+                Text(
+                    session.coachId == nil ?
+                        "No messages.\nSubscribe to a coach in the Settings menu."
+                        : "No messages from your coach."
+                )
+                .multilineTextAlignment(.center)
+                .foregroundColor(.secondary)
+                
+            } else {
+                if vm.newMessagesCount > 0 {
+                    Text(newMessagesCountInfo)
+                }
+                messagesList
             }
-            List(vm.messagesConfigs, id: \.0.id) { message, isRead in
-                MessageView(message: message, inReception: session.isSwimmer, isRead: isRead)
-                    .listRowSeparator(.hidden)
-                    .onTapGesture {
-                        vm.setMessageAsRead(message)
-                    }
-            }
-            .refreshable { vm.reload?() }
         }
-        .listStyle(.plain)
         .navigationBarTitle("Messages", displayMode: .inline)
     }
 }
