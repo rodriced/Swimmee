@@ -10,7 +10,16 @@ import SwiftUI
 @MainActor
 class EditMessageViewModel: ObservableObject {
 //    @Published var message: Message = .empty
+    let originalMessage: Message
     @Published var message: Message
+    
+    var canSend : Bool {
+        !message.isSent || (message.isSent && message.hasTextDifferent(from: originalMessage))
+    }
+
+    var canSaveAsDraft : Bool {
+        message.isSent || (!message.isSent && message.hasTextDifferent(from: originalMessage))
+    }
 
     @Published var errorAlertDisplayed = false {
         didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
@@ -26,6 +35,7 @@ class EditMessageViewModel: ObservableObject {
 
     init(message: Message) {
 //        print("EditMessageViewModel.init (message)")
+        self.originalMessage = message
         self.message = message
     }
 
@@ -126,7 +136,7 @@ struct EditMessageView: View {
 
     var bottomButtonsBar: some View {
         let config = vm.message.isSent ?
-            (saveButton: (
+            (saveAsDraftButton: (
                 label: "Unsend and save as draft",
                 action: { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }
             ),
@@ -135,7 +145,7 @@ struct EditMessageView: View {
                 action: { confirmationDialogPresented = resendConfirmationDialog }
             ))
             :
-            (saveButton: (
+            (saveAsDraftButton: (
                 label: "Save as draft",
                 action: { vm.saveMessage(andSendIt: false, completion: dismiss) }
             ),
@@ -145,18 +155,20 @@ struct EditMessageView: View {
             ))
 
         return HStack {
-            Button(action: config.saveButton.action) {
-                Text(config.saveButton.label)
+            Button(action: config.saveAsDraftButton.action) {
+                Text(config.saveAsDraftButton.label)
                     .frame(maxWidth: .infinity)
             }
             .foregroundColor(Color.black)
             .tint(Color.orange.opacity(0.7))
+            .disabled(!vm.canSaveAsDraft)
 
             Button(action: config.sendButton.action) {
                 Text(config.sendButton.label)
                     .frame(maxWidth: .infinity)
             }
-            .keyboardShortcut(.defaultAction)
+            .disabled(!vm.canSend)
+//            .keyboardShortcut(.defaultAction)
         }
         .buttonStyle(.borderedProminent)
     }
