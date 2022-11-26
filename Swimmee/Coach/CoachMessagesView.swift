@@ -170,40 +170,50 @@ struct CoachMessagesView: View {
         self._vm = ObservedObject(wrappedValue: vm)
     }
 
+    var messagesList: some View {
+//        if let selectedMessage = vm.selectedMessage {
+//            NavigationLink(isActive: $vm.navigatingToEditView) {
+//                EditMessageView(message: selectedMessage)
+//            } label: {
+//                EmptyView()
+//            }
+//        }
+
+        List {
+            ForEach($vm.messages) { $message in
+                NavigationLink(tag: message, selection: $vm.selectedMessage) {
+                    EditMessageView(message: message)
+                } label: {
+                    MessageView(message: message, inReception: session.isSwimmer)
+                }
+//                Button {
+//                    vm.goEditingMessage(message)
+//                } label: {
+//                    HStack {
+//                        MessageView(message: message, inReception: session.isSwimmer)
+//                        Image(systemName: "chevron.forward")
+//                            .font(Font.system(.footnote))
+//                            .foregroundColor(Color.gray)
+//                    }
+//                }
+                .listRowSeparator(.hidden)
+            }
+            .onDelete(perform: vm.deleteMessage)
+        }
+        .listStyle(.plain)
+    }
+
     var body: some View {
         VStack(spacing: 30) {
             DebugHelper.viewBodyPrint("CoachMessagesView.body")
 
-//            if let selectedMessage = vm.selectedMessage {
-//                NavigationLink(isActive: $vm.navigatingToEditView) {
-//                    EditMessageView(message: selectedMessage)
-//                } label: {
-//                    EmptyView()
-//                }
-//            }
-
-            List {
-                ForEach($vm.messages) { $message in
-                    NavigationLink(tag: message, selection: $vm.selectedMessage) {
-                        EditMessageView(message: message)
-                    } label: {
-                        MessageView(message: message, inReception: session.isSwimmer)
-                    }
-//                    Button {
-//                        vm.goEditingMessage(message)
-//                    } label: {
-//                        HStack {
-//                            MessageView(message: message, inReception: session.isSwimmer)
-//                            Image(systemName: "chevron.forward")
-//                                .font(Font.system(.footnote))
-//                                .foregroundColor(Color.gray)
-//                        }
-//                    }
-                    .listRowSeparator(.hidden)
+            Group {
+                if vm.messages.isEmpty {
+                    Text("No messages").foregroundColor(.secondary)
+                } else {
+                    messagesList
                 }
-                .onDelete(perform: vm.deleteMessage)
             }
-            .listStyle(.plain)
 
             .toolbar {
                 NavigationLink {
