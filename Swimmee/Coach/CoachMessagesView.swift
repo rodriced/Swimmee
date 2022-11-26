@@ -131,7 +131,7 @@ class CoachMessagesViewModel: ObservableObject {
 
     func goEditingMessage(_ message: Message) {
         selectedMessage = message
-        
+
         if message.isSent {
             confirmationDialogOpened = true
         } else {
@@ -157,41 +157,48 @@ class CoachMessagesViewModel: ObservableObject {
     }
 }
 
+// extension
+
 struct CoachMessagesView: View {
     @EnvironmentObject var session: UserSession
     @ObservedObject var vm: CoachMessagesViewModel
 //    @StateObject var vm: CoachMessagesViewModel
 
     init(vm: CoachMessagesViewModel) {
-        print("CoachMessagesViewModel.init")
+        print("CoachMessagesView.init")
 //        self._vm = StateObject(wrappedValue: vm)
         self._vm = ObservedObject(wrappedValue: vm)
     }
 
     var body: some View {
         VStack(spacing: 30) {
-            DebugHelper.viewBodyPrint("CoachMessagesViewModel.body")
+            DebugHelper.viewBodyPrint("CoachMessagesView.body")
 
-            if let selectedMessage = vm.selectedMessage {
-                NavigationLink(isActive: $vm.navigatingToEditView) {
-                    EditMessageView(vm: EditMessageViewModel(message: selectedMessage))
-                } label: {
-                    EmptyView()
-                }
-            }
+//            if let selectedMessage = vm.selectedMessage {
+//                NavigationLink(isActive: $vm.navigatingToEditView) {
+//                    EditMessageView(message: selectedMessage)
+//                } label: {
+//                    EmptyView()
+//                }
+//            }
 
             List {
                 ForEach($vm.messages) { $message in
-                    Button {
-                        vm.goEditingMessage(message)
+                    NavigationLink(tag: message, selection: $vm.selectedMessage) {
+                        EditMessageView(message: message)
                     } label: {
-                        HStack {
-                            MessageView(message: message, inReception: session.isSwimmer)
-                            Image(systemName: "chevron.forward")
-                                .font(Font.system(.footnote))
-                                .foregroundColor(Color.gray)
-                        }
+                        MessageView(message: message, inReception: session.isSwimmer)
                     }
+//                    Button {
+//                        vm.goEditingMessage(message)
+//                    } label: {
+//                        HStack {
+//                            MessageView(message: message, inReception: session.isSwimmer)
+//                            Image(systemName: "chevron.forward")
+//                                .font(Font.system(.footnote))
+//                                .foregroundColor(Color.gray)
+//                        }
+//                    }
                     .listRowSeparator(.hidden)
                 }
                 .onDelete(perform: vm.deleteMessage)
@@ -200,7 +207,7 @@ struct CoachMessagesView: View {
 
             .toolbar {
                 NavigationLink {
-                    EditMessageView(vm: EditMessageViewModel(userId: session.userId))
+                    EditMessageView(message: Message(userId: session.userId, title: String("afjsle,vopo".shuffled())))
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -209,9 +216,9 @@ struct CoachMessagesView: View {
             .actionSheet(isPresented: $vm.confirmationDialogOpened) {
                 ActionSheet(
                     title: Text("Edit an already sent message ?"),
-                    message: Text("Message will stay sent until you save, re-send or delete it."),
+                    message: Text("Message will stay sent until you save it as draft or delete it."),
                     buttons: [ // 4
-                        .default(Text("Yes, edit the message"), action: {
+                        .default(Text("Edit"), action: {
                             vm.navigatingToEditView = true
                         }),
                         .cancel()

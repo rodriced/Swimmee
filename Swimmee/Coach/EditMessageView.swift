@@ -9,15 +9,8 @@ import SwiftUI
 
 @MainActor
 class EditMessageViewModel: ObservableObject {
+//    @Published var message: Message = .empty
     @Published var message: Message
-
-    var saveButtonTitle: String {
-        message.isSent ? "Unpublish and save as draft" : "Save as draft"
-    }
-
-    var senButtonTitle: String {
-        message.isSent ? "Re-send" : "Send"
-    }
 
     @Published var errorAlertDisplayed = false {
         didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
@@ -27,32 +20,34 @@ class EditMessageViewModel: ObservableObject {
         didSet { errorAlertDisplayed = !errorAlertMessage.isEmpty }
     }
 
+//    init() {
+//        print("EditMessageViewModel.init")
+//    }
+
     init(message: Message) {
+//        print("EditMessageViewModel.init (message)")
         self.message = message
     }
 
-    init(userId: String) {
-        self.message = Message(userId: userId)
-    }
-
     func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
+        var messageToSave = message // Working on a copy prevent reactive behaviours of the original message on UI
+        messageToSave.isSent = andSendIt
+
         Task {
             var saveAsNewMessage = false
 
             switch (message.isSent, andSendIt) {
-                case (true, _):
-                    saveAsNewMessage = true
-                    message.date = .now
-                case (false, true):
-                    message.date = .now
-                case (false, false):
-                    ()
+            case (true, _):
+                saveAsNewMessage = true
+                messageToSave.date = .now
+            case (false, true):
+                messageToSave.date = .now
+            case (false, false):
+                ()
             }
 
-            message.isSent = andSendIt
-
             do {
-                _ = try await API.shared.message.save(message, asNew: saveAsNewMessage)
+                _ = try await API.shared.message.save(messageToSave, asNew: saveAsNewMessage)
                 completion?()
             } catch {
                 errorAlertMessage = error.localizedDescription
@@ -78,17 +73,99 @@ class EditMessageViewModel: ObservableObject {
 }
 
 struct EditMessageView: View {
-    @ObservedObject var vm: EditMessageViewModel
+//    @StateObject var vm = EditMessageViewModel()
+    @StateObject var vm: EditMessageViewModel
     @Environment(\.presentationMode) private var presentationMode
+
+    @State var confirmationDialogPresented: ConfirmationDialog?
+
+//    let message: Message
+
+    init(message: Message) {
+//        print("EditMessageView.init (titile = \(message.title)")
+//        self.message = message
+        _vm = StateObject(wrappedValue: EditMessageViewModel(message: message))
+    }
 
     func dismiss() {
         presentationMode.wrappedValue.dismiss()
     }
 
+    var sendConfirmationDialog: ConfirmationDialog {
+        ConfirmationDialog(
+            title: "Send message ?",
+            primaryButton: "send",
+            primaryAction: { vm.saveMessage(andSendIt: true, completion: dismiss) }
+        )
+    }
+
+    var resendConfirmationDialog: ConfirmationDialog {
+        ConfirmationDialog(
+            title: "Replace sent message ?",
+            primaryButton: "Replace",
+            primaryAction: { vm.saveMessage(andSendIt: true, completion: dismiss) }
+        )
+    }
+
+    var unsendAndSaveAsDraftConfirmationDialog: ConfirmationDialog {
+        ConfirmationDialog(
+            title: "Unsend and save as draft ?",
+            primaryButton: "Save as draft",
+            primaryAction: { vm.saveMessage(andSendIt: false, completion: dismiss) }
+        )
+    }
+
+    var deleteConfirmationDialog: ConfirmationDialog {
+        ConfirmationDialog(
+            title: "Delete message ?",
+            primaryButton: "Delete",
+            primaryAction: { vm.deleteMessage(completion: dismiss) }
+        )
+    }
+
+    var bottomButtonsBar: some View {
+        let config = vm.message.isSent ?
+            (saveButton: (
+                label: "Unsend and save as draft",
+                action: { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }
+            ),
+            sendButton: (
+                label: "Replace (Re-send)",
+                action: { confirmationDialogPresented = resendConfirmationDialog }
+            ))
+            :
+            (saveButton: (
+                label: "Save as draft",
+                action: { vm.saveMessage(andSendIt: false, completion: dismiss) }
+            ),
+            sendButton: (
+                label: "Send",
+                action: { confirmationDialogPresented = sendConfirmationDialog }
+            ))
+
+        return HStack {
+            Button(action: config.saveButton.action) {
+                Text(config.saveButton.label)
+                    .frame(maxWidth: .infinity)
+            }
+            .foregroundColor(Color.black)
+            .tint(Color.orange.opacity(0.7))
+
+            Button(action: config.sendButton.action) {
+                Text(config.sendButton.label)
+                    .frame(maxWidth: .infinity)
+            }
+            .keyboardShortcut(.defaultAction)
+        }
+        .buttonStyle(.borderedProminent)
+    }
+
     var body: some View {
         VStack {
+//            DebugHelper.viewBodyPrint("EditMessageView")
             if vm.message.isSent {
-                Label("Message is published", systemImage: "exclamationmark.triangle").foregroundColor(.mint)
+                Label("Message is published", systemImage: "exclamationmark.triangle")
+                    .foregroundColor(.mint)
             }
 
             Form {
@@ -98,38 +175,28 @@ struct EditMessageView: View {
                 TextEditorWithPlaceholder(text: $vm.message.content, placeholder: "Content", height: 400)
             }
 
-            HStack {
-                Button {
-                    vm.saveMessage(andSendIt: false, completion: dismiss)
-                } label: {
-                    Text(vm.saveButtonTitle).frame(maxWidth: .infinity)
-                }
-                .foregroundColor(Color.black)
-                .tint(Color.orange.opacity(0.7))
-
-                Button {
-                    vm.saveMessage(andSendIt: true, completion: dismiss)
-                } label: {
-                    Text(vm.senButtonTitle).frame(maxWidth: .infinity)
-                }
-                .keyboardShortcut(.defaultAction)
-            }
-            .buttonStyle(.borderedProminent)
-            .padding()
+            bottomButtonsBar
+                .padding()
         }
+//        .onAppear { vm.message = message }
+
+        .actionSheet(item: $confirmationDialogPresented) { dialog in
+            dialog.actionSheet()
+        }
+
         .navigationTitle("Edit message")
         .navigationBarBackButtonHidden()
 
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    vm.deleteMessage(completion: dismiss)
+                    confirmationDialogPresented = deleteConfirmationDialog
                 } label: {
                     Image(systemName: "trash").foregroundColor(Color.red)
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") { presentationMode.wrappedValue.dismiss() }
+                Button("Cancel") { dismiss() }
             }
         }
 
@@ -140,7 +207,7 @@ struct EditMessageView: View {
 struct EditMessageView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            EditMessageView(vm: EditMessageViewModel(message: Message.sample))
+            EditMessageView(message: Message.sample)
         }
     }
 }
