@@ -8,101 +8,6 @@
 import Combine
 import SwiftUI
 
-class CoachMessagesLoadingViewModel: ObservableObject {
-    enum LodingState: Equatable {
-        static func == (lhs: Self, rhs: Self) -> Bool {
-            switch (lhs, rhs) {
-            case (.idle, .idle), (.loading, .loading), (.loaded, .loaded), (.failure(_), .failure(_)):
-                return true
-            default:
-                return false
-            }
-        }
-
-        case idle, loading, loaded, failure(Error)
-    }
-
-    @Published var state = LodingState.idle
-
-    let targetVM = CoachMessagesViewModel()
-
-    var cancellable: Cancellable?
-
-    func load(messagesPublisher: AnyPublisher<[Message], Error>) {
-        print("CoachMessagesLoadingViewModel.load")
-
-        state = .loading
-
-//        cancellable = API.shared.message.listPublisher(isSent: .any).asResult()
-//        cancellable = API.shared.message.listPublisher(isSent: .any).asResult()
-        cancellable = messagesPublisher.asResult()
-//        cancellable = API.shared.message.listPublisherTest()
-            .sink { [weak self] result in
-                switch result {
-                case .success(let messages):
-                    self?.targetVM.messages = messages
-                    if self?.state != .loaded { self?.state = .loaded }
-//                    state.assignIfNecessary(to: .loaded)
-
-                case .failure(let error):
-                    self?.state = .failure(error)
-                }
-            }
-
-//        cancellable = API.shared.message.listPublisher()
-        ////        cancellable = API.shared.message.listPublisherTest()
-//            .sink { [weak self] result in
-//                switch result {
-//                case .success(let messages):
-//                    self?.targetVM.messages = messages
-//                    if self?.state != .loaded { self?.state = .loaded }
-        ////                    state.assignIfNecessary(to: .loaded)
-//
-//                case .failure(let error):
-//                    self?.state = .failure(error)
-//                }
-//            }
-    }
-
-    init() {
-        print("CoachMessagesLoadingViewModel.init")
-    }
-}
-
-struct CoachMessagesLoadingView: View {
-    @EnvironmentObject var session: UserSession
-
-    @StateObject var loadingVM = CoachMessagesLoadingViewModel()
-
-    init() {
-        print("CoachMessagesLoadingView.init")
-    }
-
-    var body: some View {
-        Group {
-            DebugHelper.viewBodyPrint("CoachMessagesLoadingView.body state = \(loadingVM.state)")
-            switch loadingVM.state {
-            case .idle:
-                Color.clear
-                    .onAppear {
-                        loadingVM.load(messagesPublisher: session.allMessagesPublisher.eraseToAnyPublisher())
-                    }
-            case .loading:
-                ProgressView()
-            case .loaded:
-                CoachMessagesView(vm: loadingVM.targetVM)
-            case .failure(let error):
-                VStack {
-                    Text("\(error.localizedDescription)\nVerify your connectivity\nand come back on this page.")
-                    Button("Retry") {
-                        loadingVM.state = .idle
-                    }
-                }
-            }
-        }
-    }
-}
-
 enum CoachMessagesFilter: String, CaseIterable, Identifiable {
     case all = "All"
     case draft = "Draft only"
@@ -112,7 +17,7 @@ enum CoachMessagesFilter: String, CaseIterable, Identifiable {
 }
 
 class CoachMessagesViewModel: ObservableObject {
-    @Published var messages: [Message]
+    @Published var messages: [Message] = []
 
     @Published var filter = CoachMessagesFilter.all
 
@@ -136,11 +41,17 @@ class CoachMessagesViewModel: ObservableObject {
         didSet { if !errorAlertMessage.isEmpty { errorAlertDisplayed = true } }
     }
 
-    init(messages: [Message] = []) {
-        print("CoachMessagesViewModel.init")
+//    init(messages: [Message] = []) {
+//        print("CoachMessagesViewModel.init")
+//
+//        self.messages = messages
+//    }
 
-        self.messages = messages
+    required init() {
+        print("CoachMessagesViewModel.init")
     }
+
+    var restartLoader: (() -> Void)? = nil
 
     func goEditingMessage(_ message: Message) {
         selectedMessage = message
@@ -170,7 +81,13 @@ class CoachMessagesViewModel: ObservableObject {
     }
 }
 
-// extension
+extension CoachMessagesViewModel: LoadableViewModel {
+    typealias LoadedData = [Message]
+    
+    func refreshedLoadedData(_ loadedData: [Message]) {
+        messages = loadedData
+    }
+}
 
 struct CoachMessagesView: View {
     @EnvironmentObject var session: UserSession
@@ -180,7 +97,7 @@ struct CoachMessagesView: View {
     init(vm: CoachMessagesViewModel) {
         print("CoachMessagesView.init")
 //        self._vm = StateObject(wrappedValue: vm)
-        self._vm = ObservedObject(wrappedValue: vm)
+        self._vm = ObservedObject(initialValue: vm)
     }
 
     var messagesList: some View {

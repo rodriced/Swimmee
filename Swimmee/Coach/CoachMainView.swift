@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CoachMainView: View {
+    @EnvironmentObject var session: UserSession
+
     var body: some View {
         TabView {
             CoachWorkoutsView()
@@ -15,7 +17,12 @@ struct CoachMainView: View {
                     Label("Workouts", systemImage: "stopwatch")
                 }
             NavigationView {
-                CoachMessagesLoadingView()
+                LoadingView(
+                    publisherBuiler: {
+                        session.allMessagesPublisher.eraseToAnyPublisher()
+                    },
+                    content: CoachMessagesView.init
+                )
             }
             .navigationViewStyle(.stack)
             .tabItem {
