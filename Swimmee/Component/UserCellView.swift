@@ -37,6 +37,15 @@ struct UserCellView: View {
 
 struct UserCellView_Previews: PreviewProvider {
     static var previews: some View {
-        UserCellView(profile: Profile.coachSample)
+        Group {
+            List {
+                UserCellView(profile: Profile.coachSample)
+            }
+            .preferredColorScheme(.dark)
+            List {
+                UserCellView(profile: Profile.coachSample)
+            }
+            .preferredColorScheme(.light)
+        }
     }
 }
