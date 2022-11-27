@@ -20,15 +20,10 @@ class CoachMessagesLoadingViewModel: ObservableObject {
         }
 
         case idle, loading, loaded, failure(Error)
-
-//        func assignIfNecessary(to newState: Self) {
-//            if self != newState { self = newState }
-//        }
     }
 
     @Published var state = LodingState.idle
 
-//    @Published var targetVM = CoachMessagesViewModel()
     let targetVM = CoachMessagesViewModel()
 
     var cancellable: Cancellable?
@@ -108,11 +103,29 @@ struct CoachMessagesLoadingView: View {
     }
 }
 
+enum CoachMessagesFilter: String, CaseIterable, Identifiable {
+    case all = "All"
+    case draft = "Draft only"
+    case sent = "Sent only"
+
+    var id: Self { self }
+}
+
 class CoachMessagesViewModel: ObservableObject {
     @Published var messages: [Message]
 
+    @Published var filter = CoachMessagesFilter.all
+
+    var filteredMessages: [Message] {
+        messages.filter { message in
+            filter == .all
+                || (filter == .draft && !message.isSent)
+                || (filter == .sent && message.isSent)
+        }
+    }
+
     @Published var selectedMessage: Message?
-    @Published var confirmationDialogOpened = false
+    @Published var confirmationDialogPresented = false
     @Published var navigatingToEditView = false
 
     @Published var errorAlertDisplayed = false {
@@ -133,7 +146,7 @@ class CoachMessagesViewModel: ObservableObject {
         selectedMessage = message
 
         if message.isSent {
-            confirmationDialogOpened = true
+            confirmationDialogPresented = true
         } else {
             navigatingToEditView = true
         }
@@ -180,7 +193,7 @@ struct CoachMessagesView: View {
 //        }
 
         List {
-            ForEach($vm.messages) { $message in
+            ForEach(vm.filteredMessages) { message in
                 NavigationLink(tag: message, selection: $vm.selectedMessage) {
                     EditMessageView(message: message)
                 } label: {
@@ -203,40 +216,71 @@ struct CoachMessagesView: View {
         .listStyle(.plain)
     }
 
+    var filterStateIndication: some View {
+        Group {
+            if vm.filter != .all {
+                (
+                    Text("Filter enabled : ")
+                        .foregroundColor(.secondary)
+                        + Text(vm.filter.rawValue)
+                        .foregroundColor(vm.filter == .draft ? .orange : .mint)
+                        .bold()
+                )
+                .font(Font.system(.caption))
+            }
+        }
+    }
+
+    var filterMenu: some View {
+        Menu {
+            Picker("Filter", selection: $vm.filter) {
+                ForEach(CoachMessagesFilter.allCases) { filter in
+                    Text(filter.rawValue).tag(filter)
+                }
+            }
+//            .pickerStyle(.inline)
+        } label: {
+            Label("Filter", systemImage: "slider.horizontal.3")
+        }
+    }
+
     var body: some View {
         VStack(spacing: 30) {
             DebugHelper.viewBodyPrint("CoachMessagesView.body")
 
-            Group {
-                if vm.messages.isEmpty {
-                    Text("No messages").foregroundColor(.secondary)
-                } else {
-                    messagesList
-                }
+            if vm.messages.isEmpty {
+                Text("No messages").foregroundColor(.secondary)
+            } else {
+                filterStateIndication
+                messagesList
             }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if !vm.messages.isEmpty {
+                    filterMenu
+                }
 
-            .toolbar {
                 NavigationLink {
                     EditMessageView(message: Message(userId: session.userId, title: String("afjsle,vopo".shuffled())))
                 } label: {
                     Image(systemName: "plus")
                 }
             }
-
-            .actionSheet(isPresented: $vm.confirmationDialogOpened) {
-                ActionSheet(
-                    title: Text("Edit an already sent message ?"),
-                    message: Text("Message will stay sent until you save it as draft or delete it."),
-                    buttons: [ // 4
-                        .default(Text("Edit"), action: {
-                            vm.navigatingToEditView = true
-                        }),
-                        .cancel()
-                    ])
-            }
-
-            .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
         }
+        .actionSheet(isPresented: $vm.confirmationDialogPresented) {
+            ActionSheet(
+                title: Text("Edit an already sent message ?"),
+                message: Text("Message will stay sent until you save it as draft or delete it."),
+                buttons: [
+                    .default(Text("Edit"), action: {
+                        vm.navigatingToEditView = true
+                    }),
+                    .cancel()
+                ]
+            )
+        }
+        .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
         .navigationBarTitle("Messages", displayMode: .inline)
     }
 }
