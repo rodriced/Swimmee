@@ -12,8 +12,9 @@ import SwiftUI
 
 protocol LoadableViewModel: ObservableObject {
     associatedtype LoadedData
-//    : Equatable
+
     init()
+    
     func refreshedLoadedData(_ loadedData: LoadedData)
     var restartLoader: (() -> Void)? { get set }
 }
@@ -59,7 +60,6 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 
     @Published var state = LodingState.idle
 
-//    @Published var targetVM = TargetViewModel()
     lazy var targetVM = {
         var vm = TargetViewModel()
         vm.restartLoader = self.startLoader
@@ -87,36 +87,18 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
             .print("LoadingViewModel loader stream ref \(debugStreamRef)")
         #endif
 //            .retry(1)
-            .asResult()
-            .handleEvents(receiveCompletion: {completion in
-                print("LoadingViewModel loader handleEvents \(String(describing: completion))")
-            })
-            .sink { [weak self] result in
-                switch result {
-                case .success(let item):
-                    self?.targetVM.refreshedLoadedData(item)
-                    if self?.state != .ready { self?.state = .ready }
-                //                    state.assignIfNecessary(to: .ready)
+            .sink { [weak self] completion in
+                print("LoadingViewModelV2 loader handleEvents \(String(describing: completion))")
 
-                case .failure(let error):
+                if case .failure(let error) = completion {
                     self?.state = .failure(error)
                 }
-            }
+            } receiveValue: { [weak self] data in
+                guard let self else { return }
 
-//        cancellable = publisherBuilder()
-//        #if DEBUG
-//            .print("Debug publish count \(debugStreamRef)")
-//        #endif
-//            .retry(3)
-//            //            .removeDuplicates()
-//            .sink { [weak self] completion in
-//                if case .failure(let error) = completion {
-//                    self?.state = .failure(error)
-//                }
-//            } receiveValue: { [weak self] in
-//                self?.targetVM.refreshedLoadedData($0)
-//                if self?.state != .ready { self?.state = .ready }
-//            }
+                self.targetVM.refreshedLoadedData(data)
+                if self.state != .ready { self.state = .ready }
+            }
     }
 }
 
