@@ -8,14 +8,14 @@
 import SwiftUI
 
 class SwimmerMessagesViewModel {
-    @Published var messagesConfigs: [(message: Message, isRead: Bool)] = []
+    @Published var messagesParams: [(message: Message, isRead: Bool)] = []
     @Published var newMessagesCount: Int = 0
 
     required init() {
         print("SwimmerMessagesViewModel.init")
     }
 
-    var reload: (() -> Void)?
+    var restartLoader: (() -> Void)?
 
     func setMessageAsRead(_ message: Message) {
         guard let dbId = message.dbId else { return }
@@ -26,15 +26,15 @@ class SwimmerMessagesViewModel {
 }
 
 extension SwimmerMessagesViewModel: LoadableViewModel {
-    func injectLoadedData(_ loadedData: ([Message], Set<Message.DbId>)) {
+    func refreshedLoadedData(_ loadedData: ([Message], Set<Message.DbId>)) {
         let (messages, readMessagesIds) = loadedData
 
-        messagesConfigs =
+        messagesParams =
             messages.map { message in
                 (message: message,
                  isRead: message.dbId.map { readMessagesIds.contains($0) } ?? false)
             }
-        newMessagesCount = messagesConfigs.filter { !$0.isRead }.count
+        newMessagesCount = messagesParams.filter { !$0.isRead }.count
     }
 }
 
@@ -45,8 +45,8 @@ struct SwimmerMessagesView: View {
     @ObservedObject var vm: SwimmerMessagesViewModel
 
     init(_ vm: SwimmerMessagesViewModel) {
-        print("SwimmerhMessagesViewModel.init")
-        _vm = ObservedObject(wrappedValue: vm)
+        print("SwimmerMessagesView.init")
+        _vm = ObservedObject(initialValue: vm)
     }
 
     var newMessagesCountInfo: String {
@@ -55,20 +55,20 @@ struct SwimmerMessagesView: View {
     }
 
     var messagesList: some View {
-        List(vm.messagesConfigs, id: \.0.id) { message, isRead in
+        List(vm.messagesParams, id: \.0.id) { message, isRead in
             MessageView(message: message, inReception: session.isSwimmer, isRead: isRead)
                 .listRowSeparator(.hidden)
                 .onTapGesture {
                     vm.setMessageAsRead(message)
                 }
         }
-        .refreshable { vm.reload?() }
+        .refreshable { vm.restartLoader?() }
         .listStyle(.plain)
     }
 
     var body: some View {
         VStack(spacing: 30) {
-            if vm.messagesConfigs.isEmpty {
+            if vm.messagesParams.isEmpty {
                 Text(
                     session.coachId == nil ?
                         "No messages.\nSubscribe to a coach in the Settings menu."

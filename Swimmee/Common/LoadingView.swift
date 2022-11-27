@@ -14,8 +14,8 @@ protocol LoadableViewModel: ObservableObject {
     associatedtype LoadedData
 //    : Equatable
     init()
-    func injectLoadedData(_ loadedData: LoadedData)
-    var reload: (() -> Void)? { get set }
+    func refreshedLoadedData(_ loadedData: LoadedData)
+    var restartLoader: (() -> Void)? { get set }
 }
 
 #if DEBUG
@@ -31,20 +31,19 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     typealias LoadPublisher = AnyPublisher<TargetViewModel.LoadedData, Error>
 
     enum LodingState: Equatable {
+        case idle, loading, ready, failure(Error)
+
         static func == (lhs: Self, rhs: Self) -> Bool {
             switch (lhs, rhs) {
-            case (.idle, .idle), (.loading, .loading), (.reloading, .reloading), (.loaded, .loaded), (.failure(_), .failure(_)):
+            case (.idle, .idle),
+                 (.loading, .loading),
+                 (.ready, .ready),
+                 (.failure, .failure):
                 return true
             default:
                 return false
             }
         }
-
-        case idle, loading, reloading, loaded, failure(Error)
-
-//        func assignIfNecessary(to newState: Self) {
-//            if self != newState { self = newState }
-//        }
     }
 
     init(publisherBuiler: @escaping () -> LoadPublisher) {
@@ -63,7 +62,7 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 //    @Published var targetVM = TargetViewModel()
     lazy var targetVM = {
         var vm = TargetViewModel()
-        vm.reload = self.reload
+        vm.restartLoader = self.startLoader
         return vm
     }()
 
@@ -81,15 +80,8 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
         startLoader()
     }
 
-    func reload() {
-        print("LoadingViewModel.reload")
-
-        state = .reloading
-
-        startLoader()
-    }
-
     func startLoader() {
+        print("LoadingViewModel.startLoader")
         cancellable = publisherBuilder()
         #if DEBUG
             .print("LoadingViewModel loader stream ref \(debugStreamRef)")
@@ -102,9 +94,9 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
             .sink { [weak self] result in
                 switch result {
                 case .success(let item):
-                    self?.targetVM.injectLoadedData(item)
-                    if self?.state != .loaded { self?.state = .loaded }
-                //                    state.assignIfNecessary(to: .loaded)
+                    self?.targetVM.refreshedLoadedData(item)
+                    if self?.state != .ready { self?.state = .ready }
+                //                    state.assignIfNecessary(to: .ready)
 
                 case .failure(let error):
                     self?.state = .failure(error)
@@ -122,8 +114,8 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 //                    self?.state = .failure(error)
 //                }
 //            } receiveValue: { [weak self] in
-//                self?.targetVM.injectLoadedData($0)
-//                if self?.state != .loaded { self?.state = .loaded }
+//                self?.targetVM.refreshedLoadedData($0)
+//                if self?.state != .ready { self?.state = .ready }
 //            }
     }
 }
@@ -150,7 +142,7 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
                     .onAppear(perform: loadingVM.load)
             case .loading:
                 ProgressView()
-            case .loaded, .reloading:
+            case .ready:
                 content(loadingVM.targetVM)
             case .failure(let error):
                 VStack {
