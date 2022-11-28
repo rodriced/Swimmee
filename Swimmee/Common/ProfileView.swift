@@ -24,28 +24,17 @@ class ProfileViewModel: ObservableObject {
     @Published var authenticationSheet = false
     @Published var confirmationActionSheet = false
 
-    init(profile: Profile) {
+    required init(initialData: Profile) {
         debugPrint("---- ProfileViewModel.init")
 
-        self.profile = profile
-//        self.photoUrl = profile.photoUrl
-
-//        if let photoUrl = profile.photoUrl {
-//            Task {
-//                let photoData = try? await API.shared.imageStorage.downloadd(uid: profile.userId)
-//                guard let photoData = photoData else {
-//                    return
-//                }
-//                await MainActor.run {
-//                    image = UIImage(data: photoData)
-//                }
-//            }
-//        }
+        self.profile = initialData
     }
 
     deinit {
         debugPrint("---- ProfileViewModel deinit")
     }
+
+    var restartLoader: (() -> Void)?
 
     func saveProfile() {
         Task {
@@ -73,72 +62,26 @@ class ProfileViewModel: ObservableObject {
     }
 }
 
-struct ProfileViewInit: View {
-    @EnvironmentObject var session: UserSession
+extension ProfileViewModel: LoadableViewModelV2 {
+    typealias LoadedData = Profile
 
-    enum LodingState { case loading, loaded(Profile), failure(String) }
-    @State var loadingState = LodingState.loading
-
-    func getProfile() async throws -> Profile? {
-//        return try await API.shared.store.loadProfile(userId: session.userId)
-        return try await API.shared.profile.load(userId: session.userId)
-    }
-
-    var body: some View {
-        Group {
-            switch loadingState {
-            case .loading:
-                ProgressView()
-            case .loaded(let profile):
-                ProfileView(vm: ProfileViewModel(profile: profile))
-            case .failure(let errorMsg):
-                Text("\(errorMsg)\nVerify your connectivity\nand come back on this page.")
-            }
-        }
-        .task {
-            do {
-                loadingState = .loading
-                let profile = try await getProfile()
-                guard let profile = profile else {
-                    loadingState = .failure("No profile (impossible error)")
-                    return
-                }
-                loadingState = .loaded(profile)
-            } catch {
-                loadingState = .failure(error.localizedDescription)
-            }
-        }
+    func refreshedLoadedData(_ loadedData: Profile) {
+        profile = loadedData
     }
 }
 
 struct ProfileView: View {
     @Environment(\.presentationMode) private var presentationMode
 
-    @StateObject var vm: ProfileViewModel
+    @ObservedObject var vm: ProfileViewModel
 
-    init(vm: @autoclosure @escaping () -> ProfileViewModel) {
-        _vm = StateObject(wrappedValue: vm())
+    init(vm: ProfileViewModel) {
         debugPrint("---- ProfileView created")
+        _vm = ObservedObject(initialValue: vm)
     }
-
-//        init(vm: ProfileViewModel) {
-//            _vm = StateObject(wrappedValue: vm)
-//            debugPrint("---- ProfileView created")
-//        }
-
-//    @ObservedObject var vm: ProfileViewModel
-//
-//    init(vm: ProfileViewModel) {
-//        _vm = ObservedObject(wrappedValue: vm)
-//        debugPrint("---- ProfileView created")
-//    }
 
     var body: some View {
         VStack {
-//            { () -> EmptyView in
-//                debugPrint("---- ProfileView.body executed")
-//                return EmptyView()
-//            }()
             ZStack(alignment: .bottomTrailing) {
                 Group {
                     if let image = vm.image {
@@ -174,12 +117,6 @@ struct ProfileView: View {
                 .offset(x: 10)
             }
 
-//            Form {
-            ////                    TextField("First name", value: $viewModel.firstname, formatter: PersonNameComponentsFormatter())
-//                TextField("First name", text: $vm.firstName)
-//                TextField("Last name", text: $vm.lastName)
-//            }.padding()
-
             Spacer()
 
             HStack {
@@ -210,7 +147,7 @@ struct ProfileView: View {
             }
             .buttonStyle(.borderedProminent)
 //            .keyboardShortcut(.defaultAction)
-//        }
+
             Divider().overlay(Color.red).frame(height: 30)
 //                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
 
