@@ -7,54 +7,35 @@
 
 import FirebaseStorage
 import Foundation
-import AVFoundation
 import UIKit
 
 class FirebaseImageStorageAPI {
     enum Err: Error {
         case imageMaxSizeExceeded
-        case pngConversionError
     }
 
-    let folderName = "photos"
+    let folderPath: String
     let imageMaxSize: Int64 = 1024 * 1024
 
     let storage = Storage.storage()
-
-    func resize(uiimage: UIImage) -> UIImage {
-        let maxSize = CGSize(width: 400, height: 400)
-
-        let availableRect = AVFoundation.AVMakeRect(aspectRatio: uiimage.size, insideRect: .init(origin: .zero, size: maxSize))
-        let targetSize = availableRect.size
-
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1
-        let renderer = UIGraphicsImageRenderer(size: targetSize, format: format)
-
-        let resizedImage = renderer.image { (context) in
-            uiimage.draw(in: CGRect(origin: .zero, size: targetSize))
-        }
-        return resizedImage
-    }
     
+    init(folderPath: String) {
+        self.folderPath = folderPath
+    }
 //    func imageStorageUrl(uid: String) throws -> URL {
 //        imageStorageRef(uid: ui).downloadURL()
 //    }
     
     func imageStorageRef(uid: String) -> StorageReference {
-        storage.reference().child("\(folderName)/\(uid).png")
+        storage.reference().child("\(folderPath)/\(uid).png")
     }
 
-    func upload(uid: String, photo: UIImage) async throws -> URL {
-        let resizedPhoto = resize(uiimage: photo)
-        guard let png = resizedPhoto.pngData() else {
-            throw Err.pngConversionError
-        }
-        guard png.count <= imageMaxSize else {
+    func upload(uid: String, imageData: Data) async throws -> URL {
+        guard imageData.count <= imageMaxSize else {
             throw Err.imageMaxSizeExceeded
         }
         let storageRef = imageStorageRef(uid: uid)
-        _ = try await storageRef.putDataAsync(png)
+        _ = try await storageRef.putDataAsync(imageData)
         return try await storageRef.downloadURL()
     }
 

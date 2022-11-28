@@ -12,7 +12,7 @@ class API {
     private init() {}
     
     let auth = FirebaseAuthAPI()
-    let imageStorage = FirebaseImageStorageAPI()
+    let imageStorage = FirebaseImageStorageAPI(folderPath: "photos")
     let profile = FirestoreProfileAPI(currentUserId: { try API.shared.auth.getCurrentUserId() } )
     let message = FirestoreCollectionAPI<Message>(collectionName: "Messages", currentUserId: { API.shared.auth.currentUserId })
 }
