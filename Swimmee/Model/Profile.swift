@@ -16,11 +16,25 @@ public enum UserType: String, CaseIterable, Identifiable, Codable {
     var isSwimmer: Bool { self == .swimmer }
 }
 
+public struct PhotoInfo: Hashable, Codable, Equatable {
+    let url: URL, size: Int, hash: Int
+    
+    init(url: URL, data: Data) {
+        self.url = url
+        self.size = data.count
+        self.hash = data.hashValue
+    }
+    
+    public static func == (lhs: PhotoInfo, rhs: PhotoInfo) -> Bool {
+        lhs.size == rhs.size && lhs.hash == rhs.hash
+    }
+}
+
 public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatable {
     typealias DbId = String
 
     enum CodingKeys: CodingKey {
-        case id, userId, userType, firstName, lastName, email, photoUrl, coachId, readMessagesIds
+        case id, userId, userType, firstName, lastName, email, photo, coachId, readMessagesIds
     }
 
     var dbId: DbId?
@@ -31,7 +45,7 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
     var firstName: String
     var lastName: String
     var email: String
-    var photoUrl: URL?
+    var photo: PhotoInfo?
 
     var coachId: UserId?
 //    {

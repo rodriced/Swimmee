@@ -9,17 +9,12 @@ import SDWebImageSwiftUI
 import SwiftUI
 
 class ProfileViewModel: ObservableObject {
-//    var firstName = ""
-//    var lastName = ""
-//    let userType = UserType.swimmer
-//    var email = ""
-
+//    var originProfile: Profile
     @Published var profile: Profile
-
-    @Published var isShowPhotoLibrary = false
-    @Published var imageSourceType = UIImagePickerController.SourceType.photoLibrary
-    @Published var image: UIImage? = nil
-//    @Published var photoUrl: URL?
+    
+    @Published var isPhotoPickerPresented = false
+    var photoPickeImageSource = UIImagePickerController.SourceType.photoLibrary
+    @Published var pickedPhoto: UIImage? = nil
 
     @Published var authenticationSheet = false
     @Published var confirmationActionSheet = false
@@ -28,31 +23,49 @@ class ProfileViewModel: ObservableObject {
         debugPrint("---- ProfileViewModel.init")
 
         self.profile = initialData
+//        self.originProfile = initialData
     }
 
     deinit {
         debugPrint("---- ProfileViewModel deinit")
     }
-
-    var restartLoader: (() -> Void)?
     
-    func resetPhoto() {
-        image = nil
-        profile.photoUrl = nil
+    var restartLoader: (() -> Void)?
+
+    func openPhotoPicker(_ source: UIImagePickerController.SourceType) {
+        isPhotoPickerPresented = true
+        photoPickeImageSource = source
+    }
+    
+    func clearPhoto() {
+        pickedPhoto = nil
+        profile.photo = nil
+    }
+
+    func updateSavedPhoto() async {
+        guard let pickedPhoto = pickedPhoto else {
+            do {
+                try await API.shared.imageStorage.deleteImage(uid: profile.userId)
+                profile.photo = nil
+            } catch {
+                print("ProfileViewModel.savePhoto (delete) error \(error.localizedDescription)")
+            }
+            return
+        }
+
+        do {
+            let photoData = try ImageHelper.resizedImageData(from: pickedPhoto)
+            let photoUrl = try await API.shared.imageStorage.upload(uid: profile.userId, imageData: photoData)
+            profile.photo = PhotoInfo(url: photoUrl, data: photoData)
+        } catch {
+            print("ProfileViewModel.savePhoto (save) error \(error.localizedDescription)")
+        }
     }
 
     func saveProfile() {
         Task {
-            if let image = image {
-                do {
-                    profile.photoUrl = try await API.shared.imageStorage.upload(uid: profile.userId, photo: image)
-                } catch {
-                    print("API.shared.imageStorage.upload error \(error.localizedDescription)")
-                }
-            }
-
+            await updateSavedPhoto()
             try? await API.shared.profile.save(profile)
-//            self.photoUrl = profile.photoUrl
         }
     }
 
@@ -80,20 +93,18 @@ struct ProfileView: View {
 
     @ObservedObject var vm: ProfileViewModel
 
-//    @State var photoActionsMenuShown = false
-
     init(vm: ProfileViewModel) {
         debugPrint("---- ProfileView created")
         _vm = ObservedObject(initialValue: vm)
     }
-    
+
     var circlePhoto: some View {
         Group {
-            if let image = vm.image {
-                Image(uiImage: image)
+            if let pickedPhoto = vm.pickedPhoto {
+                Image(uiImage: pickedPhoto)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-            } else if let photoUrl = vm.profile.photoUrl {
+            } else if let photoUrl = vm.profile.photo?.url {
                 WebImage(url: photoUrl)
                     .resizable()
                     .placeholder(Image("UserPhotoPlaceholder"))
@@ -117,25 +128,43 @@ struct ProfileView: View {
             .foregroundColor(.accentColor)
             .contextMenu {
                 Button {
-                    vm.isShowPhotoLibrary = true
-                    vm.imageSourceType = .photoLibrary
+                    vm.openPhotoPicker(.photoLibrary)
                 } label: {
                     Label("Choose from library", systemImage: "photo.on.rectangle")
                 }
                 Button {
-                    vm.isShowPhotoLibrary = true
-                    vm.imageSourceType = .camera
+                    vm.openPhotoPicker(.camera)
                 } label: {
                     Label("Use camera", systemImage: "camera")
                 }
                 Button {
-                    vm.resetPhoto()
+                    vm.clearPhoto()
                 } label: {
                     Label("Remove photo", systemImage: "trash")
                 }
             }
     }
 
+    var deleteAccountButton: some View {
+        Button {
+            vm.authenticationSheet = true
+        } label: {
+            Text("Delete my account")
+        }
+        .foregroundColor(Color.red)
+        .sheet(isPresented: $vm.authenticationSheet) {
+            AuthenticationView(viewModel: CommonAccountViewModel(formType: .signIn, submitSuccess: $vm.confirmationActionSheet)
+            )
+            .actionSheet(isPresented: $vm.confirmationActionSheet) {
+                ActionSheet(title: Text("Confirm your account deletion"), message: nil, buttons: [
+                    .destructive(Text("Delete"), action: {
+                        vm.deleteAccount()
+                    }),
+                    .cancel()
+                ])
+            }
+        }
+    }
     var body: some View {
         VStack {
             ZStack(alignment: .bottomTrailing) {
@@ -178,29 +207,12 @@ struct ProfileView: View {
             Divider().overlay(Color.red).frame(height: 30)
 //                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
 
-            Button {
-                vm.authenticationSheet = true
-            } label: {
-                Text("Delete my account")
-            }
-            .foregroundColor(Color.red)
-            .sheet(isPresented: $vm.authenticationSheet) {
-                AuthenticationView(viewModel: CommonAccountViewModel(formType: .signIn, submitSuccess: $vm.confirmationActionSheet)
-                )
-                .actionSheet(isPresented: $vm.confirmationActionSheet) {
-                    ActionSheet(title: Text("Confirm your account deletion"), message: nil, buttons: [
-                        .destructive(Text("Delete"), action: {
-                            vm.deleteAccount()
-                        }),
-                        .cancel()
-                    ])
-                }
-            }
+            deleteAccountButton
         }
         .navigationTitle("My profile")
         .padding()
-        .sheet(isPresented: $vm.isShowPhotoLibrary) {
-            ImagePicker(sourceType: vm.imageSourceType, selectedImage: $vm.image)
+        .sheet(isPresented: $vm.isPhotoPickerPresented) {
+            ImagePicker(sourceType: vm.photoPickeImageSource, selectedImage: $vm.pickedPhoto)
         }
     }
 }
