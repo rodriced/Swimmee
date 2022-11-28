@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SignInView: View {
-    @StateObject var viewModel = CommonAccountViewModel(formType: .signIn)
+    @StateObject var viewModel = SignSharedViewModel(formType: .signIn)
 
     var defaultBorderColor = RoundedBorderTextFieldStyle()
 
@@ -17,10 +17,6 @@ struct SignInView: View {
             AppTitleView()
 
             Spacer()
-            
-//            AuthenticationView(viewModel: viewModel, reauthenticating: false)
-//                .navigationBarTitle("Sign In", displayMode: .inline)
-
 
             VStack(spacing: 30) {
                 TextField("Email", text: $viewModel.email)
@@ -35,7 +31,7 @@ struct SignInView: View {
             Spacer()
 
             Button {
-                    viewModel.signIn()
+                viewModel.signIn()
             } label: {
                 if viewModel.submiting {
                     ProgressView().frame(maxWidth: .infinity)
@@ -63,6 +59,6 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView(viewModel: CommonAccountViewModel(formType: .signIn))
+        SignInView(viewModel: SignSharedViewModel(formType: .signIn))
     }
 }
