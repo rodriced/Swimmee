@@ -8,7 +8,7 @@
 import FirebaseFirestoreSwift
 import Foundation
 
-struct Message: Identifiable, Codable, DbIdentifiable {
+struct Message: Identifiable, Codable, DbIdentifiable, Hashable {
     typealias DbId = String
     
     private enum CodingKeys: CodingKey {
@@ -32,6 +32,10 @@ struct Message: Identifiable, Codable, DbIdentifiable {
         self.isSent = isSent
     }
     
+    func hasTextDifferent(from message: Message) -> Bool {
+        message.title != title || message.content != content
+    }
+        
     static var sample = Message(userId: UUID().uuidString, title: "Message", content: "Bla bla bla\nBlalbla blaaaaaa")
     
     func toSamples(_ nbElements: Int) -> [Message] {
