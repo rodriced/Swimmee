@@ -35,6 +35,11 @@ class ProfileViewModel: ObservableObject {
     }
 
     var restartLoader: (() -> Void)?
+    
+    func resetPhoto() {
+        image = nil
+        profile.photoUrl = nil
+    }
 
     func saveProfile() {
         Task {
@@ -75,46 +80,68 @@ struct ProfileView: View {
 
     @ObservedObject var vm: ProfileViewModel
 
+//    @State var photoActionsMenuShown = false
+
     init(vm: ProfileViewModel) {
         debugPrint("---- ProfileView created")
         _vm = ObservedObject(initialValue: vm)
+    }
+    
+    var circlePhoto: some View {
+        Group {
+            if let image = vm.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else if let photoUrl = vm.profile.photoUrl {
+                WebImage(url: photoUrl)
+                    .resizable()
+                    .placeholder(Image("UserPhotoPlaceholder"))
+                    .scaledToFill()
+//                            .aspectRatio(contentMode: .fill)
+            } else {
+                Image("UserPhotoPlaceholder")
+                    .resizable()
+            }
+        }
+        .frame(width: 200, height: 200)
+        .clipShape(Circle())
+        .overlay(Circle().stroke(.blue.opacity(0.5), lineWidth: 4))
+        .shadow(radius: 6)
+    }
+
+    var photoActionsMenu: some View {
+        Image(systemName: "square.and.pencil")
+            .font(.system(.headline))
+            .padding(5)
+            .foregroundColor(.accentColor)
+            .contextMenu {
+                Button {
+                    vm.isShowPhotoLibrary = true
+                    vm.imageSourceType = .photoLibrary
+                } label: {
+                    Label("Choose from library", systemImage: "photo.on.rectangle")
+                }
+                Button {
+                    vm.isShowPhotoLibrary = true
+                    vm.imageSourceType = .camera
+                } label: {
+                    Label("Use camera", systemImage: "camera")
+                }
+                Button {
+                    vm.resetPhoto()
+                } label: {
+                    Label("Remove photo", systemImage: "trash")
+                }
+            }
     }
 
     var body: some View {
         VStack {
             ZStack(alignment: .bottomTrailing) {
-                Group {
-                    if let image = vm.image {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } else if let photoUrl = vm.profile.photoUrl {
-                        WebImage(url: photoUrl)
-                            .resizable()
-                            .placeholder(Image("UserPhotoPlaceholder"))
-                            .scaledToFill()
-//                            .aspectRatio(contentMode: .fill)
-                    } else {
-                        Image("UserPhotoPlaceholder")
-                            .resizable()
-                    }
-                }
-                .frame(width: 200, height: 200)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(.blue, lineWidth: 4))
-                .shadow(radius: 6)
-
-                HStack {
-                    Button {
-                        vm.isShowPhotoLibrary = true
-                        vm.imageSourceType = .photoLibrary
-                    } label: { Image(systemName: "plus").font(.headline) }
-                    Button {
-                        vm.isShowPhotoLibrary = true
-                        vm.imageSourceType = .camera
-                    } label: { Image(systemName: "camera").font(.headline) }
-                }
-                .offset(x: 10)
+                circlePhoto
+                photoActionsMenu
+                    .offset(x: 10)
             }
 
             Spacer()
