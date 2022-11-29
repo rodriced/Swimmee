@@ -10,8 +10,6 @@
 		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
 		DC1604B42911C74500FB71EF /* SwimmerCoachView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1604B32911C74500FB71EF /* SwimmerCoachView2.swift */; };
 		DC232BCC29281F73007BC2ED /* Session2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCB29281F73007BC2ED /* Session2.swift */; };
-		DC232BCE2929128C007BC2ED /* LoadingView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCD2929128C007BC2ED /* LoadingView2.swift */; };
-		DC232BD0292967A6007BC2ED /* LoadingView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCF292967A6007BC2ED /* LoadingView3.swift */; };
 		DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD32929AC95007BC2ED /* MainView2.swift */; };
 		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
 		DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD8292B7D81007BC2ED /* UserCellView.swift */; };
@@ -35,12 +33,11 @@
 		DC3E998F28FF42C3008E274C /* FirebaseImageStorageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E998E28FF42C3008E274C /* FirebaseImageStorageAPI.swift */; };
 		DC3E999329001F7E008E274C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E999229001F7E008E274C /* User.swift */; };
 		DC3E99992902C95B008E274C /* FirebaseAccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E99982902C95B008E274C /* FirebaseAccountManager.swift */; };
-		DC6CCE2C290AB4A500DB8427 /* ViewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE2B290AB4A500DB8427 /* ViewLoader.swift */; };
 		DC6CCE30290E8CD800DB8427 /* FirestoreCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE2F290E8CD800DB8427 /* FirestoreCollectionAPI.swift */; };
 		DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE31290FC4FF00DB8427 /* API.swift */; };
 		DC6CCE342910841B00DB8427 /* FirestoreProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE332910841B00DB8427 /* FirestoreProfileAPI.swift */; };
 		DC7912E1291BD3140077B403 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7912E0291BD3140077B403 /* Helpers.swift */; };
-		DC863A512920531900934B62 /* CombineExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC863A502920531900934B62 /* CombineExtension.swift */; };
+		DC863A512920531900934B62 /* PublisherExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC863A502920531900934B62 /* PublisherExtension.swift */; };
 		DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88597F28E269E20032E0FB /* SwimmeeApp.swift */; };
 		DC88598428E269E20032E0FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598328E269E20032E0FB /* Assets.xcassets */; };
 		DC88598728E269E20032E0FB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598628E269E20032E0FB /* Preview Assets.xcassets */; };
@@ -49,6 +46,17 @@
 		DC88599D28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */; };
 		DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859A928E26F2B0032E0FB /* SignInView.swift */; };
 		DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859AB28E26FE00032E0FB /* ProfileView.swift */; };
+		DC920B6429328147000EE664 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6329328147000EE664 /* ConfirmationDialog.swift */; };
+		DC920B662933CE4D000EE664 /* LoadingViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B652933CE4D000EE664 /* LoadingViewV2.swift */; };
+		DC920B682933CEE9000EE664 /* SwimmerMessagesViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B672933CEE9000EE664 /* SwimmerMessagesViewV2.swift */; };
+		DC920B6C29341386000EE664 /* LoadingViewV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6B29341386000EE664 /* LoadingViewV3.swift */; };
+		DC920B702934B851000EE664 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6F2934B851000EE664 /* ImageHelper.swift */; };
+		DC920B722934F718000EE664 /* Tries.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B712934F718000EE664 /* Tries.swift */; };
+		DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7329355981000EE664 /* SignSharedViewModel.swift */; };
+		DC920B7729355ABF000EE664 /* ValueValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7629355ABF000EE664 /* ValueValidation.swift */; };
+		DC920B7A293669D0000EE664 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B79293669D0000EE664 /* FormField.swift */; };
+		DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */; };
+		DC920B7F29367556000EE664 /* PhotoInfoEdited.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */; };
 		DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A434E2921950100485B1F /* FirestoreExtension.swift */; };
 		DC9A435B2922880B00485B1F /* CoachMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A435A2922880B00485B1F /* CoachMessagesView.swift */; };
 		DC9A435D292394A800485B1F /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A435C292394A800485B1F /* LoadingView.swift */; };
@@ -70,7 +78,7 @@
 		DCF3239028FC88360030626C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCF3238F28FC88360030626C /* GoogleService-Info.plist */; };
 		DCF3239228FC8C060030626C /* FirebaseAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF3239128FC8C060030626C /* FirebaseAuthAPI.swift */; };
 		DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */; };
-		DCFBCF4E29074B1900F0BF35 /* FormHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */; };
+		DCFBCF4E29074B1900F0BF35 /* FormViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */; };
 		DCFBCF5029074B7D00F0BF35 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4F29074B7D00F0BF35 /* AuthenticationView.swift */; };
 		DCFBCF522908B1DE00F0BF35 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
@@ -96,8 +104,6 @@
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
 		DC1604B32911C74500FB71EF /* SwimmerCoachView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachView2.swift; sourceTree = "<group>"; };
 		DC232BCB29281F73007BC2ED /* Session2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session2.swift; sourceTree = "<group>"; };
-		DC232BCD2929128C007BC2ED /* LoadingView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView2.swift; sourceTree = "<group>"; };
-		DC232BCF292967A6007BC2ED /* LoadingView3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView3.swift; sourceTree = "<group>"; };
 		DC232BD32929AC95007BC2ED /* MainView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView2.swift; sourceTree = "<group>"; };
 		DC232BD8292B7D81007BC2ED /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
 		DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMainView.swift; sourceTree = "<group>"; };
@@ -120,12 +126,11 @@
 		DC3E998E28FF42C3008E274C /* FirebaseImageStorageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseImageStorageAPI.swift; sourceTree = "<group>"; };
 		DC3E999229001F7E008E274C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DC3E99982902C95B008E274C /* FirebaseAccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAccountManager.swift; sourceTree = "<group>"; };
-		DC6CCE2B290AB4A500DB8427 /* ViewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoader.swift; sourceTree = "<group>"; };
 		DC6CCE2F290E8CD800DB8427 /* FirestoreCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreCollectionAPI.swift; sourceTree = "<group>"; };
 		DC6CCE31290FC4FF00DB8427 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		DC6CCE332910841B00DB8427 /* FirestoreProfileAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreProfileAPI.swift; sourceTree = "<group>"; };
 		DC7912E0291BD3140077B403 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		DC863A502920531900934B62 /* CombineExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineExtension.swift; sourceTree = "<group>"; };
+		DC863A502920531900934B62 /* PublisherExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherExtension.swift; sourceTree = "<group>"; };
 		DC88597C28E269E20032E0FB /* Swimmee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swimmee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88597F28E269E20032E0FB /* SwimmeeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeApp.swift; sourceTree = "<group>"; };
 		DC88598328E269E20032E0FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -137,6 +142,17 @@
 		DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		DC8859A928E26F2B0032E0FB /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DC8859AB28E26FE00032E0FB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		DC920B6329328147000EE664 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
+		DC920B652933CE4D000EE664 /* LoadingViewV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewV2.swift; sourceTree = "<group>"; };
+		DC920B672933CEE9000EE664 /* SwimmerMessagesViewV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesViewV2.swift; sourceTree = "<group>"; };
+		DC920B6B29341386000EE664 /* LoadingViewV3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewV3.swift; sourceTree = "<group>"; };
+		DC920B6F2934B851000EE664 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
+		DC920B712934F718000EE664 /* Tries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tries.swift; sourceTree = "<group>"; };
+		DC920B7329355981000EE664 /* SignSharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSharedViewModel.swift; sourceTree = "<group>"; };
+		DC920B7629355ABF000EE664 /* ValueValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueValidation.swift; sourceTree = "<group>"; };
+		DC920B79293669D0000EE664 /* FormField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
+		DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCombineLatest.swift; sourceTree = "<group>"; };
+		DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEdited.swift; sourceTree = "<group>"; };
 		DC9A434E2921950100485B1F /* FirestoreExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreExtension.swift; sourceTree = "<group>"; };
 		DC9A435A2922880B00485B1F /* CoachMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesView.swift; sourceTree = "<group>"; };
 		DC9A435C292394A800485B1F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -151,7 +167,7 @@
 		DCF3238F28FC88360030626C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCF3239128FC8C060030626C /* FirebaseAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthAPI.swift; sourceTree = "<group>"; };
 		DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugHelpers.swift; sourceTree = "<group>"; };
-		DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHelpers.swift; sourceTree = "<group>"; };
+		DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewHelpers.swift; sourceTree = "<group>"; };
 		DCFBCF4F29074B7D00F0BF35 /* AuthenticationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -200,6 +216,7 @@
 		DC3C888228F424640065CBD6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DC920B7529355A8A000EE664 /* Helper */,
 				DC3E999229001F7E008E274C /* User.swift */,
 				DC3C888728F42BAE0065CBD6 /* Profile.swift */,
 				DC3C888328F426250065CBD6 /* Message.swift */,
@@ -214,6 +231,7 @@
 				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
 				DCA62DF628EF64E200F87C9B /* MainView.swift */,
 				DC232BD32929AC95007BC2ED /* MainView2.swift */,
+				DC920B7329355981000EE664 /* SignSharedViewModel.swift */,
 				DCA62DF828F00E0900F87C9B /* SignUpView.swift */,
 				DC8859A928E26F2B0032E0FB /* SignInView.swift */,
 				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
@@ -225,12 +243,14 @@
 		DC3C888E28F47C7D0065CBD6 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				DC920B7B29366B44000EE664 /* Combine */,
+				DC920B7829366933000EE664 /* Form */,
 				DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */,
 				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
-				DCFBCF4D29074B1900F0BF35 /* FormHelpers.swift */,
-				DC6CCE2B290AB4A500DB8427 /* ViewLoader.swift */,
 				DCDBE7E62915D77A00386076 /* AlertManager.swift */,
-				DC863A502920531900934B62 /* CombineExtension.swift */,
+				DC920B6329328147000EE664 /* ConfirmationDialog.swift */,
+				DC920B6F2934B851000EE664 /* ImageHelper.swift */,
+				DC920B712934F718000EE664 /* Tries.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -243,8 +263,8 @@
 				DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */,
 				DC3C888528F426890065CBD6 /* MessageView.swift */,
 				DC9A435C292394A800485B1F /* LoadingView.swift */,
-				DC232BCD2929128C007BC2ED /* LoadingView2.swift */,
-				DC232BCF292967A6007BC2ED /* LoadingView3.swift */,
+				DC920B652933CE4D000EE664 /* LoadingViewV2.swift */,
+				DC920B6B29341386000EE664 /* LoadingViewV3.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -254,6 +274,7 @@
 			children = (
 				DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */,
 				DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */,
+				DC920B672933CEE9000EE664 /* SwimmerMessagesViewV2.swift */,
 				DC3C889E28F4D4040065CBD6 /* SwimmerWorkoutsView.swift */,
 				DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */,
 				DC1604B32911C74500FB71EF /* SwimmerCoachView2.swift */,
@@ -339,6 +360,33 @@
 				DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */,
 			);
 			path = SwimmeeUITests;
+			sourceTree = "<group>";
+		};
+		DC920B7529355A8A000EE664 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		DC920B7829366933000EE664 /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				DC920B7629355ABF000EE664 /* ValueValidation.swift */,
+				DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */,
+				DC920B79293669D0000EE664 /* FormField.swift */,
+				DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */,
+			);
+			path = Form;
+			sourceTree = "<group>";
+		};
+		DC920B7B29366B44000EE664 /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				DC863A502920531900934B62 /* PublisherExtension.swift */,
+				DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */,
+			);
+			path = Combine;
 			sourceTree = "<group>";
 		};
 		DCAEA8FA291AAA7C00F936E7 /* Service */ = {
@@ -531,6 +579,7 @@
 			files = (
 				DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */,
 				DC3C88A128F4DFCF0065CBD6 /* CoachWorkoutsView.swift in Sources */,
+				DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */,
 				DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */,
 				DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */,
 				DC3C888828F42BAE0065CBD6 /* Profile.swift in Sources */,
@@ -541,24 +590,28 @@
 				DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */,
 				DC3C888628F426890065CBD6 /* MessageView.swift in Sources */,
 				DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */,
-				DC6CCE2C290AB4A500DB8427 /* ViewLoader.swift in Sources */,
-				DC232BCE2929128C007BC2ED /* LoadingView2.swift in Sources */,
+				DC920B6C29341386000EE664 /* LoadingViewV3.swift in Sources */,
+				DC920B662933CE4D000EE664 /* LoadingViewV2.swift in Sources */,
 				DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */,
 				DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */,
 				DC232BCC29281F73007BC2ED /* Session2.swift in Sources */,
 				DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */,
+				DC920B702934B851000EE664 /* ImageHelper.swift in Sources */,
 				DCFBCF5029074B7D00F0BF35 /* AuthenticationView.swift in Sources */,
 				DC3C889F28F4D4040065CBD6 /* SwimmerWorkoutsView.swift in Sources */,
-				DC863A512920531900934B62 /* CombineExtension.swift in Sources */,
+				DC863A512920531900934B62 /* PublisherExtension.swift in Sources */,
 				DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */,
 				DCBAD89329268FA100376A3E /* FirestoreCollectionTestAPI.swift in Sources */,
 				DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */,
+				DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */,
+				DC920B6429328147000EE664 /* ConfirmationDialog.swift in Sources */,
 				DC9A435D292394A800485B1F /* LoadingView.swift in Sources */,
 				DC3E99992902C95B008E274C /* FirebaseAccountManager.swift in Sources */,
-				DC232BD0292967A6007BC2ED /* LoadingView3.swift in Sources */,
 				DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */,
 				DC6CCE30290E8CD800DB8427 /* FirestoreCollectionAPI.swift in Sources */,
-				DCFBCF4E29074B1900F0BF35 /* FormHelpers.swift in Sources */,
+				DC920B7729355ABF000EE664 /* ValueValidation.swift in Sources */,
+				DC920B7F29367556000EE664 /* PhotoInfoEdited.swift in Sources */,
+				DCFBCF4E29074B1900F0BF35 /* FormViewHelpers.swift in Sources */,
 				DC3C889228F4AA2B0065CBD6 /* ViewModifiers.swift in Sources */,
 				DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */,
 				DC1604B42911C74500FB71EF /* SwimmerCoachView2.swift in Sources */,
@@ -568,12 +621,15 @@
 				DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */,
 				DC3C88A528F4E8EA0065CBD6 /* CoachTeamView.swift in Sources */,
 				DC9A435B2922880B00485B1F /* CoachMessagesView.swift in Sources */,
+				DC920B7A293669D0000EE664 /* FormField.swift in Sources */,
 				DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */,
+				DC920B722934F718000EE664 /* Tries.swift in Sources */,
 				DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */,
 				DCDBE7E72915D77A00386076 /* AlertManager.swift in Sources */,
 				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
 				DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */,
 				DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */,
+				DC920B682933CEE9000EE664 /* SwimmerMessagesViewV2.swift in Sources */,
 				DCF3239228FC8C060030626C /* FirebaseAuthAPI.swift in Sources */,
 				DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */,
 				DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */,
