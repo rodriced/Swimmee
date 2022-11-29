@@ -8,13 +8,8 @@
 import SwiftUI
 
 struct AuthenticationView: View {
-//    @StateObject var viewModel = CommonAccountViewModel(formType: .signIn)
-    @StateObject var viewModel: CommonAccountViewModel
+    @StateObject var viewModel: SignSharedViewModel
     @Environment(\.presentationMode) var presentationMode
-//    var reauthenticating = false
-
-//    var submitAction: (() -> Void)?
-//    var submitTitle: String?
 
     var defaultBorderColor = RoundedBorderTextFieldStyle()
 
@@ -39,7 +34,6 @@ struct AuthenticationView: View {
 
                 Button {
                     viewModel.reauthenticate()
-//                    submitAction?()
                 } label: {
                     if viewModel.submiting {
                         ProgressView().frame(maxWidth: .infinity)
@@ -65,6 +59,6 @@ struct AuthenticationView: View {
 
 struct AuthenticationView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthenticationView(viewModel: CommonAccountViewModel(formType: .signIn))
+        AuthenticationView(viewModel: SignSharedViewModel(formType: .signIn))
     }
 }
