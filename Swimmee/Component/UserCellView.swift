@@ -14,7 +14,7 @@ struct UserCellView: View {
     var body: some View {
         HStack(spacing: 20) {
             Group {
-                if let photoUrl = profile.photo?.url {
+                if let photoUrl = profile.photoInfo?.url {
                     WebImage(url: photoUrl)
                         .resizable()
                         .placeholder(Image("UserPhotoPlaceholder"))

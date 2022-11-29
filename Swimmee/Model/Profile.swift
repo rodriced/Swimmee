@@ -34,7 +34,7 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
     typealias DbId = String
 
     enum CodingKeys: CodingKey {
-        case id, userId, userType, firstName, lastName, email, photo, coachId, readMessagesIds
+        case id, userId, userType, firstName, lastName, email, photoInfo, coachId, readMessagesIds
     }
 
     var dbId: DbId?
@@ -45,7 +45,7 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
     var firstName: String
     var lastName: String
     var email: String
-    var photo: PhotoInfo?
+    var photoInfo: PhotoInfo?
 
     var coachId: UserId?
 //    {

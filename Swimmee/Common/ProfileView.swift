@@ -21,12 +21,12 @@ class ProfileViewModel: LoadableViewModelV2 {
     @Published var lastNameInError = false
     @Published var emailInError = false
 
-    // You must not interact with photo directly. Use photoInfoEdited.update instead. (They are linked with publisher assign)
-    @Published var photo = PhotoInfoEdited.State.initial
+    // You must not interact with readOnlyPhotoInfoEditedState directly. Use photoInfoEdited.update instead. (They are linked with publisher assign)
+    @Published var readOnlyPhotoInfoEditedState = PhotoInfoEdited.State.initial
     var photoInfoEdited: PhotoInfoEdited
 
     @Published var isPhotoPickerPresented = false
-    var photoPickeImageSource = UIImagePickerController.SourceType.photoLibrary
+    var photoPickerImageSource = UIImagePickerController.SourceType.photoLibrary
     @Published var pickedPhoto: UIImage? = nil {
         didSet {
             guard let pickedPhoto else { return }
@@ -51,7 +51,7 @@ class ProfileViewModel: LoadableViewModelV2 {
         self.lastName = initialData.lastName
         self.email = initialData.email
 
-        self.photoInfoEdited = PhotoInfoEdited(initialData.photo)
+        self.photoInfoEdited = PhotoInfoEdited(initialData.photoInfo)
     }
 
     func refreshedLoadedData(_ loadedData: Profile) {}
@@ -77,8 +77,8 @@ class ProfileViewModel: LoadableViewModelV2 {
                                     validate: ValueValidation.validateEmail,
                                     initialValue: initialProfile.email)
 
-    lazy var photoField = FormField(publishedValue: &_photo,
-                                    // TODO: Must fix link bug between photoInfoEdited.state and photo (State of Update button don't return to its initial state when we do the same with photo)
+    lazy var photoInfoField = FormField(publishedValue: &_readOnlyPhotoInfoEditedState,
+                                    // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
                                     // BUT SEEMS OK NOW. TO BE VERIFIED
                                     compareWith: { $0 != .initial },
                                     debounceDelay: 0)
@@ -86,15 +86,15 @@ class ProfileViewModel: LoadableViewModelV2 {
     // MARK: Form validation logic
 
     lazy var formPublishers: [any ConnectablePublisher] =
-        [firstNameField.publisher, lastNameField.publisher, emailField.publisher, photoField.publisher]
+        [firstNameField.publisher, lastNameField.publisher, emailField.publisher, photoInfoField.publisher]
 
     lazy var formModified =
-        [firstNameField.modified, lastNameField.modified, emailField.modified, photoField.modified]
+        [firstNameField.modified, lastNameField.modified, emailField.modified, photoInfoField.modified]
             .combineLatest()
             .map { $0.contains(true) }
 
     lazy var formValidated =
-        [firstNameField.validated, lastNameField.validated, emailField.validated, photoField.validated]
+        [firstNameField.validated, lastNameField.validated, emailField.validated, photoInfoField.validated]
             .combineLatest()
             .map { $0.allSatisfy { $0 } }
 
@@ -105,7 +105,7 @@ class ProfileViewModel: LoadableViewModelV2 {
     var cancellables = Set<AnyCancellable>()
 
     func startPublishers() {
-        photoInfoEdited.$state.assign(to: &$photo)
+        photoInfoEdited.$state.assign(to: &$readOnlyPhotoInfoEditedState)
 
         formReadyToSubmit
             .assign(to: &$isReadyToSubmit)
@@ -123,7 +123,7 @@ class ProfileViewModel: LoadableViewModelV2 {
 
     func openPhotoPicker(_ source: UIImagePickerController.SourceType) {
         isPhotoPickerPresented = true
-        photoPickeImageSource = source
+        photoPickerImageSource = source
     }
 
     func clearDisplayedPhoto() {
@@ -133,14 +133,14 @@ class ProfileViewModel: LoadableViewModelV2 {
 
     func saveProfile() {
         Task {
-            let photoInfo = await photoInfoEdited.save(as: initialProfile.userId)
+            let newPhotoInfo = await photoInfoEdited.save(as: initialProfile.userId)
 
             let profile = {
                 var profile = initialProfile
                 profile.firstName = firstName
                 profile.lastName = lastName
                 profile.email = email
-                profile.photo = photoInfo
+                profile.photoInfo = newPhotoInfo
                 return profile
             }()
 
@@ -150,7 +150,7 @@ class ProfileViewModel: LoadableViewModelV2 {
 
     func deleteAccount() {
         // TODO: Implement this with Firebase function
-        // To test. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
+        // To be tested. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
         _ = DispatchQueue.main.sync {
             Task {
                 try await FirebaseAccountManager().deleteCurrrentAccount()
@@ -171,7 +171,7 @@ struct ProfileView: View {
 
     var profilePhoto: some View {
         Group {
-            switch vm.photo {
+            switch vm.readOnlyPhotoInfoEditedState {
             case let .new(uiImage: pickedPhoto, data: _, size: _, hash: _):
                 Image(uiImage: pickedPhoto)
                     .resizable()
@@ -319,7 +319,7 @@ struct ProfileView: View {
         .navigationTitle("My profile")
         .padding()
         .sheet(isPresented: $vm.isPhotoPickerPresented) {
-            ImagePicker(sourceType: vm.photoPickeImageSource, selectedImage: $vm.pickedPhoto)
+            ImagePicker(sourceType: vm.photoPickerImageSource, selectedImage: $vm.pickedPhoto)
         }
         .task { vm.startPublishers() }
 
