@@ -254,7 +254,10 @@ struct ProfileView: View {
             title: "Your account is going to be deleted. Ok?",
             primaryButton: "Delete",
             primaryAction: vm.deleteAccount,
-            isDestructive: true
+            isDestructive: true,
+            cancelAction: {
+                vm.reauthenticationViewIsPresented = false
+            }
         )
     }
 
