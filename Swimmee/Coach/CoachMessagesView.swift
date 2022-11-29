@@ -51,7 +51,7 @@ class CoachMessagesViewModel: ObservableObject {
         print("CoachMessagesViewModel.init")
     }
 
-    var restartLoader: (() -> Void)? = nil
+    var restartLoader: (() -> Void)?
 
     func goEditingMessage(_ message: Message) {
         selectedMessage = message
@@ -83,7 +83,7 @@ class CoachMessagesViewModel: ObservableObject {
 
 extension CoachMessagesViewModel: LoadableViewModel {
     typealias LoadedData = [Message]
-    
+
     func refreshedLoadedData(_ loadedData: [Message]) {
         messages = loadedData
     }
@@ -160,13 +160,35 @@ struct CoachMessagesView: View {
             Label("Filter", systemImage: "slider.horizontal.3")
         }
     }
+    
+    var editNewMessageButton: some View {
+        NavigationLink {
+            EditMessageView(message: Message(userId: session.userId))
+        } label: {
+            Image(systemName: "plus")
+        }
+    }
+    
+    var emptyListInformation: some View {
+        VStack(spacing: 10) {
+            Text("No messages.")
+            HStack {
+                Text("Use")
+                editNewMessageButton
+                    .foregroundColor(.accentColor)
+                    .shadow(radius: 5)
+                Text("button to create one.")
+            }
+        }
+        .foregroundColor(.secondary)
+    }
 
     var body: some View {
         VStack(spacing: 30) {
             DebugHelper.viewBodyPrint("CoachMessagesView.body")
 
             if vm.messages.isEmpty {
-                Text("No messages").foregroundColor(.secondary)
+                emptyListInformation
             } else {
                 filterStateIndication
                 messagesList
@@ -178,11 +200,7 @@ struct CoachMessagesView: View {
                     filterMenu
                 }
 
-                NavigationLink {
-                    EditMessageView(message: Message(userId: session.userId, title: String("afjsle,vopo".shuffled())))
-                } label: {
-                    Image(systemName: "plus")
-                }
+                editNewMessageButton
             }
         }
         .actionSheet(isPresented: $vm.confirmationDialogPresented) {

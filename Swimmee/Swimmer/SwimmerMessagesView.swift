@@ -71,8 +71,8 @@ struct SwimmerMessagesView: View {
             if vm.messagesParams.isEmpty {
                 Text(
                     session.coachId == nil ?
-                        "No messages.\nSubscribe to a coach in the Settings menu."
-                        : "No messages from your coach."
+                        "Subscribe to a coach in the Settings menu\nto see his messages."
+                        : "No messages from your coach for now."
                 )
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
