@@ -35,10 +35,11 @@ class ProfileViewModel: LoadableViewModelV2 {
         }
     }
 
+    @Published var isReadyToSubmit: Bool = false
+    @Published var updateProfileConfirmationDialogIsPresented = false
+
     @Published var reauthenticationViewIsPresented = false
     @Published var deleteAccountConfirmationDialogIsPresented = false
-
-    @Published var isReadyToSubmitUpdate: Bool = false
 
     // MARK: Protocol LoadableViewModelV2 implementation
 
@@ -97,7 +98,7 @@ class ProfileViewModel: LoadableViewModelV2 {
             .combineLatest()
             .map { $0.allSatisfy { $0 } }
 
-    lazy var formReadyToSubmitUpdate =
+    lazy var formReadyToSubmit =
         Publishers.CombineLatest(formModified, formValidated)
             .map { $0 == (true, true) }
 
@@ -106,8 +107,8 @@ class ProfileViewModel: LoadableViewModelV2 {
     func startPublishers() {
         photoInfoEdited.$state.assign(to: &$photo)
 
-        formReadyToSubmitUpdate
-            .assign(to: &$isReadyToSubmitUpdate)
+        formReadyToSubmit
+            .assign(to: &$isReadyToSubmit)
 
         firstNameField.validated.not().assign(to: &$firstNameInError)
         lastNameField.validated.not().assign(to: &$lastNameInError)
@@ -223,6 +224,31 @@ struct ProfileView: View {
             }
     }
 
+    var updateProfileConfirmationDialog: ConfirmationDialog {
+        ConfirmationDialog(
+            title: "Confirm your profile update.",
+            primaryButton: "Update",
+            primaryAction: {
+                vm.saveProfile()
+                presentationMode.wrappedValue.dismiss()
+            }
+        )
+    }
+
+    var updateProfileButton: some View {
+        Button {
+            vm.updateProfileConfirmationDialogIsPresented = true
+        } label: {
+            Text("Update").frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .disabled(!vm.isReadyToSubmit)
+        .actionSheet(isPresented: $vm.updateProfileConfirmationDialogIsPresented) {
+            updateProfileConfirmationDialog.actionSheet()
+        }
+        .keyboardShortcut(.defaultAction)
+    }
+
     var deleteAccountConfirmationDialog: ConfirmationDialog {
         ConfirmationDialog(
             title: "Your account is going to be deleted. Ok?",
@@ -279,17 +305,8 @@ struct ProfileView: View {
             .textFieldStyle(.roundedBorder)
 
             Spacer()
-
-            Button {
-                vm.saveProfile()
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                Text("Update").frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(!vm.isReadyToSubmitUpdate)
-
-//            .keyboardShortcut(.defaultAction)
+            
+            updateProfileButton
 
             Divider().overlay(Color.red).frame(height: 30)
 //                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
@@ -303,10 +320,10 @@ struct ProfileView: View {
         }
         .task { vm.startPublishers() }
 
-        .navigationBarBackButtonHidden(vm.isReadyToSubmitUpdate)
+        .navigationBarBackButtonHidden(vm.isReadyToSubmit)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                if vm.isReadyToSubmitUpdate {
+                if vm.isReadyToSubmit {
                     Button("Cancel") { presentationMode.wrappedValue.dismiss() }
                 }
             }
