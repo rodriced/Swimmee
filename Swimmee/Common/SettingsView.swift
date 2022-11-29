@@ -10,7 +10,18 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var session: UserSession
 
-    @State var signOutError = false
+    @State var logoutConfirmationDialogIsPresented = false
+    @State var signOutErrorAlertIsPresented = false
+
+    var logoutConfirmationDialog: ConfirmationDialog {
+        ConfirmationDialog(
+            title: "You are going to logout from Swimmee.",
+            primaryButton: "Confirm logout",
+            primaryAction: {
+                signOutErrorAlertIsPresented = !API.shared.auth.signOut()
+            }
+        )
+    }
 
     var body: some View {
         NavigationView {
@@ -25,24 +36,33 @@ struct SettingsView: View {
                 } label: {
                     MenuLabel(title: "My profile", systemImage: "person", color: Color.mint)
                 }
-                
+
                 switch session.userType {
                 case .coach:
-                    NavigationLink(destination: { CoachTeamView() }) {
+                    NavigationLink {
+                        CoachTeamView()
+                    } label: {
                         MenuLabel(title: "My team", systemImage: "person.3", color: Color.blue)
                     }
                 case .swimmer:
-                    NavigationLink(destination: { SwimmerCoachView() }) {
+                    NavigationLink {
+                        SwimmerCoachView()
+                    } label: {
                         MenuLabel(title: "My coach", systemImage: "person.2", color: Color.blue)
                     }
                 }
-                
-                Button(action: { signOutError = !API.shared.auth.signOut() }) {
+
+                Button {
+                    logoutConfirmationDialogIsPresented = true
+                } label: {
                     MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
+                }
+                .actionSheet(isPresented: $logoutConfirmationDialogIsPresented) {
+                    logoutConfirmationDialog.actionSheet()
                 }
             }
             .navigationBarTitle("Settings")
-            .alert("Sign out Error", isPresented: $signOutError) {}
+            .alert("Sign out Error", isPresented: $signOutErrorAlertIsPresented) {}
         }
         .navigationViewStyle(.stack)
     }
