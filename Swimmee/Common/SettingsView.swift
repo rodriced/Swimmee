@@ -27,7 +27,7 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 NavigationLink {
-                    LoadingViewV2(
+                    LoadingView(
                         publisherBuiler: {
                             API.shared.profile.future(userId: nil)
                         },

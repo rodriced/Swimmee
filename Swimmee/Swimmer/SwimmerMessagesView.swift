@@ -8,11 +8,28 @@
 import SwiftUI
 
 class SwimmerMessagesViewModel {
-    @Published var messagesParams: [(message: Message, isRead: Bool)] = []
-    @Published var newMessagesCount: Int = 0
+    typealias LoadedData = ([Message], Set<Message.DbId>)
+    typealias MessagesParams = [(message: Message, isRead: Bool)]
 
-    required init() {
+    @Published var messagesParams: [(message: Message, isRead: Bool)]
+    @Published var newMessagesCount: Int
+
+    required init(initialData: LoadedData) {
         print("SwimmerMessagesViewModel.init")
+        (messagesParams, newMessagesCount) = Self.formatLoadedData(initialData)
+    }
+
+    static func formatLoadedData(_ loadedData: LoadedData) -> (MessagesParams, Int) {
+        let (messages, readMessagesIds) = loadedData
+
+        let messagesParams =
+            messages.map { message in
+                (message: message,
+                 isRead: message.dbId.map { readMessagesIds.contains($0) } ?? false)
+            }
+        let newMessagesCount = messagesParams.filter { !$0.isRead }.count
+
+        return (messagesParams, newMessagesCount)
     }
 
     var restartLoader: (() -> Void)?
@@ -26,15 +43,8 @@ class SwimmerMessagesViewModel {
 }
 
 extension SwimmerMessagesViewModel: LoadableViewModel {
-    func refreshedLoadedData(_ loadedData: ([Message], Set<Message.DbId>)) {
-        let (messages, readMessagesIds) = loadedData
-
-        messagesParams =
-            messages.map { message in
-                (message: message,
-                 isRead: message.dbId.map { readMessagesIds.contains($0) } ?? false)
-            }
-        newMessagesCount = messagesParams.filter { !$0.isRead }.count
+    func refreshedLoadedData(_ loadedData: LoadedData) {
+        (messagesParams, newMessagesCount) = Self.formatLoadedData(loadedData)
     }
 }
 
@@ -76,7 +86,7 @@ struct SwimmerMessagesView: View {
                 )
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
-                
+
             } else {
                 if vm.newMessagesCount > 0 {
                     Text(newMessagesCountInfo)

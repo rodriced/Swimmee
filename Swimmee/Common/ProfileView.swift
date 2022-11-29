@@ -9,7 +9,7 @@ import Combine
 import SDWebImageSwiftUI
 import SwiftUI
 
-class ProfileViewModel: LoadableViewModelV2 {
+class ProfileViewModel: LoadableViewModel {
     // MARK: Form view properties
 
     var initialProfile: Profile
@@ -41,7 +41,7 @@ class ProfileViewModel: LoadableViewModelV2 {
     @Published var reauthenticationViewIsPresented = false
     @Published var deleteAccountConfirmationDialogIsPresented = false
 
-    // MARK: Protocol LoadableViewModelV2 implementation
+    // MARK: Protocol LoadableViewModel implementation
 
     required init(initialData: Profile) {
         debugPrint("---- ProfileViewModel.init")

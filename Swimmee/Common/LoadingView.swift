@@ -13,20 +13,20 @@ import SwiftUI
 protocol LoadableViewModel: ObservableObject {
     associatedtype LoadedData
 
-    init()
-    
+    init(initialData: LoadedData)
+
     func refreshedLoadedData(_ loadedData: LoadedData)
     var restartLoader: (() -> Void)? { get set }
 }
 
-#if DEBUG
+ #if DEBUG
     var _debugStreamRef = 0
     var debugStreamRef: Int {
         let current = _debugStreamRef
         _debugStreamRef += 1
         return current
     }
-#endif
+ #endif
 
 class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     typealias LoadPublisher = AnyPublisher<TargetViewModel.LoadedData, Error>
@@ -51,7 +51,7 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
         print("LoadingViewModel.init")
         self.publisherBuilder = publisherBuiler
     }
-    
+
     deinit {
         print("LoadingViewModel.deinit")
     }
@@ -60,11 +60,13 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 
     @Published var state = LodingState.idle
 
-    lazy var targetVM = {
-        var vm = TargetViewModel()
-        vm.restartLoader = self.startLoader
+    var targetVM: TargetViewModel?
+
+    func createTargetVM(loadedData: TargetViewModel.LoadedData) -> TargetViewModel {
+        let vm = TargetViewModel(initialData: loadedData)
+        vm.restartLoader = startLoader
         return vm
-    }()
+    }
 
     var cancellable: Cancellable? {
         didSet {
@@ -81,14 +83,13 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     }
 
     func startLoader() {
-        print("LoadingViewModel.startLoader")
         cancellable = publisherBuilder()
         #if DEBUG
             .print("LoadingViewModel loader stream ref \(debugStreamRef)")
         #endif
 //            .retry(1)
             .sink { [weak self] completion in
-                print("LoadingViewModelV2 loader handleEvents \(String(describing: completion))")
+                print("LoadingViewModel loader handleEvents \(String(describing: completion))")
 
                 if case .failure(let error) = completion {
                     self?.state = .failure(error)
@@ -96,9 +97,32 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
             } receiveValue: { [weak self] data in
                 guard let self else { return }
 
-                self.targetVM.refreshedLoadedData(data)
+                if let targetVM = self.targetVM {
+                    targetVM.refreshedLoadedData(data)
+                } else {
+                    let targetVM = self.createTargetVM(loadedData: data)
+                    self.targetVM = targetVM
+                }
                 if self.state != .ready { self.state = .ready }
             }
+
+//            .sink { [weak self] result in
+//                guard let self else { return }
+//
+//                switch result {
+//                case .success(let item):
+//                    if let targetVM = self.targetVM {
+//                        targetVM.refreshedLoadedData(item)
+//                    } else {
+//                        let targetVM = self.createTargetVM(loadedData: item)
+//                        self.targetVM = targetVM
+//                    }
+//                    if self.state != .ready { self.state = .ready }
+//
+//                case .failure(let error):
+//                    self.state = .failure(error)
+//                }
+//            }
     }
 }
 
@@ -125,7 +149,16 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
             case .loading:
                 ProgressView()
             case .ready:
-                content(loadingVM.targetVM)
+                if let targetVM = loadingVM.targetVM {
+                    content(targetVM)
+                } else {
+                    VStack {
+                        Text("Fatal error.\nVerify your connectivity\nand come back on this page.")
+                        Button("Retry") {
+                            loadingVM.state = .idle
+                        }
+                    }
+                }
             case .failure(let error):
                 VStack {
                     Text("\(error.localizedDescription)\nVerify your connectivity\nand come back on this page.")

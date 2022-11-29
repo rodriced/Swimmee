@@ -17,7 +17,7 @@ enum CoachMessagesFilter: String, CaseIterable, Identifiable {
 }
 
 class CoachMessagesViewModel: ObservableObject {
-    @Published var messages: [Message] = []
+    @Published var messages: [Message]
 
     @Published var filter = CoachMessagesFilter.all
 
@@ -47,8 +47,9 @@ class CoachMessagesViewModel: ObservableObject {
 //        self.messages = messages
 //    }
 
-    required init() {
+    required init(initialData: [Message]) {
         print("CoachMessagesViewModel.init")
+        messages = initialData
     }
 
     var restartLoader: (() -> Void)?
@@ -222,7 +223,7 @@ struct CoachMessagesView: View {
 
 struct CoachMessagesView_Previews: PreviewProvider {
     static var previews: some View {
-        CoachMessagesView(vm: CoachMessagesViewModel())
+        CoachMessagesView(vm: CoachMessagesViewModel(initialData: [Message.sample]))
             .environmentObject(UserSession(initialProfile: Profile.coachSample))
     }
 }
