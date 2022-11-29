@@ -35,8 +35,8 @@ class ProfileViewModel: LoadableViewModelV2 {
         }
     }
 
-    @Published var authenticationSheet = false
-    @Published var confirmationActionSheet = false
+    @Published var reauthenticationViewIsPresented = false
+    @Published var deleteAccountConfirmationDialogIsPresented = false
 
     @Published var isReadyToSubmitUpdate: Bool = false
 
@@ -223,23 +223,29 @@ struct ProfileView: View {
             }
     }
 
+    var deleteAccountConfirmationDialog: ConfirmationDialog {
+        ConfirmationDialog(
+            title: "Your account is going to be deleted. Ok?",
+            primaryButton: "Delete",
+            primaryAction: vm.deleteAccount,
+            isDestructive: true
+        )
+    }
+
     var deleteAccountButton: some View {
         Button {
-            vm.authenticationSheet = true
+            vm.reauthenticationViewIsPresented = true
         } label: {
             Text("Delete my account")
         }
         .foregroundColor(Color.red)
-        .sheet(isPresented: $vm.authenticationSheet) {
-            AuthenticationView(viewModel: SignSharedViewModel(formType: .signIn, submitSuccess: $vm.confirmationActionSheet)
+        .sheet(isPresented: $vm.reauthenticationViewIsPresented) {
+            ReauthenticationView(
+                viewModel: SignSharedViewModel(formType: .signIn, submitSuccess: $vm.deleteAccountConfirmationDialogIsPresented),
+                message: "You must reauthenticate to confirm\nthe deletion of your account."
             )
-            .actionSheet(isPresented: $vm.confirmationActionSheet) {
-                ActionSheet(title: Text("Confirm your account deletion"), message: nil, buttons: [
-                    .destructive(Text("Delete"), action: {
-                        vm.deleteAccount()
-                    }),
-                    .cancel()
-                ])
+            .actionSheet(isPresented: $vm.deleteAccountConfirmationDialogIsPresented) {
+                deleteAccountConfirmationDialog.actionSheet()
             }
         }
     }
@@ -296,7 +302,7 @@ struct ProfileView: View {
             ImagePicker(sourceType: vm.photoPickeImageSource, selectedImage: $vm.pickedPhoto)
         }
         .task { vm.startPublishers() }
-        
+
         .navigationBarBackButtonHidden(vm.isReadyToSubmitUpdate)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -305,7 +311,6 @@ struct ProfileView: View {
                 }
             }
         }
-
     }
 }
 

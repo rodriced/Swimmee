@@ -14,12 +14,19 @@ struct ConfirmationDialog: Identifiable {
     let message: String?
     let primaryButton: String
     let primaryAction: () -> Void
-    
-    init(title: String, message: String? = nil, primaryButton: String, primaryAction: @escaping () -> Void) {
+    let isDestructive: Bool
+
+    init(title: String,
+         message: String? = nil,
+         primaryButton: String,
+         primaryAction: @escaping () -> Void,
+         isDestructive: Bool = false)
+    {
         self.title = title
         self.message = message
         self.primaryButton = primaryButton
         self.primaryAction = primaryAction
+        self.isDestructive = isDestructive
     }
 
     func actionSheet() -> ActionSheet {
@@ -27,7 +34,10 @@ struct ConfirmationDialog: Identifiable {
             title: Text(title),
             message: message.map(Text.init),
             buttons: [
-                .default(Text(primaryButton), action: primaryAction),
+                isDestructive ?
+                    .destructive(Text(primaryButton), action: primaryAction)
+                    :
+                    .default(Text(primaryButton), action: primaryAction),
                 .cancel()
             ]
         )

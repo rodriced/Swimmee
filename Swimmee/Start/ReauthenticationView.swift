@@ -1,5 +1,5 @@
 //
-//  AuthenticationView.swift
+//  ReauthenticationView.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 23/09/2022.
@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-struct AuthenticationView: View {
+struct ReauthenticationView: View {
     @StateObject var viewModel: SignSharedViewModel
     @Environment(\.presentationMode) var presentationMode
+    
+    let message: String
 
     var defaultBorderColor = RoundedBorderTextFieldStyle()
 
@@ -17,7 +19,11 @@ struct AuthenticationView: View {
         NavigationView {
             VStack {
                 //            AppTitleView()
+                Spacer()
 
+                Text(message)
+                    .multilineTextAlignment(.center)
+                    .font(.system(.headline))
                 Spacer()
 
                 VStack(spacing: 30) {
@@ -57,8 +63,11 @@ struct AuthenticationView: View {
     }
 }
 
-struct AuthenticationView_Previews: PreviewProvider {
+struct ReauthenticationView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthenticationView(viewModel: SignSharedViewModel(formType: .signIn))
+        ReauthenticationView(
+            viewModel: SignSharedViewModel(formType: .signIn),
+            message: "Explication message.\nMultiline...\nCentered"
+        )
     }
 }
