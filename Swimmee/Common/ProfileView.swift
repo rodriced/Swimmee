@@ -296,6 +296,16 @@ struct ProfileView: View {
             ImagePicker(sourceType: vm.photoPickeImageSource, selectedImage: $vm.pickedPhoto)
         }
         .task { vm.startPublishers() }
+        
+        .navigationBarBackButtonHidden(vm.isReadyToSubmitUpdate)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                if vm.isReadyToSubmitUpdate {
+                    Button("Cancel") { presentationMode.wrappedValue.dismiss() }
+                }
+            }
+        }
+
     }
 }
 
