@@ -53,14 +53,14 @@ final class SessionTests: XCTestCase {
     }
     
     func testSessionConnectionStatus_When() throws {
-        let normalStatusFlow: [ConnectionStatus] = [.undefined, .loggedOut, .loggedIn(Profile.coachSample), .loggedOut]
+        let normalStatusFlow: [ConnectionStatus] = [.undefined, .signedOut, .signedIn(Profile.coachSample), .signedOut]
         
         waitForConnectionStatusFlow(entry: normalStatusFlow, expectedFlow: normalStatusFlow)
     }
     
     func testConnectionStatusWhenDifferentValueArePublished3() throws {
-        let entryStatusFlow: [ConnectionStatus] = [.undefined, .undefined, .loggedOut, .loggedOut, .loggedIn(Profile.coachSample), .loggedIn(Profile.coachSample), .loggedOut]
-        let expectedStatusFlow: [ConnectionStatus] = [.undefined, .loggedOut, .loggedIn(Profile.coachSample), .loggedOut]
+        let entryStatusFlow: [ConnectionStatus] = [.undefined, .undefined, .signedOut, .signedOut, .signedIn(Profile.coachSample), .signedIn(Profile.coachSample), .signedOut]
+        let expectedStatusFlow: [ConnectionStatus] = [.undefined, .signedOut, .signedIn(Profile.coachSample), .signedOut]
 
         waitForConnectionStatusFlow(entry: entryStatusFlow, expectedFlow: expectedStatusFlow)
     }
