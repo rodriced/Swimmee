@@ -15,10 +15,10 @@ struct RoundedStyleWithErrorIndicator: ViewModifier {
     func body(content: Content) -> some View {
         content
             .textFieldStyle(.roundedBorder)
-            .if(inError) {
-                $0.overlay(RoundedRectangle(cornerRadius: 5)
-                    .stroke(Color.red, lineWidth: 1))
-            }
+            .overlay(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(inError ? Color.red : Color(UIColor.quaternarySystemFill), lineWidth: 0.5)
+            )
     }
 }
 
@@ -32,7 +32,7 @@ struct FormTextField: View {
     let title: String
     @Binding var value: String
     var inError: Bool
-    
+
     var body: some View {
         TextField(title, text: $value)
             .disableAutocorrection(true)
