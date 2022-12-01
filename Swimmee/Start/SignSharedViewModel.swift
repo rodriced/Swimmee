@@ -8,6 +8,10 @@
 import SwiftUI
 
 class SignSharedViewModel: ObservableObject {
+    enum SignUpError: String, Error {
+        case userTypeWithoutValue = "User type hasn't value. It can't happened so it's a bug ! Please, send a report."
+    }
+
     enum FormType { case signUp, signIn }
 
     private var formType: FormType
@@ -22,12 +26,13 @@ class SignSharedViewModel: ObservableObject {
 
     @Published var firstName = ""
     @Published var lastName = ""
-    @Published var userType = UserType.coach
+    @Published var userType: UserType? = nil
     @Published var email = ""
     @Published var password = ""
 
     @Published var firstNameInError = false
     @Published var lastNameInError = false
+    @Published var userTypeInError = false
     @Published var emailInError = false
     @Published var passwordInError = false
 
@@ -81,6 +86,9 @@ class SignSharedViewModel: ObservableObject {
 
     func signUp() {
         submitForm { [self] in
+            guard let userType else { throw SignUpError.userTypeWithoutValue }
+            // TODO: userType shouldn't be unwrapped here because it's an impossible case. Design to review.
+            
             try await accountManager.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
         }
     }
@@ -110,6 +118,10 @@ class SignSharedViewModel: ObservableObject {
         ValueValidation.validateLastName(lastName)
     }
 
+    private var isUserTypeValidated: Bool {
+        userType != nil
+    }
+
     private var isEmailValidated: Bool {
         ValueValidation.validateEmail(email)
     }
@@ -121,7 +133,11 @@ class SignSharedViewModel: ObservableObject {
     var isReadyToSubmit: Bool {
         switch formType {
         case .signUp:
-            return isFirstNameValidated && isLastNameValidated && isEmailValidated && isPasswordValidated
+            return isFirstNameValidated
+                && isLastNameValidated
+                && isUserTypeValidated
+                && isEmailValidated
+                && isPasswordValidated
         case .signIn:
             return isEmailValidated && isPasswordValidated
         }
@@ -133,6 +149,7 @@ class SignSharedViewModel: ObservableObject {
         case .signUp:
             firstNameInError = !isFirstNameValidated
             lastNameInError = !isLastNameValidated
+            userTypeInError = !isUserTypeValidated
             emailInError = !isEmailValidated
             passwordInError = !isPasswordValidated
         case .signIn:

@@ -10,6 +10,33 @@ import SwiftUI
 struct SignUpView: View {
     @StateObject var viewModel = SignSharedViewModel(formType: .signUp)
 
+    @State var userTypePickerOpened = false
+    @State var coachTypePicked = false
+    @State var swimmerTypePicked = false
+
+    var userTypePicker: some View {
+        let buttonTitle =
+            viewModel.userType.map { "I am a \($0.rawValue.capitalized)" } ?? "Are you a coach or a swimmer ?"
+
+        return Text(buttonTitle)
+            .foregroundColor(.accentColor)
+            .padding(4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(viewModel.userTypeInError ? Color.red : Color.clear, lineWidth: 0.5)
+            )
+            .contextMenu {
+                Button {
+                    viewModel.userType = .coach
+                } label: { Text("Coach") }
+
+                Button {
+                    viewModel.userType = .swimmer
+                } label: { Text("Swimmer") }
+            }
+            .onChange(of: viewModel.userType, perform: { _ in viewModel.formFieldChanged("") })
+    }
+
     var body: some View {
         VStack {
             AppTitleView()
@@ -31,15 +58,7 @@ struct SignUpView: View {
                         .roundedStyleWithErrorIndicator(inError: viewModel.lastNameInError)
                 }
 
-                HStack {
-                    Text("I'm a ")
-                    Picker("UserType", selection: $viewModel.userType) {
-                        ForEach(UserType.allCases) { userType in
-                            Text(userType.rawValue.capitalized)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                }
+                userTypePicker
 
                 VStack {
                     TextField("Email", text: $viewModel.email)
