@@ -8,7 +8,7 @@
 import Foundation
 
 public enum UserType: String, CaseIterable, Identifiable, Codable {
-    public var id: String { rawValue }
+    public var id: Self { self }
 
     case coach, swimmer
 
