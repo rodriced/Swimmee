@@ -17,10 +17,11 @@ class Session: ObservableObject {
     }
 
     @Published var connectionStatus = ConnectionStatus.undefined {
-        didSet { debugPrint("session.onnectionStatus didSet with \(connectionStatus)")
+        didSet {
+//            print("session.onnectionStatus didSet with \(connectionStatus)")
             if case .failure(let error) = connectionStatus {
                 errorAlertMessage = error.localizedDescription
-//                errorAlertOkButtonCompletion = { self.connectionStatus = .loggedOut }
+//                errorAlertOkButtonCompletion = { self.connectionStatus = .signedOut }
             }
         }
     }
@@ -45,16 +46,17 @@ class Session: ObservableObject {
     }
 
     func updateConnectionStatus(_ newStatus: ConnectionStatus) {
-        print("session.updateSignedInState")
+//        print("session.updateSignedInState")
         switch (connectionStatus, newStatus) {
-        case (.loggedIn(let profile), .loggedIn(let newProfile)) where profile.userId != newProfile.userId:
+        case (.signedIn(let profile), .signedIn(let newProfile)) where profile.userId != newProfile.userId:
             fatalError("session.updateSignedInState: user has changed (impossible state")
 
         case (.undefined, .undefined),
-             (.loggedOut, .loggedOut),
+             (.signedOut, .signedOut),
              (.failure(_), .failure(_)),
-             (.loggedIn(_), .loggedIn(_)):
-            print("session.updateSignedInState: Nothing has changed")
+             (.signedIn(_), .signedIn(_)):
+//            print("session.updateSignedInState: Nothing has changed")
+            ()
 
         default:
             connectionStatus = newStatus
@@ -70,11 +72,11 @@ struct MainView: View {
             switch session.connectionStatus {
             case .undefined:
                 ProgressView()
-            case .loggedOut:
+            case .signedOut:
                 NavigationView {
                     SignUpView()
                 }
-            case .loggedIn(let initialProfile):
+            case .signedIn(let initialProfile):
                 SignedInView(profile: initialProfile)
             case .failure:
 //                Text(error.localizedDescription)
@@ -112,9 +114,9 @@ struct MainView_Previews: PreviewProvider {
 
     static var previews: some View {
 //        MainView(session: Session(accountManager: MockedAccountManager(connectionStatus: .undefined)))
-//        MainView(session: Session(accountManager: MockedAccountManager(connectionStatus: .loggedOut)))
+//        MainView(session: Session(accountManager: MockedAccountManager(connectionStatus: .signedOut)))
         MainView(session: sampleSession(connectionStatus: .failure(MockedAccountManager.Err.signInError)))
-//        MainView(session: Session(accountManager: MockedAccountManager(connectionStatus: .loggedIn(Profile.coachSample))))
+//        MainView(session: Session(accountManager: MockedAccountManager(connectionStatus: .signedIn(Profile.coachSample))))
 //        MainView(session: Session(accountManager: MockedAccountManager(connectionStatus: .failure(MockedAccountManager.Err.signInError))))
     }
 }

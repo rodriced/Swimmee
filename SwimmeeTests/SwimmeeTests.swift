@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Swimmee
+//@testable import Swimmee
 
 final class SwimmeeTests: XCTestCase {
 

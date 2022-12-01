@@ -20,7 +20,7 @@ protocol AuthAPI {
     var isSgnedIn: Bool { get }
     var currentUserId: UserId? { get }
     
-    func signedInStatePublisher() -> AnyPublisher<UserId?, Never>
+    func currentUserIdPublisher() -> AnyPublisher<UserId?, Never>
         
     @discardableResult func signUp(email: String, password: String) async throws -> UserId
     @discardableResult func signIn(email: String, password: String) async throws -> UserId
@@ -46,7 +46,7 @@ final class FirebaseAuthAPI: AuthAPI {
         return userId
     }
     
-    func signedInStatePublisher() -> AnyPublisher<UserId?, Never> {
+    func currentUserIdPublisher() -> AnyPublisher<UserId?, Never> {
         auth.authStateDidChangePublisher()
             .map { user in
                 user?.uid

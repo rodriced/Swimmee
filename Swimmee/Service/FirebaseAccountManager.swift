@@ -83,7 +83,7 @@ class FirebaseAccountManager: AccountManager {
 extension ConnectionStatus {
     func getProfile(throwing customError: Error) throws -> Profile {
         switch self {
-        case let .loggedIn(profile):
+        case let .signedIn(profile):
             return profile
         case let .failure(error):
             throw error
