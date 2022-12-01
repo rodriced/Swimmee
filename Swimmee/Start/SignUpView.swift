@@ -34,7 +34,7 @@ struct SignUpView: View {
                     viewModel.userType = .swimmer
                 } label: { Text("Swimmer") }
             }
-            .onChange(of: viewModel.userType, perform: { _ in viewModel.formFieldChanged("") })
+            .onChange(of: viewModel.userType, perform: viewModel.formFieldChanged)
     }
 
     var body: some View {

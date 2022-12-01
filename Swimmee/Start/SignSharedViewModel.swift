@@ -58,6 +58,7 @@ class SignSharedViewModel: ObservableObject {
     private func submitForm(action: @escaping () async throws -> Void) {
         guard validateForm() else {
             formWasValidatedWithError = true
+            errorAlertMessage = "Fields in red contain errors. Correct them and retry."
             return
         }
 
@@ -105,7 +106,7 @@ class SignSharedViewModel: ObservableObject {
         }
     }
 
-    func formFieldChanged(_: String) {
+    func formFieldChanged<T>(_: T) {
         guard formWasValidatedWithError else { return }
         validateForm()
     }
