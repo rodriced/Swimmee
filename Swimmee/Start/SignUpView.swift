@@ -21,10 +21,12 @@ struct SignUpView: View {
             VStack(spacing: 30) {
                 VStack {
                     TextField("First name", text: $viewModel.firstName)
+                        .onChange(of: viewModel.firstName, perform: viewModel.formFieldChanged)
                         .disableAutocorrection(true)
                         .roundedStyleWithErrorIndicator(inError: viewModel.firstNameInError)
 
                     TextField("Last name", text: $viewModel.lastName)
+                        .onChange(of: viewModel.lastName, perform: viewModel.formFieldChanged)
                         .disableAutocorrection(true)
                         .roundedStyleWithErrorIndicator(inError: viewModel.lastNameInError)
                 }
@@ -41,11 +43,13 @@ struct SignUpView: View {
 
                 VStack {
                     TextField("Email", text: $viewModel.email)
+                        .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
 
                     SecureField("Password", text: $viewModel.password)
+                        .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
                         .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
                 }
             }

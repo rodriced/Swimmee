@@ -20,12 +20,15 @@ struct SignInView: View {
 
             VStack(spacing: 30) {
                 TextField("Email", text: $viewModel.email)
+                    .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
                     .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
 
                 SecureField("Password", text: $viewModel.password)
+                    .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
                     .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
+
             }
 
             Spacer()

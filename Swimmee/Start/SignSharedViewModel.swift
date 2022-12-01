@@ -32,6 +32,7 @@ class SignSharedViewModel: ObservableObject {
     @Published var passwordInError = false
 
     @Published var submiting = false
+    var formWasValidatedWithError = false
 
     @Published var errorAlertIsPresenting = false {
         didSet {
@@ -51,6 +52,7 @@ class SignSharedViewModel: ObservableObject {
 
     private func submitForm(action: @escaping () async throws -> Void) {
         guard validateForm() else {
+            formWasValidatedWithError = true
             return
         }
 
@@ -95,6 +97,11 @@ class SignSharedViewModel: ObservableObject {
         }
     }
 
+    func formFieldChanged(_: String) {
+        guard formWasValidatedWithError else { return }
+        validateForm()
+    }
+
     private var isFirstNameValidated: Bool {
         ValueValidation.validateFirstName(firstName)
     }
@@ -120,6 +127,7 @@ class SignSharedViewModel: ObservableObject {
         }
     }
 
+    @discardableResult
     func validateForm() -> Bool {
         switch formType {
         case .signUp:
