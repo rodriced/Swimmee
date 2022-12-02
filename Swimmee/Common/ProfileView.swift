@@ -78,10 +78,10 @@ class ProfileViewModel: LoadableViewModel {
                                     initialValue: initialProfile.email)
 
     lazy var photoInfoField = FormField(publishedValue: &_readOnlyPhotoInfoEditedState,
-                                    // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
-                                    // BUT SEEMS OK NOW. TO BE VERIFIED
-                                    compareWith: { $0 != .initial },
-                                    debounceDelay: 0)
+                                        // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
+                                        // BUT SEEMS OK NOW. TO BE VERIFIED
+                                        compareWith: { $0 != .initial },
+                                        debounceDelay: 0)
 
     // MARK: Form validation logic
 
@@ -151,9 +151,11 @@ class ProfileViewModel: LoadableViewModel {
     func deleteAccount() {
         // TODO: Implement this with Firebase function
         // To be tested. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
-        _ = DispatchQueue.main.sync {
-            Task {
-                try await FirebaseAccountManager().deleteCurrrentAccount()
+        Task{
+            do {
+                try await API.shared.account.deleteCurrrentAccount()
+            } catch {
+                print("API.shared.account.deleteCurrrentAccount error catched : \(error.localizedDescription)")
             }
         }
     }
@@ -308,7 +310,7 @@ struct ProfileView: View {
             .textFieldStyle(.roundedBorder)
 
             Spacer()
-            
+
             updateProfileButton
 
             Divider().overlay(Color.red).frame(height: 30)

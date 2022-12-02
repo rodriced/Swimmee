@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias UserId = String
+
 public enum UserType: String, CaseIterable, Identifiable, Codable {
     public var id: Self { self }
 

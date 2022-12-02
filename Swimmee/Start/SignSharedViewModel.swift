@@ -16,12 +16,12 @@ class SignSharedViewModel: ObservableObject {
 
     private var formType: FormType
     private var submitSuccess: Binding<Bool>?
-    private let accountManager: AccountManager
+    private let accountAPI: AccountAPI
 
-    init(formType: FormType, submitSuccess: Binding<Bool>? = nil, authService: AccountManager = FirebaseAccountManager()) {
+    init(formType: FormType, submitSuccess: Binding<Bool>? = nil, accountAPI: AccountAPI = FirebaseAccountAPI()) {
         self.formType = formType
         self.submitSuccess = submitSuccess
-        self.accountManager = authService
+        self.accountAPI = accountAPI
     }
 
     @Published var firstName = ""
@@ -90,19 +90,19 @@ class SignSharedViewModel: ObservableObject {
             guard let userType else { throw SignUpError.userTypeWithoutValue }
             // TODO: userType shouldn't be unwrapped here because it's an impossible case. Design to review.
             
-            try await accountManager.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
+            try await accountAPI.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
         }
     }
 
     func signIn() {
         submitForm { [self] in
-            try await accountManager.signIn(email: email, password: password)
+            try await accountAPI.signIn(email: email, password: password)
         }
     }
 
     func reauthenticate() {
         submitForm { [self] in
-            try await accountManager.reauthenticate(email: email, password: password)
+            try await accountAPI.reauthenticate(email: email, password: password)
         }
     }
 

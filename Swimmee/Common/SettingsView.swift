@@ -18,7 +18,7 @@ struct SettingsView: View {
             title: "You are going to logout from Swimmee.",
             primaryButton: "Confirm logout",
             primaryAction: {
-                signOutErrorAlertIsPresented = !API.shared.auth.signOut()
+                signOutErrorAlertIsPresented = !API.shared.account.signOut()
             }
         )
     }
