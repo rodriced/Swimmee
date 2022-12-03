@@ -306,6 +306,7 @@ struct ProfileView: View {
 
                 VStack {
                     FormTextField(title: "Email", value: $vm.email, inError: vm.emailInError)
+                        .autocapitalization(.none)
                 }
             }
             .textFieldStyle(.roundedBorder)
