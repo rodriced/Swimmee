@@ -151,7 +151,7 @@ class ProfileViewModel: LoadableViewModel {
     func deleteAccount() {
         // TODO: Implement this with Firebase function
         // To be tested. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
-        Task{
+        Task {
             do {
                 try await API.shared.account.deleteCurrrentAccount()
             } catch {
@@ -272,8 +272,9 @@ struct ProfileView: View {
         .foregroundColor(Color.red)
         .sheet(isPresented: $vm.reauthenticationViewIsPresented) {
             ReauthenticationView(
-                viewModel: SignSharedViewModel(formType: .signIn, submitSuccess: $vm.deleteAccountConfirmationDialogIsPresented),
-                message: "You must reauthenticate to confirm\nthe deletion of your account."
+                viewModel: SignSharedViewModel(formType: .signIn),
+                message: "You must reauthenticate to confirm\nthe deletion of your account.",
+                reauthenticationSuccess: $vm.deleteAccountConfirmationDialogIsPresented
             )
             .actionSheet(isPresented: $vm.deleteAccountConfirmationDialogIsPresented) {
                 deleteAccountConfirmationDialog.actionSheet()

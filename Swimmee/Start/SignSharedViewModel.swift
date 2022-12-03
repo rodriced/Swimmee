@@ -5,7 +5,7 @@
 //  Created by Rodolphe Desruelles on 28/11/2022.
 //
 
-import SwiftUI
+import Combine
 
 class SignSharedViewModel: ObservableObject {
     enum SignUpError: String, Error {
@@ -15,12 +15,10 @@ class SignSharedViewModel: ObservableObject {
     enum FormType { case signUp, signIn }
 
     private var formType: FormType
-    private var submitSuccess: Binding<Bool>?
     private let accountAPI: AccountAPI
 
-    init(formType: FormType, submitSuccess: Binding<Bool>? = nil, accountAPI: AccountAPI = FirebaseAccountAPI()) {
+    init(formType: FormType, accountAPI: AccountAPI = FirebaseAccountAPI()) {
         self.formType = formType
-        self.submitSuccess = submitSuccess
         self.accountAPI = accountAPI
     }
 
@@ -37,6 +35,8 @@ class SignSharedViewModel: ObservableObject {
     @Published var passwordInError = false
 
     @Published var submiting = false
+    @Published var submitSuccess = false
+
     var formWasValidatedWithError = false
 
     @Published var errorAlertIsPresenting = false {
@@ -70,10 +70,7 @@ class SignSharedViewModel: ObservableObject {
 
                 await MainActor.run {
                     submiting = false
-
-                    if let submitSuccess = self.submitSuccess {
-                        submitSuccess.wrappedValue = true
-                    }
+                    submitSuccess = true
                 }
             } catch {
                 await MainActor.run {
@@ -89,7 +86,7 @@ class SignSharedViewModel: ObservableObject {
         submitForm { [self] in
             guard let userType else { throw SignUpError.userTypeWithoutValue }
             // TODO: userType shouldn't be unwrapped here because it's an impossible case. Design to review.
-            
+
             try await accountAPI.signUp(email: email, password: password, userType: userType, firstName: firstName, lastName: lastName)
         }
     }

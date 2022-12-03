@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ReauthenticationView: View {
-    @StateObject var viewModel: SignSharedViewModel
     @Environment(\.presentationMode) var presentationMode
-    
-    let message: String
-
     var defaultBorderColor = RoundedBorderTextFieldStyle()
+
+    @StateObject var viewModel: SignSharedViewModel
+    let message: String
+    @Binding var reauthenticationSuccess: Bool
 
     var body: some View {
         NavigationView {
@@ -24,6 +24,7 @@ struct ReauthenticationView: View {
                 Text(message)
                     .multilineTextAlignment(.center)
                     .font(.system(.headline))
+
                 Spacer()
 
                 VStack(spacing: 30) {
@@ -50,15 +51,17 @@ struct ReauthenticationView: View {
                 .buttonStyle(.borderedProminent)
                 .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
                 .keyboardShortcut(.defaultAction)
+//                .onChange(of: viewModel.submitSuccess) { $reauthenticationSuccess.wrappedValue = viewModel.submitSuccess }
             }
             .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
             .padding()
             .navigationBarTitle("Reauthenticate", displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }) {
-                Text("Cancel").bold()
-            })
+            .navigationBarItems(trailing:
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: { Text("Cancel").bold() }
+            )
+            .onReceive(viewModel.$submitSuccess) { reauthenticationSuccess = $0 }
         }
     }
 }
@@ -67,7 +70,8 @@ struct ReauthenticationView_Previews: PreviewProvider {
     static var previews: some View {
         ReauthenticationView(
             viewModel: SignSharedViewModel(formType: .signIn),
-            message: "Explication message.\nMultiline...\nCentered"
+            message: "Explication message.\nMultiline...\nCentered",
+            reauthenticationSuccess: Binding.constant(false)
         )
     }
 }
