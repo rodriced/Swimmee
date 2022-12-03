@@ -16,12 +16,12 @@ class Session: ObservableObject {
         self.accountAPI = accountAPI
     }
 
-    @Published var connectionStatus = AccountSignedState.undefined {
+    @Published var authenticationState = AuthenticationState.undefined {
         didSet {
-//            print("session.onnectionStatus didSet with \(connectionStatus)")
-            if case .failure(let error) = connectionStatus {
+//            print("session.onnectionStatus didSet with \(authenticationState)")
+            if case .failure(let error) = authenticationState {
                 errorAlertMessage = error.localizedDescription
-//                errorAlertOkButtonCompletion = { self.connectionStatus = .signedOut }
+//                errorAlertOkButtonCompletion = { self.authenticationState = .signedOut }
             }
         }
     }
@@ -47,9 +47,9 @@ class Session: ObservableObject {
         }
     }
 
-    func updateSignedStatus(_ newStatus: AccountSignedState) {
+    func updateAuthenticationState(_ newState: AuthenticationState) {
 //        print("session.updateSignedInState")
-        switch (connectionStatus, newStatus) {
+        switch (authenticationState, newState) {
         case (.signedIn(let profile), .signedIn(let newProfile)) where profile.userId != newProfile.userId:
             fatalError("session.updateSignedInState: user has changed (impossible state")
 
@@ -61,7 +61,7 @@ class Session: ObservableObject {
             ()
 
         default:
-            connectionStatus = newStatus
+            authenticationState = newState
         }
     }
 }
@@ -71,7 +71,7 @@ struct MainView: View {
 
     var body: some View {
         Group {
-            switch session.connectionStatus {
+            switch session.authenticationState {
             case .undefined:
                 ProgressView()
             case .signedOut:
@@ -86,7 +86,7 @@ struct MainView: View {
             }
 //                .navigationViewStyle(.stack)
         }
-        .onReceive(session.accountAPI.signedStatePublisher(), perform: session.updateSignedStatus)
+        .onReceive(session.accountAPI.AuthenticationStatePublisher(), perform: session.updateAuthenticationState)
         .alert(session.errorAlertMessage, isPresented: $session.errorAlertIsPresenting) {
             Button("OK", action: session.errorAlertOkButtonCompletion)
         }
@@ -95,30 +95,30 @@ struct MainView: View {
 
 //struct MainView_Previews: PreviewProvider {
 //    class ConnectionService: ConnectionServiceProtocol {
-//        var connectionStatus: ConnectionStatus
-//        init(connectionStatus: ConnectionStatus) {
-//            self.connectionStatus = connectionStatus
+//        var authenticationState: ConnectionStatus
+//        init(authenticationState: ConnectionStatus) {
+//            self.authenticationState = authenticationState
 //        }
 //
 //        func statusPublisher() -> AnyPublisher<ConnectionStatus, Never> {
-//            //        Just(connectionStatus).eraseToAnyPublisher()
-//            //        CurrentValueSubject(connectionStatus).eraseToAnyPublisher()
-//            Array(repeating: connectionStatus, count: 3).publisher.print("connectionStatusPublisher").eraseToAnyPublisher()
+//            //        Just(authenticationState).eraseToAnyPublisher()
+//            //        CurrentValueSubject(authenticationState).eraseToAnyPublisher()
+//            Array(repeating: authenticationState, count: 3).publisher.print("connectionStatusPublisher").eraseToAnyPublisher()
 //        }
 //    }
 //
-//    static func sampleSession(connectionStatus: ConnectionStatus) -> Session {
-//        let connectionService = ConnectionService(connectionStatus: connectionStatus)
+//    static func sampleSession(authenticationState: ConnectionStatus) -> Session {
+//        let connectionService = ConnectionService(authenticationState: authenticationState)
 //        let session = Session(connectionService: connectionService)
-//        session.connectionStatus = connectionStatus // TODO:
+//        session.authenticationState = authenticationState // TODO:
 //        return session
 //    }
 //
 //    static var previews: some View {
-////        MainView(session: Session(accountManager: FakeAccountManager(connectionStatus: .undefined)))
-////        MainView(session: Session(accountManager: FakeAccountManager(connectionStatus: .signedOut)))
-//        MainView(session: sampleSession(connectionStatus: .failure(FakeAccountManager.Err.signInError)))
-////        MainView(session: Session(accountManager: FakeAccountManager(connectionStatus: .signedIn(Profile.coachSample))))
-////        MainView(session: Session(accountManager: FakeAccountManager(connectionStatus: .failure(FakeAccountManager.Err.signInError))))
+////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .undefined)))
+////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .signedOut)))
+//        MainView(session: sampleSession(authenticationState: .failure(FakeAccountManager.Err.signInError)))
+////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .signedIn(Profile.coachSample))))
+////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .failure(FakeAccountManager.Err.signInError))))
 //    }
 //}

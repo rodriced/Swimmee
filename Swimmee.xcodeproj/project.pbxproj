@@ -10,8 +10,9 @@
 		DC0571F929391AE80037A387 /* SignSharedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */; };
 		DC057201293A0E720037A387 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057200293A0E720037A387 /* TestHelper.swift */; };
 		DC057205293A1EBC0037A387 /* FirebaseAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057204293A1EBC0037A387 /* FirebaseAccountAPI.swift */; };
-		DC057207293A292E0037A387 /* MockAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057206293A292E0037A387 /* MockAccountAPI.swift */; };
+		DC057207293A292E0037A387 /* LocalAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057206293A292E0037A387 /* LocalAccountAPI.swift */; };
 		DC057209293A9CDB0037A387 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057208293A9CDB0037A387 /* CustomError.swift */; };
+		DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */; };
 		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
 		DC232BCC29281F73007BC2ED /* Session3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCB29281F73007BC2ED /* Session3.swift */; };
 		DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD32929AC95007BC2ED /* MainView2.swift */; };
@@ -105,8 +106,9 @@
 		DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSharedViewModelTests.swift; sourceTree = "<group>"; };
 		DC057200293A0E720037A387 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
 		DC057204293A1EBC0037A387 /* FirebaseAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseAccountAPI.swift; sourceTree = "<group>"; };
-		DC057206293A292E0037A387 /* MockAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAccountAPI.swift; sourceTree = "<group>"; };
+		DC057206293A292E0037A387 /* LocalAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAccountAPI.swift; sourceTree = "<group>"; };
 		DC057208293A9CDB0037A387 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAccountAPI.swift; sourceTree = "<group>"; };
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
 		DC232BCB29281F73007BC2ED /* Session3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session3.swift; sourceTree = "<group>"; };
 		DC232BD32929AC95007BC2ED /* MainView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView2.swift; sourceTree = "<group>"; };
@@ -210,7 +212,8 @@
 		DC0571FA29391EA90037A387 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
-				DC057206293A292E0037A387 /* MockAccountAPI.swift */,
+				DC057206293A292E0037A387 /* LocalAccountAPI.swift */,
+				DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -660,11 +663,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC0571F929391AE80037A387 /* SignSharedViewModelTests.swift in Sources */,
-				DC057207293A292E0037A387 /* MockAccountAPI.swift in Sources */,
+				DC057207293A292E0037A387 /* LocalAccountAPI.swift in Sources */,
 				DC057201293A0E720037A387 /* TestHelper.swift in Sources */,
 				DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */,
 				DC7912E1291BD3140077B403 /* Helpers.swift in Sources */,
 				DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */,
+				DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

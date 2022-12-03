@@ -32,8 +32,23 @@ enum AccountError: CustomError {
     }
 }
 
-enum AccountSignedState {
+enum AuthenticationState: Equatable {
     case undefined, signedIn(Profile), signedOut, failure(Error)
+    
+    static func == (lhs: AuthenticationState, rhs: AuthenticationState) -> Bool {
+        switch (lhs, rhs) {
+        case (.signedIn(let lhsProfile), .signedIn(let rhsProfile)) where lhsProfile.userId == rhsProfile.userId:
+            return true
+            
+        case (.undefined, .undefined),
+             (.signedOut, .signedOut),
+            (.failure(_), .failure(_)):
+            return true
+    
+        default:
+            return false
+        }
+    }
 }
 
 protocol AccountAPI {
@@ -42,7 +57,7 @@ protocol AccountAPI {
     var currentUserId: UserId? { get }
     func getCurrentUserId() throws -> UserId
 
-    func signedStatePublisher() -> AnyPublisher<AccountSignedState, Never>
+    func AuthenticationStatePublisher() -> AnyPublisher<AuthenticationState, Never>
 
     @discardableResult
     func signUp(email: String, password: String, userType: UserType, firstName: String, lastName: String) async throws -> Profile
@@ -83,18 +98,18 @@ class FirebaseAccountAPI: AccountAPI {
             .eraseToAnyPublisher()
     }
     
-    func signedStatePublisher() -> AnyPublisher<AccountSignedState, Never> {
+    func AuthenticationStatePublisher() -> AnyPublisher<AuthenticationState, Never> {
         currentUserIdPublisher()
             .flatMap { userId in
                 switch userId {
                 case .none:
-                    return Just(AccountSignedState.signedOut)
+                    return Just(AuthenticationState.signedOut)
                         .eraseToAnyPublisher()
                 case .some(let userId):
                     return API.shared.profile.future(userId: userId)
-                        .map(AccountSignedState.signedIn)
+                        .map(AuthenticationState.signedIn)
                         .catch { _ in
-                            Just(AccountSignedState.failure(AccountError.profileLoadingError))
+                            Just(AuthenticationState.failure(AccountError.profileLoadingError))
                         }
                         .eraseToAnyPublisher()
                 }
