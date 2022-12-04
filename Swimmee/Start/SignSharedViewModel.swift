@@ -12,6 +12,8 @@ class SignSharedViewModel: ObservableObject {
         case userTypeWithoutValue = "User type hasn't value. It can't happened so it's a bug ! Please, send a report."
     }
 
+    static let formValidationErrorMessage = "Fields in red contain errors. Correct them and retry."
+
     enum FormType { case signUp, signIn }
 
     private var formType: FormType
@@ -28,16 +30,16 @@ class SignSharedViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
 
-    @Published var firstNameInError = false
-    @Published var lastNameInError = false
-    @Published var userTypeInError = false
-    @Published var emailInError = false
-    @Published var passwordInError = false
+    @Published private(set) var firstNameInError = false
+    @Published private(set) var lastNameInError = false
+    @Published private(set) var userTypeInError = false
+    @Published private(set) var emailInError = false
+    @Published private(set) var passwordInError = false
 
-    @Published var submiting = false
-    @Published var submitSuccess = false
+    @Published private(set) var submiting = false
+    @Published private(set) var submitSuccess = false
 
-    var formWasValidatedWithError = false
+    private var formWasValidatedWithError = false
 
     @Published var errorAlertIsPresenting = false {
         didSet {
@@ -47,7 +49,7 @@ class SignSharedViewModel: ObservableObject {
         }
     }
 
-    var errorAlertMessage: String = "" {
+    private(set) var errorAlertMessage: String = "" {
         didSet {
             if !errorAlertMessage.isEmpty {
                 errorAlertIsPresenting = true
@@ -58,7 +60,7 @@ class SignSharedViewModel: ObservableObject {
     private func submitForm(action: @escaping () async throws -> Void) {
         guard validateForm() else {
             formWasValidatedWithError = true
-            errorAlertMessage = "Fields in red contain errors. Correct them and retry."
+            errorAlertMessage = Self.formValidationErrorMessage
             return
         }
 
@@ -142,7 +144,7 @@ class SignSharedViewModel: ObservableObject {
     }
 
     @discardableResult
-    func validateForm() -> Bool {
+    private func validateForm() -> Bool {
         switch formType {
         case .signUp:
             firstNameInError = !isFirstNameValidated
