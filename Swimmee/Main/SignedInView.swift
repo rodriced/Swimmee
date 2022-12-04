@@ -12,11 +12,12 @@ class UserSession: ObservableObject {
     let userId: String
     let userType: UserType
     @Published var coachId: UserId?
-    @Published var readMessagesIds: Set<Message.DbId> {
-        didSet {
-            print("readMessagesIds  = \(readMessagesIds.debugDescription)")
-        }
-    }
+    @Published var readMessagesIds: Set<Message.DbId>
+//    {
+//        didSet {
+//            print("readMessagesIds  = \(readMessagesIds.debugDescription)")
+//        }
+//    }
 
     let allMessagesPublisher =
         API.shared.message.listPublisher(isSent: .any)
@@ -27,10 +28,10 @@ class UserSession: ObservableObject {
             .flatMap {
                 coachId -> AnyPublisher<[Message], Error> in
                 API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSent: .sent)
-                    .print("message.listPublisher")
+//                    .print("message.listPublisher")
                     .eraseToAnyPublisher()
             }
-            .print("messagePublisher")
+//            .print("messagePublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 
@@ -38,7 +39,7 @@ class UserSession: ObservableObject {
     lazy var readMessagesIdsPublisher =
         $readMessagesIds
             .setFailureType(to: Error.self)
-            .print("unreadMessagesPublisher")
+//            .print("unreadMessagesPublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 
