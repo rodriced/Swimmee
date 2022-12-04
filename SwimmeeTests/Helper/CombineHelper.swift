@@ -18,6 +18,39 @@ extension XCTestCase
         equals expectedValue: Value,
         file: StaticString = #file,
         line: UInt = #line
+    ) -> (XCTestExpectation, AnyCancellable?)
+        where P.Output == Value, P.Failure == Never
+    {
+        let expectation = expectation(
+            description: "Awaiting value \(expectedValue)"
+        )
+
+        let cancellable = publisher
+            .sink
+            { value in
+                XCTAssertEqual(value, expectedValue, file: file, line: line)
+                expectation.fulfill()
+            }
+
+        return (expectation, cancellable)
+    }
+    
+    func wait(
+        for expectations: [(XCTestExpectation, AnyCancellable?)],
+        timeout seconds: TimeInterval
+    ) {
+        wait(for: expectations.map(\.0), timeout: seconds)
+        expectations.map(\.1).compactMap{$0}.forEach {
+            $0.cancel()
+        }
+    }
+
+    func publisherExpectation<Value: Equatable, P: Publisher>(
+        _ publisher: P,
+        equals expectedValue: Value,
+        store: inout Set<AnyCancellable>,
+        file: StaticString = #file,
+        line: UInt = #line
     ) -> XCTestExpectation
         where P.Output == Value, P.Failure == Never
     {
@@ -25,15 +58,13 @@ extension XCTestCase
             description: "Awaiting value \(expectedValue)"
         )
 
-        var cancellable: AnyCancellable?
-
-        cancellable = publisher
+        publisher
             .sink
             { value in
                 XCTAssertEqual(value, expectedValue, file: file, line: line)
-                cancellable?.cancel()
                 expectation.fulfill()
             }
+            .store(in: &store)
 
         return expectation
     }
@@ -41,6 +72,7 @@ extension XCTestCase
     func publisherExpectation<Value: Equatable, P: Publisher>(
         _ publisher: P,
         equals expectedValues: [Value],
+        store: inout Set<AnyCancellable>,
         file: StaticString = #file,
         line: UInt = #line
     ) -> XCTestExpectation
@@ -52,19 +84,17 @@ extension XCTestCase
             description: "Awaiting values \(expectedValues)"
         )
 
-        var cancellable: AnyCancellable?
-
-        cancellable = publisher
+        publisher
             .sink
             { value in
                 let expectedValue = expectedValues.removeFirst()
                 XCTAssertEqual(value, expectedValue, file: file, line: line)
                 if expectedValues.isEmpty
                 {
-                    cancellable?.cancel()
                     expectation.fulfill()
                 }
             }
+            .store(in: &store)
 
         return expectation
     }
@@ -72,6 +102,7 @@ extension XCTestCase
     func assertPublishedValue<Value: Equatable, P: Publisher>(
         _ publisher: P,
         equals expectedValue: Value,
+        store: inout Set<AnyCancellable>,
         timeout: TimeInterval = 10,
         file: StaticString = #file,
         line: UInt = #line,
@@ -79,11 +110,11 @@ extension XCTestCase
     )
         where P.Output == Value, P.Failure == Never
     {
-        let publisher = publisher
-            .dropFirst()
-            .first(where: { $0 == expectedValue })
+//        let publisher = publisher
+//            .dropFirst()
+//            .first(where: { $0 == expectedValue })
 
-        let expectation = publisherExpectation(publisher, equals: expectedValue, file: file, line: line)
+        let expectation = publisherExpectation(publisher, equals: expectedValue, store: &store, file: file, line: line)
 
         action?()
 
@@ -93,6 +124,7 @@ extension XCTestCase
     func assertPublishedValues<Value: Equatable, P: Publisher>(
         _ publisher: P,
         equals expectedValues: [Value],
+        store: inout Set<AnyCancellable>,
         timeout: TimeInterval = 10,
         file: StaticString = #file,
         line: UInt = #line,
@@ -100,7 +132,7 @@ extension XCTestCase
     )
         where P.Output == Value, P.Failure == Never
     {
-        let expectation = publisherExpectation(publisher, equals: expectedValues)
+        let expectation = publisherExpectation(publisher, equals: expectedValues, store: &store, file: file, line: line)
 
         action?()
 

@@ -13,9 +13,11 @@ import XCTest
 final class SessionTests: XCTestCase {
     static let mockAccountAPI = {
         let mock = MockAccountAPI()
-        mock.signOutMock = { true }
+        mock.mockSignOut = { true }
         return mock
     }()
+    
+    var cancellables = Set<AnyCancellable>()
     
     override func setUp() {
         
@@ -31,15 +33,15 @@ final class SessionTests: XCTestCase {
         XCTAssertFalse(session.errorAlertIsPresenting)
         
         let expectation1 = publisherExpectation(
-            session.$errorAlertIsPresenting.dropFirst(),
-            equals: true
+            session.$errorAlertIsPresenting.print("$errorAlertIsPresenting").dropFirst(),
+            equals: true, store: &cancellables
         )
         
         let expectedConnectionStatus: [AuthenticationState] = [.undefined, .failure(AccountError.authenticationFailure)]
         
         let expectation2 = publisherExpectation(
             session.$authenticationState,
-            equals: expectedConnectionStatus
+            equals: expectedConnectionStatus, store: &cancellables
         )
         
         session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
@@ -92,7 +94,7 @@ final class SessionTests: XCTestCase {
             equals: [
                 .authenticationState(.failure(AccountError.authenticationFailure)),
                 .errorAlertIsPresenting(true)
-            ]
+            ], store: &cancellables
         )
 
         session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
@@ -142,7 +144,7 @@ final class SessionTests: XCTestCase {
             .bool(true)
         ]
         
-        assertPublishedValues(publisher, equals: expectedValues) {
+        assertPublishedValues(publisher, equals: expectedValues, store: &cancellables) {
             session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
         }
                 

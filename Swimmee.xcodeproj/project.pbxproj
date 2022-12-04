@@ -40,7 +40,7 @@
 		DC6CCE30290E8CD800DB8427 /* FirestoreCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE2F290E8CD800DB8427 /* FirestoreCollectionAPI.swift */; };
 		DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE31290FC4FF00DB8427 /* API.swift */; };
 		DC6CCE342910841B00DB8427 /* FirestoreProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE332910841B00DB8427 /* FirestoreProfileAPI.swift */; };
-		DC7912E1291BD3140077B403 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7912E0291BD3140077B403 /* Helpers.swift */; };
+		DC7912E1291BD3140077B403 /* CombineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7912E0291BD3140077B403 /* CombineHelper.swift */; };
 		DC863A512920531900934B62 /* PublisherExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC863A502920531900934B62 /* PublisherExtension.swift */; };
 		DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88597F28E269E20032E0FB /* SwimmeeApp.swift */; };
 		DC88598428E269E20032E0FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598328E269E20032E0FB /* Assets.xcassets */; };
@@ -135,7 +135,7 @@
 		DC6CCE2F290E8CD800DB8427 /* FirestoreCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreCollectionAPI.swift; sourceTree = "<group>"; };
 		DC6CCE31290FC4FF00DB8427 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		DC6CCE332910841B00DB8427 /* FirestoreProfileAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreProfileAPI.swift; sourceTree = "<group>"; };
-		DC7912E0291BD3140077B403 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		DC7912E0291BD3140077B403 /* CombineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelper.swift; sourceTree = "<group>"; };
 		DC863A502920531900934B62 /* PublisherExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherExtension.swift; sourceTree = "<group>"; };
 		DC88597C28E269E20032E0FB /* Swimmee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swimmee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88597F28E269E20032E0FB /* SwimmeeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeApp.swift; sourceTree = "<group>"; };
@@ -221,7 +221,7 @@
 		DC0571FF293A0DC70037A387 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				DC7912E0291BD3140077B403 /* Helpers.swift */,
+				DC7912E0291BD3140077B403 /* CombineHelper.swift */,
 				DC057200293A0E720037A387 /* TestHelper.swift */,
 			);
 			path = Helper;
@@ -666,7 +666,7 @@
 				DC057207293A292E0037A387 /* LocalAccountAPI.swift in Sources */,
 				DC057201293A0E720037A387 /* TestHelper.swift in Sources */,
 				DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */,
-				DC7912E1291BD3140077B403 /* Helpers.swift in Sources */,
+				DC7912E1291BD3140077B403 /* CombineHelper.swift in Sources */,
 				DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */,
 				DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */,
 			);
