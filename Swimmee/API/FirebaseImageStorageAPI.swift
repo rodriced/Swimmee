@@ -9,7 +9,13 @@ import FirebaseStorage
 import Foundation
 import UIKit
 
-class FirebaseImageStorageAPI {
+protocol ImageStorageAPI {
+    func upload(_ name: String, with data: Data) async throws -> URL
+    func download(_ name: String) async throws -> Data
+    func delete(_ name: String) async throws
+}
+
+class FirebaseImageStorageAPI: ImageStorageAPI {
     private enum Err: Error {
         case imageMaxSizeExceeded
     }

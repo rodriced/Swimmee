@@ -28,12 +28,17 @@ public class PhotoInfoEdited {
         }
     }
 
-    let initial: PhotoInfo?
-    @Published private(set) var state = State.initial
-
-    init(_ initialPhotoInfo: PhotoInfo?) {
+    init(_ initialPhotoInfo: PhotoInfo?,
+         imageStorage: ImageStorageAPI = API.shared.imageStorage)
+    {
         self.initial = initialPhotoInfo
+        self.imageStorage = imageStorage
     }
+
+    let initial: PhotoInfo?
+    let imageStorage: ImageStorageAPI
+
+    @Published private(set) var state = State.initial
 
     func updateWith(uiImage: UIImage?) {
         guard let uiImage else {
@@ -72,7 +77,7 @@ public class PhotoInfoEdited {
         switch state {
         case .removed:
             do {
-                try await API.shared.imageStorage.delete(uid)
+                try await imageStorage.delete(uid)
             } catch {
                 print("ProfileViewModel.savePhoto (delete) error \(error.localizedDescription)")
             }
@@ -80,7 +85,7 @@ public class PhotoInfoEdited {
 
         case let .new(uiImage: _, data: photoData, size: _, hash: _):
             do {
-                let photoUrl = try await API.shared.imageStorage.upload(uid, with: photoData)
+                let photoUrl = try await imageStorage.upload(uid, with: photoData)
                 return PhotoInfo(url: photoUrl, data: photoData)
             } catch {
                 print("ProfileViewModel.savePhoto (save) error \(error.localizedDescription)")
