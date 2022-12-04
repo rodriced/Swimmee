@@ -26,7 +26,7 @@ class CoachTeamViewModel: ObservableObject {
         do {
             swimmers = try await API.shared.profile.loadTeam()
             for swimmer in swimmers {
-                let imageData = try? await API.shared.imageStorage.downloadd(uid: swimmer.userId)
+                let imageData = try? await API.shared.imageStorage.download(swimmer.userId)
                 guard let imageData = imageData else {
                     continue
                 }

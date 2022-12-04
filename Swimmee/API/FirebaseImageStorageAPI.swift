@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 class FirebaseImageStorageAPI {
-    enum Err: Error {
+    private enum Err: Error {
         case imageMaxSizeExceeded
     }
 
-    let folderPath: String
-    let imageMaxSize: Int64 = 1024 * 1024
+    private let folderPath: String
+    private let imageMaxSize: Int64 = 1024 * 1024
 
-    let storage = Storage.storage()
+    private let storage = Storage.storage()
     
     init(folderPath: String) {
         self.folderPath = folderPath
@@ -26,25 +26,25 @@ class FirebaseImageStorageAPI {
 //        imageStorageRef(uid: ui).downloadURL()
 //    }
     
-    func imageStorageRef(uid: String) -> StorageReference {
-        storage.reference().child("\(folderPath)/\(uid).png")
+    private func storageRef(for name: String) -> StorageReference {
+        storage.reference().child("\(folderPath)/\(name).png")
     }
 
-    func upload(uid: String, imageData: Data) async throws -> URL {
-        guard imageData.count <= imageMaxSize else {
+    func upload(_ name: String, with data: Data) async throws -> URL {
+        guard data.count <= imageMaxSize else {
             throw Err.imageMaxSizeExceeded
         }
-        let storageRef = imageStorageRef(uid: uid)
-        _ = try await storageRef.putDataAsync(imageData)
+        let storageRef = storageRef(for: name)
+        _ = try await storageRef.putDataAsync(data)
         return try await storageRef.downloadURL()
     }
 
-    func downloadd(uid: String) async throws -> Data {
-        return try await imageStorageRef(uid: uid).data(maxSize: imageMaxSize)
+    func download(_ name: String) async throws -> Data {
+        return try await storageRef(for: name).data(maxSize: imageMaxSize)
     }
     
-    func deleteImage(uid: String) async throws {
-        try await imageStorageRef(uid: uid).delete()
+    func delete(_ name: String) async throws {
+        try await storageRef(for: name).delete()
     }
 
 }

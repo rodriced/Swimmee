@@ -160,7 +160,7 @@ class FirebaseAccountAPI: AccountAPI {
             return
         }
         try await API.shared.profile.delete(userId: userId)
-        try? await API.shared.imageStorage.deleteImage(uid: userId)
+        try? await API.shared.imageStorage.delete(userId)
         
         try await deleteCurrentUser()
     }

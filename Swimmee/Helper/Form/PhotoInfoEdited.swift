@@ -72,7 +72,7 @@ public class PhotoInfoEdited {
         switch state {
         case .removed:
             do {
-                try await API.shared.imageStorage.deleteImage(uid: uid)
+                try await API.shared.imageStorage.delete(uid)
             } catch {
                 print("ProfileViewModel.savePhoto (delete) error \(error.localizedDescription)")
             }
@@ -80,7 +80,7 @@ public class PhotoInfoEdited {
 
         case let .new(uiImage: _, data: photoData, size: _, hash: _):
             do {
-                let photoUrl = try await API.shared.imageStorage.upload(uid: uid, imageData: photoData)
+                let photoUrl = try await API.shared.imageStorage.upload(uid, with: photoData)
                 return PhotoInfo(url: photoUrl, data: photoData)
             } catch {
                 print("ProfileViewModel.savePhoto (save) error \(error.localizedDescription)")
