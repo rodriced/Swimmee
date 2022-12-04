@@ -29,7 +29,7 @@ public class PhotoInfoEdited {
     }
 
     let initial: PhotoInfo?
-    @Published var state = State.initial
+    @Published private(set) var state = State.initial
 
     init(_ initialPhotoInfo: PhotoInfo?) {
         self.initial = initialPhotoInfo
