@@ -10,12 +10,14 @@ import UIKit
 
 class ProfileViewModel: LoadableViewModel {
     struct Config: ViewModelConfig {
-        var saveProfie: (Profile) async throws -> Void
-        var deleteCurrrentAccount: () async throws -> Void
+        let saveProfie: (Profile) async throws -> Void
+        let deleteCurrrentAccount: () async throws -> Void
+        let imageStorage: ImageStorageAPI
 
         static let `default` =
             Config(saveProfie: API.shared.profile.save,
-                   deleteCurrrentAccount: API.shared.account.deleteCurrrentAccount)
+                   deleteCurrrentAccount: API.shared.account.deleteCurrrentAccount,
+                   imageStorage: API.shared.imageStorage)
     }
 
     let config: Config
@@ -63,7 +65,8 @@ class ProfileViewModel: LoadableViewModel {
         self.lastName = initialData.lastName
         self.email = initialData.email
 
-        self.photoInfoEdited = PhotoInfoEdited(initialData.photoInfo)
+        self.photoInfoEdited = PhotoInfoEdited(initialData.photoInfo,
+                                               imageStorage: config.imageStorage)
     }
 
     func refreshedLoadedData(_ loadedData: Profile) {}
