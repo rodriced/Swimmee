@@ -5,12 +5,15 @@
 //  Created by Rodolphe Desruelles on 02/12/2022.
 //
 
-//import Foundation
+@testable import Swimmee
 
 import XCTest
 
 func BadContextCallInMockFail(file: StaticString = #filePath, line: UInt = #line) { XCTFail("Can't achieve test. Mock bad initialization", file: file, line: line) }
 
-enum TestInternalError: Error {
+enum TestError: String, CustomError {
+    var description: String {rawValue}
+    
     case badContextCall
+    case errorForTesting
 }
