@@ -14,7 +14,7 @@ class SwimmerMessagesViewModel {
     @Published var messagesParams: [(message: Message, isRead: Bool)]
     @Published var newMessagesCount: Int
 
-    required init(initialData: LoadedData) {
+    required init(initialData: LoadedData, config: ViewModelEmptyConfig = .default) {
         print("SwimmerMessagesViewModel.init")
         (messagesParams, newMessagesCount) = Self.formatLoadedData(initialData)
     }

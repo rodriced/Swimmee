@@ -13,6 +13,8 @@
 		DC057207293A292E0037A387 /* LocalAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057206293A292E0037A387 /* LocalAccountAPI.swift */; };
 		DC057209293A9CDB0037A387 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057208293A9CDB0037A387 /* CustomError.swift */; };
 		DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */; };
+		DC057210293C26510037A387 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC05720F293C26510037A387 /* ProfileViewModel.swift */; };
+		DC057212293C29000037A387 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057211293C29000037A387 /* ProfileViewModelTests.swift */; };
 		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
 		DC232BCC29281F73007BC2ED /* Session3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCB29281F73007BC2ED /* Session3.swift */; };
 		DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD32929AC95007BC2ED /* MainView2.swift */; };
@@ -109,6 +111,8 @@
 		DC057206293A292E0037A387 /* LocalAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAccountAPI.swift; sourceTree = "<group>"; };
 		DC057208293A9CDB0037A387 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAccountAPI.swift; sourceTree = "<group>"; };
+		DC05720F293C26510037A387 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		DC057211293C29000037A387 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
 		DC232BCB29281F73007BC2ED /* Session3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session3.swift; sourceTree = "<group>"; };
 		DC232BD32929AC95007BC2ED /* MainView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView2.swift; sourceTree = "<group>"; };
@@ -291,6 +295,7 @@
 			children = (
 				DC920B652933CE4D000EE664 /* LoadingView.swift */,
 				DC3C888B28F455970065CBD6 /* SettingsView.swift */,
+				DC05720F293C26510037A387 /* ProfileViewModel.swift */,
 				DC8859AB28E26FE00032E0FB /* ProfileView.swift */,
 				DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */,
 				DC3C888528F426890065CBD6 /* MessageView.swift */,
@@ -379,6 +384,7 @@
 				DC88599028E269E20032E0FB /* SwimmeeTests.swift */,
 				DCAEA8F82919AF0000F936E7 /* SessionTests.swift */,
 				DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */,
+				DC057211293C29000037A387 /* ProfileViewModelTests.swift */,
 			);
 			path = SwimmeeTests;
 			sourceTree = "<group>";
@@ -646,6 +652,7 @@
 				DC3E998F28FF42C3008E274C /* FirebaseImageStorageAPI.swift in Sources */,
 				DC3C888428F426250065CBD6 /* Message.swift in Sources */,
 				DC920B812936EB74000EE664 /* SignedInView2.swift in Sources */,
+				DC057210293C26510037A387 /* ProfileViewModel.swift in Sources */,
 				DC3E999329001F7E008E274C /* User.swift in Sources */,
 				DC920B8329376738000EE664 /* ErrorView.swift in Sources */,
 				DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */,
@@ -676,6 +683,7 @@
 				DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */,
 				DC7912E1291BD3140077B403 /* CombineHelper.swift in Sources */,
 				DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */,
+				DC057212293C29000037A387 /* ProfileViewModelTests.swift in Sources */,
 				DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

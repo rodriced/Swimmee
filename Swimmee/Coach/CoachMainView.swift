@@ -21,7 +21,7 @@ struct CoachMainView: View {
                     publisherBuiler: {
                         session.allMessagesPublisher.eraseToAnyPublisher()
                     },
-                    content: CoachMessagesView.init
+                    targetView: CoachMessagesView.init
                 )
             }
             .navigationViewStyle(.stack)

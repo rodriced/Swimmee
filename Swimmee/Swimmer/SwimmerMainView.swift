@@ -68,7 +68,7 @@ struct SwimmerMainView: View {
                         )
                         .eraseToAnyPublisher()
                     }, // TODO: Manage error when there is no chosen coach
-                    content: SwimmerMessagesView.init
+                    targetView: SwimmerMessagesView.init
                 )
             }
             .badge(vm.unreadMessagesCount)

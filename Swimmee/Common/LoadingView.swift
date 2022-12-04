@@ -10,10 +10,19 @@ import SwiftUI
 import Combine
 import SwiftUI
 
+protocol ViewModelConfig {
+    static var `default`: Self { get }
+}
+
+final class ViewModelEmptyConfig: ViewModelConfig {
+    static let `default` = ViewModelEmptyConfig()
+}
+
 protocol LoadableViewModel: ObservableObject {
     associatedtype LoadedData
+    associatedtype Config: ViewModelConfig
 
-    init(initialData: LoadedData)
+    init(initialData: LoadedData, config: Config)
 
     func refreshedLoadedData(_ loadedData: LoadedData)
     var restartLoader: (() -> Void)? { get set }
@@ -26,7 +35,7 @@ protocol LoadableViewModel: ObservableObject {
         _debugStreamRef += 1
         return current
     }
- #endif
+#endif
 
 class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     typealias LoadPublisher = AnyPublisher<TargetViewModel.LoadedData, Error>
@@ -47,9 +56,12 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
         }
     }
 
-    init(publisherBuiler: @escaping () -> LoadPublisher) {
+    init(publisherBuiler: @escaping () -> LoadPublisher,
+         targetViewModelConfig: TargetViewModel.Config)
+    {
         print("LoadingViewModel.init")
         self.publisherBuilder = publisherBuiler
+        self.targetViewModelConfig = targetViewModelConfig
     }
 
     deinit {
@@ -57,13 +69,14 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     }
 
     let publisherBuilder: () -> LoadPublisher
+    let targetViewModelConfig: TargetViewModel.Config
 
     @Published var state = LodingState.idle
 
-    var targetVM: TargetViewModel?
+    var targetViewModel: TargetViewModel?
 
     func createTargetVM(loadedData: TargetViewModel.LoadedData) -> TargetViewModel {
-        let vm = TargetViewModel(initialData: loadedData)
+        let vm = TargetViewModel(initialData: loadedData, config: targetViewModelConfig)
         vm.restartLoader = startLoader
         return vm
     }
@@ -97,11 +110,11 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
             } receiveValue: { [weak self] data in
                 guard let self else { return }
 
-                if let targetVM = self.targetVM {
+                if let targetVM = self.targetViewModel {
                     targetVM.refreshedLoadedData(data)
                 } else {
                     let targetVM = self.createTargetVM(loadedData: data)
-                    self.targetVM = targetVM
+                    self.targetViewModel = targetVM
                 }
                 if self.state != .ready { self.state = .ready }
             }
@@ -129,14 +142,17 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
     @StateObject var loadingVM: LoadingViewModel<TargetViewModel>
 
-    let content: (TargetViewModel) -> TargetView
+    let targetView: (TargetViewModel) -> TargetView
 
     init(publisherBuiler: @escaping () -> LoadingViewModel<TargetViewModel>.LoadPublisher,
-         @ViewBuilder content: @escaping (TargetViewModel) -> TargetView)
+         targetViewModelConfig: TargetViewModel.Config = .default,
+         @ViewBuilder targetView: @escaping (TargetViewModel) -> TargetView)
     {
         print("LoadingView.init")
-        self._loadingVM = StateObject(wrappedValue: LoadingViewModel(publisherBuiler: publisherBuiler))
-        self.content = content
+        self._loadingVM = StateObject(wrappedValue:
+            LoadingViewModel(publisherBuiler: publisherBuiler, targetViewModelConfig: targetViewModelConfig)
+        )
+        self.targetView = targetView
     }
 
     var body: some View {
@@ -149,8 +165,8 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
             case .loading:
                 ProgressView()
             case .ready:
-                if let targetVM = loadingVM.targetVM {
-                    content(targetVM)
+                if let targetVM = loadingVM.targetViewModel {
+                    targetView(targetVM)
                 } else {
                     VStack {
                         Text("Fatal error.\nVerify your connectivity\nand come back on this page.")

@@ -31,7 +31,7 @@ struct SettingsView: View {
                         publisherBuiler: {
                             API.shared.profile.future(userId: nil)
                         },
-                        content: ProfileView.init
+                        targetView: ProfileView.init
                     )
                 } label: {
                     MenuLabel(title: "My profile", systemImage: "person", color: Color.mint)

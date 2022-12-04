@@ -9,6 +9,17 @@ import Combine
 import UIKit
 
 class ProfileViewModel: LoadableViewModel {
+    struct Config: ViewModelConfig {
+        var saveProfie: (Profile) async throws -> Void
+        var deleteCurrrentAccount: () async throws -> Void
+
+        static let `default` =
+            Config(saveProfie: API.shared.profile.save,
+                   deleteCurrrentAccount: API.shared.account.deleteCurrrentAccount)
+    }
+
+    let config: Config
+
     // MARK: Form view properties
 
     let initialProfile: Profile
@@ -42,8 +53,10 @@ class ProfileViewModel: LoadableViewModel {
 
     // MARK: Protocol LoadableViewModel implementation
 
-    required init(initialData: Profile) {
+    required init(initialData: Profile, config: Config = Config.default) {
         debugPrint("---- ProfileViewModel.init")
+
+        self.config = config
 
         self.initialProfile = initialData
         self.firstName = initialData.firstName
@@ -64,40 +77,40 @@ class ProfileViewModel: LoadableViewModel {
 
     // MARK: Form validation model
 
-    lazy private var firstNameField = FormField(publishedValue: &_firstName,
-                                        validate: ValueValidation.validateFirstName,
-                                        initialValue: initialProfile.firstName)
+    private lazy var firstNameField = FormField(publishedValue: &_firstName,
+                                                validate: ValueValidation.validateFirstName,
+                                                initialValue: initialProfile.firstName)
 
-    lazy private var lastNameField = FormField(publishedValue: &_lastName,
-                                       validate: ValueValidation.validateLastName,
-                                       initialValue: initialProfile.lastName)
+    private lazy var lastNameField = FormField(publishedValue: &_lastName,
+                                               validate: ValueValidation.validateLastName,
+                                               initialValue: initialProfile.lastName)
 
-    lazy private var emailField = FormField(publishedValue: &_email,
-                                    validate: ValueValidation.validateEmail,
-                                    initialValue: initialProfile.email)
+    private lazy var emailField = FormField(publishedValue: &_email,
+                                            validate: ValueValidation.validateEmail,
+                                            initialValue: initialProfile.email)
 
-    lazy private var photoInfoField = FormField(publishedValue: &_readOnlyPhotoInfoEditedState,
-                                        // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
-                                        // BUT SEEMS OK NOW. TO BE VERIFIED
-                                        compareWith: { $0 != .initial },
-                                        debounceDelay: 0)
+    private lazy var photoInfoField = FormField(publishedValue: &_readOnlyPhotoInfoEditedState,
+                                                // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
+                                                // BUT SEEMS OK NOW. TO BE VERIFIED
+                                                compareWith: { $0 != .initial },
+                                                debounceDelay: 0)
 
     // MARK: Form validation logic
 
-    lazy private var formPublishers: [any ConnectablePublisher] =
+    private lazy var formPublishers: [any ConnectablePublisher] =
         [firstNameField.publisher, lastNameField.publisher, emailField.publisher, photoInfoField.publisher]
 
-    lazy private var formModified =
+    private lazy var formModified =
         [firstNameField.modified, lastNameField.modified, emailField.modified, photoInfoField.modified]
             .combineLatest()
             .map { $0.contains(true) }
 
-    lazy private var formValidated =
+    private lazy var formValidated =
         [firstNameField.validated, lastNameField.validated, emailField.validated, photoInfoField.validated]
             .combineLatest()
             .map { $0.allSatisfy { $0 } }
 
-    lazy private var formReadyToSubmit =
+    private lazy var formReadyToSubmit =
         Publishers.CombineLatest(formModified, formValidated)
             .map { $0 == (true, true) }
 
@@ -143,7 +156,7 @@ class ProfileViewModel: LoadableViewModel {
                 return profile
             }()
 
-            try? await API.shared.profile.save(profile)
+            try? await config.saveProfie(profile)
         }
     }
 
@@ -152,7 +165,7 @@ class ProfileViewModel: LoadableViewModel {
         // To be tested. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
         Task {
             do {
-                try await API.shared.account.deleteCurrrentAccount()
+                try await config.deleteCurrrentAccount()
             } catch {
                 print("API.shared.account.deleteCurrrentAccount error catched : \(error.localizedDescription)")
             }

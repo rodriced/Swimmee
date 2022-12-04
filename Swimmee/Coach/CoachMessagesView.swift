@@ -47,7 +47,7 @@ class CoachMessagesViewModel: ObservableObject {
 //        self.messages = messages
 //    }
 
-    required init(initialData: [Message]) {
+    required init(initialData: [Message], config: ViewModelEmptyConfig = .default) {
         print("CoachMessagesViewModel.init")
         messages = initialData
     }
@@ -98,7 +98,7 @@ struct CoachMessagesView: View {
     init(vm: CoachMessagesViewModel) {
         print("CoachMessagesView.init")
 //        self._vm = StateObject(wrappedValue: vm)
-        self._vm = ObservedObject(initialValue: vm)
+        _vm = ObservedObject(initialValue: vm)
     }
 
     var messagesList: some View {
@@ -161,7 +161,7 @@ struct CoachMessagesView: View {
             Label("Filter", systemImage: "slider.horizontal.3")
         }
     }
-    
+
     var editNewMessageButton: some View {
         NavigationLink {
             EditMessageView(message: Message(userId: session.userId))
@@ -169,7 +169,7 @@ struct CoachMessagesView: View {
             Image(systemName: "plus")
         }
     }
-    
+
     var emptyListInformation: some View {
         VStack(spacing: 10) {
             Text("No messages.")
