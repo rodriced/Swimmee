@@ -9,26 +9,26 @@ import Foundation
 import Combine
 
 class FormField<Value: Equatable> {
-    @Published var publishedValue: Value
+    let valuePublisher: Published<Value>.Publisher
     let validate: (Value) -> Bool
     let compareWith: ((Value) -> Bool)?
     let initialValue: Value?
     let debounceDelay: RunLoop.SchedulerTimeType.Stride
 
-    init(publishedValue: inout Published<Value>,
+    init(valuePublisher: Published<Value>.Publisher,
          validate: @escaping (Value) -> Bool = { _ in true },
          compareWith: ((Value) -> Bool)? = nil,
          initialValue: Value? = nil,
          debounceDelay: RunLoop.SchedulerTimeType.Stride = 0.5)
     {
-        _publishedValue = publishedValue
+        self.valuePublisher = valuePublisher
         self.validate = validate
         self.compareWith = compareWith
         self.initialValue = initialValue
         self.debounceDelay = debounceDelay
     }
 
-    func isModified(_ value: Value) -> Bool {
+    private func isModified(_ value: Value) -> Bool {
         if let compareWith {
             return compareWith(value)
         } else if let initialValue {
@@ -38,11 +38,11 @@ class FormField<Value: Equatable> {
         }
     }
 
-    func isValidated(_ value: Value) -> Bool {
+    private func isValidated(_ value: Value) -> Bool {
         validate(value)
     }
 
-    lazy var publisher = $publishedValue
+    lazy var publisher = valuePublisher
         .debounce(for: debounceDelay, scheduler: RunLoop.main)
         .multicast(subject: PassthroughSubject())
 

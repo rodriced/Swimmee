@@ -13,11 +13,13 @@ class ProfileViewModel: LoadableViewModel {
         let saveProfie: (Profile) async throws -> Void
         let deleteCurrrentAccount: () async throws -> Void
         let imageStorage: ImageStorageAPI
+        let debounceDelay: RunLoop.SchedulerTimeType.Stride
 
         static let `default` =
             Config(saveProfie: API.shared.profile.save,
                    deleteCurrrentAccount: API.shared.account.deleteCurrrentAccount,
-                   imageStorage: API.shared.imageStorage)
+                   imageStorage: API.shared.imageStorage,
+                   debounceDelay: 0.5)
     }
 
     let config: Config
@@ -55,7 +57,7 @@ class ProfileViewModel: LoadableViewModel {
 
     // MARK: Protocol LoadableViewModel implementation
 
-    required init(initialData: Profile, config: Config = Config.default) {
+    required init(initialData: Profile, config: Config = .default) {
         debugPrint("---- ProfileViewModel.init")
 
         self.config = config
@@ -80,19 +82,22 @@ class ProfileViewModel: LoadableViewModel {
 
     // MARK: Form validation model
 
-    private lazy var firstNameField = FormField(publishedValue: &_firstName,
+    private lazy var firstNameField = FormField(valuePublisher: $firstName,
                                                 validate: ValueValidation.validateFirstName,
-                                                initialValue: initialProfile.firstName)
+                                                initialValue: initialProfile.firstName,
+                                                debounceDelay: config.debounceDelay)
 
-    private lazy var lastNameField = FormField(publishedValue: &_lastName,
+    private lazy var lastNameField = FormField(valuePublisher: $lastName,
                                                validate: ValueValidation.validateLastName,
-                                               initialValue: initialProfile.lastName)
+                                               initialValue: initialProfile.lastName,
+                                               debounceDelay: config.debounceDelay)
 
-    private lazy var emailField = FormField(publishedValue: &_email,
+    private lazy var emailField = FormField(valuePublisher: $email,
                                             validate: ValueValidation.validateEmail,
-                                            initialValue: initialProfile.email)
+                                            initialValue: initialProfile.email,
+                                            debounceDelay: config.debounceDelay)
 
-    private lazy var photoInfoField = FormField(publishedValue: &_readOnlyPhotoInfoEditedState,
+    private lazy var photoInfoField = FormField(valuePublisher: $readOnlyPhotoInfoEditedState,
                                                 // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
                                                 // BUT SEEMS OK NOW. TO BE VERIFIED
                                                 compareWith: { $0 != .initial },
