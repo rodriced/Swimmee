@@ -17,6 +17,14 @@ enum CoachMessagesFilter: String, CaseIterable, Identifiable {
 }
 
 class CoachMessagesViewModel: ObservableObject {
+    struct Config: ViewModelConfig {
+        let messageAPI: UserMessageCollectionAPI
+        
+        static let `default` = Config(messageAPI: API.shared.message)
+    }
+    
+    let config: Config
+
     @Published var messages: [Message]
 
     @Published var filter = CoachMessagesFilter.all
@@ -47,9 +55,10 @@ class CoachMessagesViewModel: ObservableObject {
 //        self.messages = messages
 //    }
 
-    required init(initialData: [Message], config: ViewModelEmptyConfig = .default) {
+    required init(initialData: [Message], config: Config = .default) {
         print("CoachMessagesViewModel.init")
         messages = initialData
+        self.config = config
     }
 
     var restartLoader: (() -> Void)?
@@ -72,7 +81,7 @@ class CoachMessagesViewModel: ObservableObject {
         Task {
             do {
                 if let dbId = messageToDelete.dbId {
-                    try await API.shared.message.delete(id: dbId)
+                    try await config.messageAPI.delete(id: dbId)
                 }
                 messages.remove(atOffsets: offsets)
             } catch {

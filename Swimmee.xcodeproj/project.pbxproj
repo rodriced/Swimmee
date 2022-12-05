@@ -73,7 +73,6 @@
 		DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */; };
 		DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA8F82919AF0000F936E7 /* SessionTests.swift */; };
 		DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */; };
-		DCBAD89329268FA100376A3E /* FirestoreCollectionTestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBAD89229268FA100376A3E /* FirestoreCollectionTestAPI.swift */; };
 		DCDBE7E72915D77A00386076 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDBE7E62915D77A00386076 /* AlertManager.swift */; };
 		DCF3237E28FB37180030626C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237D28FB37180030626C /* FirebaseAuth */; };
 		DCF3238028FB37180030626C /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237F28FB37180030626C /* FirebaseAuthCombine-Community */; };
@@ -175,7 +174,6 @@
 		DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitleView.swift; sourceTree = "<group>"; };
 		DCAEA8F82919AF0000F936E7 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
-		DCBAD89229268FA100376A3E /* FirestoreCollectionTestAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreCollectionTestAPI.swift; sourceTree = "<group>"; };
 		DCDBE7E62915D77A00386076 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		DCF3238F28FC88360030626C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugHelpers.swift; sourceTree = "<group>"; };
@@ -467,7 +465,6 @@
 				DC3E998E28FF42C3008E274C /* FirebaseImageStorageAPI.swift */,
 				DC6CCE332910841B00DB8427 /* FirestoreProfileAPI.swift */,
 				DC6CCE2F290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift */,
-				DCBAD89229268FA100376A3E /* FirestoreCollectionTestAPI.swift */,
 				DC6CCE31290FC4FF00DB8427 /* API.swift */,
 				DC9A434E2921950100485B1F /* FirestoreExtension.swift */,
 			);
@@ -645,7 +642,6 @@
 				DC863A512920531900934B62 /* PublisherExtension.swift in Sources */,
 				DC057216293E54DF0037A387 /* UserCollectionAPI.swift in Sources */,
 				DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */,
-				DCBAD89329268FA100376A3E /* FirestoreCollectionTestAPI.swift in Sources */,
 				DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */,
 				DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */,
 				DC920B6429328147000EE664 /* ConfirmationDialog.swift in Sources */,

@@ -12,5 +12,5 @@ class API {
     let account = FirebaseAccountAPI()
     let imageStorage = FirebaseImageStorageAPI(folderPath: "photos")
     let profile = FirestoreProfileAPI(currentUserId: { try API.shared.account.getCurrentUserId() })
-    let message = FirestoreUserCollectionAPI<Message>(collectionName: "Messages", currentUserId: { API.shared.account.currentUserId })
+    let message = FirestoreUserMessageCollectionAPI(collectionName: "Messages", currentUserId: { API.shared.account.currentUserId })
 }

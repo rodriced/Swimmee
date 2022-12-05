@@ -11,7 +11,10 @@ import FirebaseFirestoreCombineSwift
 import FirebaseFirestoreSwift
 import Foundation
 
-class FirestoreUserCollectionAPI<Item: DbIdentifiable>: UserCollectionAPI {
+class FirestoreUserMessageCollectionAPI: FirestoreUserCollectionAPI<Message>, UserMessageCollectionAPI {}
+
+class FirestoreUserCollectionAPI<Item: DbIdentifiable> {
+//: UserCollectionAPI {
     private let store = Firestore.firestore()
     
     private var currentUserId: () -> UserId?
