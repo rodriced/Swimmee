@@ -11,13 +11,7 @@ import FirebaseFirestoreCombineSwift
 import FirebaseFirestoreSwift
 import Foundation
 
-class FirestoreCollectionAPI<Item: DbIdentifiable> {
-    enum OwnerFilter {
-        case currentUser
-        case user(UserId)
-        case any
-    }
-    
+class FirestoreUserCollectionAPI<Item: DbIdentifiable>: UserCollectionAPI {
     private let store = Firestore.firestore()
     
     private var currentUserId: () -> UserId?
