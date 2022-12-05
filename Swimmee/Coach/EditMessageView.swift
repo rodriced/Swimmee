@@ -10,6 +10,7 @@ import SwiftUI
 @MainActor
 class EditMessageViewModel: ObservableObject {
 //    @Published var message: Message = .empty
+    let messageAPI: UserMessageCollectionAPI
     let originalMessage: Message
     @Published var message: Message
     
@@ -33,10 +34,11 @@ class EditMessageViewModel: ObservableObject {
 //        print("EditMessageViewModel.init")
 //    }
 
-    init(message: Message) {
+    init(message: Message, messageAPI: UserMessageCollectionAPI = API.shared.message) {
 //        print("EditMessageViewModel.init (message)")
         self.originalMessage = message
         self.message = message
+        self.messageAPI = messageAPI
     }
 
     func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
@@ -58,7 +60,7 @@ class EditMessageViewModel: ObservableObject {
             }
 
             do {
-                _ = try await API.shared.message.save(messageToSave, replaceAsNew: replaceAsNew)
+                _ = try await messageAPI.save(messageToSave, replaceAsNew: replaceAsNew)
                 completion?()
             } catch {
                 errorAlertMessage = error.localizedDescription
@@ -74,7 +76,7 @@ class EditMessageViewModel: ObservableObject {
 
         Task {
             do {
-                try await API.shared.message.delete(id: dbId)
+                try await messageAPI.delete(id: dbId)
                 completion?()
             } catch {
                 errorAlertMessage = error.localizedDescription

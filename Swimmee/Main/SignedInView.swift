@@ -9,6 +9,7 @@ import Combine
 import SwiftUI
 
 class UserSession: ObservableObject {
+    let messageAPI: UserMessageCollectionAPI
     let userId: String
     let userType: UserType
     @Published var coachId: UserId?
@@ -19,15 +20,15 @@ class UserSession: ObservableObject {
 //        }
 //    }
 
-    let allMessagesPublisher =
-        API.shared.message.listPublisher()
+    lazy var allMessagesPublisher =
+    messageAPI.listPublisher(owner: .currentUser, isSent: nil)
             .share()
 
     lazy var messagePublisher =
         $coachId
             .flatMap {
                 coachId -> AnyPublisher<[Message], Error> in
-                API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSent: true)
+                self.messageAPI.listPublisher(owner: .user(coachId ?? ""), isSent: true)
 //                    .print("message.listPublisher")
                     .eraseToAnyPublisher()
             }
@@ -35,14 +36,12 @@ class UserSession: ObservableObject {
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 
-
     lazy var readMessagesIdsPublisher =
         $readMessagesIds
             .setFailureType(to: Error.self)
 //            .print("unreadMessagesPublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
-
 
     lazy var unreadMessagesCountPublisher =
         messagePublisher
@@ -57,13 +56,15 @@ class UserSession: ObservableObject {
             .multicast { CurrentValueSubject(0) }
             .autoconnect()
 
-    init(initialProfile: Profile) {
+    init(initialProfile: Profile, messageAPI: UserMessageCollectionAPI = API.shared.message) {
         print("UserSession.init")
 
         self.userId = initialProfile.userId
         self.userType = initialProfile.userType
         self.coachId = initialProfile.coachId
         self.readMessagesIds = initialProfile.readMessagesIds ?? []
+
+        self.messageAPI = messageAPI
     }
 
     var cancellable: AnyCancellable?
