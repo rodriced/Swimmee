@@ -44,11 +44,11 @@ class EditMessageViewModel: ObservableObject {
         messageToSave.isSent = andSendIt
 
         Task {
-            var saveAsNewMessage = false
+            var replaceAsNew = false
 
             switch (message.isSent, andSendIt) {
             case (_, true):
-                saveAsNewMessage = true
+                replaceAsNew = true
                 messageToSave.date = .now
                 // TODO: A draft message sent for the first time should not be send as new message because it has never been read by anyone (we track read message with dbId and there is no reason here to generate a new one to set as unread for all swimmers)
 //            case (false, true):
@@ -58,7 +58,7 @@ class EditMessageViewModel: ObservableObject {
             }
 
             do {
-                _ = try await API.shared.message.save(messageToSave, asNew: saveAsNewMessage)
+                _ = try await API.shared.message.save(messageToSave, replaceAsNew: replaceAsNew)
                 completion?()
             } catch {
                 errorAlertMessage = error.localizedDescription

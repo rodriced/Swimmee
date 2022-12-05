@@ -11,10 +11,6 @@ import FirebaseFirestoreCombineSwift
 import FirebaseFirestoreSwift
 import Foundation
 
-protocol DbIdentifiable: Codable {
-    var dbId: String? { get set }
-}
-
 class FirestoreCollectionAPI<Item: DbIdentifiable> {
     enum OwnerFilter {
         case currentUser
@@ -22,16 +18,10 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
         case any
     }
     
-    enum IsSentFilter {
-        case sent
-        case notSent
-        case any
-    }
+    private let store = Firestore.firestore()
     
-    var currentUserId: () -> UserId?
-    
-    let store = Firestore.firestore()
-    let collectionName: String
+    private var currentUserId: () -> UserId?
+    private let collectionName: String
     
     init(collectionName: String,
          currentUserId: @escaping () -> UserId?)
@@ -40,19 +30,19 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
         self.currentUserId = currentUserId
     }
     
-    lazy var collection: CollectionReference =
+    private lazy var collection: CollectionReference =
         store.collection(collectionName)
     
-    func document(_ id: String? = nil) -> DocumentReference {
+    private func document(_ id: String? = nil) -> DocumentReference {
         id.map { collection.document($0) } ?? collection.document()
     }
     
-    func queryBy(owner: OwnerFilter, isSent: IsSentFilter = .sent, orderingByDate: Bool = true) -> Query {
+    private func queryParams(owner: OwnerFilter, isSent: Bool? = true, orderingByDate: Bool = true) -> Query {
         var query = {
             switch owner {
             case .currentUser:
                 guard let userId = currentUserId() else {
-                    return collection.limit(to: 0)
+                    return collection.limit(to: 0) // No user authenticated, access is forbiden
                 }
                 return collection.whereField("userId", isEqualTo: userId)
             case .user(let userId):
@@ -61,30 +51,41 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
                 return collection
             }
         }()
+
+        if let isSent {
+            query = query.whereField("isSent", isEqualTo: isSent)
+        }
         
-        query = {
-            switch isSent {
-            case .sent:
-                return query.whereField("isSent", isEqualTo: true)
-            case .notSent:
-                return query.whereField("isSent", isEqualTo: false)
-            case .any:
-                return query
-            }
-        }()
-        
-        query = orderingByDate ?
-            query.order(by: "date", descending: true)
-            : query
+        if orderingByDate {
+            query = query.order(by: "date", descending: true)
+        }
         
         return query
     }
     
-    private func saveAsNew(oldId: String, _ item: Item, asNew: Bool = false) async throws -> String {
-        try await delete(id: oldId)
-        return try await saveNew(item)
+    func listPublisher(owner: OwnerFilter = .currentUser, isSent: Bool? = nil) -> AnyPublisher<[Item], Error> {
+        queryParams(owner: owner, isSent: isSent).snapshotPublisherCustom()
+            .tryMap { querySnapshot in
+                try querySnapshot.documents.map { document in
+                    try document.data(as: Item.self)
+                }
+            }
+            .eraseToAnyPublisher()
     }
     
+    func save(_ item: Item, replaceAsNew: Bool = false) async throws -> String {
+        if let dbId = item.dbId {
+            if replaceAsNew {
+                try await delete(id: dbId)
+                return try await saveNew(item)
+            }
+            try await document(dbId).setData(from: item).value
+            return dbId
+        } else {
+            return try await saveNew(item)
+        }
+    }
+        
 //    private func saveAsNew(oldId: String, _ item: Item, asNew : Bool = false) async throws -> String {
 //        store.runTransaction { transaction, errorPointer in
 //            try await transaction. deleteDocument(id)
@@ -102,77 +103,7 @@ class FirestoreCollectionAPI<Item: DbIdentifiable> {
         return dbId
     }
 
-    func save(_ item: Item, asNew: Bool = false) async throws -> String {
-        if let dbId = item.dbId {
-            if asNew {
-                return try await saveAsNew(oldId: dbId, item)
-            }
-            try await document(dbId).setData(from: item).value
-            return dbId
-        } else {
-            return try await saveNew(item)
-        }
-    }
-    
-    func load(id: String) async throws -> Item {
-        try await document(id).getDocument(as: Item.self)
-    }
-    
     func delete(id: String) async throws {
         try await document(id).delete()
-    }
-    
-    func loadList(owner: OwnerFilter = .currentUser) async throws -> [Item] {
-        try await queryBy(owner: owner).getDocuments()
-            .documents.map { doc in
-                try doc.data(as: Item.self, decoder: Firestore.Decoder())
-            }
-    }
-
-    func future(id: String) -> AnyPublisher<Item, Error> {
-        (document(id).getDocument() as Future<DocumentSnapshot, Error>)
-            .tryMap { documentSnapshot in
-                try documentSnapshot.data(as: Item.self)
-            }
-            .eraseToAnyPublisher()
-    }
-    
-    func publisher(id: String) -> AnyPublisher<Item, Error> {
-        document(id).snapshotPublisher()
-            .tryMap { documentSnapshot in
-                try documentSnapshot.data(as: Item.self)
-            }
-            .eraseToAnyPublisher()
-    }
-    
-    func listFuture(owner: OwnerFilter = .currentUser) -> AnyPublisher<[Item], Error> {
-        queryBy(owner: owner).getDocuments()
-            .tryMap { querySnapshot in
-                try querySnapshot.documents.map { documentSnapshot in
-                    try documentSnapshot.data(as: Item.self)
-                }
-            }
-            .eraseToAnyPublisher()
-    }
-    
-    func listPublisher(owner: OwnerFilter = .currentUser, isSent: IsSentFilter = .sent) -> AnyPublisher<[Item], Error> {
-        queryBy(owner: owner, isSent: isSent).snapshotPublisherCustom()
-            .tryMap { querySnapshot in
-                try querySnapshot.documents.map { document in
-                    try document.data(as: Item.self)
-                }
-            }
-            .eraseToAnyPublisher()
-    }
-    
-    func listPublisher(owner: OwnerFilter = .currentUser) -> AnyPublisher<Result<[Item], Error>, Never> {
-        queryBy(owner: owner).snapshotPublisherCustom()
-            .tryMap { querySnapshot in
-                try querySnapshot.documents.map { document in
-                    try document.data(as: Item.self)
-                }
-            }
-            .asResult()
-            .eraseToAnyPublisher()
     }
 }

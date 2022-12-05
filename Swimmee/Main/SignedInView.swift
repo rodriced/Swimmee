@@ -20,14 +20,14 @@ class UserSession: ObservableObject {
 //    }
 
     let allMessagesPublisher =
-        API.shared.message.listPublisher(isSent: .any)
+        API.shared.message.listPublisher()
             .share()
 
     lazy var messagePublisher =
         $coachId
             .flatMap {
                 coachId -> AnyPublisher<[Message], Error> in
-                API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSent: .sent)
+                API.shared.message.listPublisher(owner: .user(coachId ?? ""), isSent: true)
 //                    .print("message.listPublisher")
                     .eraseToAnyPublisher()
             }
