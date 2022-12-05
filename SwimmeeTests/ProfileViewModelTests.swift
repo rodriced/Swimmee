@@ -10,15 +10,6 @@
 import Combine
 import XCTest
 
-extension XCTestCase {
-    func isReadyToSubmitExpectation(sut: ProfileViewModel, _ value: Bool) -> (XCTestExpectation, AnyCancellable?) {
-        publisherExpectation(
-            sut.$isReadyToSubmit.print().dropFirst(),
-            equals: value
-        )
-    }
-}
-
 final class ProfileViewModelTests: XCTestCase {
     let aCoachProfile = Profile(userId: "", userType: .coach, firstName: "aFirstName", lastName: "aLastName", email: "an@e.mail")
 
@@ -76,36 +67,6 @@ final class ProfileViewModelTests: XCTestCase {
 
         XCTAssertFalse(sut.isReadyToSubmit)
     }
-
-//    func testGivenAFieldModifiedWithACorrectValue_WhenSubmitedWithSuccess_ThenFormHaveNoErrorAndProfileDataInFields2() async {
-//        let aProfile = Profile.coachSample
-//
-//        let sut = profileViewModelSubmitSuccess(aProfile: aProfile)
-//        sut.startPublishers()
-//
-//        print(sut.firstName, sut.lastName, sut.email, sut.readOnlyPhotoInfoEditedState)
-//        try? await Task.sleep(nanoseconds: 1_000_000_000)
-//
-//        print("--> Will modify : \(sut.firstName)")
-//        sut.firstName = aProfile.firstName + "a"
-//        try? await Task.sleep(nanoseconds: 1_000_000_000)
-//
-//        print("--> Will modify : \(sut.firstName)")
-//        sut.firstName = aProfile.firstName + "ab"
-//        try? await Task.sleep(nanoseconds: 1_000_000_000)
-//
-//        print("--> Will modify : \(sut.firstName)")
-//        sut.firstName = aProfile.firstName + "a"
-//        try? await Task.sleep(nanoseconds: 1_000_000_000)
-//
-//        print("--> Will modify : \(sut.firstName)")
-//        sut.firstName = aProfile.firstName
-//        try? await Task.sleep(nanoseconds: 1_000_000_000)
-//
-//        print("--> Will modify : \(sut.firstName)")
-//        sut.firstName = "A"
-//        try? await Task.sleep(nanoseconds: 1_000_000_000)
-//    }
 
     func testGivenAFieldModifiedWithACorrectValue_WhenSubmitedWithSuccess_ThenFormHaveNoErrorAndProfileDataInFields3() {
         let aProfile = Profile.coachSample
