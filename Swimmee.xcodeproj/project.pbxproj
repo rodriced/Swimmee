@@ -15,6 +15,7 @@
 		DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */; };
 		DC057210293C26510037A387 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC05720F293C26510037A387 /* ProfileViewModel.swift */; };
 		DC057212293C29000037A387 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057211293C29000037A387 /* ProfileViewModelTests.swift */; };
+		DC057214293D0DED0037A387 /* MockImageStorageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */; };
 		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
 		DC232BCC29281F73007BC2ED /* Session3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCB29281F73007BC2ED /* Session3.swift */; };
 		DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD32929AC95007BC2ED /* MainView2.swift */; };
@@ -113,6 +114,7 @@
 		DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAccountAPI.swift; sourceTree = "<group>"; };
 		DC05720F293C26510037A387 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		DC057211293C29000037A387 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
+		DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockImageStorageAPI.swift; sourceTree = "<group>"; };
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
 		DC232BCB29281F73007BC2ED /* Session3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session3.swift; sourceTree = "<group>"; };
 		DC232BD32929AC95007BC2ED /* MainView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView2.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 			children = (
 				DC057206293A292E0037A387 /* LocalAccountAPI.swift */,
 				DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */,
+				DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -680,6 +683,7 @@
 				DC0571F929391AE80037A387 /* SignSharedViewModelTests.swift in Sources */,
 				DC057207293A292E0037A387 /* LocalAccountAPI.swift in Sources */,
 				DC057201293A0E720037A387 /* TestHelper.swift in Sources */,
+				DC057214293D0DED0037A387 /* MockImageStorageAPI.swift in Sources */,
 				DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */,
 				DC7912E1291BD3140077B403 /* CombineHelper.swift in Sources */,
 				DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */,
