@@ -11,9 +11,9 @@ import Combine
 import XCTest
 
 final class ProfileViewModelTests: XCTestCase {
-    let aCoachProfile = Profile(userId: "", userType: .coach, firstName: "aFirstName", lastName: "aLastName", email: "an@e.mail")
+    private let aCoachProfile = Profile(userId: "", userType: .coach, firstName: "aFirstName", lastName: "aLastName", email: "an@e.mail")
 
-    func profileViewModelSubmitSuccess(aProfile: Profile) -> ProfileViewModel {
+    private func profileViewModelSubmitSuccess(aProfile: Profile) -> ProfileViewModel {
         let mockImageStorageAPI = MockImageStorageAPI()
         mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
         mockImageStorageAPI.mockDelete = {}
@@ -28,7 +28,7 @@ final class ProfileViewModelTests: XCTestCase {
         return ProfileViewModel(initialData: aProfile, config: config)
     }
 
-    func profileViewModelSubmitFail(aProfile: Profile) -> ProfileViewModel {
+    private func profileViewModelSubmitFail(aProfile: Profile) -> ProfileViewModel {
         let mockImageStorageAPI = MockImageStorageAPI()
         mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
         mockImageStorageAPI.mockDelete = {}
@@ -41,14 +41,6 @@ final class ProfileViewModelTests: XCTestCase {
         )
 
         return ProfileViewModel(initialData: aProfile, config: config)
-    }
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
     func testGivenNewForm_WhenNoAction_ThenFormHaveNoErrorAndProfileDataInFields() {
