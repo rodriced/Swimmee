@@ -10,43 +10,61 @@ import SwiftUI
 
 class SwimmerCoachViewModel: ObservableObject {
     let profileAPI: ProfileSwimmerAPI
-    
+
     init(profileAPI: ProfileSwimmerAPI = API.shared.profile) {
         self.profileAPI = profileAPI
     }
-    
+
+    enum ViewState {
+        case loading
+        case normal
+        case info(String)
+    }
+
+    @Published var state = ViewState.loading
+
     @Published var coachs: [Profile] = []
     @Published var currentCoach: Profile?
 
     @Published var confirmationDialogPresented: ConfirmationDialog?
 
-    @Published var errorAlertDisplayed = false {
-        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
-    }
-
-    @Published var errorAlertMessage: String = "" {
-        didSet { if !errorAlertMessage.isEmpty { errorAlertDisplayed = true } }
-    }
+    @Published var alertContext = AlertContext()
 
     @MainActor
-    func loadCoachs(andSelect coachId: UserId?) async {
+    func loadCoachs(withSelected coachId: UserId?) async {
         do {
-//            print("load coachs")
+            state = .loading
+
             coachs = try await profileAPI.loadCoachs()
+
+            guard !coachs.isEmpty else {
+                state = .info("No coach available for now.\nCome back later.")
+                return
+            }
 
             guard let coachId else {
                 currentCoach = nil
+                state = .normal
                 return
             }
+
             currentCoach = coachs.first { profile in
                 profile.userId == coachId
             }
+
+            guard currentCoach != nil else {
+                state = .info("Can't find your coach in the list of available coachs.\nCome back later or ask administration for help.")
+                return
+            }
+
+            state = .normal
+
         } catch {
-            errorAlertMessage = error.localizedDescription
+            state = .info(error.localizedDescription)
         }
     }
 
-// TODO: For live update. To test...
+    // TODO: For live update. To be tested...
 //    var cancellable: AnyCancellable?
 //
 //    func listenCoachs(initialSelectedCoachId: UserId?) {
@@ -73,21 +91,17 @@ class SwimmerCoachViewModel: ObservableObject {
 //            )
 //    }
 
-    func saveSelectedCoach() {
+    func saveSelectedCoach(_ coach: Profile?) {
         Task {
             do {
                 try await profileAPI.updateCoach(with: currentCoach?.userId)
+                currentCoach = coach
             } catch {
                 await MainActor.run {
-                    errorAlertMessage = error.localizedDescription
+                    alertContext.content = .message(error.localizedDescription)
                 }
             }
         }
-    }
-
-    func selectCoach(_ coach: Profile?) {
-        currentCoach = coach
-        saveSelectedCoach()
     }
 }
 
@@ -100,7 +114,7 @@ struct SwimmerCoachView: View {
             title: "Subscribing to a coach",
             message: "You are going to subcribe to \(coach.fullname).",
             primaryButton: "Subscribe",
-            primaryAction: { vm.selectCoach(coach) }
+            primaryAction: { vm.saveSelectedCoach(coach) }
         )
     }
 
@@ -109,7 +123,7 @@ struct SwimmerCoachView: View {
             title: "Unsubscribe from your coach",
             message: "You are going to unsubcribe from \(coach.fullname).",
             primaryButton: "Unsubscribe",
-            primaryAction: { vm.selectCoach(nil) }
+            primaryAction: { vm.saveSelectedCoach(nil) }
         )
     }
 
@@ -118,7 +132,7 @@ struct SwimmerCoachView: View {
             title: "Replace your current coach",
             message: "You are going to unsubcribe from \(currentCoach.fullname) and subscribe to \(newCoach.fullname).",
             primaryButton: "Replace",
-            primaryAction: { vm.selectCoach(newCoach) }
+            primaryAction: { vm.saveSelectedCoach(newCoach) }
         )
     }
 
@@ -163,24 +177,28 @@ struct SwimmerCoachView: View {
 
     var body: some View {
         Group {
-            if vm.coachs.isEmpty {
-                Text("No coach available for now.\nCome back later.")
+            switch vm.state {
+            case .loading:
+                ProgressView()
+            case let .info(message):
+                Text(message)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
-            } else {
+            case .normal:
                 VStack {
                     chosenCoachHeader
                     coachsList
                 }
             }
         }
-        .task { await vm.loadCoachs(andSelect: session.coachId) }
+        .task { await vm.loadCoachs(withSelected: session.coachId) }
 //        .task { vm.listenCoach(initialSelectedCoachId: session.coachId) }
+        .refreshable { await vm.loadCoachs(withSelected: session.coachId) }
 
         .actionSheet(item: $vm.confirmationDialogPresented) { dialog in
             dialog.actionSheet()
         }
-        .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
+        .alert(vm.alertContext)
         .navigationBarTitle("My coach")
     }
 }
