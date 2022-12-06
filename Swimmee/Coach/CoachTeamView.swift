@@ -15,7 +15,6 @@ class CoachTeamViewModel: ObservableObject {
     }
     
     @Published var swimmers: [Profile] = Profile.swimmerSample.toSamples(with: 5)
-    var images: [String: UIImage] = [:]
 
     @Published var errorAlertDisplayed = false {
         didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
@@ -27,20 +26,10 @@ class CoachTeamViewModel: ObservableObject {
 
     @MainActor
     func loadTeam() async {
-        print("load team")
-
         do {
             swimmers = try await profileAPI.loadTeam()
-            for swimmer in swimmers {
-                let imageData = try? await API.shared.imageStorage.download(swimmer.userId)
-                guard let imageData = imageData else {
-                    continue
-                }
-                images[swimmer.userId] = UIImage(data: imageData)
-            }
         } catch {
             swimmers = []
-            images = [:]
             errorAlertMessage = error.localizedDescription
         }
     }
