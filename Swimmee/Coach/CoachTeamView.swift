@@ -14,17 +14,30 @@ class CoachTeamViewModel: ObservableObject {
         self.profileAPI = profileAPI
     }
     
-    @Published var swimmers: [Profile] = Profile.swimmerSample.toSamples(with: 5)
-
-    @Published var alertContext = AlertContext()
+    enum ViewState {
+        case loading
+        case normal([Profile])
+        case info(String)
+    }
+    
+    @Published var state = ViewState.loading
 
     @MainActor
     func loadTeam() async {
+        state = .loading
+        
         do {
-            swimmers = try await profileAPI.loadTeam()
+            let swimmers = try await profileAPI.loadTeam()
+            
+            guard !swimmers.isEmpty else {
+                state = .info("No swimmers in your team for now.")
+                return
+            }
+            
+            state = .normal(swimmers)
+            
         } catch {
-            swimmers = []
-            alertContext.message = error.localizedDescription
+            state = .info(error.localizedDescription)
         }
     }
 }
@@ -33,8 +46,19 @@ struct CoachTeamView: View {
     @StateObject var vm = CoachTeamViewModel()
 
     var body: some View {
-        List(vm.swimmers) { swimmer in
-            UserCellView(profile: swimmer)
+        Group {
+            switch vm.state {
+            case .loading:
+                ProgressView()
+            case let .info(message):
+                Text(message)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondary)
+            case let .normal(swimmers):
+                List(swimmers) { swimmer in
+                    UserCellView(profile: swimmer)
+                }
+            }
         }
         .task {
             await vm.loadTeam()
@@ -43,7 +67,6 @@ struct CoachTeamView: View {
             await vm.loadTeam()
         }
         .navigationBarTitle("My team")
-        .alert(vm.alertContext) {}
     }
 }
 
