@@ -11,14 +11,16 @@ struct SettingsView: View {
     @EnvironmentObject var session: UserSession
 
     @State var logoutConfirmationDialogIsPresented = false
-    @State var signOutErrorAlertIsPresented = false
+    @State var alertContext = AlertContext()
 
     var logoutConfirmationDialog: ConfirmationDialog {
         ConfirmationDialog(
             title: "You are going to logout from Swimmee.",
             primaryButton: "Confirm logout",
             primaryAction: {
-                signOutErrorAlertIsPresented = !API.shared.account.signOut()
+                if API.shared.account.signOut() == false {
+                    alertContext.message = "Sign out Error"
+                }
             }
         )
     }
@@ -62,7 +64,7 @@ struct SettingsView: View {
                 }
             }
             .navigationBarTitle("Settings")
-            .alert("Sign out Error", isPresented: $signOutErrorAlertIsPresented) {}
+            .alert(alertContext) {}
         }
         .navigationViewStyle(.stack)
     }

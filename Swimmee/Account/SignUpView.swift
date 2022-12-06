@@ -101,7 +101,7 @@ struct SignUpView: View {
                 Text("Join swimmee")
             }
         }
-        .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
+        .alert(viewModel.alertcontext) {}
     }
 }
 

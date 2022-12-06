@@ -41,26 +41,12 @@ class SignSharedViewModel: ObservableObject {
 
     private var formWasValidatedWithError = false
 
-    @Published var errorAlertIsPresenting = false {
-        didSet {
-            if errorAlertIsPresenting == false {
-                errorAlertMessage = ""
-            }
-        }
-    }
-
-    private(set) var errorAlertMessage: String = "" {
-        didSet {
-            if !errorAlertMessage.isEmpty {
-                errorAlertIsPresenting = true
-            }
-        }
-    }
+    @Published var alertcontext = AlertContext()
 
     private func submitForm(action: @escaping () async throws -> Void) {
         guard validateForm() else {
             formWasValidatedWithError = true
-            errorAlertMessage = Self.formValidationErrorMessage
+            alertcontext.message = Self.formValidationErrorMessage
             return
         }
 
@@ -78,7 +64,7 @@ class SignSharedViewModel: ObservableObject {
                 await MainActor.run {
                     submiting = false
 
-                    errorAlertMessage = error.localizedDescription
+                    alertcontext.message = error.localizedDescription
                 }
             }
         }

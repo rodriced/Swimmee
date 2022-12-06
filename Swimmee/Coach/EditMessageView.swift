@@ -22,17 +22,7 @@ class EditMessageViewModel: ObservableObject {
         message.isSent || (!message.isSent && message.hasTextDifferent(from: originalMessage))
     }
 
-    @Published var errorAlertDisplayed = false {
-        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
-    }
-
-    var errorAlertMessage: String = "" {
-        didSet { errorAlertDisplayed = !errorAlertMessage.isEmpty }
-    }
-
-//    init() {
-//        print("EditMessageViewModel.init")
-//    }
+    @Published var alertContext = AlertContext()
 
     init(message: Message, messageAPI: UserMessageCollectionAPI = API.shared.message) {
 //        print("EditMessageViewModel.init (message)")
@@ -63,7 +53,7 @@ class EditMessageViewModel: ObservableObject {
                 _ = try await messageAPI.save(messageToSave, replaceAsNew: replaceAsNew)
                 completion?()
             } catch {
-                errorAlertMessage = error.localizedDescription
+                alertContext.message = error.localizedDescription
             }
         }
     }
@@ -79,7 +69,7 @@ class EditMessageViewModel: ObservableObject {
                 try await messageAPI.delete(id: dbId)
                 completion?()
             } catch {
-                errorAlertMessage = error.localizedDescription
+                alertContext.message = error.localizedDescription
             }
         }
     }
@@ -215,7 +205,7 @@ struct EditMessageView: View {
             }
         }
 
-        .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
+        .alert(vm.alertContext) {}
     }
 }
 

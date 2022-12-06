@@ -8,6 +8,8 @@
 import Combine
 import SwiftUI
 
+var c = 0
+
 class Session: ObservableObject {
     let accountAPI: AccountAPI
 
@@ -16,35 +18,18 @@ class Session: ObservableObject {
         self.accountAPI = accountAPI
     }
 
+    @Published var authenticationFailureAlert = AlertContext()
+
     @Published var authenticationState = AuthenticationState.undefined {
         didSet {
-//            print("session.onnectionStatus didSet with \(authenticationState)")
             if case .failure(let error) = authenticationState {
-                errorAlertMessage = error.localizedDescription
-//                errorAlertOkButtonCompletion = { self.authenticationState = .signedOut }
+                authenticationFailureAlert.message = error.localizedDescription
             }
         }
     }
 
-    @Published var errorAlertIsPresenting = false {
-        didSet {
-            if errorAlertIsPresenting == false {
-                errorAlertMessage = ""
-//                errorAlertOkButtonCompletion = {}
-            }
-        }
-    }
-
-    func errorAlertOkButtonCompletion()  {
+    func errorAlertOkButtonCompletion() {
         _ = accountAPI.signOut()
-    }
-
-    var errorAlertMessage: String = "" {
-        didSet {
-            if !errorAlertMessage.isEmpty {
-                errorAlertIsPresenting = true
-            }
-        }
     }
 
     func updateAuthenticationState(_ newState: AuthenticationState) {
@@ -87,13 +72,13 @@ struct MainView: View {
 //                .navigationViewStyle(.stack)
         }
         .onReceive(session.accountAPI.AuthenticationStatePublisher(), perform: session.updateAuthenticationState)
-        .alert(session.errorAlertMessage, isPresented: $session.errorAlertIsPresenting) {
+        .alert(session.authenticationFailureAlert) {
             Button("OK", action: session.errorAlertOkButtonCompletion)
         }
     }
 }
 
-//struct MainView_Previews: PreviewProvider {
+// struct MainView_Previews: PreviewProvider {
 //    class ConnectionService: ConnectionServiceProtocol {
 //        var authenticationState: ConnectionStatus
 //        init(authenticationState: ConnectionStatus) {
@@ -121,4 +106,4 @@ struct MainView: View {
 ////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .signedIn(Profile.coachSample))))
 ////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .failure(FakeAccountManager.Err.signInError))))
 //    }
-//}
+// }

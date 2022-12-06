@@ -41,19 +41,7 @@ class CoachMessagesViewModel: ObservableObject {
     @Published var confirmationDialogPresented = false
     @Published var navigatingToEditView = false
 
-    @Published var errorAlertDisplayed = false {
-        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
-    }
-
-    var errorAlertMessage: String = "" {
-        didSet { if !errorAlertMessage.isEmpty { errorAlertDisplayed = true } }
-    }
-
-//    init(messages: [Message] = []) {
-//        print("CoachMessagesViewModel.init")
-//
-//        self.messages = messages
-//    }
+    @Published var alertContext = AlertContext()
 
     required init(initialData: [Message], config: Config = .default) {
         print("CoachMessagesViewModel.init")
@@ -85,7 +73,7 @@ class CoachMessagesViewModel: ObservableObject {
                 }
                 messages.remove(atOffsets: offsets)
             } catch {
-                errorAlertMessage = error.localizedDescription
+                alertContext.message = error.localizedDescription
             }
         }
     }
@@ -225,7 +213,7 @@ struct CoachMessagesView: View {
                 ]
             )
         }
-        .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
+        .alert(vm.alertContext) {}
         .navigationBarTitle("Messages", displayMode: .inline)
     }
 }

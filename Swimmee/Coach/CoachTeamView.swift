@@ -16,13 +16,7 @@ class CoachTeamViewModel: ObservableObject {
     
     @Published var swimmers: [Profile] = Profile.swimmerSample.toSamples(with: 5)
 
-    @Published var errorAlertDisplayed = false {
-        didSet { if !errorAlertDisplayed { errorAlertMessage = "" } }
-    }
-
-    @Published var errorAlertMessage: String = "" {
-        didSet { errorAlertDisplayed = !errorAlertMessage.isEmpty }
-    }
+    @Published var alertContext = AlertContext()
 
     @MainActor
     func loadTeam() async {
@@ -30,7 +24,7 @@ class CoachTeamViewModel: ObservableObject {
             swimmers = try await profileAPI.loadTeam()
         } catch {
             swimmers = []
-            errorAlertMessage = error.localizedDescription
+            alertContext.message = error.localizedDescription
         }
     }
 }
@@ -49,7 +43,7 @@ struct CoachTeamView: View {
             await vm.loadTeam()
         }
         .navigationBarTitle("My team")
-        .alert(vm.errorAlertMessage, isPresented: $vm.errorAlertDisplayed) {}
+        .alert(vm.alertContext) {}
     }
 }
 

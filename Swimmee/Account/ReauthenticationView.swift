@@ -53,7 +53,7 @@ struct ReauthenticationView: View {
                 .keyboardShortcut(.defaultAction)
 //                .onChange(of: viewModel.submitSuccess) { $reauthenticationSuccess.wrappedValue = viewModel.submitSuccess }
             }
-            .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
+            .alert(viewModel.alertcontext) {}
             .padding()
             .navigationBarTitle("Reauthenticate", displayMode: .inline)
             .navigationBarItems(trailing:

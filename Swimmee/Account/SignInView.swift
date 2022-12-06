@@ -48,7 +48,7 @@ struct SignInView: View {
 
             NavigationLink("I have lost my password...", destination: Text("Lost password"))
         }
-        .alert(viewModel.errorAlertMessage, isPresented: $viewModel.errorAlertIsPresenting) {}
+        .alert(viewModel.alertcontext) {}
         .padding()
 //        .navigationBarTitle("Sign In", displayMode: .inline)
         .navigationBarTitleDisplayMode(.inline)
