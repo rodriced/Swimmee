@@ -9,6 +9,12 @@ import Combine
 import SwiftUI
 
 class SwimmerCoachViewModel: ObservableObject {
+    let profileAPI: ProfileSwimmerAPI
+    
+    init(profileAPI: ProfileSwimmerAPI = API.shared.profile) {
+        self.profileAPI = profileAPI
+    }
+    
     @Published var coachs: [Profile] = []
     @Published var currentCoach: Profile?
 
@@ -26,7 +32,7 @@ class SwimmerCoachViewModel: ObservableObject {
     func loadCoachs(andSelect coachId: UserId?) async {
         do {
 //            print("load coachs")
-            coachs = try await API.shared.profile.loadCoachs()
+            coachs = try await profileAPI.loadCoachs()
 
             guard let coachId else {
                 currentCoach = nil
@@ -44,7 +50,7 @@ class SwimmerCoachViewModel: ObservableObject {
 //    var cancellable: AnyCancellable?
 //
 //    func listenCoachs(initialSelectedCoachId: UserId?) {
-//        cancellable = API.shared.profile.coachsPublisher()
+//        cancellable = profileAPI.coachsPublisher()
 //            .sink(
 //                receiveCompletion: { [weak self] in
 //                    if case let .failure(error) = $0 {
@@ -70,7 +76,7 @@ class SwimmerCoachViewModel: ObservableObject {
     func saveSelectedCoach() {
         Task {
             do {
-                try await API.shared.profile.updateCoach(with: currentCoach?.userId)
+                try await profileAPI.updateCoach(with: currentCoach?.userId)
             } catch {
                 await MainActor.run {
                     errorAlertMessage = error.localizedDescription

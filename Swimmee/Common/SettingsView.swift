@@ -29,7 +29,7 @@ struct SettingsView: View {
                 NavigationLink {
                     LoadingView(
                         publisherBuiler: {
-                            API.shared.profile.future(userId: nil)
+                            session.profileFuture
                         },
                         targetView: ProfileView.init
                     )

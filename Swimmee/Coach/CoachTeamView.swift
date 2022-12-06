@@ -8,6 +8,12 @@
 import SwiftUI
 
 class CoachTeamViewModel: ObservableObject {
+    let profileAPI: ProfileCoachAPI
+    
+    init(profileAPI: ProfileCoachAPI = API.shared.profile) {
+        self.profileAPI = profileAPI
+    }
+    
     @Published var swimmers: [Profile] = Profile.swimmerSample.toSamples(with: 5)
     var images: [String: UIImage] = [:]
 
@@ -24,7 +30,7 @@ class CoachTeamViewModel: ObservableObject {
         print("load team")
 
         do {
-            swimmers = try await API.shared.profile.loadTeam()
+            swimmers = try await profileAPI.loadTeam()
             for swimmer in swimmers {
                 let imageData = try? await API.shared.imageStorage.download(swimmer.userId)
                 guard let imageData = imageData else {

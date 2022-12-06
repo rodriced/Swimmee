@@ -8,15 +8,24 @@
 import SwiftUI
 
 class SwimmerMessagesViewModel {
+    struct Config: ViewModelConfig {
+        let profileAPI: ProfileSwimmerAPI
+
+        static var `default` = Config(profileAPI: API.shared.profile)
+    }
+
+    let config: Config
+
     typealias LoadedData = ([Message], Set<Message.DbId>)
     typealias MessagesParams = [(message: Message, isRead: Bool)]
 
     @Published var messagesParams: [(message: Message, isRead: Bool)]
     @Published var newMessagesCount: Int
 
-    required init(initialData: LoadedData, config: ViewModelEmptyConfig = .default) {
+    required init(initialData: LoadedData, config: Config = .default) {
         print("SwimmerMessagesViewModel.init")
         (messagesParams, newMessagesCount) = Self.formatLoadedData(initialData)
+        self.config = config
     }
 
     static func formatLoadedData(_ loadedData: LoadedData) -> (MessagesParams, Int) {
@@ -37,7 +46,7 @@ class SwimmerMessagesViewModel {
     func setMessageAsRead(_ message: Message) {
         guard let dbId = message.dbId else { return }
         Task {
-            try? await API.shared.profile.setMessageAsRead(dbId)
+            try? await config.profileAPI.setMessageAsRead(dbId)
         }
     }
 }

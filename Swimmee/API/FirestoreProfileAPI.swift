@@ -11,7 +11,7 @@ import FirebaseFirestoreCombineSwift
 import FirebaseFirestoreSwift
 import Foundation
 
-class FirestoreProfileAPI {
+class FirestoreProfileAPI: ProfileAPI {
     private let store = Firestore.firestore()
     private let collectionName = "Profiles"
 
@@ -24,15 +24,8 @@ class FirestoreProfileAPI {
         self.currentUserId = currentUserId
     }
 
-    func resolveArg(userId: UserId?) throws -> UserId {
-        guard let userId else {
-            return try currentUserId()
-        }
-        return userId
-    }
-
     private func documentReference(_ userId: String? = nil) throws -> DocumentReference {
-        let userId = try resolveArg(userId: userId)
+        let userId = try currentUserId()
         return collection.document(userId)
     }
 
@@ -82,31 +75,31 @@ class FirestoreProfileAPI {
             }
     }
 
-    func coachsPublisher() -> AnyPublisher<[Profile], Error> {
-        return collection
-            .whereField("userType", isEqualTo: "coach")
-            .order(by: "lastName")
-            .snapshotPublisherCustom()
-            .tryMap { querySnapshot in
-                try querySnapshot.documents.map { document in
-                    try document.data(as: Profile.self)
-                }
-            }
-            .eraseToAnyPublisher()
-    }
+//    func coachsPublisher() -> AnyPublisher<[Profile], Error> {
+//        return collection
+//            .whereField("userType", isEqualTo: "coach")
+//            .order(by: "lastName")
+//            .snapshotPublisherCustom()
+//            .tryMap { querySnapshot in
+//                try querySnapshot.documents.map { document in
+//                    try document.data(as: Profile.self)
+//                }
+//            }
+//            .eraseToAnyPublisher()
+//    }
 
-    func loadSwimmers() async throws -> [Profile] {
-        return try await collection
-            .whereField("userType", isEqualTo: "swimmer")
-            .order(by: "lastName")
-            .getDocuments()
-            .documents.map { doc in
-                try doc.data(as: Profile.self, decoder: Firestore.Decoder())
-            }
-    }
+//    func loadSwimmers() async throws -> [Profile] {
+//        return try await collection
+//            .whereField("userType", isEqualTo: "swimmer")
+//            .order(by: "lastName")
+//            .getDocuments()
+//            .documents.map { doc in
+//                try doc.data(as: Profile.self, decoder: Firestore.Decoder())
+//            }
+//    }
 
-    func loadTeam(userId: UserId? = nil) async throws -> [Profile] {
-        let userId = try resolveArg(userId: userId)
+    func loadTeam() async throws -> [Profile] {
+        let userId = try currentUserId()
 
         return try await collection
             .whereField("coachId", isEqualTo: userId)
@@ -117,17 +110,17 @@ class FirestoreProfileAPI {
             }
     }
 
-    func updateCoach(for userId: String? = nil, with coachId: String?) async throws {
-        try await documentReference(userId).setData(["coachId": coachId as Any], merge: true)
+    func updateCoach(with coachId: String?) async throws {
+        try await documentReference().setData(["coachId": coachId as Any], merge: true)
     }
 
-    func updateCoach(for profile: inout Profile, with coachId: String?) async throws {
-        try await documentReference(profile.userId).setData(["coachId": coachId as Any], merge: true)
-        profile.coachId = coachId
-    }
+//    func updateCoach(for profile: inout Profile, with coachId: String?) async throws {
+//        try await documentReference(profile.userId).setData(["coachId": coachId as Any], merge: true)
+//        profile.coachId = coachId
+//    }
 
-    func setMessageAsRead(_ messageDbId: Message.DbId, for userId: String? = nil) async throws {
-        let userId = try resolveArg(userId: userId)
+    func setMessageAsRead(_ messageDbId: Message.DbId) async throws {
+        let userId = try currentUserId()
 
         try await documentReference(userId).updateData(
             [Profile.CodingKeys.readMessagesIds.stringValue: FieldValue.arrayUnion([messageDbId])]

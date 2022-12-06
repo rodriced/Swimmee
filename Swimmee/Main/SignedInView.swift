@@ -9,6 +9,7 @@ import Combine
 import SwiftUI
 
 class UserSession: ObservableObject {
+    let profileAPI: ProfileCommonAPI
     let messageAPI: UserMessageCollectionAPI
     let userId: String
     let userType: UserType
@@ -19,6 +20,8 @@ class UserSession: ObservableObject {
 //            print("readMessagesIds  = \(readMessagesIds.debugDescription)")
 //        }
 //    }
+    
+    lazy var profileFuture = profileAPI.future(userId: nil)
 
     lazy var allMessagesPublisher =
     messageAPI.listPublisher(owner: .currentUser, isSent: nil)
@@ -56,7 +59,9 @@ class UserSession: ObservableObject {
             .multicast { CurrentValueSubject(0) }
             .autoconnect()
 
-    init(initialProfile: Profile, messageAPI: UserMessageCollectionAPI = API.shared.message) {
+    init(initialProfile: Profile,
+         profileAPI: ProfileCommonAPI = API.shared.profile,
+         messageAPI: UserMessageCollectionAPI = API.shared.message) {
         print("UserSession.init")
 
         self.userId = initialProfile.userId
@@ -64,13 +69,14 @@ class UserSession: ObservableObject {
         self.coachId = initialProfile.coachId
         self.readMessagesIds = initialProfile.readMessagesIds ?? []
 
+        self.profileAPI = profileAPI
         self.messageAPI = messageAPI
     }
 
     var cancellable: AnyCancellable?
 
     func listenChanges() {
-        cancellable = API.shared.profile.publisher(userId: userId)
+        cancellable = profileAPI.publisher(userId: userId)
             .sink { _ in
             }
             receiveValue: { profile in
