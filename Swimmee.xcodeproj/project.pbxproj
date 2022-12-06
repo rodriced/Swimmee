@@ -10,16 +10,14 @@
 		DC0571F929391AE80037A387 /* SignSharedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */; };
 		DC057201293A0E720037A387 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057200293A0E720037A387 /* TestHelper.swift */; };
 		DC057205293A1EBC0037A387 /* FirebaseAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057204293A1EBC0037A387 /* FirebaseAccountAPI.swift */; };
-		DC057207293A292E0037A387 /* LocalAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057206293A292E0037A387 /* LocalAccountAPI.swift */; };
 		DC057209293A9CDB0037A387 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057208293A9CDB0037A387 /* CustomError.swift */; };
 		DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */; };
 		DC057210293C26510037A387 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC05720F293C26510037A387 /* ProfileViewModel.swift */; };
 		DC057212293C29000037A387 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057211293C29000037A387 /* ProfileViewModelTests.swift */; };
 		DC057214293D0DED0037A387 /* MockImageStorageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */; };
 		DC057216293E54DF0037A387 /* UserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057215293E54DF0037A387 /* UserCollectionAPI.swift */; };
+		DC057218293EAFC00037A387 /* ProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057217293EAFC00037A387 /* ProfileAPI.swift */; };
 		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
-		DC232BCC29281F73007BC2ED /* Session3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BCB29281F73007BC2ED /* Session3.swift */; };
-		DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD32929AC95007BC2ED /* MainView2.swift */; };
 		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
 		DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD8292B7D81007BC2ED /* UserCellView.swift */; };
 		DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */; };
@@ -57,15 +55,12 @@
 		DC920B6429328147000EE664 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6329328147000EE664 /* ConfirmationDialog.swift */; };
 		DC920B662933CE4D000EE664 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B652933CE4D000EE664 /* LoadingView.swift */; };
 		DC920B702934B851000EE664 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6F2934B851000EE664 /* ImageHelper.swift */; };
-		DC920B722934F718000EE664 /* Tries.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B712934F718000EE664 /* Tries.swift */; };
 		DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7329355981000EE664 /* SignSharedViewModel.swift */; };
 		DC920B7729355ABF000EE664 /* ValueValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7629355ABF000EE664 /* ValueValidation.swift */; };
 		DC920B7A293669D0000EE664 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B79293669D0000EE664 /* FormField.swift */; };
 		DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */; };
 		DC920B7F29367556000EE664 /* PhotoInfoEdited.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */; };
-		DC920B812936EB74000EE664 /* SignedInView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B802936EB74000EE664 /* SignedInView2.swift */; };
 		DC920B8329376738000EE664 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B8229376738000EE664 /* ErrorView.swift */; };
-		DC920B8629376FDF000EE664 /* FunctionComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B8529376FDF000EE664 /* FunctionComposition.swift */; };
 		DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A434E2921950100485B1F /* FirestoreExtension.swift */; };
 		DC9A435B2922880B00485B1F /* CoachMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A435A2922880B00485B1F /* CoachMessagesView.swift */; };
 		DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DF628EF64E200F87C9B /* MainView.swift */; };
@@ -109,16 +104,14 @@
 		DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSharedViewModelTests.swift; sourceTree = "<group>"; };
 		DC057200293A0E720037A387 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
 		DC057204293A1EBC0037A387 /* FirebaseAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseAccountAPI.swift; sourceTree = "<group>"; };
-		DC057206293A292E0037A387 /* LocalAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAccountAPI.swift; sourceTree = "<group>"; };
 		DC057208293A9CDB0037A387 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAccountAPI.swift; sourceTree = "<group>"; };
 		DC05720F293C26510037A387 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		DC057211293C29000037A387 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
 		DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockImageStorageAPI.swift; sourceTree = "<group>"; };
 		DC057215293E54DF0037A387 /* UserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionAPI.swift; sourceTree = "<group>"; };
+		DC057217293EAFC00037A387 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
-		DC232BCB29281F73007BC2ED /* Session3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session3.swift; sourceTree = "<group>"; };
-		DC232BD32929AC95007BC2ED /* MainView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView2.swift; sourceTree = "<group>"; };
 		DC232BD8292B7D81007BC2ED /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
 		DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMainView.swift; sourceTree = "<group>"; };
 		DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesView.swift; sourceTree = "<group>"; };
@@ -158,15 +151,12 @@
 		DC920B6329328147000EE664 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
 		DC920B652933CE4D000EE664 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		DC920B6F2934B851000EE664 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
-		DC920B712934F718000EE664 /* Tries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tries.swift; sourceTree = "<group>"; };
 		DC920B7329355981000EE664 /* SignSharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSharedViewModel.swift; sourceTree = "<group>"; };
 		DC920B7629355ABF000EE664 /* ValueValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueValidation.swift; sourceTree = "<group>"; };
 		DC920B79293669D0000EE664 /* FormField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
 		DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCombineLatest.swift; sourceTree = "<group>"; };
 		DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEdited.swift; sourceTree = "<group>"; };
-		DC920B802936EB74000EE664 /* SignedInView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView2.swift; sourceTree = "<group>"; };
 		DC920B8229376738000EE664 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
-		DC920B8529376FDF000EE664 /* FunctionComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionComposition.swift; sourceTree = "<group>"; };
 		DC9A434E2921950100485B1F /* FirestoreExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreExtension.swift; sourceTree = "<group>"; };
 		DC9A435A2922880B00485B1F /* CoachMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesView.swift; sourceTree = "<group>"; };
 		DCA62DF628EF64E200F87C9B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -218,7 +208,6 @@
 		DC0571FA29391EA90037A387 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
-				DC057206293A292E0037A387 /* LocalAccountAPI.swift */,
 				DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */,
 				DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */,
 			);
@@ -245,14 +234,6 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		DC232BCA29281F40007BC2ED /* DataController */ = {
-			isa = PBXGroup;
-			children = (
-				DC232BCB29281F73007BC2ED /* Session3.swift */,
-			);
-			path = DataController;
-			sourceTree = "<group>";
-		};
 		DC3C888228F424640065CBD6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,9 +251,7 @@
 			children = (
 				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
 				DCA62DF628EF64E200F87C9B /* MainView.swift */,
-				DC232BD32929AC95007BC2ED /* MainView2.swift */,
 				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
-				DC920B802936EB74000EE664 /* SignedInView2.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -288,7 +267,6 @@
 				DCDBE7E62915D77A00386076 /* AlertManager.swift */,
 				DC920B6329328147000EE664 /* ConfirmationDialog.swift */,
 				DC920B6F2934B851000EE664 /* ImageHelper.swift */,
-				DC920B712934F718000EE664 /* Tries.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -359,7 +337,6 @@
 				DC88598528E269E20032E0FB /* Preview Content */,
 				DC3C888228F424640065CBD6 /* Model */,
 				DCF3238E28FB5BCE0030626C /* API */,
-				DC232BCA29281F40007BC2ED /* DataController */,
 				DC3C888E28F47C7D0065CBD6 /* Helper */,
 				DCBAD88F29246B0800376A3E /* Component */,
 				DC3C888D28F47C210065CBD6 /* Main */,
@@ -431,7 +408,6 @@
 		DC920B8429376FC0000EE664 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				DC920B8529376FDF000EE664 /* FunctionComposition.swift */,
 				DC057208293A9CDB0037A387 /* CustomError.swift */,
 			);
 			path = Swift;
@@ -453,6 +429,7 @@
 			isa = PBXGroup;
 			children = (
 				DC057215293E54DF0037A387 /* UserCollectionAPI.swift */,
+				DC057217293EAFC00037A387 /* ProfileAPI.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -617,7 +594,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */,
-				DC920B8629376FDF000EE664 /* FunctionComposition.swift in Sources */,
 				DC3C88A128F4DFCF0065CBD6 /* CoachWorkoutsView.swift in Sources */,
 				DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */,
 				DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */,
@@ -628,13 +604,13 @@
 				DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */,
 				DCFBCF522908B1DE00F0BF35 /* ImagePicker.swift in Sources */,
 				DCA62DF928F00E0900F87C9B /* SignUpView.swift in Sources */,
+				DC057218293EAFC00037A387 /* ProfileAPI.swift in Sources */,
 				DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */,
 				DC3C888628F426890065CBD6 /* MessageView.swift in Sources */,
 				DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */,
 				DC920B662933CE4D000EE664 /* LoadingView.swift in Sources */,
 				DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */,
 				DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */,
-				DC232BCC29281F73007BC2ED /* Session3.swift in Sources */,
 				DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */,
 				DC920B702934B851000EE664 /* ImageHelper.swift in Sources */,
 				DCFBCF5029074B7D00F0BF35 /* ReauthenticationView.swift in Sources */,
@@ -654,7 +630,6 @@
 				DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */,
 				DC3E998F28FF42C3008E274C /* FirebaseImageStorageAPI.swift in Sources */,
 				DC3C888428F426250065CBD6 /* Message.swift in Sources */,
-				DC920B812936EB74000EE664 /* SignedInView2.swift in Sources */,
 				DC057210293C26510037A387 /* ProfileViewModel.swift in Sources */,
 				DC3E999329001F7E008E274C /* User.swift in Sources */,
 				DC920B8329376738000EE664 /* ErrorView.swift in Sources */,
@@ -664,12 +639,10 @@
 				DC057209293A9CDB0037A387 /* CustomError.swift in Sources */,
 				DC920B7A293669D0000EE664 /* FormField.swift in Sources */,
 				DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */,
-				DC920B722934F718000EE664 /* Tries.swift in Sources */,
 				DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */,
 				DCDBE7E72915D77A00386076 /* AlertManager.swift in Sources */,
 				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
 				DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */,
-				DC232BD42929AC95007BC2ED /* MainView2.swift in Sources */,
 				DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */,
 				DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */,
 				DC6CCE342910841B00DB8427 /* FirestoreProfileAPI.swift in Sources */,
@@ -681,7 +654,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC0571F929391AE80037A387 /* SignSharedViewModelTests.swift in Sources */,
-				DC057207293A292E0037A387 /* LocalAccountAPI.swift in Sources */,
 				DC057201293A0E720037A387 /* TestHelper.swift in Sources */,
 				DC057214293D0DED0037A387 /* MockImageStorageAPI.swift in Sources */,
 				DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */,
