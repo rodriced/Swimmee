@@ -12,10 +12,19 @@ struct CoachMainView: View {
 
     var body: some View {
         TabView {
-            CoachWorkoutsView()
-                .tabItem {
-                    Label("Workouts", systemImage: "stopwatch")
-                }
+            NavigationView {
+                LoadingView(
+                    publisherBuiler: {
+                        session.allWorkoutsPublisher.eraseToAnyPublisher()
+                    },
+                    targetView: CoachWorkoutsView.init
+                )
+            }
+            .navigationViewStyle(.stack)
+            .tabItem {
+                Label("Workouts", systemImage: "stopwatch")
+            }
+
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
@@ -28,6 +37,7 @@ struct CoachMainView: View {
             .tabItem {
                 Label("Messages", systemImage: "mail.stack")
             }
+            
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")

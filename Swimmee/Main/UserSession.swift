@@ -20,7 +20,7 @@ class UserSession: ObservableObject {
     lazy var profileFuture = profileAPI.future(userId: nil)
 
     lazy var allWorkoutsPublisher =
-    messageAPI.listPublisher(owner: .currentUser, isSent: nil)
+    workoutAPI.listPublisher(owner: .currentUser, isSent: nil)
             .share()
 
     lazy var workoutPublisher =
@@ -56,7 +56,7 @@ class UserSession: ObservableObject {
             .autoconnect()
 
     lazy var allMessagesPublisher =
-    workoutAPI.listPublisher(owner: .currentUser, isSent: nil)
+    messageAPI.listPublisher(owner: .currentUser, isSent: nil)
             .share()
 
     lazy var messagePublisher =

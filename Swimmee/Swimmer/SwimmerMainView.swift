@@ -10,11 +10,13 @@ import SwiftUI
 
 class SwimmerMainVM: ObservableObject {
     @Published var newWorkoutsCount: String?
-    @Published var unreadMessagesCount: String? {
-        didSet {
+    @Published var unreadWorkoutsCount: String?
+    @Published var unreadMessagesCount: String?
+//    {
+//        didSet {
 //            print("SwimmerMainVM.unreadMessagesCount.didSet : \(unreadMessagesCount.debugDescription)")
-        }
-    }
+//        }
+//    }
 
     init() {
         print("SwimmerMainVM.init")
@@ -24,21 +26,31 @@ class SwimmerMainVM: ObservableObject {
         print("SwimmerMainVM.deinit")
     }
 
+    var unreadWorkoutsCountPublisher: AnyPublisher<Int, Error>?
     var unreadMessagesCountPublisher: AnyPublisher<Int, Error>?
 
-    func startListeners(unreadMessagesCountPublisher: AnyPublisher<Int, Error>) {
+    func startListeners(unreadWorkoutsCountPublisher: AnyPublisher<Int, Error>,
+                        unreadMessagesCountPublisher: AnyPublisher<Int, Error>)
+    {
         print("SwimmerMainVM.startListeners")
 
+        self.unreadWorkoutsCountPublisher = unreadWorkoutsCountPublisher
         self.unreadMessagesCountPublisher = unreadMessagesCountPublisher
 
+        self.unreadWorkoutsCountPublisher?
+            .map(formatUnreadCount)
+            .replaceError(with: nil)
+            .filter { $0 != self.unreadWorkoutsCount }
+            .assign(to: &$unreadWorkoutsCount)
+
         self.unreadMessagesCountPublisher?
-            .map(formatUnreadMessagesCount)
+            .map(formatUnreadCount)
             .replaceError(with: nil)
             .filter { $0 != self.unreadMessagesCount }
             .assign(to: &$unreadMessagesCount)
     }
 
-    func formatUnreadMessagesCount(_ value: Int) -> String? {
+    func formatUnreadCount(_ value: Int) -> String? {
         value > 0 ? String(value) : nil
     }
 }
@@ -53,11 +65,22 @@ struct SwimmerMainView: View {
 
     var body: some View {
         TabView {
-            SwimmerWorkoutsView()
-                .badge(vm.newWorkoutsCount)
-                .tabItem {
-                    Label("Workouts", systemImage: "stopwatch")
-                }
+            NavigationView {
+                LoadingView(
+                    publisherBuiler: {
+                        Publishers.CombineLatest(
+                            session.workoutPublisher,
+                            session.readWorkoutsIdsPublisher
+                        )
+                        .eraseToAnyPublisher()
+                    }, // TODO: Manage error when there is no chosen coach
+                    targetView: SwimmerWorkoutsView.init
+                )
+            }
+            .badge(vm.unreadWorkoutsCount)
+            .tabItem {
+                Label("Workouts", systemImage: "stopwatch")
+            }
 
             NavigationView {
                 LoadingView(
@@ -81,7 +104,12 @@ struct SwimmerMainView: View {
                     Label("Settings", systemImage: "gearshape")
                 }
         }
-        .task { vm.startListeners(unreadMessagesCountPublisher: session.unreadMessagesCountPublisher.eraseToAnyPublisher()) }
+        .task {
+            vm.startListeners(
+                unreadWorkoutsCountPublisher: session.unreadWorkoutsCountPublisher.eraseToAnyPublisher(),
+                unreadMessagesCountPublisher: session.unreadMessagesCountPublisher.eraseToAnyPublisher()
+            )
+        }
         .navigationViewStyle(.stack)
 //            .animation(.easeIn, value: 1)
     }
