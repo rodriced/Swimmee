@@ -94,11 +94,13 @@ class SwimmerCoachViewModel: ObservableObject {
     func saveSelectedCoach(_ coach: Profile?) {
         Task {
             do {
-                try await profileAPI.updateCoach(with: currentCoach?.userId)
-                currentCoach = coach
+                try await profileAPI.updateCoach(with: coach?.userId)
+                await MainActor.run {
+                    currentCoach = coach
+                }
             } catch {
                 await MainActor.run {
-                    alertContext.content = .message(error.localizedDescription)
+                    alertContext.message = error.localizedDescription
                 }
             }
         }
@@ -198,7 +200,7 @@ struct SwimmerCoachView: View {
         .actionSheet(item: $vm.confirmationDialogPresented) { dialog in
             dialog.actionSheet()
         }
-        .alert(vm.alertContext)
+        .alert(vm.alertContext) {}
         .navigationBarTitle("My coach")
     }
 }

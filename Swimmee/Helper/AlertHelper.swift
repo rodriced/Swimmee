@@ -7,54 +7,43 @@
 
 import SwiftUI
 
-struct ContextualAlertViewModifier: ViewModifier {
+struct ContextualAlertViewModifier<A: View>: ViewModifier {
     @StateObject var context: AlertContext
+    var actions: () -> A
 
     func body(content: Content) -> some View {
-        let alertContent = context.content ?? .message("")
-        
-        switch alertContent {
-        case let .message(message):
-            content
-                .alert(message, isPresented: $context.isPresented) {}
-        case let .alert(alert):
-            content
-                .alert(isPresented: $context.isPresented, content: alert)
-        }
+        content
+            .alert(context.message, isPresented: $context.isPresented, actions: actions)
     }
 }
 
 extension View {
-    func alert(_ context: AlertContext) -> some View {
-        modifier(ContextualAlertViewModifier(context: context))
+    func alert<A: View>(_ context: AlertContext, @ViewBuilder actions: @escaping () -> A) -> some View {
+        modifier(ContextualAlertViewModifier<A>(context: context, actions: actions))
     }
 }
 
 class AlertContext: ObservableObject {
-    enum AlertContent {
-        case message(String)
-        case alert(() -> Alert)
-    }
-
     @Published var isPresented = false {
-        didSet { if !isPresented { content = nil } }
+        didSet { if !isPresented { message = "" } }
     }
 
-    var content: AlertContent? {
+    var message: String = "" {
         didSet {
-            if content != nil { isPresented = true }
+            print("AlertContext.message = \(message)")
+            if !message.isEmpty { isPresented = true }
         }
     }
 }
 
 extension Alert {
-    static func tryAgain(title: String, message: String,
+    static func retry(title: String, content: String,
                       retryAction: @escaping () -> Void,
                       cancelAction: @escaping () -> Void) -> Alert
     {
         Alert(
             title: Text(title),
-            message: Text(message),
+            message: Text(content),
             primaryButton: .default(
                 Text("Try Again"),
                 action: retryAction
