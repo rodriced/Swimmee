@@ -36,7 +36,7 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
     typealias DbId = String
 
     enum CodingKeys: CodingKey {
-        case id, userId, userType, firstName, lastName, email, photoInfo, coachId, readMessagesIds
+        case id, userId, userType, firstName, lastName, email, photoInfo, coachId, readWorkoutsIds, readMessagesIds
     }
 
     var dbId: DbId?
@@ -57,19 +57,21 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
 //            }
 //        }
 //    }
+    var readWorkoutsIds: Set<Message.DbId>?
     var readMessagesIds: Set<Message.DbId>?
 
     var fullname: String {
         "\(firstName) \(lastName)"
     }
 
-    init(id: UUID = UUID(), userId: String, userType: UserType, firstName: String, lastName: String, email: String, readMessagesIds: Set<DbId> = []) {
+    init(id: UUID = UUID(), userId: String, userType: UserType, firstName: String, lastName: String, email: String, readWorkoutsIds: Set<DbId> = [],readMessagesIds: Set<DbId> = []) {
         self.id = id
         self.userId = userId
         self.userType = userType
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
+        self.readWorkoutsIds = readWorkoutsIds
         self.readMessagesIds = readMessagesIds
     }
 

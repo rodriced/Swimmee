@@ -18,6 +18,12 @@ enum OwnerFilter {
     case any
 }
 
+protocol UserWorkoutCollectionAPI {
+    func listPublisher(owner: OwnerFilter, isSent: Bool?) -> AnyPublisher<[Workout], Error>
+    func save(_ item: Workout, replaceAsNew: Bool) async throws -> String
+    func delete(id: String) async throws
+}
+
 protocol UserMessageCollectionAPI {
     func listPublisher(owner: OwnerFilter, isSent: Bool?) -> AnyPublisher<[Message], Error>
     func save(_ item: Message, replaceAsNew: Bool) async throws -> String

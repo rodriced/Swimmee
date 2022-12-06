@@ -24,6 +24,7 @@ protocol ProfileCoachAPI {
 protocol ProfileSwimmerAPI {
     func loadCoachs() async throws -> [Profile]
     func updateCoach(with coachId: String?) async throws
+    func setWorkoutAsRead(_ workoutDbId: Workout.DbId) async throws
     func setMessageAsRead(_ messageDbId: Message.DbId) async throws
 }
 

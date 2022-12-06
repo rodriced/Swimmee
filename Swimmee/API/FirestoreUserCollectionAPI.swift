@@ -11,6 +11,7 @@ import FirebaseFirestoreCombineSwift
 import FirebaseFirestoreSwift
 import Foundation
 
+class FirestoreUserWorkoutCollectionAPI: FirestoreUserCollectionAPI<Workout>, UserWorkoutCollectionAPI {}
 class FirestoreUserMessageCollectionAPI: FirestoreUserCollectionAPI<Message>, UserMessageCollectionAPI {}
 
 class FirestoreUserCollectionAPI<Item: DbIdentifiable> {

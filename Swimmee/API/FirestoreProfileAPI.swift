@@ -119,6 +119,14 @@ class FirestoreProfileAPI: ProfileAPI {
 //        profile.coachId = coachId
 //    }
 
+    func setWorkoutAsRead(_ workoutDbId: Workout.DbId) async throws {
+        let userId = try currentUserId()
+
+        try await documentReference(userId).updateData(
+            [Profile.CodingKeys.readWorkoutsIds.stringValue: FieldValue.arrayUnion([workoutDbId])]
+        )
+    }
+
     func setMessageAsRead(_ messageDbId: Message.DbId) async throws {
         let userId = try currentUserId()
 
