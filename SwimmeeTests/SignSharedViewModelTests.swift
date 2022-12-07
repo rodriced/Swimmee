@@ -75,7 +75,7 @@ final class SignSharedViewModelTests: XCTestCase {
             XCTAssertTrue(sut.lastNameInError)
         }
         
-        XCTAssertEqual(sut.errorAlertMessage, SignSharedViewModel.formValidationErrorMessage)
+        XCTAssertEqual(sut.alertcontext.message, SignSharedViewModel.formValidationErrorMessage)
     }
 
     func testGivenNewFormsOfEachType_WhenSubmited_ThenFormHaveErrors() {
@@ -126,7 +126,7 @@ final class SignSharedViewModelTests: XCTestCase {
             XCTAssertFalse(sut.lastNameInError)
         }
         
-        XCTAssertFalse(sut.errorAlertIsPresenting)
+        XCTAssertFalse(sut.alertcontext.isPresented)
         
         wait(for: [expectation1], timeout: 5)
     }
@@ -155,7 +155,7 @@ final class SignSharedViewModelTests: XCTestCase {
 
         let expectation2 = publisherExpectation(
             //            sut.$errorAlertIsPresenting.print("$errorAlertIsPresenting").removeDuplicates().first { $0 == true },
-            sut.$errorAlertIsPresenting.dropFirst(),
+            sut.alertcontext.$isPresented.dropFirst(),
             equals: true
         )
         
@@ -188,7 +188,7 @@ final class SignSharedViewModelTests: XCTestCase {
 
         wait(for: [expectation1, expectation2], timeout: 5)
         
-        XCTAssertEqual(sut.errorAlertMessage, TestError.errorForTesting.rawValue)
+        XCTAssertEqual(sut.alertcontext.message, TestError.errorForTesting.rawValue)
     }
 
     func testGivenCorrectValuesEnteredInFormsOfEachType_WhenSubmitFail_ThenFormHaveErrors() {

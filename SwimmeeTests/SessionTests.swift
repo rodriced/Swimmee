@@ -30,10 +30,10 @@ final class SessionTests: XCTestCase {
     func testAlertAppear_WhenAuthenticationStateIsUpdatedToFailure0() throws {
         let session = Session(accountAPI: Self.mockAccountAPI)
         
-        XCTAssertFalse(session.errorAlertIsPresenting)
+        XCTAssertFalse(session.authenticationFailureAlert.isPresented)
         
         let expectation1 = publisherExpectation(
-            session.$errorAlertIsPresenting.print("$errorAlertIsPresenting").dropFirst(),
+            session.authenticationFailureAlert.$isPresented.print("$errorAlertIsPresenting").dropFirst(),
             equals: true, store: &cancellables
         )
         
@@ -48,7 +48,7 @@ final class SessionTests: XCTestCase {
         
         wait(for: [expectation1, expectation2], timeout: 5)
         
-        XCTAssertEqual(session.errorAlertMessage, "Authentication failure")
+        XCTAssertEqual(session.authenticationFailureAlert.message, "Authentication failure")
     }
     
     func testAlertAppear_WhenConnectionStatusIsUpdatedToFailure() throws {
@@ -87,7 +87,7 @@ final class SessionTests: XCTestCase {
 
         let expectation = publisherExpectation(
             Publishers.Merge(
-                session.$errorAlertIsPresenting.map(MergedValue.errorAlertIsPresenting),
+                session.authenticationFailureAlert.$isPresented.map(MergedValue.errorAlertIsPresenting),
                 session.$authenticationState.map(MergedValue.authenticationState)
             )
             .dropFirst(2), // dont test initial values
@@ -101,7 +101,7 @@ final class SessionTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5)
         
-        XCTAssertEqual(session.errorAlertMessage, "Authentication failure")
+        XCTAssertEqual(session.authenticationFailureAlert.message, "Authentication failure")
     }
 
     func testAlertAppear_WhenConnectionStatusIsUpdatedToFailure2() throws {
@@ -134,7 +134,7 @@ final class SessionTests: XCTestCase {
 //                    session.$authenticationState.map(MergedValue.authenticationState)
 //                )
             Publishers.Merge(
-                session.$errorAlertIsPresenting.map(Wrapped.bool),
+                session.authenticationFailureAlert.$isPresented.map(Wrapped.bool),
                 session.$authenticationState.map(Wrapped.authenticationState)
             )
             .dropFirst(2) // dont test initial values
@@ -148,6 +148,6 @@ final class SessionTests: XCTestCase {
             session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
         }
                 
-        XCTAssertEqual(session.errorAlertMessage, "Authentication failure")
+        XCTAssertEqual(session.authenticationFailureAlert.message, "Authentication failure")
     }
 }
