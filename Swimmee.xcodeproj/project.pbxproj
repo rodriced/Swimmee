@@ -61,7 +61,6 @@
 		DC920B7A293669D0000EE664 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B79293669D0000EE664 /* FormField.swift */; };
 		DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */; };
 		DC920B7F29367556000EE664 /* PhotoInfoEdited.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */; };
-		DC920B8329376738000EE664 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B8229376738000EE664 /* ErrorView.swift */; };
 		DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A434E2921950100485B1F /* FirestoreExtension.swift */; };
 		DC9A435B2922880B00485B1F /* CoachMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A435A2922880B00485B1F /* CoachMessagesView.swift */; };
 		DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DF628EF64E200F87C9B /* MainView.swift */; };
@@ -77,7 +76,6 @@
 		DCF3238628FB37180030626C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3238528FB37180030626C /* FirebaseFirestoreSwift */; };
 		DCF3238828FB37180030626C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3238728FB37180030626C /* FirebaseStorage */; };
 		DCF3238A28FB37180030626C /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3238928FB37180030626C /* FirebaseStorageCombine-Community */; };
-		DCF3239028FC88360030626C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCF3238F28FC88360030626C /* GoogleService-Info.plist */; };
 		DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */; };
 		DCFBCF4E29074B1900F0BF35 /* FormViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */; };
 		DCFBCF5029074B7D00F0BF35 /* ReauthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */; };
@@ -158,7 +156,6 @@
 		DC920B79293669D0000EE664 /* FormField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
 		DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCombineLatest.swift; sourceTree = "<group>"; };
 		DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEdited.swift; sourceTree = "<group>"; };
-		DC920B8229376738000EE664 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		DC9A434E2921950100485B1F /* FirestoreExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreExtension.swift; sourceTree = "<group>"; };
 		DC9A435A2922880B00485B1F /* CoachMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesView.swift; sourceTree = "<group>"; };
 		DCA62DF628EF64E200F87C9B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -167,7 +164,6 @@
 		DCAEA8F82919AF0000F936E7 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
 		DCDBE7E62915D77A00386076 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
-		DCF3238F28FC88360030626C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugHelpers.swift; sourceTree = "<group>"; };
 		DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewHelpers.swift; sourceTree = "<group>"; };
 		DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReauthenticationView.swift; sourceTree = "<group>"; };
@@ -239,7 +235,6 @@
 		DC3C888228F424640065CBD6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DC920B7529355A8A000EE664 /* Helper */,
 				DC3E999229001F7E008E274C /* User.swift */,
 				DC3C888728F42BAE0065CBD6 /* Profile.swift */,
 				DC3C888328F426250065CBD6 /* Message.swift */,
@@ -283,7 +278,6 @@
 				DC8859AB28E26FE00032E0FB /* ProfileView.swift */,
 				DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */,
 				DC3C888528F426890065CBD6 /* MessageView.swift */,
-				DC920B8229376738000EE664 /* ErrorView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -335,7 +329,6 @@
 		DC88597E28E269E20032E0FB /* Swimmee */ = {
 			isa = PBXGroup;
 			children = (
-				DCF3238F28FC88360030626C /* GoogleService-Info.plist */,
 				DC88598328E269E20032E0FB /* Assets.xcassets */,
 				DC88598528E269E20032E0FB /* Preview Content */,
 				DC3C888228F424640065CBD6 /* Model */,
@@ -379,13 +372,6 @@
 				DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */,
 			);
 			path = SwimmeeUITests;
-			sourceTree = "<group>";
-		};
-		DC920B7529355A8A000EE664 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helper;
 			sourceTree = "<group>";
 		};
 		DC920B7829366933000EE664 /* Form */ = {
@@ -571,7 +557,6 @@
 			files = (
 				DC88598728E269E20032E0FB /* Preview Assets.xcassets in Resources */,
 				DC88598428E269E20032E0FB /* Assets.xcassets in Resources */,
-				DCF3239028FC88360030626C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,7 +620,6 @@
 				DC3C888428F426250065CBD6 /* Message.swift in Sources */,
 				DC057210293C26510037A387 /* ProfileViewModel.swift in Sources */,
 				DC3E999329001F7E008E274C /* User.swift in Sources */,
-				DC920B8329376738000EE664 /* ErrorView.swift in Sources */,
 				DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */,
 				DC3C88A528F4E8EA0065CBD6 /* CoachTeamView.swift in Sources */,
 				DC9A435B2922880B00485B1F /* CoachMessagesView.swift in Sources */,
