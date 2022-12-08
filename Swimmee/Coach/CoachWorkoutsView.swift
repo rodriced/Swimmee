@@ -8,7 +8,7 @@
 import Combine
 import SwiftUI
 
-enum CoachWorkoutsFilter: String, CaseIterable, Identifiable {
+enum CoachWorkoutsStatusFilter: String, CaseIterable, Identifiable {
     case all = "All"
     case draft = "Draft only"
     case sent = "Sent only"
@@ -19,21 +19,28 @@ enum CoachWorkoutsFilter: String, CaseIterable, Identifiable {
 class CoachWorkoutsViewModel: ObservableObject {
     struct Config: ViewModelConfig {
         let workoutAPI: UserWorkoutCollectionAPI
-        
+
         static let `default` = Config(workoutAPI: API.shared.workout)
     }
-    
+
     let config: Config
 
     @Published var workouts: [Workout]
 
-    @Published var filter = CoachWorkoutsFilter.all
+    @Published var statusFilterSelection = CoachWorkoutsStatusFilter.all
+    @Published var tagFilterSelection: Int? = nil
+
+    var isSomeFilterActivated: Bool { statusFilterSelection != .all || tagFilterSelection != nil }
 
     var filteredWorkouts: [Workout] {
         workouts.filter { workout in
-            filter == .all
-                || (filter == .draft && !workout.isSent)
-                || (filter == .sent && workout.isSent)
+            (
+                statusFilterSelection == .all
+                    || (statusFilterSelection == .draft && !workout.isSent)
+                    || (statusFilterSelection == .sent && workout.isSent)
+            )
+                &&
+                tagFilterSelection.map { workout.tagsCache.contains($0) } ?? true
         }
     }
 
@@ -45,11 +52,20 @@ class CoachWorkoutsViewModel: ObservableObject {
 
     required init(initialData: [Workout], config: Config = .default) {
         print("CoachWorkoutsViewModel.init")
-        workouts = initialData
+        var workouts = initialData
+        for index in workouts.indices {
+            workouts[index].updateTagsCache()
+        }
+        self.workouts = workouts
         self.config = config
     }
 
     var restartLoader: (() -> Void)?
+
+    func clearFilters() {
+        statusFilterSelection = .all
+        tagFilterSelection = nil
+    }
 
     func goEditingWorkout(_ workout: Workout) {
         selectedWorkout = workout
@@ -99,46 +115,36 @@ struct CoachWorkoutsView: View {
     }
 
     var workoutsList: some View {
-//        if let selectedWorkout = vm.selectedWorkout {
-//            NavigationLink(isActive: $vm.navigatingToEditView) {
-//                EditWorkoutView(workout: selectedWorkout)
-//            } label: {
-//                EmptyView()
-//            }
-//        }
-
-        List {
-            ForEach(vm.filteredWorkouts) { workout in
-                NavigationLink(tag: workout, selection: $vm.selectedWorkout) {
-                    EditWorkoutView(workout: workout)
-                } label: {
-                    WorkoutView(workout: workout, inReception: session.isSwimmer)
+        Group {
+            let filteredWorkouts = vm.filteredWorkouts
+            if filteredWorkouts.isEmpty {
+                Spacer()
+                Text("No workouts found.")
+                    .foregroundColor(.secondary)
+                Spacer()
+            } else {
+                List {
+                    ForEach(filteredWorkouts) { workout in
+                        NavigationLink(tag: workout, selection: $vm.selectedWorkout) {
+                            EditWorkoutView(workout: workout)
+                        } label: {
+                            WorkoutView(workout: workout, inReception: session.isSwimmer)
+                        }
+                        .listRowSeparator(.hidden)
+                    }
+                    .onDelete(perform: vm.deleteWorkout)
                 }
-//                Button {
-//                    vm.goEditingWorkout(workout)
-//                } label: {
-//                    HStack {
-//                        WorkoutView(workout: workout, inReception: session.isSwimmer)
-//                        Image(systemName: "chevron.forward")
-//                            .font(Font.system(.footnote))
-//                            .foregroundColor(Color.gray)
-//                    }
-//                }
-                .listRowSeparator(.hidden)
+                .listStyle(.plain)
             }
-            .onDelete(perform: vm.deleteWorkout)
         }
-        .listStyle(.plain)
     }
 
-    var filterStateIndication: some View {
+    var statusFilterIndication: some View {
         Group {
-            if vm.filter != .all {
+            if vm.statusFilterSelection != .all {
                 (
-                    Text("Filter enabled : ")
-                        .foregroundColor(.secondary)
-                        + Text(vm.filter.rawValue)
-                        .foregroundColor(vm.filter == .draft ? .orange : .mint)
+                    Text(vm.statusFilterSelection.rawValue)
+                        .foregroundColor(vm.statusFilterSelection == .draft ? .orange : .mint)
                         .bold()
                 )
                 .font(Font.system(.caption))
@@ -146,16 +152,45 @@ struct CoachWorkoutsView: View {
         }
     }
 
-    var filterMenu: some View {
+    var tagsFilterIndication: some View {
+        Group {
+            if let tagsIndexSelected = vm.tagFilterSelection {
+                (
+                    Text("Tags : ")
+                        .foregroundColor(.secondary)
+                        + Text(Workout.allTags[tagsIndexSelected])
+//                        .foregroundColor(.brown)
+                        .bold()
+                )
+                .font(Font.system(.caption))
+            }
+        }
+    }
+
+    var statusFilterMenu: some View {
         Menu {
-            Picker("Filter", selection: $vm.filter) {
-                ForEach(CoachWorkoutsFilter.allCases) { filter in
+            Picker("StatusFilter", selection: $vm.statusFilterSelection) {
+                ForEach(CoachWorkoutsStatusFilter.allCases) { filter in
                     Text(filter.rawValue).tag(filter)
                 }
             }
 //            .pickerStyle(.inline)
         } label: {
-            Label("Filter", systemImage: "slider.horizontal.3")
+            Label("StatusFilter", systemImage: "slider.horizontal.3")
+        }
+    }
+
+    var tagsFilterMenu: some View {
+        Menu {
+            Picker("TagsFilter", selection: $vm.tagFilterSelection) {
+                Text("All").tag(nil as Int?)
+                ForEach(Array(zip(Workout.allTags.indices, Workout.allTags)), id: \.0) { index, tag in
+                    Text(tag).tag(index as Int?)
+                }
+            }
+//            .pickerStyle(.inline)
+        } label: {
+            Label("TagsFilter", systemImage: "tag")
         }
     }
 
@@ -188,14 +223,27 @@ struct CoachWorkoutsView: View {
             if vm.workouts.isEmpty {
                 emptyListInformation
             } else {
-                filterStateIndication
-                workoutsList
+                VStack {
+                    if vm.isSomeFilterActivated {
+                        HStack(spacing: 5) {
+                            VStack {
+                                statusFilterIndication
+                                tagsFilterIndication
+                            }
+                            Button { vm.clearFilters() } label: { Image(systemName: "xmark.circle.fill") }
+                        }
+                        .padding(4)
+                        .border(Color.secondary, width: 1)
+                    }
+                    workoutsList
+                }
             }
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 if !vm.workouts.isEmpty {
-                    filterMenu
+                    tagsFilterMenu
+                    statusFilterMenu
                 }
 
                 editNewWorkoutButton

@@ -45,4 +45,31 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
         }
     }
 
+    var tagsCache: Set<Int> = []
+}
+
+extension Workout {
+    static let allTags = ["backstroke", "breaststroke", "butterfly", "dolphin kick", "flutter kick", "freestyle", "frog kick", "medley", "relay"]
+    
+    static func normalize(_ tag: String) -> String {
+        tag.filter { !$0.isWhitespace }.lowercased()
+    }
+    
+    static var allNormalizedTags = allTags.map(normalize)
+    
+    mutating func updateTagsCache() {
+        tagsCache = Self.buildTagsCache(from: "\(title)\n\(content)")
+    }
+        
+    static func buildTagsCache(from text: String) -> Set<Int> {
+        let normalizedText = Self.normalize(text)
+                
+        return Set(
+            allNormalizedTags.enumerated()
+                .filter { _, tag in
+                    normalizedText.contains(tag)
+                }
+                .map(\.0)
+        )
+    }
 }
