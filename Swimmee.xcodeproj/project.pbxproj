@@ -49,8 +49,6 @@
 		DC88598428E269E20032E0FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598328E269E20032E0FB /* Assets.xcassets */; };
 		DC88598728E269E20032E0FB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598628E269E20032E0FB /* Preview Assets.xcassets */; };
 		DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599028E269E20032E0FB /* SwimmeeTests.swift */; };
-		DC88599B28E269E20032E0FB /* SwimmeeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599A28E269E20032E0FB /* SwimmeeUITests.swift */; };
-		DC88599D28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */; };
 		DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859A928E26F2B0032E0FB /* SignInView.swift */; };
 		DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859AB28E26FE00032E0FB /* ProfileView.swift */; };
 		DC920B6429328147000EE664 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6329328147000EE664 /* ConfirmationDialog.swift */; };
@@ -67,6 +65,7 @@
 		DCA62DF928F00E0900F87C9B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DF828F00E0900F87C9B /* SignUpView.swift */; };
 		DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */; };
 		DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA8F82919AF0000F936E7 /* SessionTests.swift */; };
+		DCAFBB5C29424EC9004BFFB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCAFBB5B29424EC9004BFFB4 /* GoogleService-Info.plist */; };
 		DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */; };
 		DCDBE7E72915D77A00386076 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDBE7E62915D77A00386076 /* AlertHelper.swift */; };
 		DCF3237E28FB37180030626C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237D28FB37180030626C /* FirebaseAuth */; };
@@ -144,8 +143,6 @@
 		DC88598C28E269E20032E0FB /* SwimmeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwimmeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88599028E269E20032E0FB /* SwimmeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeTests.swift; sourceTree = "<group>"; };
 		DC88599628E269E20032E0FB /* SwimmeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwimmeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC88599A28E269E20032E0FB /* SwimmeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeUITests.swift; sourceTree = "<group>"; };
-		DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		DC8859A928E26F2B0032E0FB /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DC8859AB28E26FE00032E0FB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		DC920B6329328147000EE664 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
@@ -162,6 +159,7 @@
 		DCA62DF828F00E0900F87C9B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitleView.swift; sourceTree = "<group>"; };
 		DCAEA8F82919AF0000F936E7 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
+		DCAFBB5B29424EC9004BFFB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
 		DCDBE7E62915D77A00386076 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugHelpers.swift; sourceTree = "<group>"; };
@@ -311,7 +309,6 @@
 			children = (
 				DC88597E28E269E20032E0FB /* Swimmee */,
 				DC88598F28E269E20032E0FB /* SwimmeeTests */,
-				DC88599928E269E20032E0FB /* SwimmeeUITests */,
 				DC88597D28E269E20032E0FB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -329,6 +326,7 @@
 		DC88597E28E269E20032E0FB /* Swimmee */ = {
 			isa = PBXGroup;
 			children = (
+				DCAFBB5B29424EC9004BFFB4 /* GoogleService-Info.plist */,
 				DC88598328E269E20032E0FB /* Assets.xcassets */,
 				DC88598528E269E20032E0FB /* Preview Content */,
 				DC3C888228F424640065CBD6 /* Model */,
@@ -363,15 +361,6 @@
 				DC057211293C29000037A387 /* ProfileViewModelTests.swift */,
 			);
 			path = SwimmeeTests;
-			sourceTree = "<group>";
-		};
-		DC88599928E269E20032E0FB /* SwimmeeUITests */ = {
-			isa = PBXGroup;
-			children = (
-				DC88599A28E269E20032E0FB /* SwimmeeUITests.swift */,
-				DC88599C28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift */,
-			);
-			path = SwimmeeUITests;
 			sourceTree = "<group>";
 		};
 		DC920B7829366933000EE664 /* Form */ = {
@@ -557,6 +546,7 @@
 			files = (
 				DC88598728E269E20032E0FB /* Preview Assets.xcassets in Resources */,
 				DC88598428E269E20032E0FB /* Assets.xcassets in Resources */,
+				DCAFBB5C29424EC9004BFFB4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,8 +646,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC88599D28E269E20032E0FB /* SwimmeeUITestsLaunchTests.swift in Sources */,
-				DC88599B28E269E20032E0FB /* SwimmeeUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
