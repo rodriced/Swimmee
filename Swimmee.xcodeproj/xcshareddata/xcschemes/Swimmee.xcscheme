@@ -50,17 +50,6 @@
                ReferencedContainer = "container:Swimmee.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "YES"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DC88599528E269E20032E0FB"
-               BuildableName = "SwimmeeUITests.xctest"
-               BlueprintName = "SwimmeeUITests"
-               ReferencedContainer = "container:Swimmee.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

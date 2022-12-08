@@ -89,13 +89,6 @@
 			remoteGlobalIDString = DC88597B28E269E20032E0FB;
 			remoteInfo = Swimmee;
 		};
-		DC88599728E269E20032E0FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DC88597428E269E10032E0FB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DC88597B28E269E20032E0FB;
-			remoteInfo = Swimmee;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -142,7 +135,6 @@
 		DC88598628E269E20032E0FB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DC88598C28E269E20032E0FB /* SwimmeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwimmeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88599028E269E20032E0FB /* SwimmeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeTests.swift; sourceTree = "<group>"; };
-		DC88599628E269E20032E0FB /* SwimmeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwimmeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8859A928E26F2B0032E0FB /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DC8859AB28E26FE00032E0FB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		DC920B6329328147000EE664 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
@@ -185,13 +177,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DC88598928E269E20032E0FB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC88599328E269E20032E0FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -318,7 +303,6 @@
 			children = (
 				DC88597C28E269E20032E0FB /* Swimmee.app */,
 				DC88598C28E269E20032E0FB /* SwimmeeTests.xctest */,
-				DC88599628E269E20032E0FB /* SwimmeeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -474,24 +458,6 @@
 			productReference = DC88598C28E269E20032E0FB /* SwimmeeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DC88599528E269E20032E0FB /* SwimmeeUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DC8859A628E269E20032E0FB /* Build configuration list for PBXNativeTarget "SwimmeeUITests" */;
-			buildPhases = (
-				DC88599228E269E20032E0FB /* Sources */,
-				DC88599328E269E20032E0FB /* Frameworks */,
-				DC88599428E269E20032E0FB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DC88599828E269E20032E0FB /* PBXTargetDependency */,
-			);
-			name = SwimmeeUITests;
-			productName = SwimmeeUITests;
-			productReference = DC88599628E269E20032E0FB /* SwimmeeUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -506,10 +472,6 @@
 						CreatedOnToolsVersion = 14.0.1;
 					};
 					DC88598B28E269E20032E0FB = {
-						CreatedOnToolsVersion = 14.0.1;
-						TestTargetID = DC88597B28E269E20032E0FB;
-					};
-					DC88599528E269E20032E0FB = {
 						CreatedOnToolsVersion = 14.0.1;
 						TestTargetID = DC88597B28E269E20032E0FB;
 					};
@@ -534,7 +496,6 @@
 			targets = (
 				DC88597B28E269E20032E0FB /* Swimmee */,
 				DC88598B28E269E20032E0FB /* SwimmeeTests */,
-				DC88599528E269E20032E0FB /* SwimmeeUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -551,13 +512,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DC88598A28E269E20032E0FB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC88599428E269E20032E0FB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -642,13 +596,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC88599228E269E20032E0FB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -656,11 +603,6 @@
 			isa = PBXTargetDependency;
 			target = DC88597B28E269E20032E0FB /* Swimmee */;
 			targetProxy = DC88598D28E269E20032E0FB /* PBXContainerItemProxy */;
-		};
-		DC88599828E269E20032E0FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DC88597B28E269E20032E0FB /* Swimmee */;
-			targetProxy = DC88599728E269E20032E0FB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -881,40 +823,6 @@
 			};
 			name = Release;
 		};
-		DC8859A728E269E20032E0FB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rodriced.SwimmeeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Swimmee;
-			};
-			name = Debug;
-		};
-		DC8859A828E269E20032E0FB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rodriced.SwimmeeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Swimmee;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -941,15 +849,6 @@
 			buildConfigurations = (
 				DC8859A428E269E20032E0FB /* Debug */,
 				DC8859A528E269E20032E0FB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DC8859A628E269E20032E0FB /* Build configuration list for PBXNativeTarget "SwimmeeUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DC8859A728E269E20032E0FB /* Debug */,
-				DC8859A828E269E20032E0FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
