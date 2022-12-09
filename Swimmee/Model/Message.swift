@@ -5,7 +5,6 @@
 //  Created by Rodolphe Desruelles on 10/10/2022.
 //
 
-import FirebaseFirestoreSwift
 import Foundation
 
 struct Message: Identifiable, Codable, DbIdentifiable, Hashable {

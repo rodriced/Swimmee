@@ -19,7 +19,7 @@ class SignSharedViewModel: ObservableObject {
     private var formType: FormType
     private let accountAPI: AccountAPI
 
-    init(formType: FormType, accountAPI: AccountAPI = FirebaseAccountAPI()) {
+    init(formType: FormType, accountAPI: AccountAPI = API.shared.account) {
         self.formType = formType
         self.accountAPI = accountAPI
     }

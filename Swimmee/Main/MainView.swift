@@ -8,12 +8,10 @@
 import Combine
 import SwiftUI
 
-var c = 0
-
 class Session: ObservableObject {
     let accountAPI: AccountAPI
 
-    init(accountAPI: AccountAPI = FirebaseAccountAPI()) {
+    init(accountAPI: AccountAPI = API.shared.account) {
         print("Session.init")
         self.accountAPI = accountAPI
     }
@@ -77,33 +75,3 @@ struct MainView: View {
         }
     }
 }
-
-// struct MainView_Previews: PreviewProvider {
-//    class ConnectionService: ConnectionServiceProtocol {
-//        var authenticationState: ConnectionStatus
-//        init(authenticationState: ConnectionStatus) {
-//            self.authenticationState = authenticationState
-//        }
-//
-//        func statusPublisher() -> AnyPublisher<ConnectionStatus, Never> {
-//            //        Just(authenticationState).eraseToAnyPublisher()
-//            //        CurrentValueSubject(authenticationState).eraseToAnyPublisher()
-//            Array(repeating: authenticationState, count: 3).publisher.print("connectionStatusPublisher").eraseToAnyPublisher()
-//        }
-//    }
-//
-//    static func sampleSession(authenticationState: ConnectionStatus) -> Session {
-//        let connectionService = ConnectionService(authenticationState: authenticationState)
-//        let session = Session(connectionService: connectionService)
-//        session.authenticationState = authenticationState // TODO:
-//        return session
-//    }
-//
-//    static var previews: some View {
-////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .undefined)))
-////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .signedOut)))
-//        MainView(session: sampleSession(authenticationState: .failure(FakeAccountManager.Err.signInError)))
-////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .signedIn(Profile.coachSample))))
-////        MainView(session: Session(accountManager: FakeAccountManager(authenticationState: .failure(FakeAccountManager.Err.signInError))))
-//    }
-// }
