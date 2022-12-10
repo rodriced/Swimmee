@@ -19,8 +19,18 @@ class SwimmerWorkoutsViewModel {
     typealias LoadedData = ([Workout], Set<Workout.DbId>)
     typealias WorkoutsParams = [(workout: Workout, isRead: Bool)]
 
-    @Published var workoutsParams: [(workout: Workout, isRead: Bool)]
+    @Published var workoutsParams: WorkoutsParams
     @Published var newWorkoutsCount: Int
+
+    @Published var tagFilterSelection: Int? = nil
+
+    var isSomeFilterActivated: Bool { tagFilterSelection != nil }
+
+    var filteredWorkoutsParams: WorkoutsParams {
+        workoutsParams.filter { workout, _ in
+            tagFilterSelection.map { workout.tagsCache.contains($0) } ?? true
+        }
+    }
 
     required init(initialData: LoadedData, config: Config = .default) {
         print("SwimmerWorkoutsViewModel.init")
@@ -29,7 +39,10 @@ class SwimmerWorkoutsViewModel {
     }
 
     static func formatLoadedData(_ loadedData: LoadedData) -> (WorkoutsParams, Int) {
-        let (workouts, readWorkoutsIds) = loadedData
+        var workouts = loadedData.0
+        let readWorkoutsIds = loadedData.1
+
+        Workout.updateTagsCache(for: &workouts)
 
         let workoutsParams =
             workouts.map { workout in
@@ -42,6 +55,10 @@ class SwimmerWorkoutsViewModel {
     }
 
     var restartLoader: (() -> Void)?
+
+    func clearFilters() {
+        tagFilterSelection = nil
+    }
 
     func setWorkoutAsRead(_ workout: Workout) {
         guard let dbId = workout.dbId else { return }
@@ -74,15 +91,54 @@ struct SwimmerWorkoutsView: View {
     }
 
     var workoutsList: some View {
-        List(vm.workoutsParams, id: \.0.id) { workout, isRead in
-            WorkoutView(workout: workout, inReception: session.isSwimmer, isRead: isRead)
-                .listRowSeparator(.hidden)
-                .onTapGesture {
-                    vm.setWorkoutAsRead(workout)
+        Group {
+            let filteredWorkoutsParams = vm.filteredWorkoutsParams
+            if filteredWorkoutsParams.isEmpty {
+                Spacer()
+                Text("No workouts found.")
+                    .foregroundColor(.secondary)
+                Spacer()
+            } else {
+                List(filteredWorkoutsParams, id: \.0.id) { workout, isRead in
+                    WorkoutView(workout: workout, inReception: session.isSwimmer, isRead: isRead)
+                        .listRowSeparator(.hidden)
+                        .onTapGesture {
+                            vm.setWorkoutAsRead(workout)
+                        }
                 }
+                .refreshable { vm.restartLoader?() }
+                .listStyle(.plain)
+            }
         }
-        .refreshable { vm.restartLoader?() }
-        .listStyle(.plain)
+    }
+
+    var tagsFilterIndication: some View {
+        Group {
+            if let tagsIndexSelected = vm.tagFilterSelection {
+                (
+                    Text("Tags : ")
+                        .foregroundColor(.secondary)
+                        + Text(Workout.allTags[tagsIndexSelected])
+//                        .foregroundColor(.brown)
+                        .bold()
+                )
+                .font(Font.system(.caption))
+            }
+        }
+    }
+
+    var tagsFilterMenu: some View {
+        Menu {
+            Picker("TagsFilter", selection: $vm.tagFilterSelection) {
+                Text("All").tag(nil as Int?)
+                ForEach(Array(zip(Workout.allTags.indices, Workout.allTags)), id: \.0) { index, tag in
+                    Text(tag).tag(index as Int?)
+                }
+            }
+//            .pickerStyle(.inline)
+        } label: {
+            Label("TagsFilter", systemImage: "tag")
+        }
     }
 
     var body: some View {
@@ -97,10 +153,28 @@ struct SwimmerWorkoutsView: View {
                 .foregroundColor(.secondary)
 
             } else {
-                if vm.newWorkoutsCount > 0 {
-                    Text(newWorkoutsCountInfo)
+                VStack {
+                    if vm.isSomeFilterActivated {
+                        HStack(spacing: 5) {
+                            VStack {
+                                tagsFilterIndication
+                            }
+                            Button { vm.clearFilters() } label: { Image(systemName: "xmark.circle.fill") }
+                        }
+                        .padding(4)
+                        .border(Color.secondary, width: 1)
+                    } else if vm.newWorkoutsCount > 0 {
+                        Text(newWorkoutsCountInfo)
+                    }
+                    workoutsList
                 }
-                workoutsList
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if !vm.workoutsParams.isEmpty {
+                    tagsFilterMenu
+                }
             }
         }
         .navigationBarTitle("Workouts", displayMode: .inline)
