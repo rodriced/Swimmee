@@ -72,7 +72,7 @@ final class ProfileViewModelTests: XCTestCase {
             sut.firstName = aProfile.firstName + "adding"
         }
 
-        print(sut.firstName, sut.lastName, sut.email, sut.readOnlyPhotoInfoEditedState)
+        print(sut.firstName, sut.lastName, sut.email, sut.photoInfoEdited.state)
 
         assertPublishedValue(
             sut.$isReadyToSubmit, equals: false
@@ -133,14 +133,12 @@ final class ProfileViewModelTests: XCTestCase {
 
         XCTAssertNil(sut.initialProfile.photoInfo)
         XCTAssertNil(sut.pickedPhoto)
-        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, .initial)
         XCTAssertEqual(sut.photoInfoEdited.state, .initial)
 
         sut.pickedPhoto = TestHelper.fakeUIImage
 
         let newState = PhotoInfoEdited.State.new(uiImage: TestHelper.fakeUIImage, data: TestHelper.fakePngImage, size: TestHelper.fakePngImage.count, hash: TestHelper.fakePngImage.hashValue)
 
-        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, newState)
         XCTAssertEqual(sut.photoInfoEdited.state, newState)
     }
 
@@ -153,12 +151,10 @@ final class ProfileViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.initialProfile.photoInfo, TestHelper.fakePhotoInfo)
         XCTAssertNil(sut.pickedPhoto)
-        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, .initial)
         XCTAssertEqual(sut.photoInfoEdited.state, .initial)
 
         sut.clearDisplayedPhoto()
 
-        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, .removed)
         XCTAssertEqual(sut.photoInfoEdited.state, .removed)
     }
 
@@ -219,7 +215,6 @@ final class ProfileViewModelTests: XCTestCase {
 
 //        XCTAssertNotEqual(sut.readOnlyPhotoInfoEditedState, .removed)
 //        XCTAssertNotEqual(sut.photoInfoEdited.state, .removed)
-        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, .initial)
         XCTAssertEqual(sut.photoInfoEdited.state, .initial)
         
         sut.saveProfile()

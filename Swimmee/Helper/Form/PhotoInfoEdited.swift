@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public class PhotoInfoEdited {
+public class PhotoInfoEdited: ObservableObject {
     enum State: Equatable {
         case initial
         case removed

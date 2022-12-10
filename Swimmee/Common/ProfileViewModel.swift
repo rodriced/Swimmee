@@ -35,8 +35,6 @@ class ProfileViewModel: LoadableViewModel {
     @Published var lastNameInError = false
     @Published var emailInError = false
 
-    // You must not interact with readOnlyPhotoInfoEditedState directly. Use photoInfoEdited.update instead. (They are linked with publisher assign)
-    @Published private(set) var readOnlyPhotoInfoEditedState = PhotoInfoEdited.State.initial
     let photoInfoEdited: PhotoInfoEdited
 
     @Published var isPhotoPickerPresented = false
@@ -97,7 +95,7 @@ class ProfileViewModel: LoadableViewModel {
                                             initialValue: initialProfile.email,
                                             debounceDelay: config.debounceDelay)
 
-    private lazy var photoInfoField = FormField(valuePublisher: $readOnlyPhotoInfoEditedState,
+    private lazy var photoInfoField = FormField(valuePublisher: photoInfoEdited.$state,
                                                 // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
                                                 // BUT SEEMS OK NOW. TO BE VERIFIED
                                                 compareWith: { $0 != .initial },
@@ -125,8 +123,6 @@ class ProfileViewModel: LoadableViewModel {
     private var cancellables = Set<AnyCancellable>()
 
     func startPublishers() {
-        photoInfoEdited.$state.assign(to: &$readOnlyPhotoInfoEditedState)
-
         formReadyToSubmit
             .assign(to: &$isReadyToSubmit)
 

@@ -20,7 +20,7 @@ struct ProfileView: View {
 
     var profilePhoto: some View {
         Group {
-            switch vm.readOnlyPhotoInfoEditedState {
+            switch vm.photoInfoEdited.state {
             case let .new(uiImage: pickedPhoto, data: _, size: _, hash: _):
                 Image(uiImage: pickedPhoto)
                     .resizable()
