@@ -37,7 +37,7 @@ struct WorkoutView: View {
             } icon: {
                 Image(systemName: "calendar")
             }
-            Text(workout.date, style: .time).font(.caption)
+//            Text(workout.date, style: .time).font(.caption)
             Spacer()
             Label {
                 Text("\(workout.duration / 60)h\(workout.duration % 60)")
@@ -45,8 +45,8 @@ struct WorkoutView: View {
                 Image(systemName: "timer")
             }
         }
-        .font(.headline)
-//        .foregroundColor(typeColor)
+        .font(.subheadline)
+        .foregroundColor(.secondary)
     }
 
     var footerView: some View {
@@ -54,10 +54,12 @@ struct WorkoutView: View {
             if workout.isSent {
                 EmptyView()
             } else {
-                Text("draft").font(.headline).foregroundColor(Color.orange)
+                Text("draft").font(.subheadline).foregroundColor(Color.orange)
             }
             Spacer()
-            Text(workout.title).font(.subheadline)
+            Text(workout.title)
+                .font(.caption)
+                .foregroundColor(.secondary)
         }
     }
 

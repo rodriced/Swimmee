@@ -177,36 +177,45 @@ struct EditWorkoutView: View {
                 Section {
                     TextField("Title", text: $vm.workout.title)
                 }
-                Section {
-                    DatePicker(selection: $vm.workout.date) {
-                        Text("Planned Date")
-//                        Label {
-//                            Text("Date")
-//                        } icon: {
-//                            Image(systemName: "calendar").foregroundColor(Color.mint)
-//                        }
+//                Section {
+                DatePicker(selection: $vm.workout.date, displayedComponents: .date) {
+//                    Text("Planned Date").foregroundColor(.secondary)
+                    Label {
+                        Text("Planned date")
+                    } icon: {
+                        Image(systemName: "calendar")
                     }
+                    .foregroundColor(Color.secondary)
                 }
-                Section {
-                    Picker("Duration", selection: $vm.workout.duration) {
+//                }
+//                Section {
+                Picker(selection: $vm.workout.duration) {
 //                        ForEach(stride(from: 15, to: 240, by: 15)) { minutes in
-                        ForEach(1 ..< 17) { quarters in
-                            let minutes = quarters * 15
-                            Text("\(minutes / 60)h\(minutes % 60)")
-                                .tag(minutes)
-                        }
+                    ForEach(1 ..< 17) { quarters in
+                        let minutes = quarters * 15
+                        Text("\(minutes / 60)h\(minutes % 60)")
+                            .tag(minutes)
                     }
+                } label: {
+//                    Text("Duration").foregroundColor(.secondary)
+                    Label {
+                        Text("Duration")
+                    } icon: {
+                        Image(systemName: "timer")
+                    }
+                    .foregroundColor(Color.secondary)
+                }
 
 //                    DatePicker(selection: $vm.workout.duration, displayedComponents: .hourAndMinute) {
 //                        Text("Duration")
-                    ////                        Label {
-                    ////                            Text("Duration")
-                    ////    //                        Text(vm.date, style: .date)
-                    ////                        } icon: {
-                    ////                            Image(systemName: "timer").foregroundColor(Color.mint)
-                    ////                        }
+                ////                        Label {
+                ////                            Text("Duration")
+                ////    //                        Text(vm.date, style: .date)
+                ////                        } icon: {
+                ////                            Image(systemName: "timer").foregroundColor(Color.mint)
+                ////                        }
 //                    }
-                }
+//                }
                 TextEditorWithPlaceholder(text: $vm.workout.content, placeholder: "Workout details...", height: 400)
             }
 
