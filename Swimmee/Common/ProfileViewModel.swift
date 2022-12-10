@@ -153,16 +153,14 @@ class ProfileViewModel: LoadableViewModel {
 
     func saveProfile() {
         Task {
-            let newPhotoInfo = await photoInfoEdited.save(as: initialProfile.userId)
-
-            let profile = {
-                var profile = initialProfile
-                profile.firstName = firstName
-                profile.lastName = lastName
-                profile.email = email
-                profile.photoInfo = newPhotoInfo
-                return profile
-            }()
+            var profile = initialProfile
+            profile.firstName = firstName
+            profile.lastName = lastName
+            profile.email = email
+            
+            if photoInfoEdited.state != .initial {
+                profile.photoInfo = await photoInfoEdited.save(as: initialProfile.userId)
+            }
 
             try? await config.saveProfie(profile)
         }

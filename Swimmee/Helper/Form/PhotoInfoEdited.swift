@@ -92,7 +92,7 @@ public class PhotoInfoEdited {
                 return nil
             }
         case .initial:
-            return nil
+            return initial
         }
     }
 }
