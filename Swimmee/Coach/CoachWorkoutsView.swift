@@ -53,9 +53,8 @@ class CoachWorkoutsViewModel: ObservableObject {
     required init(initialData: [Workout], config: Config = .default) {
         print("CoachWorkoutsViewModel.init")
         var workouts = initialData
-        for index in workouts.indices {
-            workouts[index].updateTagsCache()
-        }
+        Workout.updateTagsCache(for: &workouts)
+        
         self.workouts = workouts
         self.config = config
     }

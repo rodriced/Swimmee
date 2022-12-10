@@ -57,8 +57,14 @@ extension Workout {
     
     static var allNormalizedTags = allTags.map(normalize)
     
-    mutating func updateTagsCache() {
-        tagsCache = Self.buildTagsCache(from: "\(title)\n\(content)")
+    static func updateTagsCache(for workout: inout Workout) {
+        workout.tagsCache = Self.buildTagsCache(from: "\(workout.title)\n\(workout.content)")
+    }
+    
+    static func updateTagsCache(for workouts: inout [Workout]) {
+        for index in workouts.indices {
+            updateTagsCache(for: &workouts[index])
+        }
     }
         
     static func buildTagsCache(from text: String) -> Set<Int> {
