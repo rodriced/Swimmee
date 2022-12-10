@@ -13,15 +13,18 @@ import XCTest
 final class ProfileViewModelTests: XCTestCase {
     private let aCoachProfile = Profile(userId: "", userType: .coach, firstName: "aFirstName", lastName: "aLastName", email: "an@e.mail")
 
-    private func profileViewModelSubmitSuccess(aProfile: Profile) -> ProfileViewModel {
+    private var defaultMockImageStorageAPI: MockImageStorageAPI {
         let mockImageStorageAPI = MockImageStorageAPI()
         mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
         mockImageStorageAPI.mockDelete = {}
+        return mockImageStorageAPI
+    }
 
+    private func profileViewModelSubmitSuccess(aProfile: Profile) -> ProfileViewModel {
         let config = ProfileViewModel.Config(
             saveProfie: { _ in },
             deleteCurrrentAccount: {},
-            imageStorage: mockImageStorageAPI,
+            imageStorage: defaultMockImageStorageAPI,
             debounceDelay: 0
         )
 
@@ -29,14 +32,10 @@ final class ProfileViewModelTests: XCTestCase {
     }
 
     private func profileViewModelSubmitFail(aProfile: Profile) -> ProfileViewModel {
-        let mockImageStorageAPI = MockImageStorageAPI()
-        mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
-        mockImageStorageAPI.mockDelete = {}
-
         let config = ProfileViewModel.Config(
             saveProfie: { _ in throw TestError.errorForTesting },
             deleteCurrrentAccount: {},
-            imageStorage: mockImageStorageAPI,
+            imageStorage: defaultMockImageStorageAPI,
             debounceDelay: 0
         )
 
@@ -72,7 +71,7 @@ final class ProfileViewModelTests: XCTestCase {
             sut.firstName = aProfile.firstName + "adding"
         }
 
-        print(sut.firstName, sut.lastName, sut.email, sut.photoInfoEdited.state)
+//        print(sut.firstName, sut.lastName, sut.email, sut.photoInfoEdited.state)
 
         assertPublishedValue(
             sut.$isReadyToSubmit, equals: false
@@ -100,14 +99,14 @@ final class ProfileViewModelTests: XCTestCase {
                 .map(String.init(describing:)), // To make tuple "Equatable"
             equals: "(false, false)"
         ) {
-            print("--> Will modify : \(sut.email)")
+//            print("--> Will modify : \(sut.email)")
             sut.email = "bad email"
         }
 
         assertPublishedValue(
             sut.$emailInError, equals: false
         ) {
-            print("--> Will saveProfile")
+//            print("--> Will saveProfile")
             sut.saveProfile()
         }
     }
@@ -163,14 +162,10 @@ final class ProfileViewModelTests: XCTestCase {
 
         let aProfile = aCoachProfile
 
-        let mockImageStorageAPI = MockImageStorageAPI()
-        mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
-        mockImageStorageAPI.mockDelete = {}
-
         let config = ProfileViewModel.Config(
             saveProfie: { _ in },
             deleteCurrrentAccount: { expectation.fulfill() },
-            imageStorage: mockImageStorageAPI,
+            imageStorage: defaultMockImageStorageAPI,
             debounceDelay: 0
         )
 
@@ -185,27 +180,20 @@ final class ProfileViewModelTests: XCTestCase {
     func testGivenAProfileFormWithAPhoto_WhenFormIsModifiedAndSaved_ThenPhotoIsNotRemoved() {
         var aProfile = aCoachProfile
         aProfile.photoInfo = TestHelper.fakePhotoInfo
-
-        let mockImageStorageAPI = MockImageStorageAPI()
-        mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
-        mockImageStorageAPI.mockDelete = {}
+        
+        let initialPhotoInfoEdited = PhotoInfoEdited(TestHelper.fakePhotoInfo, imageStorage: defaultMockImageStorageAPI)
 
         let config = ProfileViewModel.Config(
-            saveProfie: { profileToTest in
-                XCTAssertNotNil(profileToTest.photoInfo)
+            saveProfie: { profileToSave in
+                XCTAssertNotNil(profileToSave.photoInfo)
             },
             deleteCurrrentAccount: {},
-            imageStorage: mockImageStorageAPI,
+            imageStorage: defaultMockImageStorageAPI,
             debounceDelay: 0
         )
 
         let sut = ProfileViewModel(initialData: aProfile, config: config)
         sut.startPublishers()
-
-//        XCTAssertEqual(sut.initialProfile.photoInfo, TestHelper.fakePhotoInfo)
-//        XCTAssertNil(sut.pickedPhoto)
-//        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, .initial)
-        XCTAssertEqual(sut.photoInfoEdited.state, .initial)
 
         assertPublishedValue(
             sut.$isReadyToSubmit, equals: true
@@ -213,9 +201,7 @@ final class ProfileViewModelTests: XCTestCase {
             sut.lastName = aProfile.lastName + "adding"
         }
 
-//        XCTAssertNotEqual(sut.readOnlyPhotoInfoEditedState, .removed)
-//        XCTAssertNotEqual(sut.photoInfoEdited.state, .removed)
-        XCTAssertEqual(sut.photoInfoEdited.state, .initial)
+        XCTAssertEqual(sut.photoInfoEdited.state, initialPhotoInfoEdited.state)
         
         sut.saveProfile()
     }
