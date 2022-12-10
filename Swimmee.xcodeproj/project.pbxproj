@@ -24,6 +24,7 @@
 		DC2C22472943E2CA005BBC19 /* SwimmeeMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */; };
 		DC2C22492943F031005BBC19 /* SwimmeeAppForTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */; };
 		DC2C224C2943FA6F005BBC19 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC2C224B2943FA6F005BBC19 /* GoogleService-Info.plist */; };
+		DC2C224F294412B4005BBC19 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = DC2C224E294412B4005BBC19 /* FirebasePerformance */; };
 		DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */; };
 		DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */; };
 		DC3C888428F426250065CBD6 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888328F426250065CBD6 /* Message.swift */; };
@@ -175,6 +176,7 @@
 			files = (
 				DCF3238628FB37180030626C /* FirebaseFirestoreSwift in Frameworks */,
 				DCF3238A28FB37180030626C /* FirebaseStorageCombine-Community in Frameworks */,
+				DC2C224F294412B4005BBC19 /* FirebasePerformance in Frameworks */,
 				DCF3237E28FB37180030626C /* FirebaseAuth in Frameworks */,
 				DCF3238428FB37180030626C /* FirebaseFirestoreCombine-Community in Frameworks */,
 				DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */,
@@ -221,6 +223,13 @@
 				DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		DC2C224D294412B4005BBC19 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		DC3C888228F424640065CBD6 /* Model */ = {
@@ -307,6 +316,7 @@
 				DC88597E28E269E20032E0FB /* Swimmee */,
 				DC88598F28E269E20032E0FB /* SwimmeeTests */,
 				DC88597D28E269E20032E0FB /* Products */,
+				DC2C224D294412B4005BBC19 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -448,6 +458,7 @@
 				DCF3238728FB37180030626C /* FirebaseStorage */,
 				DCF3238928FB37180030626C /* FirebaseStorageCombine-Community */,
 				DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */,
+				DC2C224E294412B4005BBC19 /* FirebasePerformance */,
 			);
 			productName = Swimmee;
 			productReference = DC88597C28E269E20032E0FB /* Swimmee.app */;
@@ -895,6 +906,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DC232BD5292B0D84007BC2ED /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		DC2C224E294412B4005BBC19 /* FirebasePerformance */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DCF3237C28FB37180030626C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebasePerformance;
 		};
 		DCF3237D28FB37180030626C /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
