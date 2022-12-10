@@ -185,4 +185,43 @@ final class ProfileViewModelTests: XCTestCase {
 
         wait(for: [expectation], timeout: 1)
     }
+
+    func testGivenAProfileFormWithAPhoto_WhenFormIsModifiedAndSaved_ThenPhotoIsNotRemoved() {
+        var aProfile = aCoachProfile
+        aProfile.photoInfo = TestHelper.fakePhotoInfo
+
+        let mockImageStorageAPI = MockImageStorageAPI()
+        mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
+        mockImageStorageAPI.mockDelete = {}
+
+        let config = ProfileViewModel.Config(
+            saveProfie: { profileToTest in
+                XCTAssertNotNil(profileToTest.photoInfo)
+            },
+            deleteCurrrentAccount: {},
+            imageStorage: mockImageStorageAPI,
+            debounceDelay: 0
+        )
+
+        let sut = ProfileViewModel(initialData: aProfile, config: config)
+        sut.startPublishers()
+
+//        XCTAssertEqual(sut.initialProfile.photoInfo, TestHelper.fakePhotoInfo)
+//        XCTAssertNil(sut.pickedPhoto)
+//        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, .initial)
+        XCTAssertEqual(sut.photoInfoEdited.state, .initial)
+
+        assertPublishedValue(
+            sut.$isReadyToSubmit, equals: true
+        ) {
+            sut.lastName = aProfile.lastName + "adding"
+        }
+
+//        XCTAssertNotEqual(sut.readOnlyPhotoInfoEditedState, .removed)
+//        XCTAssertNotEqual(sut.photoInfoEdited.state, .removed)
+        XCTAssertEqual(sut.readOnlyPhotoInfoEditedState, .initial)
+        XCTAssertEqual(sut.photoInfoEdited.state, .initial)
+        
+        sut.saveProfile()
+    }
 }
