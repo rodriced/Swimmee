@@ -17,7 +17,7 @@ class UserSession: ObservableObject {
     @Published var readWorkoutsIds: Set<Workout.DbId>
     @Published var readMessagesIds: Set<Message.DbId>
     
-    lazy var profileFuture = profileAPI.future(userId: nil)
+    var profileFuture: AnyPublisher<Profile,Error> { profileAPI.future(userId: nil) }
 
     lazy var allWorkoutsPublisher =
     workoutAPI.listPublisher(owner: .currentUser, isSent: nil)
