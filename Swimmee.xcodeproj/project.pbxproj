@@ -46,6 +46,8 @@
 		DC3E999329001F7E008E274C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E999229001F7E008E274C /* User.swift */; };
 		DC4E558D2946401700C508FA /* WorkoutTagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */; };
 		DC4E558F2946418A00C508FA /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E558E2946418A00C508FA /* Samples.swift */; };
+		DC4E559129464EEA00C508FA /* CoachTeamViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E559029464EEA00C508FA /* CoachTeamViewModelTests.swift */; };
+		DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E559229464FB900C508FA /* MockProfileAPI.swift */; };
 		DC5083D3293FD79000B9696B /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5083D2293FD79000B9696B /* UserSession.swift */; };
 		DC6CCE30290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE2F290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift */; };
 		DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE31290FC4FF00DB8427 /* API.swift */; };
@@ -135,6 +137,8 @@
 		DC3E999229001F7E008E274C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTagsTests.swift; sourceTree = "<group>"; };
 		DC4E558E2946418A00C508FA /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
+		DC4E559029464EEA00C508FA /* CoachTeamViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachTeamViewModelTests.swift; sourceTree = "<group>"; };
+		DC4E559229464FB900C508FA /* MockProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileAPI.swift; sourceTree = "<group>"; };
 		DC5083D2293FD79000B9696B /* UserSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DC6C550229435A03009DDB0B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		DC6C55052943979C009DDB0B /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 			children = (
 				DC05720A293AAF5B0037A387 /* MockAccountAPI.swift */,
 				DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */,
+				DC4E559229464FB900C508FA /* MockProfileAPI.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -371,6 +376,7 @@
 				DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */,
 				DC057211293C29000037A387 /* ProfileViewModelTests.swift */,
 				DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */,
+				DC4E559029464EEA00C508FA /* CoachTeamViewModelTests.swift */,
 			);
 			path = SwimmeeTests;
 			sourceTree = "<group>";
@@ -625,6 +631,8 @@
 				DC057214293D0DED0037A387 /* MockImageStorageAPI.swift in Sources */,
 				DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */,
 				DC7912E1291BD3140077B403 /* CombineHelper.swift in Sources */,
+				DC4E559129464EEA00C508FA /* CoachTeamViewModelTests.swift in Sources */,
+				DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */,
 				DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */,
 				DC057212293C29000037A387 /* ProfileViewModelTests.swift in Sources */,
 				DC05720B293AAF5B0037A387 /* MockAccountAPI.swift in Sources */,

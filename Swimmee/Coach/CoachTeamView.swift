@@ -14,7 +14,7 @@ class CoachTeamViewModel: ObservableObject {
         self.profileAPI = profileAPI
     }
     
-    enum ViewState {
+    enum ViewState: Equatable {
         case loading
         case normal([Profile])
         case info(String)

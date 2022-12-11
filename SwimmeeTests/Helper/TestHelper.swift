@@ -19,6 +19,7 @@ enum TestError: String, CustomError {
 
     case badContextCall
     case errorForTesting
+    case fakeNetworkError
 }
 
 enum TestHelper {
