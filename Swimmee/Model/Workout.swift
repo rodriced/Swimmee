@@ -51,11 +51,11 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
 extension Workout {
     static let allTags = ["backstroke", "breaststroke", "butterfly", "dolphin kick", "flutter kick", "freestyle", "frog kick", "medley", "relay"]
     
-    static func normalize(_ tag: String) -> String {
+    static private func normalize(_ tag: String) -> String {
         tag.filter { !$0.isWhitespace }.lowercased()
     }
     
-    static var allNormalizedTags = allTags.map(normalize)
+    static private var allNormalizedTags = allTags.map(normalize)
     
     static func updateTagsCache(for workout: inout Workout) {
         workout.tagsCache = Self.buildTagsCache(from: "\(workout.title)\n\(workout.content)")
@@ -67,7 +67,7 @@ extension Workout {
         }
     }
         
-    static func buildTagsCache(from text: String) -> Set<Int> {
+    static private func buildTagsCache(from text: String) -> Set<Int> {
         let normalizedText = Self.normalize(text)
                 
         return Set(
