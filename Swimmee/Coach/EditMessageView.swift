@@ -14,6 +14,10 @@ class EditMessageViewModel: ObservableObject {
     let originalMessage: Message
     @Published var message: Message
     
+    func validateTitle() -> Bool {
+        !message.title.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+        
     var canSend : Bool {
         !message.isSent || (message.isSent && message.hasTextDifferent(from: originalMessage))
     }
@@ -81,6 +85,7 @@ struct EditMessageView: View {
     @Environment(\.presentationMode) private var presentationMode
 
     @State var confirmationDialogPresented: ConfirmationDialog?
+    @FocusState private var isTitleFocused: Bool
 
 //    let message: Message
 
@@ -127,23 +132,33 @@ struct EditMessageView: View {
     }
 
     var bottomButtonsBar: some View {
+        func doIfFormValidated(action: () -> Void) {
+            guard vm.validateTitle() else {
+                vm.alertContext.message = "Put something in title and retry."
+                isTitleFocused = true
+                return
+            }
+            
+            action()
+        }
+
         let config = vm.message.isSent ?
             (saveAsDraftButton: (
                 label: "Unsend and save as draft",
-                action: { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }
+                action: {doIfFormValidated { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }}
             ),
             sendButton: (
                 label: "Replace (Re-send)",
-                action: { confirmationDialogPresented = resendConfirmationDialog }
+                action: {doIfFormValidated { confirmationDialogPresented = resendConfirmationDialog }}
             ))
             :
             (saveAsDraftButton: (
                 label: "Save as draft",
-                action: { vm.saveMessage(andSendIt: false, completion: dismiss) }
+                action: {doIfFormValidated { vm.saveMessage(andSendIt: false, completion: dismiss) }}
             ),
             sendButton: (
                 label: "Send",
-                action: { confirmationDialogPresented = sendConfirmationDialog }
+                action: {doIfFormValidated { confirmationDialogPresented = sendConfirmationDialog }}
             ))
 
         return HStack {
@@ -176,6 +191,7 @@ struct EditMessageView: View {
             Form {
                 Section {
                     TextField("Title", text: $vm.message.title)
+                        .focused($isTitleFocused)
                 }
                 TextEditorWithPlaceholder(text: $vm.message.content, placeholder: "Content", height: 400)
             }
