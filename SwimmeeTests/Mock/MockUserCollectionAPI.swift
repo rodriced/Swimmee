@@ -9,13 +9,13 @@
 
 import Combine
 
-class FirestoreUserWorkoutCollectionAPI: MockUserCollectionAPI<Workout>, UserWorkoutCollectionAPI {}
-class FirestoreUserMessageCollectionAPI: MockUserCollectionAPI<Message>, UserMessageCollectionAPI {}
+class MockUserWorkoutCollectionAPI: MockUserCollectionAPI<Workout>, UserWorkoutCollectionAPI {}
+class MockUserMessageCollectionAPI: MockUserCollectionAPI<Message>, UserMessageCollectionAPI {}
 
 class MockUserCollectionAPI<Item: DbIdentifiable> {
     var mockListPublisher: () -> AnyPublisher<[Item], Error> = { BadContextCallInMockFail(); fatalError() }
     var mockSave: () async throws -> String = { BadContextCallInMockFail(); fatalError() }
-    var mockDelete: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
+    var mockDelete: (String) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
     
     func listPublisher(owner: OwnerFilter = .currentUser, isSent: Bool? = nil) -> AnyPublisher<[Item], Error> {
         mockListPublisher()
@@ -26,6 +26,6 @@ class MockUserCollectionAPI<Item: DbIdentifiable> {
     }
 
     func delete(id: String) async throws {
-        try await mockDelete()
+        try await mockDelete(id)
     }
 }

@@ -38,7 +38,7 @@ class CoachMessagesViewModel: ObservableObject {
     }
 
     @Published var selectedMessage: Message?
-    @Published var confirmationDialogPresented = false
+    @Published var sentMessageEditionConfirmationDialogPresented = false
     @Published var navigatingToEditView = false
 
     @Published var alertContext = AlertContext()
@@ -55,8 +55,11 @@ class CoachMessagesViewModel: ObservableObject {
         selectedMessage = message
 
         if message.isSent {
-            confirmationDialogPresented = true
+            sentMessageEditionConfirmationDialogPresented = true
+            navigatingToEditView = false
+
         } else {
+            sentMessageEditionConfirmationDialogPresented = false
             navigatingToEditView = true
         }
     }
@@ -201,7 +204,7 @@ struct CoachMessagesView: View {
                 editNewMessageButton
             }
         }
-        .actionSheet(isPresented: $vm.confirmationDialogPresented) {
+        .actionSheet(isPresented: $vm.sentMessageEditionConfirmationDialogPresented) {
             ActionSheet(
                 title: Text("Edit an already sent message ?"),
                 message: Text("Message will stay sent until you save it as draft or delete it."),

@@ -39,7 +39,7 @@ class Samples {
         
         return areSent.enumerated().map { index, isSent in
             let ref = 200 + index
-            return Workout(dbId: UUID().uuidString, userId: "\(ref)", title: "A Workout Title \(ref)", content: "A workout content \(ref)\nwith multiples\nlines.", isSent: isSent)
+            return Workout(dbId: UUID().uuidString, userId: userId, title: "A Workout Title \(ref)", content: "A workout content \(ref)\nwith multiples\nlines.", isSent: isSent)
         }
     }
 
@@ -52,7 +52,7 @@ class Samples {
         
         return areSent.enumerated().map { index, isSent in
             let ref = 200 + index
-            return Message(dbId: UUID().uuidString, userId: "\(ref)", title: "A Title \(ref)", content: "A message content \(ref)\nwith multiples\nlines.", isSent: isSent)
+            return Message(dbId: UUID().uuidString, userId: userId, title: "A Title \(ref)", content: "A message content \(ref)\nwith multiples\nlines.", isSent: isSent)
         }
     }
     
