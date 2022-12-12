@@ -15,7 +15,7 @@ class SwimmerCoachViewModel: ObservableObject {
         self.profileAPI = profileAPI
     }
 
-    enum ViewState {
+    enum ViewState: Equatable {
         case loading
         case normal
         case info(String)
@@ -35,7 +35,7 @@ class SwimmerCoachViewModel: ObservableObject {
         do {
             state = .loading
 
-            coachs = try await profileAPI.loadCoachs()
+            let coachs = try await profileAPI.loadCoachs()
 
             guard !coachs.isEmpty else {
                 state = .info("No coach available for now.\nCome back later.")
@@ -43,12 +43,13 @@ class SwimmerCoachViewModel: ObservableObject {
             }
 
             guard let coachId else {
-                currentCoach = nil
+                self.coachs = coachs
+                self.currentCoach = nil
                 state = .normal
                 return
             }
 
-            currentCoach = coachs.first { profile in
+            let currentCoach = coachs.first { profile in
                 profile.userId == coachId
             }
 
@@ -57,6 +58,8 @@ class SwimmerCoachViewModel: ObservableObject {
                 return
             }
 
+            self.coachs = coachs
+            self.currentCoach = currentCoach
             state = .normal
 
         } catch {
