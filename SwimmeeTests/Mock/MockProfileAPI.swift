@@ -20,8 +20,8 @@ class MockProfilePI: ProfileAPI {
 
     var mockLoadCoachs: () async throws -> [Profile] = { BadContextCallInMockFail(); fatalError() }
     var mockUpdateCoach: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
-    var mockSetWorkoutAsRead: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
-    var mockSetMessageAsRead: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
+    var mockSetWorkoutAsRead: (_ workoutDbId: Workout.DbId) async throws -> Void = {_ in BadContextCallInMockFail(); fatalError() }
+    var mockSetMessageAsRead: (_ messageDbId: Message.DbId) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
 
     var mockDelete: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
 
@@ -50,10 +50,10 @@ class MockProfilePI: ProfileAPI {
         try await mockUpdateCoach()
     }
     func setWorkoutAsRead(_ workoutDbId: Workout.DbId) async throws {
-        try await mockSetWorkoutAsRead()
+        try await mockSetWorkoutAsRead(workoutDbId)
     }
     func setMessageAsRead(_ messageDbId: Message.DbId) async throws {
-        try await mockSetMessageAsRead()
+        try await mockSetMessageAsRead(messageDbId)
     }
 
     func delete(userId: String) async throws {
