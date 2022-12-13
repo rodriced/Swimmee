@@ -69,7 +69,7 @@ struct SwimmerMainView: View {
                 LoadingView(
                     publisherBuiler: {
                         Publishers.CombineLatest(
-                            session.workoutPublisher,
+                            session.swimmerWorkoutsPublisher,
                             session.readWorkoutsIdsPublisher
                         )
                         .eraseToAnyPublisher()
@@ -86,7 +86,7 @@ struct SwimmerMainView: View {
                 LoadingView(
                     publisherBuiler: {
                         Publishers.CombineLatest(
-                            session.messagePublisher,
+                            session.swimmerMessagesPublisher,
                             session.readMessagesIdsPublisher
                         )
                         .eraseToAnyPublisher()

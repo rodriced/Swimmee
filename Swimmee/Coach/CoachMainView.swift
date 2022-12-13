@@ -15,7 +15,7 @@ struct CoachMainView: View {
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
-                        session.allWorkoutsPublisher.eraseToAnyPublisher()
+                        session.coachWorkoutsPublisher.eraseToAnyPublisher()
                     },
                     targetView: CoachWorkoutsView.init
                 )
@@ -28,7 +28,7 @@ struct CoachMainView: View {
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
-                        session.allMessagesPublisher.eraseToAnyPublisher()
+                        session.coachMessagesPublisher.eraseToAnyPublisher()
                     },
                     targetView: CoachMessagesView.init
                 )

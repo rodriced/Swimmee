@@ -8,22 +8,36 @@
 import Combine
 
 class UserSession: ObservableObject {
+    //
+    // Common
+    
     let profileAPI: ProfileCommonAPI
     let workoutAPI: UserWorkoutCollectionAPI
     let messageAPI: UserMessageCollectionAPI
     let userId: String
     let userType: UserType
-    @Published var coachId: UserId?
-    @Published var readWorkoutsIds: Set<Workout.DbId>
-    @Published var readMessagesIds: Set<Message.DbId>
+    
+    var isSwimmer: Bool { userType == .swimmer }
     
     var profileFuture: AnyPublisher<Profile,Error> { profileAPI.future(userId: nil) }
+    
+    // Coach
 
-    lazy var allWorkoutsPublisher =
+    lazy var coachWorkoutsPublisher =
     workoutAPI.listPublisher(owner: .currentUser, isSent: nil)
             .share()
 
-    lazy var workoutPublisher =
+    lazy var coachMessagesPublisher =
+    messageAPI.listPublisher(owner: .currentUser, isSent: nil)
+            .share()
+
+    // Swimmer
+    
+    @Published var coachId: UserId?
+    @Published var readWorkoutsIds: Set<Workout.DbId>
+    @Published var readMessagesIds: Set<Message.DbId>
+
+    lazy var swimmerWorkoutsPublisher =
         $coachId
             .flatMap {
                 coachId -> AnyPublisher<[Workout], Error> in
@@ -31,9 +45,22 @@ class UserSession: ObservableObject {
 //                    .print("workout.listPublisher")
                     .eraseToAnyPublisher()
             }
-//            .print("workoutPublisher")
+//            .print("swimmerWorkoutsPublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
+
+    lazy var swimmerMessagesPublisher =
+        $coachId
+            .flatMap {
+                coachId -> AnyPublisher<[Message], Error> in
+                self.messageAPI.listPublisher(owner: .user(coachId ?? ""), isSent: true)
+//                    .print("message.listPublisher")
+                    .eraseToAnyPublisher()
+            }
+//            .print("swimmerMessagesPublisher")
+            .multicast { CurrentValueSubject([]) }
+            .autoconnect()
+
 
     lazy var readWorkoutsIdsPublisher =
         $readWorkoutsIds
@@ -43,7 +70,7 @@ class UserSession: ObservableObject {
             .autoconnect()
 
     lazy var unreadWorkoutsCountPublisher =
-        workoutPublisher
+        swimmerWorkoutsPublisher
             .map { workouts in
                 workouts.map(\.dbId)
             }
@@ -55,21 +82,6 @@ class UserSession: ObservableObject {
             .multicast { CurrentValueSubject(0) }
             .autoconnect()
 
-    lazy var allMessagesPublisher =
-    messageAPI.listPublisher(owner: .currentUser, isSent: nil)
-            .share()
-
-    lazy var messagePublisher =
-        $coachId
-            .flatMap {
-                coachId -> AnyPublisher<[Message], Error> in
-                self.messageAPI.listPublisher(owner: .user(coachId ?? ""), isSent: true)
-//                    .print("message.listPublisher")
-                    .eraseToAnyPublisher()
-            }
-//            .print("messagePublisher")
-            .multicast { CurrentValueSubject([]) }
-            .autoconnect()
 
     lazy var readMessagesIdsPublisher =
         $readMessagesIds
@@ -79,7 +91,7 @@ class UserSession: ObservableObject {
             .autoconnect()
 
     lazy var unreadMessagesCountPublisher =
-        messagePublisher
+        swimmerMessagesPublisher
             .map { messages in
                 messages.map(\.dbId)
             }
@@ -122,7 +134,4 @@ class UserSession: ObservableObject {
                 self.readWorkoutsIds = profile.readWorkoutsIds ?? []
             }
     }
-
-    var isCoach: Bool { userType == .coach }
-    var isSwimmer: Bool { userType == .swimmer }
 }
