@@ -45,7 +45,7 @@ class CoachWorkoutsViewModel: ObservableObject {
     }
 
     @Published var selectedWorkout: Workout?
-    @Published var confirmationDialogPresented = false
+    @Published var sentWorkoutEditionConfirmationDialogPresented = false
     @Published var navigatingToEditView = false
 
     @Published var alertContext = AlertContext()
@@ -54,7 +54,7 @@ class CoachWorkoutsViewModel: ObservableObject {
         print("CoachWorkoutsViewModel.init")
         var workouts = initialData
         Workout.updateTagsCache(for: &workouts)
-        
+
         self.workouts = workouts
         self.config = config
     }
@@ -70,8 +70,10 @@ class CoachWorkoutsViewModel: ObservableObject {
         selectedWorkout = workout
 
         if workout.isSent {
-            confirmationDialogPresented = true
+            sentWorkoutEditionConfirmationDialogPresented = true
+            navigatingToEditView = false
         } else {
+            sentWorkoutEditionConfirmationDialogPresented = false
             navigatingToEditView = true
         }
     }
@@ -248,7 +250,7 @@ struct CoachWorkoutsView: View {
                 editNewWorkoutButton
             }
         }
-        .actionSheet(isPresented: $vm.confirmationDialogPresented) {
+        .actionSheet(isPresented: $vm.sentWorkoutEditionConfirmationDialogPresented) {
             ActionSheet(
                 title: Text("Edit an already sent workout ?"),
                 message: Text("Workout will stay sent until you save it as draft or delete it."),
