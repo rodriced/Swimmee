@@ -134,21 +134,21 @@ final class ProfileViewModelTests: XCTestCase {
         XCTAssertNil(sut.pickedPhoto)
         XCTAssertEqual(sut.photoInfoEdited.state, .initial)
 
-        sut.pickedPhoto = TestHelper.fakeUIImage
+        sut.pickedPhoto = Samples.anUIImage
 
-        let newState = PhotoInfoEdited.State.new(uiImage: TestHelper.fakeUIImage, data: TestHelper.fakePngImage, size: TestHelper.fakePngImage.count, hash: TestHelper.fakePngImage.hashValue)
+        let newState = PhotoInfoEdited.State.new(uiImage: Samples.anUIImage, data: Samples.aPngImage, size: Samples.aPngImage.count, hash: Samples.aPngImage.hashValue)
 
         XCTAssertEqual(sut.photoInfoEdited.state, newState)
     }
 
     func testGivenAProfileFormWithAPhoto_WhenPhotoIsRemoved_ThenPhotoInfoEditedIsUpdated() {
         var aProfile = aCoachProfile
-        aProfile.photoInfo = TestHelper.fakePhotoInfo
+        aProfile.photoInfo = Samples.aPhotoInfo
 
         let sut = profileViewModelSubmitSuccess(aProfile: aProfile)
         sut.startPublishers()
 
-        XCTAssertEqual(sut.initialProfile.photoInfo, TestHelper.fakePhotoInfo)
+        XCTAssertEqual(sut.initialProfile.photoInfo, Samples.aPhotoInfo)
         XCTAssertNil(sut.pickedPhoto)
         XCTAssertEqual(sut.photoInfoEdited.state, .initial)
 
@@ -179,9 +179,9 @@ final class ProfileViewModelTests: XCTestCase {
 
     func testGivenAProfileFormWithAPhoto_WhenFormIsModifiedAndSaved_ThenPhotoIsNotRemoved() {
         var aProfile = aCoachProfile
-        aProfile.photoInfo = TestHelper.fakePhotoInfo
+        aProfile.photoInfo = Samples.aPhotoInfo
         
-        let initialPhotoInfoEdited = PhotoInfoEdited(TestHelper.fakePhotoInfo, imageStorage: defaultMockImageStorageAPI)
+        let initialPhotoInfoEdited = PhotoInfoEdited(Samples.aPhotoInfo, imageStorage: defaultMockImageStorageAPI)
 
         let config = ProfileViewModel.Config(
             saveProfie: { profileToSave in

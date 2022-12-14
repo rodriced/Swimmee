@@ -8,6 +8,7 @@
 @testable import Swimmee
 
 import Foundation
+import UIKit
 
 class Samples {
     static let aCoachUserId = "A_COACH_USER_ID"
@@ -68,4 +69,27 @@ class Samples {
         }
     }
     
+    static let anUrl = URL(string: "https://an.url")!
+    
+    static var anUIImage: UIImage { anUIImage(size: 10) }
+    
+    static func anUIImage(size: CGFloat) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: size, height: size))
+
+        let image = renderer.image { context in
+            UIColor.darkGray.setStroke()
+            context.stroke(renderer.format.bounds)
+            UIColor.blue.setFill()
+            context.fill(CGRect(x: 1, y: 1, width: size/2, height: size/2))
+        }
+        return image
+    }
+    
+    static var aPngImage: Data {
+        try! ImageHelper.resizedImageData(from: anUIImage)
+    }
+    
+    static var aPhotoInfo: PhotoInfo {
+        PhotoInfo(url: anUrl, data: aPngImage)
+    }
 }

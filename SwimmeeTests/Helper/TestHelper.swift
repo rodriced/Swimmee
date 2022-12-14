@@ -7,7 +7,6 @@
 
 @testable import Swimmee
 
-import UIKit
 import XCTest
 
 class SwimmeeUnitTesting {}
@@ -20,28 +19,4 @@ enum TestError: String, CustomError {
     case badContextCall
     case errorForTesting
     case fakeNetworkError
-}
-
-enum TestHelper {
-    static let fakeUrl = URL(string: "https://a.fake.url")!
-    
-    static var fakeUIImage: UIImage {
-        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10))
-
-        let image = renderer.image { context in
-            UIColor.darkGray.setStroke()
-            context.stroke(renderer.format.bounds)
-            UIColor.blue.setFill()
-            context.fill(CGRect(x: 1, y: 1, width: 5, height: 5))
-        }
-        return image
-    }
-    
-    static var fakePngImage: Data {
-        try! ImageHelper.resizedImageData(from: fakeUIImage)
-    }
-    
-    static var fakePhotoInfo: PhotoInfo {
-        PhotoInfo(url: fakeUrl, data: fakePngImage)
-    }
 }
