@@ -40,6 +40,16 @@ public class PhotoInfoEdited: ObservableObject {
 
     @Published private(set) var state = State.initial
 
+    var isImagePresent: Bool {
+        switch state {
+        case .initial where initial != nil,
+             .new:
+            return true
+        default:
+            return false
+        }
+    }
+
     func updateWith(uiImage: UIImage?) {
         guard let uiImage else {
             switch state {

@@ -50,27 +50,35 @@ struct ProfileView: View {
     }
 
     var photoActionsMenu: some View {
-        Image(systemName: "square.and.pencil")
-            .font(.system(.headline))
-            .padding(5)
-            .foregroundColor(.accentColor)
-            .contextMenu {
-                Button {
-                    vm.openPhotoPicker(.photoLibrary)
-                } label: {
-                    Label("Choose from library", systemImage: "photo.on.rectangle")
-                }
-                Button {
-                    vm.openPhotoPicker(.camera)
-                } label: {
-                    Label("Use camera", systemImage: "camera")
-                }
-                Button {
-                    vm.clearDisplayedPhoto()
-                } label: {
-                    Label("Remove photo", systemImage: "trash")
-                }
+        Group {
+            Button {
+                vm.openPhotoPicker(.photoLibrary)
+            } label: {
+                Label("Photo from library", systemImage: "photo.on.rectangle")
             }
+            Button {
+                vm.openPhotoPicker(.camera)
+            } label: {
+                Label("Use camera", systemImage: "camera")
+            }
+            Button {
+                vm.clearDisplayedPhoto()
+            } label: {
+                Label("Remove photo", systemImage: "trash")
+            }
+            .disabled(!vm.photoInfoEdited.isImagePresent)
+        }
+    }
+
+    var photoActionsMenuButton: some View {
+        Menu {
+            photoActionsMenu
+        } label: {
+            Image(systemName: "square.and.pencil")
+                .font(.system(.headline))
+                .padding(5)
+                .foregroundColor(.accentColor)
+        }
     }
 
     var updateProfileConfirmationDialog: ConfirmationDialog {
@@ -132,8 +140,12 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             ZStack(alignment: .bottomTrailing) {
-                profilePhoto
-                photoActionsMenu
+                Menu {
+                    photoActionsMenu
+                } label: {
+                    profilePhoto
+                }
+                photoActionsMenuButton
                     .offset(x: 10)
             }
 
