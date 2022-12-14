@@ -105,7 +105,8 @@ extension CoachWorkoutsViewModel: LoadableViewModel {
 }
 
 struct CoachWorkoutsView: View {
-    @EnvironmentObject var session: UserSession
+    @EnvironmentObject var userInfos: UserInfos
+    @EnvironmentObject var session: CoachSession
     @ObservedObject var vm: CoachWorkoutsViewModel
 //    @StateObject var vm: CoachWorkoutsViewModel
 
@@ -129,7 +130,7 @@ struct CoachWorkoutsView: View {
                         NavigationLink(tag: workout, selection: $vm.selectedWorkout) {
                             EditWorkoutView(workout: workout)
                         } label: {
-                            WorkoutView(workout: workout, inReception: session.isSwimmer)
+                            WorkoutView(workout: workout, inReception: false)
                         }
                         .listRowSeparator(.hidden)
                     }
@@ -197,7 +198,7 @@ struct CoachWorkoutsView: View {
 
     var editNewWorkoutButton: some View {
         NavigationLink {
-            EditWorkoutView(workout: Workout(userId: session.userId))
+            EditWorkoutView(workout: Workout(userId: userInfos.userId))
         } label: {
             Image(systemName: "plus")
         }
@@ -270,6 +271,7 @@ struct CoachWorkoutsView: View {
 struct CoachWorkoutsView_Previews: PreviewProvider {
     static var previews: some View {
         CoachWorkoutsView(vm: CoachWorkoutsViewModel(initialData: [Workout.sample]))
-            .environmentObject(UserSession(initialProfile: Profile.coachSample))
+            .environmentObject(UserInfos(profile: Profile.coachSample))
+            .environmentObject(CoachSession())
     }
 }

@@ -60,7 +60,7 @@ extension SwimmerMessagesViewModel: LoadableViewModel {
 struct SwimmerMessagesView: View {
     typealias ViewModel = SwimmerMessagesViewModel
 
-    @EnvironmentObject var session: UserSession
+    @EnvironmentObject var session: SwimmerSession
     @ObservedObject var vm: SwimmerMessagesViewModel
 
     init(_ vm: SwimmerMessagesViewModel) {
@@ -75,7 +75,7 @@ struct SwimmerMessagesView: View {
 
     var messagesList: some View {
         List(vm.messagesParams, id: \.0.id) { message, isRead in
-            MessageView(message: message, inReception: session.isSwimmer, isRead: isRead)
+            MessageView(message: message, inReception: true, isRead: isRead)
                 .listRowSeparator(.hidden)
                 .onTapGesture {
                     vm.setMessageAsRead(message)

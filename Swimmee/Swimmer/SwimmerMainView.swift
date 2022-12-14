@@ -56,12 +56,16 @@ class SwimmerMainVM: ObservableObject {
 }
 
 struct SwimmerMainView: View {
-    @EnvironmentObject var session: UserSession
+    @StateObject var session: SwimmerSession
     @StateObject var vm = SwimmerMainVM()
-
-    init() {
+    
+    init(profile: Profile) {
         print("SwimmerMainView.init")
+
+//        print("SignedInView.init")
+        _session = StateObject(wrappedValue: SwimmerSession(initialProfile: profile))
     }
+
 
     var body: some View {
         TabView {
@@ -69,7 +73,7 @@ struct SwimmerMainView: View {
                 LoadingView(
                     publisherBuiler: {
                         Publishers.CombineLatest(
-                            session.swimmerWorkoutsPublisher,
+                            session.workoutsPublisher,
                             session.readWorkoutsIdsPublisher
                         )
                         .eraseToAnyPublisher()
@@ -86,7 +90,7 @@ struct SwimmerMainView: View {
                 LoadingView(
                     publisherBuiler: {
                         Publishers.CombineLatest(
-                            session.swimmerMessagesPublisher,
+                            session.messagesPublisher,
                             session.readMessagesIdsPublisher
                         )
                         .eraseToAnyPublisher()
@@ -105,18 +109,22 @@ struct SwimmerMainView: View {
                 }
         }
         .task {
+            session.listenChanges()
+        }
+        .task {
             vm.startListeners(
                 unreadWorkoutsCountPublisher: session.unreadWorkoutsCountPublisher.eraseToAnyPublisher(),
                 unreadMessagesCountPublisher: session.unreadMessagesCountPublisher.eraseToAnyPublisher()
             )
         }
         .navigationViewStyle(.stack)
+        .environmentObject(session)
 //            .animation(.easeIn, value: 1)
     }
 }
 
 struct SwimmerMainView_Previews: PreviewProvider {
     static var previews: some View {
-        SwimmerMainView()
+        SwimmerMainView(profile: Profile.swimmerSample)
     }
 }

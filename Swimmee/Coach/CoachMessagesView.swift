@@ -91,7 +91,8 @@ extension CoachMessagesViewModel: LoadableViewModel {
 }
 
 struct CoachMessagesView: View {
-    @EnvironmentObject var session: UserSession
+    @EnvironmentObject var userInfos: UserInfos
+    @EnvironmentObject var session: CoachSession
     @ObservedObject var vm: CoachMessagesViewModel
 //    @StateObject var vm: CoachMessagesViewModel
 
@@ -115,7 +116,7 @@ struct CoachMessagesView: View {
                 NavigationLink(tag: message, selection: $vm.selectedMessage) {
                     EditMessageView(message: message)
                 } label: {
-                    MessageView(message: message, inReception: session.isSwimmer)
+                    MessageView(message: message, inReception: false)
                 }
 //                Button {
 //                    vm.goEditingMessage(message)
@@ -164,7 +165,7 @@ struct CoachMessagesView: View {
 
     var editNewMessageButton: some View {
         NavigationLink {
-            EditMessageView(message: Message(userId: session.userId))
+            EditMessageView(message: Message(userId: userInfos.userId))
         } label: {
             Image(systemName: "plus")
         }
@@ -224,6 +225,7 @@ struct CoachMessagesView: View {
 struct CoachMessagesView_Previews: PreviewProvider {
     static var previews: some View {
         CoachMessagesView(vm: CoachMessagesViewModel(initialData: [Message.sample]))
-            .environmentObject(UserSession(initialProfile: Profile.coachSample))
+            .environmentObject(UserInfos(profile: Profile.coachSample))
+            .environmentObject(CoachSession())
     }
 }

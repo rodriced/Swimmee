@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct CoachMainView: View {
-    @EnvironmentObject var session: UserSession
+//    @EnvironmentObject var userInfos: UserInfos
+    @StateObject var session = CoachSession()
+
+//    init() {
+////        print("SignedInView.init")
+//        _session = StateObject(wrappedValue: CoachSession(initialProfile: profile))
+//    }
 
     var body: some View {
         TabView {
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
-                        session.coachWorkoutsPublisher.eraseToAnyPublisher()
+                        session.workoutsPublisher.eraseToAnyPublisher()
                     },
                     targetView: CoachWorkoutsView.init
                 )
@@ -28,7 +34,7 @@ struct CoachMainView: View {
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
-                        session.coachMessagesPublisher.eraseToAnyPublisher()
+                        session.messagesPublisher.eraseToAnyPublisher()
                     },
                     targetView: CoachMessagesView.init
                 )
@@ -37,12 +43,13 @@ struct CoachMainView: View {
             .tabItem {
                 Label("Messages", systemImage: "mail.stack")
             }
-            
+
             SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gearshape")
                 }
         }
+        .environmentObject(session)
 //            .animation(.easeIn, value: 1)
     }
 }

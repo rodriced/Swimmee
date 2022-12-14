@@ -8,28 +8,28 @@
 import SwiftUI
 
 struct SignedInView: View {
-    @StateObject var session: UserSession
+    let initialProfile: Profile
+    @StateObject var userInfos: UserInfos
 
     init(profile: Profile) {
 //        print("SignedInView.init")
-        _session = StateObject(wrappedValue: UserSession(initialProfile: profile))
+        self.initialProfile = profile
+        _userInfos = StateObject(wrappedValue: UserInfos(profile: profile))
     }
 
     var body: some View {
         Group {
 //            DebugHelper.viewBodyPrint("SignedInView")
-            switch session.userType {
+            switch userInfos.userType {
             case .coach:
                 CoachMainView()
-                    .environmentObject(session)
+//                    .environmentObject(session)
             case .swimmer:
-                SwimmerMainView()
-                    .environmentObject(session)
+                SwimmerMainView(profile: initialProfile)
+//                    .environmentObject(session)
             }
         }
-        .task {
-            session.listenChanges()
-        }
+        .environmentObject(userInfos)
     }
 }
 

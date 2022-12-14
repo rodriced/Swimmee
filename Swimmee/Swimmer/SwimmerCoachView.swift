@@ -111,7 +111,7 @@ class SwimmerCoachViewModel: ObservableObject {
 }
 
 struct SwimmerCoachView: View {
-    @EnvironmentObject var session: UserSession
+    @EnvironmentObject var session: SwimmerSession
     @StateObject var vm = SwimmerCoachViewModel()
 
     func subscribeConfirmationDialog(coach: Profile) -> ConfirmationDialog {

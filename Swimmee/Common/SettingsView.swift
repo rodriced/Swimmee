@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var session: UserSession
+    @EnvironmentObject var userInfos: UserInfos
 
     @State var logoutConfirmationDialogIsPresented = false
     @State var alertContext = AlertContext()
@@ -31,7 +31,7 @@ struct SettingsView: View {
                 NavigationLink {
                     LoadingView(
                         publisherBuiler: {
-                            session.profileFuture
+                            userInfos.profileFuture
                         },
                         targetView: ProfileView.init
                     )
@@ -39,7 +39,7 @@ struct SettingsView: View {
                     MenuLabel(title: "My profile", systemImage: "person", color: Color.mint)
                 }
 
-                switch session.userType {
+                switch userInfos.userType {
                 case .coach:
                     NavigationLink {
                         CoachTeamView()

@@ -77,7 +77,7 @@ extension SwimmerWorkoutsViewModel: LoadableViewModel {
 struct SwimmerWorkoutsView: View {
     typealias ViewModel = SwimmerWorkoutsViewModel
 
-    @EnvironmentObject var session: UserSession
+    @EnvironmentObject var session: SwimmerSession
     @ObservedObject var vm: SwimmerWorkoutsViewModel
 
     init(_ vm: SwimmerWorkoutsViewModel) {
@@ -100,7 +100,7 @@ struct SwimmerWorkoutsView: View {
                 Spacer()
             } else {
                 List(filteredWorkoutsParams, id: \.0.id) { workout, isRead in
-                    WorkoutView(workout: workout, inReception: session.isSwimmer, isRead: isRead)
+                    WorkoutView(workout: workout, inReception: true, isRead: isRead)
                         .listRowSeparator(.hidden)
                         .onTapGesture {
                             vm.setWorkoutAsRead(workout)

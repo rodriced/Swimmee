@@ -7,37 +7,89 @@
 
 import Combine
 
-class UserSession: ObservableObject {
-    //
-    // Common
-    
+class UserInfos: ObservableObject {
+    let profileAPI: ProfileCommonAPI
+
+    let userId: String
+    let userType: UserType
+
+    init(profile: Profile,
+         profileAPI: ProfileCommonAPI = API.shared.profile)
+    {
+        self.profileAPI = profileAPI
+
+        self.userId = profile.userId
+        self.userType = profile.userType
+    }
+
+    var isSwimmer: Bool { userType == .swimmer }
+
+    var profileFuture: AnyPublisher<Profile, Error> { profileAPI.future(userId: nil) }
+}
+
+class CoachSession: ObservableObject {
+    let workoutAPI: UserWorkoutCollectionAPI
+    let messageAPI: UserMessageCollectionAPI
+
+    init(workoutAPI: UserWorkoutCollectionAPI = API.shared.workout,
+         messageAPI: UserMessageCollectionAPI = API.shared.message)
+    {
+        print("CoachSession.init")
+
+        self.workoutAPI = workoutAPI
+        self.messageAPI = messageAPI
+    }
+
+    lazy var workoutsPublisher =
+        workoutAPI.listPublisher(owner: .currentUser, isSent: nil)
+            .share()
+
+    lazy var messagesPublisher =
+        messageAPI.listPublisher(owner: .currentUser, isSent: nil)
+            .share()
+}
+
+class SwimmerSession: ObservableObject {
     let profileAPI: ProfileCommonAPI
     let workoutAPI: UserWorkoutCollectionAPI
     let messageAPI: UserMessageCollectionAPI
-    let userId: String
-    let userType: UserType
-    
-    var isSwimmer: Bool { userType == .swimmer }
-    
-    var profileFuture: AnyPublisher<Profile,Error> { profileAPI.future(userId: nil) }
-    
-    // Coach
 
-    lazy var coachWorkoutsPublisher =
-    workoutAPI.listPublisher(owner: .currentUser, isSent: nil)
-            .share()
-
-    lazy var coachMessagesPublisher =
-    messageAPI.listPublisher(owner: .currentUser, isSent: nil)
-            .share()
-
-    // Swimmer
-    
     @Published var coachId: UserId?
     @Published var readWorkoutsIds: Set<Workout.DbId>
     @Published var readMessagesIds: Set<Message.DbId>
 
-    lazy var swimmerWorkoutsPublisher =
+    var cancellable: AnyCancellable?
+
+    init(initialProfile: Profile,
+         profileAPI: ProfileCommonAPI = API.shared.profile,
+         workoutAPI: UserWorkoutCollectionAPI = API.shared.workout,
+         messageAPI: UserMessageCollectionAPI = API.shared.message)
+    {
+        print("SwimmerSession.init")
+
+        self.profileAPI = profileAPI
+        self.workoutAPI = workoutAPI
+        self.messageAPI = messageAPI
+
+        self.coachId = initialProfile.coachId
+        self.readWorkoutsIds = initialProfile.readWorkoutsIds ?? []
+        self.readMessagesIds = initialProfile.readMessagesIds ?? []
+    }
+
+    func listenChanges() {
+        cancellable = profileAPI.publisher(userId: nil)
+            .sink { _ in
+            }
+            receiveValue: { profile in
+                if profile.coachId != self.coachId {
+                    self.coachId = profile.coachId
+                }
+                self.readMessagesIds = profile.readMessagesIds ?? []
+                self.readWorkoutsIds = profile.readWorkoutsIds ?? []
+            }
+    }
+
+    lazy var workoutsPublisher =
         $coachId
             .flatMap {
                 coachId -> AnyPublisher<[Workout], Error> in
@@ -49,19 +101,6 @@ class UserSession: ObservableObject {
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 
-    lazy var swimmerMessagesPublisher =
-        $coachId
-            .flatMap {
-                coachId -> AnyPublisher<[Message], Error> in
-                self.messageAPI.listPublisher(owner: .user(coachId ?? ""), isSent: true)
-//                    .print("message.listPublisher")
-                    .eraseToAnyPublisher()
-            }
-//            .print("swimmerMessagesPublisher")
-            .multicast { CurrentValueSubject([]) }
-            .autoconnect()
-
-
     lazy var readWorkoutsIdsPublisher =
         $readWorkoutsIds
             .setFailureType(to: Error.self)
@@ -70,7 +109,7 @@ class UserSession: ObservableObject {
             .autoconnect()
 
     lazy var unreadWorkoutsCountPublisher =
-        swimmerWorkoutsPublisher
+        workoutsPublisher
             .map { workouts in
                 workouts.map(\.dbId)
             }
@@ -82,6 +121,17 @@ class UserSession: ObservableObject {
             .multicast { CurrentValueSubject(0) }
             .autoconnect()
 
+    lazy var messagesPublisher =
+        $coachId
+            .flatMap {
+                coachId -> AnyPublisher<[Message], Error> in
+                self.messageAPI.listPublisher(owner: .user(coachId ?? ""), isSent: true)
+//                    .print("message.listPublisher")
+                    .eraseToAnyPublisher()
+            }
+//            .print("swimmerMessagesPublisher")
+            .multicast { CurrentValueSubject([]) }
+            .autoconnect()
 
     lazy var readMessagesIdsPublisher =
         $readMessagesIds
@@ -91,7 +141,7 @@ class UserSession: ObservableObject {
             .autoconnect()
 
     lazy var unreadMessagesCountPublisher =
-        swimmerMessagesPublisher
+        messagesPublisher
             .map { messages in
                 messages.map(\.dbId)
             }
@@ -102,36 +152,4 @@ class UserSession: ObservableObject {
             .removeDuplicates()
             .multicast { CurrentValueSubject(0) }
             .autoconnect()
-
-    init(initialProfile: Profile,
-         profileAPI: ProfileCommonAPI = API.shared.profile,
-         workoutAPI: UserWorkoutCollectionAPI = API.shared.workout,
-    messageAPI: UserMessageCollectionAPI = API.shared.message) {
-        print("UserSession.init")
-
-        self.userId = initialProfile.userId
-        self.userType = initialProfile.userType
-        self.coachId = initialProfile.coachId
-        self.readWorkoutsIds = initialProfile.readWorkoutsIds ?? []
-        self.readMessagesIds = initialProfile.readMessagesIds ?? []
-
-        self.profileAPI = profileAPI
-        self.workoutAPI = workoutAPI
-        self.messageAPI = messageAPI
-    }
-
-    var cancellable: AnyCancellable?
-
-    func listenChanges() {
-        cancellable = profileAPI.publisher(userId: userId)
-            .sink { _ in
-            }
-            receiveValue: { profile in
-                if profile.coachId != self.coachId {
-                    self.coachId = profile.coachId
-                }
-                self.readMessagesIds = profile.readMessagesIds ?? []
-                self.readWorkoutsIds = profile.readWorkoutsIds ?? []
-            }
-    }
 }
