@@ -56,7 +56,7 @@ struct ReauthenticationView: View {
             .alert(viewModel.alertcontext) {}
             .padding()
             .navigationBarTitle("Reauthenticate", displayMode: .inline)
-            .navigationBarItems(trailing:
+            .navigationBarItems(leading:
                 Button {
                     presentationMode.wrappedValue.dismiss()
                 } label: { Text("Cancel").bold() }
