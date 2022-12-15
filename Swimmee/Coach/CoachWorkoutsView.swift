@@ -52,11 +52,11 @@ class CoachWorkoutsViewModel: ObservableObject {
 
     required init(initialData: [Workout], config: Config = .default) {
         print("CoachWorkoutsViewModel.init")
-        var workouts = initialData
-        Workout.updateTagsCache(for: &workouts)
 
-        self.workouts = workouts
+        self.workouts = initialData
         self.config = config
+        
+        Workout.updateTagsCache(for: &self.workouts)
     }
 
     var restartLoader: (() -> Void)?
@@ -101,6 +101,7 @@ extension CoachWorkoutsViewModel: LoadableViewModel {
 
     func refreshedLoadedData(_ loadedData: [Workout]) {
         workouts = loadedData
+        Workout.updateTagsCache(for: &self.workouts)
     }
 }
 
