@@ -70,26 +70,30 @@ class Samples {
     }
     
     static let anUrl = URL(string: "https://an.url")!
-    
-    static var anUIImage: UIImage { anUIImage(size: 10) }
-    
-    static func anUIImage(size: CGFloat) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(size: CGSize(width: size, height: size))
+    static func anUrl(ref: Int) -> URL {
+        URL(string: "https://an.ref\(ref).url")!
+    }
+
+    static var anUIImage: UIImage { anUIImage(ref: 0) }
+    static func anUIImage(ref: Int) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 10, height: 10))
 
         let image = renderer.image { context in
             UIColor.darkGray.setStroke()
             context.stroke(renderer.format.bounds)
             UIColor.blue.setFill()
-            context.fill(CGRect(x: 1, y: 1, width: size/2, height: size/2))
+            context.fill(CGRect(x: ref, y: ref, width: 2, height: 2))
         }
         return image
     }
     
-    static var aPngImage: Data {
-        try! ImageHelper.resizedImageData(from: anUIImage)
+    static var aPngImage: Data { aPngImage(ref: 0) }
+    static func aPngImage(ref: Int) -> Data {
+        try! ImageHelper.resizedImageData(from: anUIImage(ref: ref))
     }
     
-    static var aPhotoInfo: PhotoInfo {
-        PhotoInfo(url: anUrl, data: aPngImage)
+    static var aPhotoInfo: PhotoInfo { aPhotoInfo(ref: 0) }
+    static func aPhotoInfo(ref: Int) -> PhotoInfo {
+        PhotoInfo(url: anUrl(ref: ref), data: aPngImage(ref: ref))
     }
 }

@@ -54,6 +54,7 @@
 		DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E559229464FB900C508FA /* MockProfileAPI.swift */; };
 		DC532D5329476F75003F9E89 /* SwimmerMessagesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */; };
 		DC532D552947707B003F9E89 /* MockUserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */; };
+		DC5D9B3D294A718B00C771C5 /* PhotoInfoEditedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */; };
 		DC6CCE30290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE2F290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift */; };
 		DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE31290FC4FF00DB8427 /* API.swift */; };
 		DC6CCE342910841B00DB8427 /* FirestoreProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE332910841B00DB8427 /* FirestoreProfileAPI.swift */; };
@@ -154,6 +155,7 @@
 		DC4E559229464FB900C508FA /* MockProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileAPI.swift; sourceTree = "<group>"; };
 		DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesViewModelTests.swift; sourceTree = "<group>"; };
 		DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserCollectionAPI.swift; sourceTree = "<group>"; };
+		DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEditedTests.swift; sourceTree = "<group>"; };
 		DC6C550229435A03009DDB0B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		DC6C55052943979C009DDB0B /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
 		DC6CCE2F290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreUserCollectionAPI.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				DC762F4F2947E3B400B0767A /* CoachMessagesViewModelTests.swift */,
 				DC762F512947F65A00B0767A /* CoachWorkoutsViewModelTests.swift */,
 				DC762F4D2947E14D00B0767A /* SwimmerWorkoutsViewModelTests.swift */,
+				DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */,
 			);
 			path = SwimmeeTests;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				DC0571F929391AE80037A387 /* SignSharedViewModelTests.swift in Sources */,
 				DC057201293A0E720037A387 /* TestHelper.swift in Sources */,
 				DC762F502947E3B400B0767A /* CoachMessagesViewModelTests.swift in Sources */,
+				DC5D9B3D294A718B00C771C5 /* PhotoInfoEditedTests.swift in Sources */,
 				DC4E558D2946401700C508FA /* WorkoutTagsTests.swift in Sources */,
 				DC4E558F2946418A00C508FA /* Samples.swift in Sources */,
 				DC762F522947F65A00B0767A /* CoachWorkoutsViewModelTests.swift in Sources */,
@@ -869,6 +873,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WX78P38A6L;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
@@ -889,6 +894,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WX78P38A6L;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;

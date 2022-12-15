@@ -15,8 +15,8 @@ final class ProfileViewModelTests: XCTestCase {
 
     private var defaultMockImageStorageAPI: MockImageStorageAPI {
         let mockImageStorageAPI = MockImageStorageAPI()
-        mockImageStorageAPI.mockUpload = { URL(string: "https://an.url")! }
-        mockImageStorageAPI.mockDelete = {}
+        mockImageStorageAPI.mockUpload = { _, _ in URL(string: "https://an.url")! }
+        mockImageStorageAPI.mockDelete = { _ in }
         return mockImageStorageAPI
     }
 
@@ -180,7 +180,7 @@ final class ProfileViewModelTests: XCTestCase {
     func testGivenAProfileFormWithAPhoto_WhenFormIsModifiedAndSaved_ThenPhotoIsNotRemoved() {
         var aProfile = aCoachProfile
         aProfile.photoInfo = Samples.aPhotoInfo
-        
+
         let initialPhotoInfoEdited = PhotoInfoEdited(Samples.aPhotoInfo, imageStorage: defaultMockImageStorageAPI)
 
         let config = ProfileViewModel.Config(
@@ -202,7 +202,7 @@ final class ProfileViewModelTests: XCTestCase {
         }
 
         XCTAssertEqual(sut.photoInfoEdited.state, initialPhotoInfoEdited.state)
-        
+
         sut.saveProfile()
     }
 }
