@@ -11,6 +11,11 @@ import Foundation
 import UIKit
 
 class Samples {
+    static var aRandomDbId: String { UUID().uuidString }
+    
+    static let aUserId = "A_USER_ID"
+    static func aUserId(ref: Int) -> String { "A_USER_ID_\(ref)" }
+    
     static let aCoachUserId = "A_COACH_USER_ID"
     static let aSwimmerUserId = "A_SWIMMER_USER_ID"
     

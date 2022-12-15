@@ -20,6 +20,8 @@
 		DC0C05BE2948EE970014C829 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05BD2948EE970014C829 /* UserSession.swift */; };
 		DC0C05C02948F7C80014C829 /* CoachSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05BF2948F7C80014C829 /* CoachSessionTests.swift */; };
 		DC0C05C22948F8490014C829 /* SwimmerSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */; };
+		DC100C33294B713300317F78 /* WorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC100C32294B713300317F78 /* WorkoutTests.swift */; };
+		DC100C35294B76C600317F78 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC100C34294B76C600317F78 /* MessageTests.swift */; };
 		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
 		DC150D572946A678001DB9B0 /* SwimmerCoachViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */; };
 		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
@@ -123,6 +125,8 @@
 		DC0C05BD2948EE970014C829 /* UserSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		DC0C05BF2948F7C80014C829 /* CoachSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachSessionTests.swift; sourceTree = "<group>"; };
 		DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerSessionTests.swift; sourceTree = "<group>"; };
+		DC100C32294B713300317F78 /* WorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTests.swift; sourceTree = "<group>"; };
+		DC100C34294B76C600317F78 /* MessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTests.swift; sourceTree = "<group>"; };
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
 		DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachViewModelTests.swift; sourceTree = "<group>"; };
 		DC232BD8292B7D81007BC2ED /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
@@ -254,6 +258,15 @@
 				DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		DC100C31294B70A800317F78 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC100C32294B713300317F78 /* WorkoutTests.swift */,
+				DC100C34294B76C600317F78 /* MessageTests.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DC2C224D294412B4005BBC19 /* Frameworks */ = {
@@ -392,6 +405,7 @@
 			children = (
 				DC0571FF293A0DC70037A387 /* Helper */,
 				DC0571FA29391EA90037A387 /* Mock */,
+				DC100C31294B70A800317F78 /* Model */,
 				DC88599028E269E20032E0FB /* SwimmeeTests.swift */,
 				DCAEA8F82919AF0000F936E7 /* SessionTests.swift */,
 				DC73812329491CC400B46184 /* UserInfosTests.swift */,
@@ -667,8 +681,10 @@
 				DC762F4E2947E14D00B0767A /* SwimmerWorkoutsViewModelTests.swift in Sources */,
 				DC0C05C22948F8490014C829 /* SwimmerSessionTests.swift in Sources */,
 				DC532D5329476F75003F9E89 /* SwimmerMessagesViewModelTests.swift in Sources */,
+				DC100C35294B76C600317F78 /* MessageTests.swift in Sources */,
 				DC4E559129464EEA00C508FA /* CoachTeamViewModelTests.swift in Sources */,
 				DC73812429491CC400B46184 /* UserInfosTests.swift in Sources */,
+				DC100C33294B713300317F78 /* WorkoutTests.swift in Sources */,
 				DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */,
 				DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */,
 				DC0C05C02948F7C80014C829 /* CoachSessionTests.swift in Sources */,
