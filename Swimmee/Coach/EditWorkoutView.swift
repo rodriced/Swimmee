@@ -244,7 +244,7 @@ struct EditWorkoutView: View {
             dialog.actionSheet()
         }
 
-        .navigationTitle("Edit workout")
+        .navigationTitle(vm.originalWorkout.isNew ? "Create workout" : "Edit workout")
         .navigationBarBackButtonHidden()
 
         .toolbar {

@@ -205,7 +205,7 @@ struct EditMessageView: View {
             dialog.actionSheet()
         }
 
-        .navigationTitle("Edit message")
+        .navigationTitle(vm.originalMessage.isNew ? "Create message" : "Edit message")
         .navigationBarBackButtonHidden()
 
         .toolbar {

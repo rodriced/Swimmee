@@ -31,6 +31,8 @@ struct Message: Identifiable, Codable, DbIdentifiable, Hashable {
         self.isSent = isSent
     }
     
+    var isNew: Bool { dbId == nil }
+    
     func hasTextDifferent(from message: Message) -> Bool {
         message.title != title || message.content != content
     }

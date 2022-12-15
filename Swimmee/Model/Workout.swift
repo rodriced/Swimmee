@@ -33,6 +33,8 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
         self.isSent = isSent
     }
     
+    var isNew: Bool { dbId == nil }
+    
     func hasTextDifferent(from workout: Workout) -> Bool {
         workout.title != title || workout.content != content
     }
