@@ -102,7 +102,7 @@ struct EditWorkoutView: View {
     var sendConfirmationDialog: ConfirmationDialog {
         ConfirmationDialog(
             title: "Send workout ?",
-            primaryButton: "send",
+            primaryButton: "Send",
             primaryAction: { vm.saveWorkout(andSendIt: true, completion: dismiss) }
         )
     }

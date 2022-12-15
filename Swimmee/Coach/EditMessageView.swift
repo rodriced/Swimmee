@@ -102,7 +102,7 @@ struct EditMessageView: View {
     var sendConfirmationDialog: ConfirmationDialog {
         ConfirmationDialog(
             title: "Send message ?",
-            primaryButton: "send",
+            primaryButton: "Send",
             primaryAction: { vm.saveMessage(andSendIt: true, completion: dismiss) }
         )
     }
