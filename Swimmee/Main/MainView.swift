@@ -61,13 +61,13 @@ struct MainView: View {
                 NavigationView {
                     SignUpView()
                 }
+                .navigationViewStyle(.stack)
             case .signedIn(let initialProfile):
                 SignedInView(profile: initialProfile)
             case .failure:
 //                Text(error.localizedDescription)
                 Color.clear
             }
-//                .navigationViewStyle(.stack)
         }
         .onReceive(session.accountAPI.AuthenticationStatePublisher(), perform: session.updateAuthenticationState)
         .alert(session.authenticationFailureAlert) {

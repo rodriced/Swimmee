@@ -20,14 +20,14 @@ struct SignInView: View {
 
             VStack(spacing: 30) {
                 TextField("Email", text: $viewModel.email)
-                    .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
+                    .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
-                    .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
+                    .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
 
                 SecureField("Password", text: $viewModel.password)
-                    .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
                     .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
+                    .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
 
             }
 
@@ -46,17 +46,16 @@ struct SignInView: View {
             .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
             .keyboardShortcut(.defaultAction)
 
-            NavigationLink("I have lost my password...", destination: Text("Lost password"))
+            NavigationLink("I have lost my password...") {
+                Text("Not implemented")
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
         }
         .alert(viewModel.alertcontext) {}
         .padding()
-//        .navigationBarTitle("Sign In", displayMode: .inline)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Sign in")
-            }
-        }
+        .navigationBarTitle("Sign In", displayMode: .inline)
     }
 }
 

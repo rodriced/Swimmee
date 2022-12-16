@@ -18,21 +18,22 @@ struct SignUpView: View {
         let buttonTitle =
             viewModel.userType.map { "I am a \($0.rawValue.capitalized)" } ?? "Are you a coach or a swimmer ?"
 
-        return Text(buttonTitle)
-            .foregroundColor(.accentColor)
-            .padding(4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(viewModel.userTypeInError ? Color.red : Color.clear, lineWidth: 0.5)
-            )
-            .contextMenu {
-                Button {
-                    viewModel.userType = .coach
-                } label: { Text("Coach") }
-
+        return
+            Menu {
                 Button {
                     viewModel.userType = .swimmer
                 } label: { Text("Swimmer") }
+                Button {
+                    viewModel.userType = .coach
+                } label: { Text("Coach") }
+            } label: {
+                Text(buttonTitle)
+                    .foregroundColor(.accentColor)
+                    .padding(4)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(viewModel.userTypeInError ? Color.red : Color.clear, lineWidth: 0.5)
+                    )
             }
             .onChange(of: viewModel.userType, perform: viewModel.formFieldChanged)
     }
@@ -48,31 +49,30 @@ struct SignUpView: View {
             VStack(spacing: 30) {
                 VStack {
                     TextField("First name", text: $viewModel.firstName)
-                        .onChange(of: viewModel.firstName, perform: viewModel.formFieldChanged)
-                        .disableAutocorrection(true)
                         .roundedStyleWithErrorIndicator(inError: viewModel.firstNameInError)
+                        .disableAutocorrection(true)
+                        .onChange(of: viewModel.firstName, perform: viewModel.formFieldChanged)
 
                     TextField("Last name", text: $viewModel.lastName)
-                        .onChange(of: viewModel.lastName, perform: viewModel.formFieldChanged)
-                        .disableAutocorrection(true)
                         .roundedStyleWithErrorIndicator(inError: viewModel.lastNameInError)
+                        .disableAutocorrection(true)
+                        .onChange(of: viewModel.lastName, perform: viewModel.formFieldChanged)
                 }
 
                 userTypePicker
 
                 VStack {
                     TextField("Email", text: $viewModel.email)
-                        .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
+                        .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                        .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
+                        .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
 
                     SecureField("Password", text: $viewModel.password)
-                        .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
                         .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
+                        .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
                 }
             }
-            .textFieldStyle(.roundedBorder)
 
             Spacer()
 
@@ -91,17 +91,12 @@ struct SignUpView: View {
 
             Text("I already have an account...")
             NavigationLink("Let me in!", destination: SignInView())
+
+            Spacer()
         }
         .padding()
-//        .navigationBarTitle("Join swimmee", displayMode: .inline)
-        //        .navigationTitle("Join Swimmee")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Join swimmee")
-            }
-        }
         .alert(viewModel.alertcontext) {}
+        .navigationBarTitle("Join swimmee", displayMode: .inline)
     }
 }
 
