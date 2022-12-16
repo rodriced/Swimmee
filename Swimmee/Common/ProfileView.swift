@@ -81,41 +81,21 @@ struct ProfileView: View {
         }
     }
 
-    var updateProfileConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Confirm your profile update.",
-            primaryButton: "Update",
-            primaryAction: {
-                vm.saveProfile()
-                presentationMode.wrappedValue.dismiss()
-            }
-        )
-    }
-
     var updateProfileButton: some View {
         Button {
-            vm.updateProfileConfirmationDialogIsPresented = true
+            vm.updateProfileConfirmationIsPresented = true
         } label: {
             Text("Update").frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
         .disabled(!vm.isReadyToSubmit)
-        .actionSheet(isPresented: $vm.updateProfileConfirmationDialogIsPresented) {
-            updateProfileConfirmationDialog.actionSheet()
+        .confirmationDialog("Confirm your profile update.", isPresented: $vm.updateProfileConfirmationIsPresented) {
+            Button("Confirm update") {
+                vm.saveProfile()
+                presentationMode.wrappedValue.dismiss()
+            }
         }
         .keyboardShortcut(.defaultAction)
-    }
-
-    var deleteAccountConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Your account is going to be deleted. Ok?",
-            primaryButton: "Delete",
-            primaryAction: vm.deleteAccount,
-            isDestructive: true,
-            cancelAction: {
-                vm.reauthenticationViewIsPresented = false
-            }
-        )
     }
 
     var deleteAccountButton: some View {
@@ -129,10 +109,13 @@ struct ProfileView: View {
             ReauthenticationView(
                 viewModel: SignSharedViewModel(formType: .signIn),
                 message: "You must reauthenticate to confirm\nthe deletion of your account.",
-                reauthenticationSuccess: $vm.deleteAccountConfirmationDialogIsPresented
+                reauthenticationSuccess: $vm.deleteAccountConfirmationIsPresented
             )
-            .actionSheet(isPresented: $vm.deleteAccountConfirmationDialogIsPresented) {
-                deleteAccountConfirmationDialog.actionSheet()
+            .confirmationDialog("Confirme your account deletion", isPresented: $vm.deleteAccountConfirmationIsPresented) {
+                Button("Confirm deletion", role: .destructive, action: vm.deleteAccount)
+                Button("Cancel", role: .cancel) { vm.reauthenticationViewIsPresented = false }
+            } message: {
+                Text("Your account is going to be deleted. Ok?")
             }
         }
     }

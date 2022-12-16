@@ -10,20 +10,8 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var userInfos: UserInfos
 
-    @State var logoutConfirmationDialogIsPresented = false
+    @State var logoutConfirmationIsPresented = false
     @State var alertContext = AlertContext()
-
-    var logoutConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "You are going to logout from Swimmee.",
-            primaryButton: "Confirm logout",
-            primaryAction: {
-                if API.shared.account.signOut() == false {
-                    alertContext.message = "Sign out Error"
-                }
-            }
-        )
-    }
 
     var body: some View {
         NavigationView {
@@ -55,12 +43,16 @@ struct SettingsView: View {
                 }
 
                 Button {
-                    logoutConfirmationDialogIsPresented = true
+                    logoutConfirmationIsPresented = true
                 } label: {
                     MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
                 }
-                .actionSheet(isPresented: $logoutConfirmationDialogIsPresented) {
-                    logoutConfirmationDialog.actionSheet()
+                .confirmationDialog("You are going to logout from Swimmee.", isPresented: $logoutConfirmationIsPresented) {
+                    Button("Confirm logout") {
+                        if API.shared.account.signOut() == false {
+                            alertContext.message = "Sign out Error"
+                        }
+                    }
                 }
             }
             .navigationBarTitle("Settings")

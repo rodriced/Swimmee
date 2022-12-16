@@ -48,10 +48,10 @@ class ProfileViewModel: LoadableViewModel {
     }
 
     @Published var isReadyToSubmit: Bool = false
-    @Published var updateProfileConfirmationDialogIsPresented = false
+    @Published var updateProfileConfirmationIsPresented = false
 
     @Published var reauthenticationViewIsPresented = false
-    @Published var deleteAccountConfirmationDialogIsPresented = false
+    @Published var deleteAccountConfirmationIsPresented = false
 
     // MARK: Protocol LoadableViewModel implementation
 
