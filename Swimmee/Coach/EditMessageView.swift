@@ -13,16 +13,16 @@ class EditMessageViewModel: ObservableObject {
     let messageAPI: UserMessageCollectionAPI
     let originalMessage: Message
     @Published var message: Message
-    
+
     func validateTitle() -> Bool {
         !message.title.trimmingCharacters(in: .whitespaces).isEmpty
     }
-        
-    var canSend : Bool {
+
+    var canSend: Bool {
         !message.isSent || (message.isSent && message.hasTextDifferent(from: originalMessage))
     }
 
-    var canSaveAsDraft : Bool {
+    var canSaveAsDraft: Bool {
         message.isSent || (!message.isSent && message.hasTextDifferent(from: originalMessage))
     }
 
@@ -46,7 +46,7 @@ class EditMessageViewModel: ObservableObject {
             case (_, true):
                 replaceAsNew = true
                 messageToSave.date = .now
-                // TODO: A draft message sent for the first time should not be send as new message because it has never been read by anyone (we track read message with dbId and there is no reason here to generate a new one to set as unread for all swimmers)
+            // TODO: A draft message sent for the first time should not be send as new message because it has never been read by anyone (we track read message with dbId and there is no reason here to generate a new one to set as unread for all swimmers)
 //            case (false, true):
 //                messageToSave.date = .now
             case (_, false):
@@ -138,27 +138,27 @@ struct EditMessageView: View {
                 isTitleFocused = true
                 return
             }
-            
+
             action()
         }
 
         let config = vm.message.isSent ?
             (saveAsDraftButton: (
                 label: "Unsend and save as draft",
-                action: {doIfFormValidated { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }}
+                action: { doIfFormValidated { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }}
             ),
             sendButton: (
                 label: "Replace (Re-send)",
-                action: {doIfFormValidated { confirmationDialogPresented = resendConfirmationDialog }}
+                action: { doIfFormValidated { confirmationDialogPresented = resendConfirmationDialog }}
             ))
             :
             (saveAsDraftButton: (
                 label: "Save as draft",
-                action: {doIfFormValidated { vm.saveMessage(andSendIt: false, completion: dismiss) }}
+                action: { doIfFormValidated { vm.saveMessage(andSendIt: false, completion: dismiss) }}
             ),
             sendButton: (
                 label: "Send",
-                action: {doIfFormValidated { confirmationDialogPresented = sendConfirmationDialog }}
+                action: { doIfFormValidated { confirmationDialogPresented = sendConfirmationDialog }}
             ))
 
         return HStack {
@@ -205,7 +205,7 @@ struct EditMessageView: View {
             dialog.actionSheet()
         }
 
-        .navigationTitle(vm.originalMessage.isNew ? "Create message" : "Edit message")
+        .navigationBarTitle(vm.originalMessage.isNew ? "Create message" : "Edit message", displayMode: .inline)
         .navigationBarBackButtonHidden()
 
         .toolbar {

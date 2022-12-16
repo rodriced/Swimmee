@@ -14,51 +14,48 @@ struct SettingsView: View {
     @State var alertContext = AlertContext()
 
     var body: some View {
-        NavigationView {
-            Form {
+        Form {
+            NavigationLink {
+                LoadingView(
+                    publisherBuiler: {
+                        userInfos.profileFuture
+                    },
+                    targetView: ProfileView.init
+                )
+            } label: {
+                MenuLabel(title: "My profile", systemImage: "person", color: Color.mint)
+            }
+
+            switch userInfos.userType {
+            case .coach:
                 NavigationLink {
-                    LoadingView(
-                        publisherBuiler: {
-                            userInfos.profileFuture
-                        },
-                        targetView: ProfileView.init
-                    )
+                    CoachTeamView()
                 } label: {
-                    MenuLabel(title: "My profile", systemImage: "person", color: Color.mint)
+                    MenuLabel(title: "My team", systemImage: "person.3", color: Color.blue)
                 }
-
-                switch userInfos.userType {
-                case .coach:
-                    NavigationLink {
-                        CoachTeamView()
-                    } label: {
-                        MenuLabel(title: "My team", systemImage: "person.3", color: Color.blue)
-                    }
-                case .swimmer:
-                    NavigationLink {
-                        SwimmerCoachView()
-                    } label: {
-                        MenuLabel(title: "My coach", systemImage: "person.2", color: Color.blue)
-                    }
-                }
-
-                Button {
-                    logoutConfirmationIsPresented = true
+            case .swimmer:
+                NavigationLink {
+                    SwimmerCoachView()
                 } label: {
-                    MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
+                    MenuLabel(title: "My coach", systemImage: "person.2", color: Color.blue)
                 }
-                .confirmationDialog("You are going to logout from Swimmee.", isPresented: $logoutConfirmationIsPresented) {
-                    Button("Confirm logout") {
-                        if API.shared.account.signOut() == false {
-                            alertContext.message = "Sign out Error"
-                        }
+            }
+
+            Button {
+                logoutConfirmationIsPresented = true
+            } label: {
+                MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
+            }
+            .confirmationDialog("You are going to logout from Swimmee.", isPresented: $logoutConfirmationIsPresented) {
+                Button("Confirm logout") {
+                    if API.shared.account.signOut() == false {
+                        alertContext.message = "Sign out Error"
                     }
                 }
             }
-            .navigationBarTitle("Settings")
-            .alert(alertContext) {}
         }
-        .navigationViewStyle(.stack)
+        .navigationBarTitle("Settings")
+        .alert(alertContext) {}
     }
 }
 

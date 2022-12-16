@@ -13,11 +13,11 @@ class EditWorkoutViewModel: ObservableObject {
     let workoutAPI: UserWorkoutCollectionAPI
     let originalWorkout: Workout
     @Published var workout: Workout
-    
+
     func validateTitle() -> Bool {
         !workout.title.trimmingCharacters(in: .whitespaces).isEmpty
     }
-        
+
     var canSend: Bool {
         !workout.isSent || (workout.isSent && workout.hasTextDifferent(from: originalWorkout))
     }
@@ -138,27 +138,27 @@ struct EditWorkoutView: View {
                 isTitleFocused = true
                 return
             }
-            
+
             action()
         }
-        
+
         let config = vm.workout.isSent ?
             (saveAsDraftButton: (
                 label: "Unsend and save as draft",
-                action: {doIfFormValidated { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }}
+                action: { doIfFormValidated { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }}
             ),
             sendButton: (
                 label: "Replace (Re-send)",
-                action: {doIfFormValidated { confirmationDialogPresented = resendConfirmationDialog }}
+                action: { doIfFormValidated { confirmationDialogPresented = resendConfirmationDialog }}
             ))
             :
             (saveAsDraftButton: (
                 label: "Save as draft",
-                action: {doIfFormValidated { vm.saveWorkout(andSendIt: false, completion: dismiss) }}
+                action: { doIfFormValidated { vm.saveWorkout(andSendIt: false, completion: dismiss) }}
             ),
             sendButton: (
                 label: "Send",
-                action: {doIfFormValidated { confirmationDialogPresented = sendConfirmationDialog }}
+                action: { doIfFormValidated { confirmationDialogPresented = sendConfirmationDialog }}
             ))
 
         return HStack {
@@ -244,7 +244,7 @@ struct EditWorkoutView: View {
             dialog.actionSheet()
         }
 
-        .navigationTitle(vm.originalWorkout.isNew ? "Create workout" : "Edit workout")
+        .navigationBarTitle(vm.originalWorkout.isNew ? "Create workout" : "Edit workout", displayMode: .inline)
         .navigationBarBackButtonHidden()
 
         .toolbar {

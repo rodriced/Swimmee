@@ -12,7 +12,7 @@ struct CoachMainView: View {
     @StateObject var session = CoachSession()
 
 //    init() {
-////        print("SignedInView.init")
+    ////        print("SignedInView.init")
 //        _session = StateObject(wrappedValue: CoachSession(initialProfile: profile))
 //    }
 
@@ -44,13 +44,15 @@ struct CoachMainView: View {
                 Label("Messages", systemImage: "mail.stack")
             }
 
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gearshape")
-                }
+            NavigationView {
+                SettingsView()
+            }
+            .navigationViewStyle(.stack)
+            .tabItem {
+                Label("Settings", systemImage: "gearshape")
+            }
         }
         .environmentObject(session)
-//            .animation(.easeIn, value: 1)
     }
 }
 

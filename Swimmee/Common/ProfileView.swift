@@ -162,7 +162,7 @@ struct ProfileView: View {
 
             deleteAccountButton
         }
-        .navigationTitle("My profile")
+        .navigationBarTitle("My profile")
         .padding()
         .sheet(isPresented: $vm.isPhotoPickerPresented) {
             ImagePicker(sourceType: vm.photoPickerImageSource, selectedImage: $vm.pickedPhoto)
