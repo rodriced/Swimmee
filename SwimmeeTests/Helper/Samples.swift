@@ -36,6 +36,10 @@ class Samples {
         }
     }
     
+    static func aProfile(of userType: UserType, ref: Int) -> Profile {
+        Profile(userId: aUserId(ref: ref), userType: userType, firstName: "aFirstName\(ref)", lastName: "aLastName\(ref)", email: "an\(ref)@e.mail")
+    }
+    
     static var aTeam: [Profile] {
         (1..<5).map {
             Profile(userId: "\(aSwimmerUserId)_\($0)", userType: .swimmer, firstName: "aFirstName\($0)", lastName: "aLastName\($0)", email: "an\($0)@e.mail")

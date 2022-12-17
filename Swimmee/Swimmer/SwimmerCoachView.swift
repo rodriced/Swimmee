@@ -15,6 +15,7 @@ class SwimmerCoachViewModel: ObservableObject {
         self.profileAPI = profileAPI
     }
 
+
     enum ViewState: Equatable {
         case loading
         case normal
@@ -26,9 +27,51 @@ class SwimmerCoachViewModel: ObservableObject {
     @Published var coachs: [Profile] = []
     @Published var currentCoach: Profile?
 
-    @Published var confirmationDialogPresented: ConfirmationDialog?
-
     @Published var alertContext = AlertContext()
+
+    @Published var confirmationPresented = false {
+        didSet {
+            if !confirmationPresented { confirmation = Self.emptyConfirmation }
+        }
+    }
+
+    typealias Confirmation = (title: String, message: String, button: () -> Button<Text>)
+    var confirmation: Confirmation = SwimmerCoachViewModel.emptyConfirmation
+
+    static let emptyConfirmation: Confirmation = (title: "", message: "", button: { Button("") {}})
+
+    func presentSubscribeConfirmation(coach: Profile) {
+        confirmation = (
+            title: "Subscribing to a coach",
+            message: "You are going to subcribe to \(coach.fullname).",
+            button: {
+                Button("Subscribe to \(coach.fullname)") { self.saveSelectedCoach(coach) }
+            }
+        )
+        confirmationPresented = true
+    }
+
+    func presentUnsubscribeConfirmation(coach: Profile) {
+        confirmation = (
+            title: "Unsubscribe from your coach",
+            message: "You are going to unsubcribe from \(coach.fullname).",
+            button: {
+                Button("Unsubscribe") { self.saveSelectedCoach(nil) }
+            }
+        )
+        confirmationPresented = true
+    }
+
+    func presentReplaceConfirmation(currentCoach: Profile, newCoach: Profile) {
+        confirmation = (
+            title: "Replace your current coach",
+            message: "You are going to unsubcribe from \(currentCoach.fullname) and subscribe to \(newCoach.fullname).",
+            button: {
+                Button("Replace with \(newCoach.fullname)") { self.saveSelectedCoach(newCoach) }
+            }
+        )
+        confirmationPresented = true
+    }
 
     @MainActor
     func loadCoachs(withSelected coachId: UserId?) async {
@@ -114,33 +157,6 @@ struct SwimmerCoachView: View {
     @EnvironmentObject var session: SwimmerSession
     @StateObject var vm = SwimmerCoachViewModel()
 
-    func subscribeConfirmationDialog(coach: Profile) -> ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Subscribing to a coach",
-            message: "You are going to subcribe to \(coach.fullname).",
-            primaryButton: "Subscribe",
-            primaryAction: { vm.saveSelectedCoach(coach) }
-        )
-    }
-
-    func unsubscribeConfirmationDialog(coach: Profile) -> ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Unsubscribe from your coach",
-            message: "You are going to unsubcribe from \(coach.fullname).",
-            primaryButton: "Unsubscribe",
-            primaryAction: { vm.saveSelectedCoach(nil) }
-        )
-    }
-
-    func replaceConfirmationDialog(currentCoach: Profile, newCoach: Profile) -> ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Replace your current coach",
-            message: "You are going to unsubcribe from \(currentCoach.fullname) and subscribe to \(newCoach.fullname).",
-            primaryButton: "Replace",
-            primaryAction: { vm.saveSelectedCoach(newCoach) }
-        )
-    }
-
     var chosenCoachHeader: some View {
         Group {
             if let currentCoach = vm.currentCoach {
@@ -150,7 +166,7 @@ struct SwimmerCoachView: View {
                         .font(.title3)
                         .foregroundColor(Color.mint)
                     Button {
-                        vm.confirmationDialogPresented = unsubscribeConfirmationDialog(coach: currentCoach)
+                        vm.presentUnsubscribeConfirmation(coach: currentCoach)
                     } label: {
                         Image(systemName: "trash").foregroundColor(Color.red)
                     }
@@ -168,10 +184,10 @@ struct SwimmerCoachView: View {
                 .onTapGesture {
                     switch vm.currentCoach {
                     case .none:
-                        vm.confirmationDialogPresented = subscribeConfirmationDialog(coach: coach)
+                        vm.presentSubscribeConfirmation(coach: coach)
 
                     case let .some(currentCoach) where currentCoach.userId != coach.userId:
-                        vm.confirmationDialogPresented = replaceConfirmationDialog(currentCoach: currentCoach, newCoach: coach)
+                        vm.presentReplaceConfirmation(currentCoach: currentCoach, newCoach: coach)
 
                     default:
                         ()
@@ -199,10 +215,11 @@ struct SwimmerCoachView: View {
         .task { await vm.loadCoachs(withSelected: session.coachId) }
 //        .task { vm.listenCoach(initialSelectedCoachId: session.coachId) }
         .refreshable { await vm.loadCoachs(withSelected: session.coachId) }
+        .confirmationDialog(vm.confirmation.title,
+                            isPresented: $vm.confirmationPresented,
+                            actions: vm.confirmation.button,
+                            message: { Text(vm.confirmation.message) })
 
-        .actionSheet(item: $vm.confirmationDialogPresented) { dialog in
-            dialog.actionSheet()
-        }
         .alert(vm.alertContext) {}
         .navigationBarTitle("My coach")
     }

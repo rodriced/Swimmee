@@ -216,4 +216,31 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")
     }
+    
+    func testConfirmationsPresentation() {
+        let coach1 = Samples.aProfile(of: .coach, ref: 1)
+        let coach2 = Samples.aProfile(of: .coach, ref: 2)
+
+        let sut = SwimmerCoachViewModel(profileAPI: MockProfilePI())
+        
+        XCTAssertEqual(sut.confirmationPresented, false)
+        
+        sut.presentSubscribeConfirmation(coach: coach1)
+        XCTAssertEqual(sut.confirmationPresented, true)
+        XCTAssertEqual(sut.confirmation.message, "You are going to subcribe to \(coach1.fullname).")
+
+        sut.confirmationPresented = false
+        XCTAssertEqual(sut.confirmation.message, "")
+
+        sut.presentUnsubscribeConfirmation(coach: coach1)
+        XCTAssertEqual(sut.confirmationPresented, true)
+        XCTAssertEqual(sut.confirmation.message, "You are going to unsubcribe from \(coach1.fullname).")
+
+        sut.confirmationPresented = false
+        XCTAssertEqual(sut.confirmation.message, "")
+        
+        sut.presentReplaceConfirmation(currentCoach: coach1, newCoach: coach2)
+        XCTAssertEqual(sut.confirmationPresented, true)
+        XCTAssertEqual(sut.confirmation.message, "You are going to unsubcribe from \(coach1.fullname) and subscribe to \(coach2.fullname).")
+    }
 }

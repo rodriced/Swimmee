@@ -72,7 +72,6 @@
 		DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599028E269E20032E0FB /* SwimmeeTests.swift */; };
 		DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859A928E26F2B0032E0FB /* SignInView.swift */; };
 		DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859AB28E26FE00032E0FB /* ProfileView.swift */; };
-		DC920B6429328147000EE664 /* ConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6329328147000EE664 /* ConfirmationDialog.swift */; };
 		DC920B662933CE4D000EE664 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B652933CE4D000EE664 /* LoadingView.swift */; };
 		DC920B702934B851000EE664 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6F2934B851000EE664 /* ImageHelper.swift */; };
 		DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7329355981000EE664 /* SignSharedViewModel.swift */; };
@@ -179,7 +178,6 @@
 		DC88599028E269E20032E0FB /* SwimmeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeTests.swift; sourceTree = "<group>"; };
 		DC8859A928E26F2B0032E0FB /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DC8859AB28E26FE00032E0FB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		DC920B6329328147000EE664 /* ConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialog.swift; sourceTree = "<group>"; };
 		DC920B652933CE4D000EE664 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		DC920B6F2934B851000EE664 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		DC920B7329355981000EE664 /* SignSharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSharedViewModel.swift; sourceTree = "<group>"; };
@@ -309,7 +307,6 @@
 				DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */,
 				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
 				DCDBE7E62915D77A00386076 /* AlertHelper.swift */,
-				DC920B6329328147000EE664 /* ConfirmationDialog.swift */,
 				DC920B6F2934B851000EE664 /* ImageHelper.swift */,
 			);
 			path = Helper;
@@ -636,7 +633,6 @@
 				DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */,
 				DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */,
 				DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */,
-				DC920B6429328147000EE664 /* ConfirmationDialog.swift in Sources */,
 				DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */,
 				DC6CCE30290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift in Sources */,
 				DC920B7729355ABF000EE664 /* ValueValidation.swift in Sources */,
