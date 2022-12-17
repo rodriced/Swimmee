@@ -80,55 +80,24 @@ class EditMessageViewModel: ObservableObject {
 }
 
 struct EditMessageView: View {
-//    @StateObject var vm = EditMessageViewModel()
     @StateObject var vm: EditMessageViewModel
     @Environment(\.presentationMode) private var presentationMode
 
-    @State var confirmationDialogPresented: ConfirmationDialog?
-    @FocusState private var isTitleFocused: Bool
+    @State var deleteConfirmationPresented = false
+    @State var unsendAndSaveAsDraftConfirmationPresented = false
+    @State var resendConfirmationPresented = false
+    @State var saveAsDraftConfirmationPresented = false
+    @State var sendConfirmationPresented = false
 
-//    let message: Message
+    @FocusState private var isTitleFocused: Bool
 
     init(message: Message) {
 //        print("EditMessageView.init (titile = \(message.title)")
-//        self.message = message
         _vm = StateObject(wrappedValue: EditMessageViewModel(message: message))
     }
 
     func dismiss() {
         presentationMode.wrappedValue.dismiss()
-    }
-
-    var sendConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Send message ?",
-            primaryButton: "Send",
-            primaryAction: { vm.saveMessage(andSendIt: true, completion: dismiss) }
-        )
-    }
-
-    var resendConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Replace sent message ?",
-            primaryButton: "Replace",
-            primaryAction: { vm.saveMessage(andSendIt: true, completion: dismiss) }
-        )
-    }
-
-    var unsendAndSaveAsDraftConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Unsend and save as draft ?",
-            primaryButton: "Save as draft",
-            primaryAction: { vm.saveMessage(andSendIt: false, completion: dismiss) }
-        )
-    }
-
-    var deleteConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Delete message ?",
-            primaryButton: "Delete",
-            primaryAction: { vm.deleteMessage(completion: dismiss) }
-        )
     }
 
     var bottomButtonsBar: some View {
@@ -143,39 +112,60 @@ struct EditMessageView: View {
         }
 
         let config = vm.message.isSent ?
-            (saveAsDraftButton: (
-                label: "Unsend and save as draft",
-                action: { doIfFormValidated { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }}
+            (saveAsDraft: (
+                buttonLabel: "Unsend and save as draft",
+                confirmationTitle: "Unsend and save as draft ?",
+                confirmationPresented: $unsendAndSaveAsDraftConfirmationPresented,
+                confirmationButton: { Button("Confirm Save as draft") {
+                    vm.saveMessage(andSendIt: false, completion: dismiss)
+                }}
             ),
             sendButton: (
-                label: "Replace (Re-send)",
-                action: { doIfFormValidated { confirmationDialogPresented = resendConfirmationDialog }}
+                buttonLabel: "Replace (Re-send)",
+                confirmationTitle: "Replace sent message ?",
+                confirmationPresented: $resendConfirmationPresented,
+                confirmationButton: { Button("Confirm Replace") {
+                    vm.saveMessage(andSendIt: true, completion: dismiss)
+                }}
             ))
             :
-            (saveAsDraftButton: (
-                label: "Save as draft",
-                action: { doIfFormValidated { vm.saveMessage(andSendIt: false, completion: dismiss) }}
+            (saveAsDraft: (
+                buttonLabel: "Save as draft",
+                confirmationTitle: "Save as draft ?",
+                confirmationPresented: $saveAsDraftConfirmationPresented,
+                confirmationButton: { Button("Confirm Save as draft") {
+                    vm.saveMessage(andSendIt: false, completion: dismiss)
+                }}
             ),
             sendButton: (
-                label: "Send",
-                action: { doIfFormValidated { confirmationDialogPresented = sendConfirmationDialog }}
+                buttonLabel: "Send",
+                confirmationTitle: "Send message ?",
+                confirmationPresented: $sendConfirmationPresented,
+                confirmationButton: { Button("Confirm Send") {
+                    vm.saveMessage(andSendIt: true, completion: dismiss)
+                }}
             ))
 
         return HStack {
-            Button(action: config.saveAsDraftButton.action) {
-                Text(config.saveAsDraftButton.label)
+            Button {
+                config.saveAsDraft.confirmationPresented.wrappedValue = true
+            } label: {
+                Text(config.saveAsDraft.buttonLabel)
                     .frame(maxWidth: .infinity)
             }
             .foregroundColor(Color.black)
             .tint(Color.orange.opacity(0.7))
             .disabled(!vm.canSaveAsDraft)
+            .confirmationDialog(config.saveAsDraft.confirmationTitle, isPresented: config.saveAsDraft.confirmationPresented, actions: config.saveAsDraft.confirmationButton)
 
-            Button(action: config.sendButton.action) {
-                Text(config.sendButton.label)
+            Button {
+                config.sendButton.confirmationPresented.wrappedValue = true
+            } label: {
+                Text(config.sendButton.buttonLabel)
                     .frame(maxWidth: .infinity)
             }
             .disabled(!vm.canSend)
-//            .keyboardShortcut(.defaultAction)
+            .confirmationDialog(config.sendButton.confirmationTitle, isPresented: config.sendButton.confirmationPresented, actions: config.sendButton.confirmationButton)
         }
         .buttonStyle(.borderedProminent)
     }
@@ -199,21 +189,18 @@ struct EditMessageView: View {
             bottomButtonsBar
                 .padding()
         }
-//        .onAppear { vm.message = message }
-
-        .actionSheet(item: $confirmationDialogPresented) { dialog in
-            dialog.actionSheet()
-        }
-
         .navigationBarTitle(vm.originalMessage.isNew ? "Create message" : "Edit message", displayMode: .inline)
         .navigationBarBackButtonHidden()
 
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    confirmationDialogPresented = deleteConfirmationDialog
+                    deleteConfirmationPresented = true
                 } label: {
                     Image(systemName: "trash").foregroundColor(Color.red)
+                }
+                .confirmationDialog("Delete message ?", isPresented: $deleteConfirmationPresented) {
+                    Button("Delete message ?") { vm.deleteMessage(completion: dismiss) }
                 }
             }
             ToolbarItem(placement: .cancellationAction) {

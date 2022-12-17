@@ -80,55 +80,24 @@ class EditWorkoutViewModel: ObservableObject {
 }
 
 struct EditWorkoutView: View {
-//    @StateObject var vm = EditWorkoutViewModel()
     @StateObject var vm: EditWorkoutViewModel
     @Environment(\.presentationMode) private var presentationMode
 
-    @State private var confirmationDialogPresented: ConfirmationDialog?
-    @FocusState private var isTitleFocused: Bool
+    @State var deleteConfirmationPresented = false
+    @State var unsendAndSaveAsDraftConfirmationPresented = false
+    @State var resendConfirmationPresented = false
+    @State var saveAsDraftConfirmationPresented = false
+    @State var sendConfirmationPresented = false
 
-//    let workout: Workout
+    @FocusState private var isTitleFocused: Bool
 
     init(workout: Workout) {
 //        print("EditWorkoutView.init (titile = \(workout.title)")
-//        self.workout = workout
         _vm = StateObject(wrappedValue: EditWorkoutViewModel(workout: workout))
     }
 
     func dismiss() {
         presentationMode.wrappedValue.dismiss()
-    }
-
-    var sendConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Send workout ?",
-            primaryButton: "Send",
-            primaryAction: { vm.saveWorkout(andSendIt: true, completion: dismiss) }
-        )
-    }
-
-    var resendConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Replace sent workout ?",
-            primaryButton: "Replace",
-            primaryAction: { vm.saveWorkout(andSendIt: true, completion: dismiss) }
-        )
-    }
-
-    var unsendAndSaveAsDraftConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Unsend and save as draft ?",
-            primaryButton: "Save as draft",
-            primaryAction: { vm.saveWorkout(andSendIt: false, completion: dismiss) }
-        )
-    }
-
-    var deleteConfirmationDialog: ConfirmationDialog {
-        ConfirmationDialog(
-            title: "Delete workout ?",
-            primaryButton: "Delete",
-            primaryAction: { vm.deleteWorkout(completion: dismiss) }
-        )
     }
 
     var bottomButtonsBar: some View {
@@ -143,39 +112,60 @@ struct EditWorkoutView: View {
         }
 
         let config = vm.workout.isSent ?
-            (saveAsDraftButton: (
-                label: "Unsend and save as draft",
-                action: { doIfFormValidated { confirmationDialogPresented = unsendAndSaveAsDraftConfirmationDialog }}
+            (saveAsDraft: (
+                buttonLabel: "Unsend and save as draft",
+                confirmationTitle: "Unsend and save as draft ?",
+                confirmationPresented: $unsendAndSaveAsDraftConfirmationPresented,
+                confirmationButton: { Button("Confirm Save as draft") {
+                    vm.saveWorkout(andSendIt: false, completion: dismiss)
+                }}
             ),
             sendButton: (
-                label: "Replace (Re-send)",
-                action: { doIfFormValidated { confirmationDialogPresented = resendConfirmationDialog }}
+                buttonLabel: "Replace (Re-send)",
+                confirmationTitle: "Replace sent workout ?",
+                confirmationPresented: $resendConfirmationPresented,
+                confirmationButton: { Button("Confirm Replace") {
+                    vm.saveWorkout(andSendIt: true, completion: dismiss)
+                }}
             ))
             :
-            (saveAsDraftButton: (
-                label: "Save as draft",
-                action: { doIfFormValidated { vm.saveWorkout(andSendIt: false, completion: dismiss) }}
+            (saveAsDraft: (
+                buttonLabel: "Save as draft",
+                confirmationTitle: "Save as draft ?",
+                confirmationPresented: $saveAsDraftConfirmationPresented,
+                confirmationButton: { Button("Confirm Save as draft") {
+                    vm.saveWorkout(andSendIt: false, completion: dismiss)
+                }}
             ),
             sendButton: (
-                label: "Send",
-                action: { doIfFormValidated { confirmationDialogPresented = sendConfirmationDialog }}
+                buttonLabel: "Send",
+                confirmationTitle: "Send workout ?",
+                confirmationPresented: $sendConfirmationPresented,
+                confirmationButton: { Button("Confirm Send") {
+                    vm.saveWorkout(andSendIt: true, completion: dismiss)
+                }}
             ))
 
         return HStack {
-            Button(action: config.saveAsDraftButton.action) {
-                Text(config.saveAsDraftButton.label)
+            Button {
+                config.saveAsDraft.confirmationPresented.wrappedValue = true
+            } label: {
+                Text(config.saveAsDraft.buttonLabel)
                     .frame(maxWidth: .infinity)
             }
             .foregroundColor(Color.black)
             .tint(Color.orange.opacity(0.7))
             .disabled(!vm.canSaveAsDraft)
+            .confirmationDialog(config.saveAsDraft.confirmationTitle, isPresented: config.saveAsDraft.confirmationPresented, actions: config.saveAsDraft.confirmationButton)
 
-            Button(action: config.sendButton.action) {
-                Text(config.sendButton.label)
+            Button {
+                config.sendButton.confirmationPresented.wrappedValue = true
+            } label: {
+                Text(config.sendButton.buttonLabel)
                     .frame(maxWidth: .infinity)
             }
             .disabled(!vm.canSend)
-//            .keyboardShortcut(.defaultAction)
+            .confirmationDialog(config.sendButton.confirmationTitle, isPresented: config.sendButton.confirmationPresented, actions: config.sendButton.confirmationButton)
         }
         .buttonStyle(.borderedProminent)
     }
@@ -193,9 +183,7 @@ struct EditWorkoutView: View {
                     TextField("Title", text: $vm.workout.title)
                         .focused($isTitleFocused)
                 }
-//                Section {
                 DatePicker(selection: $vm.workout.date, displayedComponents: .date) {
-//                    Text("Planned Date").foregroundColor(.secondary)
                     Label {
                         Text("Planned date")
                     } icon: {
@@ -203,10 +191,7 @@ struct EditWorkoutView: View {
                     }
                     .foregroundColor(Color.secondary)
                 }
-//                }
-//                Section {
                 Picker(selection: $vm.workout.duration) {
-//                        ForEach(stride(from: 15, to: 240, by: 15)) { minutes in
                     ForEach(1 ..< 17) { quarters in
                         let minutes = quarters * 15
                         Text("\(minutes / 60)h\(minutes % 60)")
@@ -222,37 +207,24 @@ struct EditWorkoutView: View {
                     .foregroundColor(Color.secondary)
                 }
 
-//                    DatePicker(selection: $vm.workout.duration, displayedComponents: .hourAndMinute) {
-//                        Text("Duration")
-                ////                        Label {
-                ////                            Text("Duration")
-                ////    //                        Text(vm.date, style: .date)
-                ////                        } icon: {
-                ////                            Image(systemName: "timer").foregroundColor(Color.mint)
-                ////                        }
-//                    }
-//                }
                 TextEditorWithPlaceholder(text: $vm.workout.content, placeholder: "Workout details...", height: 400)
             }
 
             bottomButtonsBar
                 .padding()
         }
-//        .onAppear { vm.workout = workout }
-
-        .actionSheet(item: $confirmationDialogPresented) { dialog in
-            dialog.actionSheet()
-        }
-
         .navigationBarTitle(vm.originalWorkout.isNew ? "Create workout" : "Edit workout", displayMode: .inline)
         .navigationBarBackButtonHidden()
 
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    confirmationDialogPresented = deleteConfirmationDialog
+                    deleteConfirmationPresented = true
                 } label: {
                     Image(systemName: "trash").foregroundColor(Color.red)
+                }
+                .confirmationDialog("Delete workout ?", isPresented: $deleteConfirmationPresented) {
+                    Button("Delete workout ?") { vm.deleteWorkout(completion: dismiss) }
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
