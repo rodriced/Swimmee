@@ -10,8 +10,18 @@ import SwiftUI
 @MainActor
 class EditWorkoutViewModel: ObservableObject {
     let workoutAPI: UserWorkoutCollectionAPI
+    
     let originalWorkout: Workout
     @Published var workout: Workout
+    
+    @Published var alertContext = AlertContext()
+
+    init(workout: Workout, workoutAPI: UserWorkoutCollectionAPI = API.shared.workout) {
+//        print("EditWorkoutViewModel.init (workout)")
+        self.originalWorkout = workout
+        self.workout = workout
+        self.workoutAPI = workoutAPI
+    }
 
     func validateTitle() -> Bool {
         !workout.title.trimmingCharacters(in: .whitespaces).isEmpty
@@ -23,15 +33,6 @@ class EditWorkoutViewModel: ObservableObject {
 
     var canSaveAsDraft: Bool {
         workout.isSent || (!workout.isSent && workout.hasTextDifferent(from: originalWorkout))
-    }
-
-    @Published var alertContext = AlertContext()
-
-    init(workout: Workout, workoutAPI: UserWorkoutCollectionAPI = API.shared.workout) {
-//        print("EditWorkoutViewModel.init (workout)")
-        self.originalWorkout = workout
-        self.workout = workout
-        self.workoutAPI = workoutAPI
     }
 
     func saveWorkout(andSendIt: Bool, completion: (() -> Void)?) {
@@ -79,9 +80,12 @@ class EditWorkoutViewModel: ObservableObject {
 }
 
 struct EditWorkoutView: View {
-    @StateObject var vm: EditWorkoutViewModel
     @Environment(\.presentationMode) private var presentationMode
+    func dismiss() { presentationMode.wrappedValue.dismiss() }
+
     @Environment(\.verticalSizeClass) var verticalSizeClass
+
+    @StateObject var vm: EditWorkoutViewModel
 
     @State var deleteConfirmationPresented = false
     @State var unsendAndSaveAsDraftConfirmationPresented = false
@@ -96,9 +100,34 @@ struct EditWorkoutView: View {
         _vm = StateObject(wrappedValue: EditWorkoutViewModel(workout: workout))
     }
 
-    func dismiss() {
-        presentationMode.wrappedValue.dismiss()
+    // MARK: Duration picker
+
+    static let durationPickerData: [(Int, String)] =
+        stride(from: 15, to: 241, by: 15).map { totalInMinutes in
+
+            let hours = totalInMinutes / 60
+            let minutes = totalInMinutes % 60
+            let formatedMinutes = minutes < 10 ? "0\(minutes)" : "\(minutes)"
+
+            return (totalInMinutes, "\(hours)h\(formatedMinutes)")
+        }
+
+    var durationPicker: some View {
+        Picker(selection: $vm.workout.duration) {
+            ForEach(Self.durationPickerData, id: \.0) { totalInMinutes, label in
+                Text(label).tag(totalInMinutes)
+            }
+        } label: {
+            Label {
+                Text("Duration")
+            } icon: {
+                Image(systemName: "timer")
+            }
+            .foregroundColor(Color.secondary)
+        }
     }
+
+    // MARK: Bottom buttons
 
     var bottomButtonsBar: some View {
         func doIfFormValidated(action: () -> Void) {
@@ -170,12 +199,15 @@ struct EditWorkoutView: View {
         .buttonStyle(.borderedProminent)
     }
 
+    // MARK: Layout organization
+
     var formPart1: some View {
         Group {
             Section {
                 TextField("Title", text: $vm.workout.title)
                     .focused($isTitleFocused)
             }
+
             DatePicker(selection: $vm.workout.date, displayedComponents: .date) {
                 Label {
                     Text("Planned date")
@@ -184,20 +216,8 @@ struct EditWorkoutView: View {
                 }
                 .foregroundColor(Color.secondary)
             }
-            Picker(selection: $vm.workout.duration) {
-                ForEach(1 ..< 17) { quarters in
-                    let minutes = quarters * 15
-                    Text("\(minutes / 60)h\(minutes % 60)")
-                        .tag(minutes)
-                }
-            } label: {
-                Label {
-                    Text("Duration")
-                } icon: {
-                    Image(systemName: "timer")
-                }
-                .foregroundColor(Color.secondary)
-            }
+
+            durationPicker
         }
     }
 
