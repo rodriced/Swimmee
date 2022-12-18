@@ -10,11 +10,12 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.verticalSizeClass) var verticalSizeClass
 
     @ObservedObject var vm: ProfileViewModel
 
     init(vm: ProfileViewModel) {
-        debugPrint("---- ProfileView created")
+//        debugPrint("---- ProfileView created")
         _vm = ObservedObject(initialValue: vm)
     }
 
@@ -120,38 +121,37 @@ struct ProfileView: View {
         }
     }
 
-    var body: some View {
+    var formPart1: some View {
         VStack {
-            ZStack(alignment: .bottomTrailing) {
+            ZStack(alignment: verticalSizeClass == .compact ? .bottomLeading : .bottomTrailing) {
                 Menu {
                     photoActionsMenu
                 } label: {
                     profilePhoto
                 }
                 photoActionsMenuButton
-                    .offset(x: 10)
+                    .offset(x: verticalSizeClass == .compact ? -10 : 10)
             }
-
             Spacer()
 
             HStack {
                 Text("I'm a")
                 Text("\(vm.initialProfile.userType.rawValue)").font(.headline)
             }
-            Spacer()
+        }
+    }
 
-            VStack(spacing: 30) {
-                VStack {
-                    FormTextField(title: "First name", value: $vm.firstName, inError: vm.firstNameInError)
-                    FormTextField(title: "Last name", value: $vm.lastName, inError: vm.lastNameInError)
-                }
-
-                VStack {
-                    FormTextField(title: "Email", value: $vm.email, inError: vm.emailInError)
-                        .autocapitalization(.none)
-                }
+    var formPart2: some View {
+        VStack(spacing: 5) {
+            VStack {
+                FormTextField(title: "First name", value: $vm.firstName, inError: vm.firstNameInError)
+                FormTextField(title: "Last name", value: $vm.lastName, inError: vm.lastNameInError)
             }
-            .textFieldStyle(.roundedBorder)
+
+            VStack {
+                FormTextField(title: "Email", value: $vm.email, inError: vm.emailInError)
+                    .autocapitalization(.none)
+            }
 
             Spacer()
 
@@ -161,6 +161,32 @@ struct ProfileView: View {
 //                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
 
             deleteAccountButton
+        }
+        .textFieldStyle(.roundedBorder)
+    }
+
+    var portraitView: some View {
+        VStack {
+            formPart1
+            Spacer()
+            formPart2
+        }
+    }
+
+    var landscapeView: some View {
+        HStack(spacing: 20) {
+            formPart1
+            formPart2
+        }
+    }
+
+    var body: some View {
+        VStack {
+            if verticalSizeClass == .compact {
+                landscapeView
+            } else {
+                portraitView
+            }
         }
         .navigationBarTitle("My profile")
         .padding()
