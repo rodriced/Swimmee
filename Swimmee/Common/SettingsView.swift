@@ -53,6 +53,14 @@ struct SettingsView: View {
                     }
                 }
             }
+//
+//            Section {
+//                Button {
+//                    fatalError("Crash forced for Crashlytics test !")
+//                } label: {
+//                    MenuLabel(title: "Force crash", systemImage: "bolt.fill", color: Color.red)
+//                }
+//            }
         }
         .navigationBarTitle("Settings")
         .alert(alertContext) {}

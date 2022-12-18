@@ -59,6 +59,7 @@
 		DC5D9B3D294A718B00C771C5 /* PhotoInfoEditedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */; };
 		DC5FBCAA294F809400DD3E05 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCA9294F809400DD3E05 /* FirebaseAnalytics */; };
 		DC5FBCAC294F809400DD3E05 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCAB294F809400DD3E05 /* FirebaseAnalyticsSwift */; };
+		DC5FBCAE294F844C00DD3E05 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCAD294F844C00DD3E05 /* FirebaseCrashlytics */; };
 		DC6CCE30290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE2F290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift */; };
 		DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE31290FC4FF00DB8427 /* API.swift */; };
 		DC6CCE342910841B00DB8427 /* FirestoreProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6CCE332910841B00DB8427 /* FirestoreProfileAPI.swift */; };
@@ -215,6 +216,7 @@
 				DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */,
 				DCF3238028FB37180030626C /* FirebaseAuthCombine-Community in Frameworks */,
 				DCF3238228FB37180030626C /* FirebaseFirestore in Frameworks */,
+				DC5FBCAE294F844C00DD3E05 /* FirebaseCrashlytics in Frameworks */,
 				DC5FBCAA294F809400DD3E05 /* FirebaseAnalytics in Frameworks */,
 				DCF3238828FB37180030626C /* FirebaseStorage in Frameworks */,
 			);
@@ -500,6 +502,7 @@
 				DC88597828E269E20032E0FB /* Sources */,
 				DC88597928E269E20032E0FB /* Frameworks */,
 				DC88597A28E269E20032E0FB /* Resources */,
+				DC5FBCAF294F866800DD3E05 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -518,6 +521,7 @@
 				DC2C224E294412B4005BBC19 /* FirebasePerformance */,
 				DC5FBCA9294F809400DD3E05 /* FirebaseAnalytics */,
 				DC5FBCAB294F809400DD3E05 /* FirebaseAnalyticsSwift */,
+				DC5FBCAD294F844C00DD3E05 /* FirebaseCrashlytics */,
 			);
 			productName = Swimmee;
 			productReference = DC88597C28E269E20032E0FB /* Swimmee.app */;
@@ -602,6 +606,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DC5FBCAF294F866800DD3E05 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DC88597828E269E20032E0FB /* Sources */ = {
@@ -829,6 +855,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Swimmee/Preview Content\"";
 				DEVELOPMENT_TEAM = WX78P38A6L;
 				ENABLE_PREVIEWS = YES;
@@ -997,6 +1024,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DCF3237C28FB37180030626C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsSwift;
+		};
+		DC5FBCAD294F844C00DD3E05 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DCF3237C28FB37180030626C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 		DCF3237D28FB37180030626C /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
