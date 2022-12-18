@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @StateObject var viewModel = SignSharedViewModel(formType: .signUp)
+    @StateObject private var viewModel = SignSharedViewModel(formType: .signUp)
 
-    @State var userTypePickerOpened = false
-    @State var coachTypePicked = false
-    @State var swimmerTypePicked = false
+    @Environment(\.verticalSizeClass) var verticalSizeClass
 
-    var userTypePicker: some View {
+    @State private var userTypePickerOpened = false
+    @State private var coachTypePicked = false
+    @State private var swimmerTypePicked = false
+
+    private var userTypePicker: some View {
         let buttonTitle =
             viewModel.userType.map { "I am a \($0.rawValue.capitalized)" } ?? "Are you a coach or a swimmer ?"
 
@@ -38,13 +40,19 @@ struct SignUpView: View {
             .onChange(of: viewModel.userType, perform: viewModel.formFieldChanged)
     }
 
-    var body: some View {
+    var part1: some View {
         VStack {
+            Spacer()
             AppTitleView()
-
             Spacer(minLength: 20)
-
             Text("I create my account:").padding()
+            Spacer()
+        }
+    }
+
+    var part2: some View {
+        VStack {
+            Spacer()
 
             VStack(spacing: 30) {
                 VStack {
@@ -89,10 +97,35 @@ struct SignUpView: View {
             .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
             .keyboardShortcut(.defaultAction)
 
-            Text("I already have an account...")
-            NavigationLink("Let me in!", destination: SignInView())
-
             Spacer()
+        }
+    }
+
+    var portraitView: some View {
+        VStack {
+            part1
+            part2
+        }
+    }
+
+    var landscapeView: some View {
+        HStack(spacing: 10) {
+            part1
+            part2
+        }
+    }
+
+    var body: some View {
+        VStack {
+            if verticalSizeClass == .compact {
+                landscapeView
+            } else {
+                portraitView
+            }
+            HStack {
+                Text("I already have an account...")
+                NavigationLink("Let me in!", destination: SignInView.init)
+            }
         }
         .padding()
         .alert(viewModel.alertcontext) {}

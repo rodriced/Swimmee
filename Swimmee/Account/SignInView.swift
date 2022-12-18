@@ -9,13 +9,19 @@ import SwiftUI
 
 struct SignInView: View {
     @StateObject var viewModel = SignSharedViewModel(formType: .signIn)
+    
+    @Environment(\.verticalSizeClass) var verticalSizeClass
 
     var defaultBorderColor = RoundedBorderTextFieldStyle()
 
-    var body: some View {
+    var part1: some View {
         VStack {
             AppTitleView()
+        }
+    }
 
+    var part2: some View {
+        VStack {
             Spacer()
 
             VStack(spacing: 30) {
@@ -28,7 +34,6 @@ struct SignInView: View {
                 SecureField("Password", text: $viewModel.password)
                     .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
                     .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
-
             }
 
             Spacer()
@@ -50,8 +55,32 @@ struct SignInView: View {
                 Text("Not implemented")
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
+        }
+    }
+
+    var portraitView: some View {
+        VStack {
+            part1
+            part2
+        }
+    }
+
+    var landscapeView: some View {
+        HStack(spacing: 10) {
+            part1
+            part2
+        }
+    }
+
+    var body: some View {
+        Group {
+            if verticalSizeClass == .compact {
+                landscapeView
+            } else {
+                portraitView
+            }
         }
         .alert(viewModel.alertcontext) {}
         .padding()
