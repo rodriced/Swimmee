@@ -9,7 +9,6 @@ import SwiftUI
 
 @MainActor
 class EditWorkoutViewModel: ObservableObject {
-//    @Published var workout: Workout = .empty
     let workoutAPI: UserWorkoutCollectionAPI
     let originalWorkout: Workout
     @Published var workout: Workout
@@ -82,6 +81,7 @@ class EditWorkoutViewModel: ObservableObject {
 struct EditWorkoutView: View {
     @StateObject var vm: EditWorkoutViewModel
     @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.verticalSizeClass) var verticalSizeClass
 
     @State var deleteConfirmationPresented = false
     @State var unsendAndSaveAsDraftConfirmationPresented = false
@@ -170,6 +170,55 @@ struct EditWorkoutView: View {
         .buttonStyle(.borderedProminent)
     }
 
+    var formPart1: some View {
+        Group {
+            Section {
+                TextField("Title", text: $vm.workout.title)
+                    .focused($isTitleFocused)
+            }
+            DatePicker(selection: $vm.workout.date, displayedComponents: .date) {
+                Label {
+                    Text("Planned date")
+                } icon: {
+                    Image(systemName: "calendar")
+                }
+                .foregroundColor(Color.secondary)
+            }
+            Picker(selection: $vm.workout.duration) {
+                ForEach(1 ..< 17) { quarters in
+                    let minutes = quarters * 15
+                    Text("\(minutes / 60)h\(minutes % 60)")
+                        .tag(minutes)
+                }
+            } label: {
+                Label {
+                    Text("Duration")
+                } icon: {
+                    Image(systemName: "timer")
+                }
+                .foregroundColor(Color.secondary)
+            }
+        }
+    }
+
+    var formPart2: some View {
+        TextEditorWithPlaceholder(text: $vm.workout.content, placeholder: "Workout details...", height: 400)
+    }
+
+    var portraitView: some View {
+        Form {
+            formPart1
+            formPart2
+        }
+    }
+
+    var landscapeView: some View {
+        HStack(spacing: 10) {
+            Form { formPart1 }
+            Form { formPart2 }
+        }
+    }
+
     var body: some View {
         VStack {
 //            DebugHelper.viewBodyPrint("EditWorkoutView")
@@ -178,36 +227,10 @@ struct EditWorkoutView: View {
                     .foregroundColor(.mint)
             }
 
-            Form {
-                Section {
-                    TextField("Title", text: $vm.workout.title)
-                        .focused($isTitleFocused)
-                }
-                DatePicker(selection: $vm.workout.date, displayedComponents: .date) {
-                    Label {
-                        Text("Planned date")
-                    } icon: {
-                        Image(systemName: "calendar")
-                    }
-                    .foregroundColor(Color.secondary)
-                }
-                Picker(selection: $vm.workout.duration) {
-                    ForEach(1 ..< 17) { quarters in
-                        let minutes = quarters * 15
-                        Text("\(minutes / 60)h\(minutes % 60)")
-                            .tag(minutes)
-                    }
-                } label: {
-//                    Text("Duration").foregroundColor(.secondary)
-                    Label {
-                        Text("Duration")
-                    } icon: {
-                        Image(systemName: "timer")
-                    }
-                    .foregroundColor(Color.secondary)
-                }
-
-                TextEditorWithPlaceholder(text: $vm.workout.content, placeholder: "Workout details...", height: 400)
+            if verticalSizeClass == .compact {
+                landscapeView
+            } else {
+                portraitView
             }
 
             bottomButtonsBar
