@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 class EditMessageViewModel: ObservableObject {
 //    @Published var message: Message = .empty
     let messageAPI: UserMessageCollectionAPI
@@ -18,11 +17,11 @@ class EditMessageViewModel: ObservableObject {
         !message.title.trimmingCharacters(in: .whitespaces).isEmpty
     }
 
-    var canSend: Bool {
+    var canTryToSend: Bool {
         !message.isSent || (message.isSent && message.hasTextDifferent(from: originalMessage))
     }
 
-    var canSaveAsDraft: Bool {
+    var canTryToSaveAsDraft: Bool {
         message.isSent || (!message.isSent && message.hasTextDifferent(from: originalMessage))
     }
 
@@ -36,10 +35,10 @@ class EditMessageViewModel: ObservableObject {
     }
 
     func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
-        var messageToSave = message // Working on a copy prevent reactive behaviours of the original message on UI
-        messageToSave.isSent = andSendIt
-
         Task {
+            var messageToSave = message // Working on a copy prevent reactive behaviours of the original message on UI
+            messageToSave.isSent = andSendIt
+
             var replaceAsNew = false
 
             switch (message.isSent, andSendIt) {
@@ -155,7 +154,7 @@ struct EditMessageView: View {
             }
             .foregroundColor(Color.black)
             .tint(Color.orange.opacity(0.7))
-            .disabled(!vm.canSaveAsDraft)
+            .disabled(!vm.canTryToSaveAsDraft)
             .confirmationDialog(config.saveAsDraft.confirmationTitle, isPresented: config.saveAsDraft.confirmationPresented, actions: config.saveAsDraft.confirmationButton)
 
             Button {
@@ -164,7 +163,7 @@ struct EditMessageView: View {
                 Text(config.sendButton.buttonLabel)
                     .frame(maxWidth: .infinity)
             }
-            .disabled(!vm.canSend)
+            .disabled(!vm.canTryToSend)
             .confirmationDialog(config.sendButton.confirmationTitle, isPresented: config.sendButton.confirmationPresented, actions: config.sendButton.confirmationButton)
         }
         .buttonStyle(.borderedProminent)

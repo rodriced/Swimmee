@@ -56,6 +56,7 @@
 		DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E559229464FB900C508FA /* MockProfileAPI.swift */; };
 		DC532D5329476F75003F9E89 /* SwimmerMessagesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */; };
 		DC532D552947707B003F9E89 /* MockUserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */; };
+		DC556817294FD51400A20D52 /* EditMessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */; };
 		DC5D9B3D294A718B00C771C5 /* PhotoInfoEditedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */; };
 		DC5FBCAA294F809400DD3E05 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCA9294F809400DD3E05 /* FirebaseAnalytics */; };
 		DC5FBCAC294F809400DD3E05 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCAB294F809400DD3E05 /* FirebaseAnalyticsSwift */; };
@@ -90,6 +91,7 @@
 		DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA8F82919AF0000F936E7 /* SessionTests.swift */; };
 		DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */; };
 		DCDBE7E72915D77A00386076 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDBE7E62915D77A00386076 /* AlertHelper.swift */; };
+		DCEB593629500954009168BF /* EditWorkoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEB593529500954009168BF /* EditWorkoutViewModelTests.swift */; };
 		DCF3237E28FB37180030626C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237D28FB37180030626C /* FirebaseAuth */; };
 		DCF3238028FB37180030626C /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237F28FB37180030626C /* FirebaseAuthCombine-Community */; };
 		DCF3238228FB37180030626C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3238128FB37180030626C /* FirebaseFirestore */; };
@@ -161,6 +163,7 @@
 		DC4E559229464FB900C508FA /* MockProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileAPI.swift; sourceTree = "<group>"; };
 		DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesViewModelTests.swift; sourceTree = "<group>"; };
 		DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserCollectionAPI.swift; sourceTree = "<group>"; };
+		DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMessageViewModelTests.swift; sourceTree = "<group>"; };
 		DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEditedTests.swift; sourceTree = "<group>"; };
 		DC6C550229435A03009DDB0B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		DC6C55052943979C009DDB0B /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
@@ -196,6 +199,7 @@
 		DCAEA8F82919AF0000F936E7 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
 		DCDBE7E62915D77A00386076 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
+		DCEB593529500954009168BF /* EditWorkoutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWorkoutViewModelTests.swift; sourceTree = "<group>"; };
 		DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugHelpers.swift; sourceTree = "<group>"; };
 		DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewHelpers.swift; sourceTree = "<group>"; };
 		DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReauthenticationView.swift; sourceTree = "<group>"; };
@@ -424,6 +428,8 @@
 				DC762F512947F65A00B0767A /* CoachWorkoutsViewModelTests.swift */,
 				DC762F4D2947E14D00B0767A /* SwimmerWorkoutsViewModelTests.swift */,
 				DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */,
+				DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */,
+				DCEB593529500954009168BF /* EditWorkoutViewModelTests.swift */,
 			);
 			path = SwimmeeTests;
 			sourceTree = "<group>";
@@ -708,9 +714,11 @@
 				DC7912E1291BD3140077B403 /* CombineHelper.swift in Sources */,
 				DC762F4E2947E14D00B0767A /* SwimmerWorkoutsViewModelTests.swift in Sources */,
 				DC0C05C22948F8490014C829 /* SwimmerSessionTests.swift in Sources */,
+				DC556817294FD51400A20D52 /* EditMessageViewModelTests.swift in Sources */,
 				DC532D5329476F75003F9E89 /* SwimmerMessagesViewModelTests.swift in Sources */,
 				DC100C35294B76C600317F78 /* MessageTests.swift in Sources */,
 				DC4E559129464EEA00C508FA /* CoachTeamViewModelTests.swift in Sources */,
+				DCEB593629500954009168BF /* EditWorkoutViewModelTests.swift in Sources */,
 				DC73812429491CC400B46184 /* UserInfosTests.swift in Sources */,
 				DC100C33294B713300317F78 /* WorkoutTests.swift in Sources */,
 				DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */,
