@@ -9,13 +9,14 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var userInfos: UserInfos
+    @EnvironmentObject var router: UserRouter
 
     @State var logoutConfirmationIsPresented = false
     @State var alertContext = AlertContext()
 
     var body: some View {
         Form {
-            NavigationLink {
+            NavigationLink(tag: UserRouter.SettingTarget.profile, selection: $router.settingsTarget) {
                 LoadingView(
                     publisherBuiler: {
                         userInfos.profileFuture
@@ -28,13 +29,13 @@ struct SettingsView: View {
 
             switch userInfos.userType {
             case .coach:
-                NavigationLink {
+                NavigationLink(tag: UserRouter.SettingTarget.team, selection: $router.settingsTarget) {
                     CoachTeamView()
                 } label: {
                     MenuLabel(title: "My team", systemImage: "person.3", color: Color.blue)
                 }
             case .swimmer:
-                NavigationLink {
+                NavigationLink(tag: UserRouter.SettingTarget.coachSelection, selection: $router.settingsTarget) {
                     SwimmerCoachView()
                 } label: {
                     MenuLabel(title: "My coach", systemImage: "person.2", color: Color.blue)

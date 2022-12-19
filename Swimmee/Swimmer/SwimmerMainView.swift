@@ -58,6 +58,8 @@ class SwimmerMainVM: ObservableObject {
 struct SwimmerMainView: View {
     @StateObject var session: SwimmerSession
     @StateObject var vm = SwimmerMainVM()
+    
+    @StateObject var router = UserRouter()
 
     init(profile: Profile) {
         print("SwimmerMainView.init")
@@ -67,7 +69,7 @@ struct SwimmerMainView: View {
     }
 
     var body: some View {
-        TabView {
+        TabView(selection: $router.tabsTarget) {
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
@@ -85,6 +87,7 @@ struct SwimmerMainView: View {
             .tabItem {
                 Label("Workouts", systemImage: "stopwatch")
             }
+            .tag(UserRouter.TabTarget.workouts)
 
             NavigationView {
                 LoadingView(
@@ -103,6 +106,7 @@ struct SwimmerMainView: View {
             .tabItem {
                 Label("Messages", systemImage: "mail.stack")
             }
+            .tag(UserRouter.TabTarget.messages)
 
             NavigationView {
                 SettingsView()
@@ -111,7 +115,9 @@ struct SwimmerMainView: View {
             .tabItem {
                 Label("Settings", systemImage: "gearshape")
             }
+            .tag(UserRouter.TabTarget.settings)
         }
+        .environmentObject(router)
         .task {
             session.listenChanges()
         }

@@ -26,6 +26,7 @@
 		DC150D572946A678001DB9B0 /* SwimmerCoachViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */; };
 		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
 		DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD8292B7D81007BC2ED /* UserCellView.swift */; };
+		DC2B10942950FA0B002F6641 /* UserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2B10932950FA0B002F6641 /* UserRouter.swift */; };
 		DC2C22452943C7B0005BBC19 /* AccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22442943C7B0005BBC19 /* AccountAPI.swift */; };
 		DC2C22472943E2CA005BBC19 /* SwimmeeMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */; };
 		DC2C22492943F031005BBC19 /* SwimmeeAppForTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */; };
@@ -134,6 +135,7 @@
 		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
 		DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachViewModelTests.swift; sourceTree = "<group>"; };
 		DC232BD8292B7D81007BC2ED /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
+		DC2B10932950FA0B002F6641 /* UserRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRouter.swift; sourceTree = "<group>"; };
 		DC2C22442943C7B0005BBC19 /* AccountAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAPI.swift; sourceTree = "<group>"; };
 		DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmeeMain.swift; sourceTree = "<group>"; };
 		DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeAppForTesting.swift; sourceTree = "<group>"; };
@@ -302,8 +304,9 @@
 				DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */,
 				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
 				DCA62DF628EF64E200F87C9B /* MainView.swift */,
-				DC0C05BD2948EE970014C829 /* UserSession.swift */,
 				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
+				DC0C05BD2948EE970014C829 /* UserSession.swift */,
+				DC2B10932950FA0B002F6641 /* UserRouter.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -651,6 +654,7 @@
 				DC057205293A1EBC0037A387 /* FirebaseAccountAPI.swift in Sources */,
 				DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */,
 				DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */,
+				DC2B10942950FA0B002F6641 /* UserRouter.swift in Sources */,
 				DCFBCF522908B1DE00F0BF35 /* ImagePicker.swift in Sources */,
 				DCA62DF928F00E0900F87C9B /* SignUpView.swift in Sources */,
 				DC057218293EAFC00037A387 /* ProfileAPI.swift in Sources */,

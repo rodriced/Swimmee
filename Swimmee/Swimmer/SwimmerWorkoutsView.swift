@@ -78,6 +78,8 @@ struct SwimmerWorkoutsView: View {
     typealias ViewModel = SwimmerWorkoutsViewModel
 
     @EnvironmentObject var session: SwimmerSession
+    @EnvironmentObject var router: UserRouter
+
     @ObservedObject var vm: SwimmerWorkoutsViewModel
 
     init(_ vm: SwimmerWorkoutsViewModel) {
@@ -144,13 +146,22 @@ struct SwimmerWorkoutsView: View {
     var body: some View {
         VStack(spacing: 30) {
             if vm.workoutsParams.isEmpty {
-                Text(
-                    session.coachId == nil ?
-                        "Subscribe to a coach in the Settings menu\nto see his workouts."
-                        : "No workouts from your coach for now."
-                )
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
+                if session.coachId == nil {
+                    VStack {
+                        Text("Your coach will publish some workouts here.\nBut you haven't selcted one.\n")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.secondary)
+                        Button {
+                            router.routeTo(setting: .coachSelection)
+                        } label: {
+                            Text("You can do it in settings ")
+                            + Text(Image(systemName: "arrow.forward"))
+                        }
+                    }
+                } else {
+                    Text("No workouts from your coach for now.")
+                        .foregroundColor(.secondary)
+                }
 
             } else {
                 VStack {
