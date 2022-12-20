@@ -17,7 +17,7 @@
 		DC057214293D0DED0037A387 /* MockImageStorageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */; };
 		DC057216293E54DF0037A387 /* UserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057215293E54DF0037A387 /* UserCollectionAPI.swift */; };
 		DC057218293EAFC00037A387 /* ProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC057217293EAFC00037A387 /* ProfileAPI.swift */; };
-		DC0C05BE2948EE970014C829 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05BD2948EE970014C829 /* UserSession.swift */; };
+		DC0C05BE2948EE970014C829 /* UserInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05BD2948EE970014C829 /* UserInfos.swift */; };
 		DC0C05C02948F7C80014C829 /* CoachSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05BF2948F7C80014C829 /* CoachSessionTests.swift */; };
 		DC0C05C22948F8490014C829 /* SwimmerSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */; };
 		DC100C33294B713300317F78 /* WorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC100C32294B713300317F78 /* WorkoutTests.swift */; };
@@ -70,6 +70,18 @@
 		DC762F502947E3B400B0767A /* CoachMessagesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC762F4F2947E3B400B0767A /* CoachMessagesViewModelTests.swift */; };
 		DC762F522947F65A00B0767A /* CoachWorkoutsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC762F512947F65A00B0767A /* CoachWorkoutsViewModelTests.swift */; };
 		DC7912E1291BD3140077B403 /* CombineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7912E0291BD3140077B403 /* CombineHelper.swift */; };
+		DC80A57B29526B9400F16CE6 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A57A29526B9400F16CE6 /* Session.swift */; };
+		DC80A57D29526E2600F16CE6 /* CoachSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A57C29526E2600F16CE6 /* CoachSession.swift */; };
+		DC80A57F29526E7E00F16CE6 /* SwimmerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A57E29526E7E00F16CE6 /* SwimmerSession.swift */; };
+		DC80A584295270FF00F16CE6 /* CoachMessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A583295270FF00F16CE6 /* CoachMessagesViewModel.swift */; };
+		DC80A5862952726C00F16CE6 /* EditMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A5852952726C00F16CE6 /* EditMessageViewModel.swift */; };
+		DC80A588295272F000F16CE6 /* CoachWorkoutsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A587295272F000F16CE6 /* CoachWorkoutsViewModel.swift */; };
+		DC80A58A2952734900F16CE6 /* EditWorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A5892952734900F16CE6 /* EditWorkoutViewModel.swift */; };
+		DC80A58C2952739D00F16CE6 /* CoachTeamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A58B2952739D00F16CE6 /* CoachTeamViewModel.swift */; };
+		DC80A58E2952740000F16CE6 /* SwimmerMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A58D2952740000F16CE6 /* SwimmerMainViewModel.swift */; };
+		DC80A5902952751700F16CE6 /* SwimmerMessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A58F2952751700F16CE6 /* SwimmerMessagesViewModel.swift */; };
+		DC80A5922952757600F16CE6 /* SwimmerWorkoutsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A5912952757600F16CE6 /* SwimmerWorkoutsViewModel.swift */; };
+		DC80A594295275E400F16CE6 /* SwimmerCoachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A593295275E400F16CE6 /* SwimmerCoachViewModel.swift */; };
 		DC863A512920531900934B62 /* PublisherExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC863A502920531900934B62 /* PublisherExtension.swift */; };
 		DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88597F28E269E20032E0FB /* SwimmeeApp.swift */; };
 		DC88598428E269E20032E0FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598328E269E20032E0FB /* Assets.xcassets */; };
@@ -128,7 +140,7 @@
 		DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockImageStorageAPI.swift; sourceTree = "<group>"; };
 		DC057215293E54DF0037A387 /* UserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionAPI.swift; sourceTree = "<group>"; };
 		DC057217293EAFC00037A387 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
-		DC0C05BD2948EE970014C829 /* UserSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		DC0C05BD2948EE970014C829 /* UserInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserInfos.swift; path = ../Shared/UserInfos.swift; sourceTree = "<group>"; };
 		DC0C05BF2948F7C80014C829 /* CoachSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachSessionTests.swift; sourceTree = "<group>"; };
 		DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerSessionTests.swift; sourceTree = "<group>"; };
 		DC100C32294B713300317F78 /* WorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTests.swift; sourceTree = "<group>"; };
@@ -178,6 +190,18 @@
 		DC762F4F2947E3B400B0767A /* CoachMessagesViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesViewModelTests.swift; sourceTree = "<group>"; };
 		DC762F512947F65A00B0767A /* CoachWorkoutsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachWorkoutsViewModelTests.swift; sourceTree = "<group>"; };
 		DC7912E0291BD3140077B403 /* CombineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelper.swift; sourceTree = "<group>"; };
+		DC80A57A29526B9400F16CE6 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		DC80A57C29526E2600F16CE6 /* CoachSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachSession.swift; sourceTree = "<group>"; };
+		DC80A57E29526E7E00F16CE6 /* SwimmerSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwimmerSession.swift; path = "Swimmee/View Model/Swimmer/SwimmerSession.swift"; sourceTree = SOURCE_ROOT; };
+		DC80A583295270FF00F16CE6 /* CoachMessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesViewModel.swift; sourceTree = "<group>"; };
+		DC80A5852952726C00F16CE6 /* EditMessageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMessageViewModel.swift; sourceTree = "<group>"; };
+		DC80A587295272F000F16CE6 /* CoachWorkoutsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachWorkoutsViewModel.swift; sourceTree = "<group>"; };
+		DC80A5892952734900F16CE6 /* EditWorkoutViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWorkoutViewModel.swift; sourceTree = "<group>"; };
+		DC80A58B2952739D00F16CE6 /* CoachTeamViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachTeamViewModel.swift; sourceTree = "<group>"; };
+		DC80A58D2952740000F16CE6 /* SwimmerMainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerMainViewModel.swift; sourceTree = "<group>"; };
+		DC80A58F2952751700F16CE6 /* SwimmerMessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesViewModel.swift; sourceTree = "<group>"; };
+		DC80A5912952757600F16CE6 /* SwimmerWorkoutsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerWorkoutsViewModel.swift; sourceTree = "<group>"; };
+		DC80A593295275E400F16CE6 /* SwimmerCoachViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachViewModel.swift; sourceTree = "<group>"; };
 		DC863A502920531900934B62 /* PublisherExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherExtension.swift; sourceTree = "<group>"; };
 		DC88597C28E269E20032E0FB /* Swimmee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swimmee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88597F28E269E20032E0FB /* SwimmeeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeApp.swift; sourceTree = "<group>"; };
@@ -305,8 +329,6 @@
 			children = (
 				DCA62DF628EF64E200F87C9B /* MainView.swift */,
 				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
-				DC0C05BD2948EE970014C829 /* UserSession.swift */,
-				DC2B10932950FA0B002F6641 /* UserRouter.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -325,9 +347,7 @@
 		DC3C889328F4ACF80065CBD6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				DC920B652933CE4D000EE664 /* LoadingView.swift */,
 				DC3C888B28F455970065CBD6 /* SettingsView.swift */,
-				DC05720F293C26510037A387 /* ProfileViewModel.swift */,
 				DC8859AB28E26FE00032E0FB /* ProfileView.swift */,
 				DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */,
 				DC3C888528F426890065CBD6 /* MessageView.swift */,
@@ -357,6 +377,39 @@
 				DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */,
 			);
 			path = Coach;
+			sourceTree = "<group>";
+		};
+		DC80A58029526EC100F16CE6 /* Coach */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A57C29526E2600F16CE6 /* CoachSession.swift */,
+				DC80A583295270FF00F16CE6 /* CoachMessagesViewModel.swift */,
+				DC80A5852952726C00F16CE6 /* EditMessageViewModel.swift */,
+				DC80A587295272F000F16CE6 /* CoachWorkoutsViewModel.swift */,
+				DC80A5892952734900F16CE6 /* EditWorkoutViewModel.swift */,
+				DC80A58B2952739D00F16CE6 /* CoachTeamViewModel.swift */,
+			);
+			path = Coach;
+			sourceTree = "<group>";
+		};
+		DC80A58129526ECD00F16CE6 /* Swimmer */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A57E29526E7E00F16CE6 /* SwimmerSession.swift */,
+				DC80A58D2952740000F16CE6 /* SwimmerMainViewModel.swift */,
+				DC80A58F2952751700F16CE6 /* SwimmerMessagesViewModel.swift */,
+				DC80A5912952757600F16CE6 /* SwimmerWorkoutsViewModel.swift */,
+				DC80A593295275E400F16CE6 /* SwimmerCoachViewModel.swift */,
+			);
+			path = Swimmer;
+			sourceTree = "<group>";
+		};
+		DC80A58229526FE400F16CE6 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				DC05720F293C26510037A387 /* ProfileViewModel.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		DC88597328E269E10032E0FB = {
@@ -484,6 +537,7 @@
 		DCDCFD0F29525BBB00993398 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				DC920B652933CE4D000EE664 /* LoadingView.swift */,
 				DCDCFD1329525EB900993398 /* Helper */,
 				DCBAD88F29246B0800376A3E /* Component */,
 				DCDCFD1029525C5700993398 /* View Modifier */,
@@ -513,7 +567,11 @@
 		DCDCFD162952618300993398 /* View Model */ = {
 			isa = PBXGroup;
 			children = (
-				DCDCFD172952619900993398 /* Helper */,
+				DCDCFD1F295269D200993398 /* Shared */,
+				DCDCFD1E2952694D00993398 /* Global */,
+				DC80A58229526FE400F16CE6 /* Common */,
+				DC80A58029526EC100F16CE6 /* Coach */,
+				DC80A58129526ECD00F16CE6 /* Swimmer */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -584,6 +642,24 @@
 				DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */,
 			);
 			path = Swimmer;
+			sourceTree = "<group>";
+		};
+		DCDCFD1E2952694D00993398 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A57A29526B9400F16CE6 /* Session.swift */,
+				DC0C05BD2948EE970014C829 /* UserInfos.swift */,
+				DC2B10932950FA0B002F6641 /* UserRouter.swift */,
+			);
+			path = Global;
+			sourceTree = "<group>";
+		};
+		DCDCFD1F295269D200993398 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				DCDCFD172952619900993398 /* Helper */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		DCF3238E28FB5BCE0030626C /* API */ = {
@@ -742,38 +818,50 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC80A5862952726C00F16CE6 /* EditMessageViewModel.swift in Sources */,
 				DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */,
 				DC3C88A128F4DFCF0065CBD6 /* CoachWorkoutsView.swift in Sources */,
 				DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */,
+				DC80A58C2952739D00F16CE6 /* CoachTeamViewModel.swift in Sources */,
 				DCDCFD1529525F8500993398 /* FormTextField.swift in Sources */,
 				DC2C22472943E2CA005BBC19 /* SwimmeeMain.swift in Sources */,
 				DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */,
 				DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */,
 				DCDCFD1229525D5400993398 /* TopBorder.swift in Sources */,
 				DC3C888828F42BAE0065CBD6 /* Profile.swift in Sources */,
-				DC0C05BE2948EE970014C829 /* UserSession.swift in Sources */,
+				DC0C05BE2948EE970014C829 /* UserInfos.swift in Sources */,
 				DC057205293A1EBC0037A387 /* FirebaseAccountAPI.swift in Sources */,
+				DC80A57D29526E2600F16CE6 /* CoachSession.swift in Sources */,
 				DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */,
 				DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */,
+				DC80A588295272F000F16CE6 /* CoachWorkoutsViewModel.swift in Sources */,
+				DC80A5922952757600F16CE6 /* SwimmerWorkoutsViewModel.swift in Sources */,
 				DC2B10942950FA0B002F6641 /* UserRouter.swift in Sources */,
 				DCFBCF522908B1DE00F0BF35 /* ImagePicker.swift in Sources */,
+				DC80A58E2952740000F16CE6 /* SwimmerMainViewModel.swift in Sources */,
 				DCA62DF928F00E0900F87C9B /* SignUpView.swift in Sources */,
+				DC80A5902952751700F16CE6 /* SwimmerMessagesViewModel.swift in Sources */,
 				DC057218293EAFC00037A387 /* ProfileAPI.swift in Sources */,
 				DC2C22452943C7B0005BBC19 /* AccountAPI.swift in Sources */,
+				DC80A57B29526B9400F16CE6 /* Session.swift in Sources */,
+				DC80A594295275E400F16CE6 /* SwimmerCoachViewModel.swift in Sources */,
 				DC6CCE32290FC4FF00DB8427 /* API.swift in Sources */,
 				DC3C888628F426890065CBD6 /* MessageView.swift in Sources */,
 				DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */,
 				DC920B662933CE4D000EE664 /* LoadingView.swift in Sources */,
 				DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */,
+				DC80A584295270FF00F16CE6 /* CoachMessagesViewModel.swift in Sources */,
 				DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */,
 				DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */,
 				DC920B702934B851000EE664 /* ImageHelper.swift in Sources */,
 				DC2C22492943F031005BBC19 /* SwimmeeAppForTesting.swift in Sources */,
 				DCFBCF5029074B7D00F0BF35 /* ReauthenticationView.swift in Sources */,
+				DC80A57F29526E7E00F16CE6 /* SwimmerSession.swift in Sources */,
 				DC3C889F28F4D4040065CBD6 /* SwimmerWorkoutsView.swift in Sources */,
 				DC863A512920531900934B62 /* PublisherExtension.swift in Sources */,
 				DC057216293E54DF0037A387 /* UserCollectionAPI.swift in Sources */,
 				DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */,
+				DC80A58A2952734900F16CE6 /* EditWorkoutViewModel.swift in Sources */,
 				DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */,
 				DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */,
 				DC3C88A328F4E1430065CBD6 /* EditWorkoutView.swift in Sources */,

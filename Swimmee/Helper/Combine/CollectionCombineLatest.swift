@@ -1,5 +1,5 @@
 //
-//  CombineHelper.swift
+//  CollectionCombineLatest.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 29/11/2022.

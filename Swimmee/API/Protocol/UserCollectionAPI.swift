@@ -1,5 +1,5 @@
 //
-//  CollectionAPI.swift
+//  UserCollectionAPI.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 05/12/2022.

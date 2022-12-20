@@ -1,5 +1,5 @@
 //
-//  Account.swift
+//  FirebaseAccountAPI.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 21/10/2022.

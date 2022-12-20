@@ -1,5 +1,5 @@
 //
-//  Message.swift
+//  Workout.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 10/10/2022.

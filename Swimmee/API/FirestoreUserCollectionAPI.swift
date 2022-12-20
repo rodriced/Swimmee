@@ -1,5 +1,5 @@
 //
-//  FirestoreCoachCollectionAPI.swift
+//  FirestoreUserCollectionAPI.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 30/10/2022.

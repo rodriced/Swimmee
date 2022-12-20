@@ -1,5 +1,5 @@
 //
-//  CombineExtension.swift
+//  PublisherExtension.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 12/11/2022.
