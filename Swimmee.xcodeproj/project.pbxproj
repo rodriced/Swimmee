@@ -74,7 +74,6 @@
 		DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88597F28E269E20032E0FB /* SwimmeeApp.swift */; };
 		DC88598428E269E20032E0FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598328E269E20032E0FB /* Assets.xcassets */; };
 		DC88598728E269E20032E0FB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598628E269E20032E0FB /* Preview Assets.xcassets */; };
-		DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88599028E269E20032E0FB /* SwimmeeTests.swift */; };
 		DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859A928E26F2B0032E0FB /* SignInView.swift */; };
 		DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8859AB28E26FE00032E0FB /* ProfileView.swift */; };
 		DC920B662933CE4D000EE664 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B652933CE4D000EE664 /* LoadingView.swift */; };
@@ -185,7 +184,6 @@
 		DC88598328E269E20032E0FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC88598628E269E20032E0FB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DC88598C28E269E20032E0FB /* SwimmeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwimmeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC88599028E269E20032E0FB /* SwimmeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeTests.swift; sourceTree = "<group>"; };
 		DC8859A928E26F2B0032E0FB /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DC8859AB28E26FE00032E0FB /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		DC920B652933CE4D000EE664 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -279,6 +277,7 @@
 			children = (
 				DC100C32294B713300317F78 /* WorkoutTests.swift */,
 				DC100C34294B76C600317F78 /* MessageTests.swift */,
+				DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -304,9 +303,6 @@
 		DC3C888D28F47C210065CBD6 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */,
-				DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */,
-				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
 				DCA62DF628EF64E200F87C9B /* MainView.swift */,
 				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
 				DC0C05BD2948EE970014C829 /* UserSession.swift */,
@@ -321,7 +317,6 @@
 				DC920B8429376FC0000EE664 /* Swift */,
 				DC920B7B29366B44000EE664 /* Combine */,
 				DC920B7829366933000EE664 /* Form */,
-				DCDBE7E62915D77A00386076 /* ContextualAlert.swift */,
 				DC920B6F2934B851000EE664 /* ImageHelper.swift */,
 			);
 			path = Helper;
@@ -391,9 +386,11 @@
 				DC2C224B2943FA6F005BBC19 /* GoogleService-Info.plist */,
 				DC88598328E269E20032E0FB /* Assets.xcassets */,
 				DC88598528E269E20032E0FB /* Preview Content */,
-				DC3C888228F424640065CBD6 /* Model */,
 				DCF3238E28FB5BCE0030626C /* API */,
 				DC3C888E28F47C7D0065CBD6 /* Helper */,
+				DCDCFD18295262C500993398 /* App entry point */,
+				DC3C888228F424640065CBD6 /* Model */,
+				DCDCFD162952618300993398 /* View Model */,
 				DCDCFD0E29525AED00993398 /* View */,
 			);
 			path = Swimmee;
@@ -413,23 +410,11 @@
 				DC0571FF293A0DC70037A387 /* Helper */,
 				DC0571FA29391EA90037A387 /* Mock */,
 				DC100C31294B70A800317F78 /* Model */,
-				DC88599028E269E20032E0FB /* SwimmeeTests.swift */,
-				DCAEA8F82919AF0000F936E7 /* SessionTests.swift */,
-				DC73812329491CC400B46184 /* UserInfosTests.swift */,
-				DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */,
-				DC0C05BF2948F7C80014C829 /* CoachSessionTests.swift */,
-				DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */,
-				DC057211293C29000037A387 /* ProfileViewModelTests.swift */,
-				DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */,
-				DC4E559029464EEA00C508FA /* CoachTeamViewModelTests.swift */,
-				DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */,
-				DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */,
-				DC762F4F2947E3B400B0767A /* CoachMessagesViewModelTests.swift */,
-				DC762F512947F65A00B0767A /* CoachWorkoutsViewModelTests.swift */,
-				DC762F4D2947E14D00B0767A /* SwimmerWorkoutsViewModelTests.swift */,
-				DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */,
-				DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */,
-				DCEB593529500954009168BF /* EditWorkoutViewModelTests.swift */,
+				DCDCFD192952650800993398 /* Global */,
+				DCDCFD1A2952658200993398 /* Account */,
+				DCDCFD1B295265A100993398 /* Common */,
+				DCDCFD1C295265CB00993398 /* Coach */,
+				DCDCFD1D2952660100993398 /* Swimmer */,
 			);
 			path = SwimmeeTests;
 			sourceTree = "<group>";
@@ -438,9 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				DC920B7629355ABF000EE664 /* ValueValidation.swift */,
-				DCDCFD1429525F8500993398 /* FormTextField.swift */,
 				DC920B79293669D0000EE664 /* FormField.swift */,
-				DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -468,6 +451,7 @@
 				DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */,
 				DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */,
 				DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */,
+				DCDCFD1429525F8500993398 /* FormTextField.swift */,
 				DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */,
 				DC232BD8292B7D81007BC2ED /* UserCellView.swift */,
 			);
@@ -511,6 +495,7 @@
 			isa = PBXGroup;
 			children = (
 				DC3C889128F4AA2B0065CBD6 /* ViewModifierExtension.swift */,
+				DCDBE7E62915D77A00386076 /* ContextualAlert.swift */,
 				DCFBCF4D29074B1900F0BF35 /* TextFieldStyle.swift */,
 				DCDCFD1129525D5400993398 /* TopBorder.swift */,
 			);
@@ -523,6 +508,82 @@
 				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		DCDCFD162952618300993398 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				DCDCFD172952619900993398 /* Helper */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		DCDCFD172952619900993398 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		DCDCFD18295262C500993398 /* App entry point */ = {
+			isa = PBXGroup;
+			children = (
+				DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */,
+				DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */,
+				DC88597F28E269E20032E0FB /* SwimmeeApp.swift */,
+			);
+			path = "App entry point";
+			sourceTree = "<group>";
+		};
+		DCDCFD192952650800993398 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				DCAEA8F82919AF0000F936E7 /* SessionTests.swift */,
+				DC73812329491CC400B46184 /* UserInfosTests.swift */,
+				DC0C05BF2948F7C80014C829 /* CoachSessionTests.swift */,
+				DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */,
+			);
+			path = Global;
+			sourceTree = "<group>";
+		};
+		DCDCFD1A2952658200993398 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				DC0571F829391AE80037A387 /* SignSharedViewModelTests.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		DCDCFD1B295265A100993398 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */,
+				DC057211293C29000037A387 /* ProfileViewModelTests.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		DCDCFD1C295265CB00993398 /* Coach */ = {
+			isa = PBXGroup;
+			children = (
+				DC762F512947F65A00B0767A /* CoachWorkoutsViewModelTests.swift */,
+				DC762F4F2947E3B400B0767A /* CoachMessagesViewModelTests.swift */,
+				DCEB593529500954009168BF /* EditWorkoutViewModelTests.swift */,
+				DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */,
+				DC4E559029464EEA00C508FA /* CoachTeamViewModelTests.swift */,
+			);
+			path = Coach;
+			sourceTree = "<group>";
+		};
+		DCDCFD1D2952660100993398 /* Swimmer */ = {
+			isa = PBXGroup;
+			children = (
+				DC762F4D2947E14D00B0767A /* SwimmerWorkoutsViewModelTests.swift */,
+				DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */,
+				DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */,
+			);
+			path = Swimmer;
 			sourceTree = "<group>";
 		};
 		DCF3238E28FB5BCE0030626C /* API */ = {
@@ -766,7 +827,6 @@
 				DC73812429491CC400B46184 /* UserInfosTests.swift in Sources */,
 				DC100C33294B713300317F78 /* WorkoutTests.swift in Sources */,
 				DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */,
-				DC88599128E269E20032E0FB /* SwimmeeTests.swift in Sources */,
 				DC0C05C02948F7C80014C829 /* CoachSessionTests.swift in Sources */,
 				DC150D572946A678001DB9B0 /* SwimmerCoachViewModelTests.swift in Sources */,
 				DC532D552947707B003F9E89 /* MockUserCollectionAPI.swift in Sources */,
