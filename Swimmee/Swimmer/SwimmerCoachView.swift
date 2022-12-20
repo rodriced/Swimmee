@@ -110,33 +110,6 @@ class SwimmerCoachViewModel: ObservableObject {
         }
     }
 
-    // TODO: For live update. To be tested...
-//    var cancellable: AnyCancellable?
-//
-//    func listenCoachs(initialSelectedCoachId: UserId?) {
-//        cancellable = profileAPI.coachsPublisher()
-//            .sink(
-//                receiveCompletion: { [weak self] in
-//                    if case let .failure(error) = $0 {
-//                        self?.errorAlertMessage = error.localizedDescription
-//                    }
-//                },
-//                receiveValue: { [weak self] in
-//                    guard let vm = self else { return }
-//
-//                    vm.coachs = $0
-//
-//                    guard let initialSelectedCoachId else {
-//                        vm.currentCoach = nil
-//                        return
-//                    }
-//                    vm.currentCoach = vm.coachs.first { profile in
-//                        profile.userId == initialSelectedCoachId
-//                    }
-//                }
-//            )
-//    }
-
     func saveSelectedCoach(_ coach: Profile?) {
         Task {
             do {
@@ -155,18 +128,19 @@ class SwimmerCoachViewModel: ObservableObject {
 
 struct SwimmerCoachView: View {
     @EnvironmentObject var session: SwimmerSession
-    @StateObject var vm = SwimmerCoachViewModel()
+    
+    @StateObject var viewModel = SwimmerCoachViewModel()
 
     var chosenCoachHeader: some View {
         Group {
-            if let currentCoach = vm.currentCoach {
+            if let currentCoach = viewModel.currentCoach {
                 HStack(alignment: .firstTextBaseline) {
                     Text("You have selected")
                     Text("\(currentCoach.fullname)")
                         .font(.title3)
                         .foregroundColor(Color.mint)
                     Button {
-                        vm.presentUnsubscribeConfirmation(coach: currentCoach)
+                        viewModel.presentUnsubscribeConfirmation(coach: currentCoach)
                     } label: {
                         Image(systemName: "trash").foregroundColor(Color.red)
                     }
@@ -178,16 +152,16 @@ struct SwimmerCoachView: View {
     }
 
     var coachsList: some View {
-        List(vm.coachs) { coach in
+        List(viewModel.coachs) { coach in
             UserCellView(profile: coach)
-                .listRowBackground(coach == vm.currentCoach ? Color.mint.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
+                .listRowBackground(coach == viewModel.currentCoach ? Color.mint.opacity(0.5) : Color(UIColor.secondarySystemGroupedBackground))
                 .onTapGesture {
-                    switch vm.currentCoach {
+                    switch viewModel.currentCoach {
                     case .none:
-                        vm.presentSubscribeConfirmation(coach: coach)
+                        viewModel.presentSubscribeConfirmation(coach: coach)
 
                     case let .some(currentCoach) where currentCoach.userId != coach.userId:
-                        vm.presentReplaceConfirmation(currentCoach: currentCoach, newCoach: coach)
+                        viewModel.presentReplaceConfirmation(currentCoach: currentCoach, newCoach: coach)
 
                     default:
                         ()
@@ -198,7 +172,7 @@ struct SwimmerCoachView: View {
 
     var body: some View {
         Group {
-            switch vm.state {
+            switch viewModel.state {
             case .loading:
                 ProgressView()
             case let .info(message):
@@ -212,15 +186,14 @@ struct SwimmerCoachView: View {
                 }
             }
         }
-        .task { await vm.loadCoachs(withSelected: session.coachId) }
-//        .task { vm.listenCoach(initialSelectedCoachId: session.coachId) }
-        .refreshable { await vm.loadCoachs(withSelected: session.coachId) }
-        .confirmationDialog(vm.confirmation.title,
-                            isPresented: $vm.confirmationPresented,
-                            actions: vm.confirmation.button,
-                            message: { Text(vm.confirmation.message) })
+        .task { await viewModel.loadCoachs(withSelected: session.coachId) }
+        .refreshable { await viewModel.loadCoachs(withSelected: session.coachId) }
+        .confirmationDialog(viewModel.confirmation.title,
+                            isPresented: $viewModel.confirmationPresented,
+                            actions: viewModel.confirmation.button,
+                            message: { Text(viewModel.confirmation.message) })
 
-        .alert(vm.alertContext) {}
+        .alert(viewModel.alertContext) {}
         .navigationBarTitle("My coach")
     }
 }

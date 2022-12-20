@@ -51,7 +51,7 @@ class CoachWorkoutsViewModel: ObservableObject {
     @Published var alertContext = AlertContext()
 
     required init(initialData: [Workout], config: Config = .default) {
-        print("CoachWorkoutsViewModel.init")
+//        print("CoachWorkoutsViewModel.init")
 
         self.workouts = initialData
         self.config = config
@@ -108,18 +108,17 @@ extension CoachWorkoutsViewModel: LoadableViewModel {
 struct CoachWorkoutsView: View {
     @EnvironmentObject var userInfos: UserInfos
     @EnvironmentObject var session: CoachSession
-    @ObservedObject var vm: CoachWorkoutsViewModel
-//    @StateObject var vm: CoachWorkoutsViewModel
+    
+    @ObservedObject var viewModel: CoachWorkoutsViewModel
 
-    init(vm: CoachWorkoutsViewModel) {
-        print("CoachWorkoutsView.init")
-//        self._vm = StateObject(wrappedValue: vm)
-        _vm = ObservedObject(initialValue: vm)
+    init(viewModel: CoachWorkoutsViewModel) {
+//        print("CoachWorkoutsView.init")
+        _viewModel = ObservedObject(initialValue: viewModel)
     }
 
     var workoutsList: some View {
         Group {
-            let filteredWorkouts = vm.filteredWorkouts
+            let filteredWorkouts = viewModel.filteredWorkouts
             if filteredWorkouts.isEmpty {
                 Spacer()
                 Text("No workouts found.")
@@ -128,14 +127,14 @@ struct CoachWorkoutsView: View {
             } else {
                 List {
                     ForEach(filteredWorkouts) { workout in
-                        NavigationLink(tag: workout, selection: $vm.selectedWorkout) {
+                        NavigationLink(tag: workout, selection: $viewModel.selectedWorkout) {
                             EditWorkoutView(workout: workout)
                         } label: {
                             WorkoutView(workout: workout, inReception: false)
                         }
                         .listRowSeparator(.hidden)
                     }
-                    .onDelete(perform: vm.deleteWorkout)
+                    .onDelete(perform: viewModel.deleteWorkout)
                 }
                 .listStyle(.plain)
             }
@@ -144,10 +143,10 @@ struct CoachWorkoutsView: View {
 
     var statusFilterIndication: some View {
         Group {
-            if vm.statusFilterSelection != .all {
+            if viewModel.statusFilterSelection != .all {
                 (
-                    Text(vm.statusFilterSelection.rawValue)
-                        .foregroundColor(vm.statusFilterSelection == .draft ? .orange : .mint)
+                    Text(viewModel.statusFilterSelection.rawValue)
+                        .foregroundColor(viewModel.statusFilterSelection == .draft ? .orange : .mint)
                         .bold()
                 )
                 .font(Font.system(.caption))
@@ -157,7 +156,7 @@ struct CoachWorkoutsView: View {
 
     var tagsFilterIndication: some View {
         Group {
-            if let tagsIndexSelected = vm.tagFilterSelection {
+            if let tagsIndexSelected = viewModel.tagFilterSelection {
                 (
                     Text("Tags : ")
                         .foregroundColor(.secondary)
@@ -172,7 +171,7 @@ struct CoachWorkoutsView: View {
 
     var statusFilterMenu: some View {
         Menu {
-            Picker("StatusFilter", selection: $vm.statusFilterSelection) {
+            Picker("StatusFilter", selection: $viewModel.statusFilterSelection) {
                 ForEach(CoachWorkoutsStatusFilter.allCases) { filter in
                     Text(filter.rawValue).tag(filter)
                 }
@@ -185,7 +184,7 @@ struct CoachWorkoutsView: View {
 
     var tagsFilterMenu: some View {
         Menu {
-            Picker("TagsFilter", selection: $vm.tagFilterSelection) {
+            Picker("TagsFilter", selection: $viewModel.tagFilterSelection) {
                 Text("All").tag(nil as Int?)
                 ForEach(Array(zip(Workout.allTags.indices, Workout.allTags)), id: \.0) { index, tag in
                     Text(tag).tag(index as Int?)
@@ -221,19 +220,19 @@ struct CoachWorkoutsView: View {
 
     var body: some View {
         VStack(spacing: 30) {
-            DebugHelper.viewBodyPrint("CoachWorkoutsView.body")
+//            DebugHelper.viewBodyPrint("CoachWorkoutsView.body")
 
-            if vm.workouts.isEmpty {
+            if viewModel.workouts.isEmpty {
                 emptyListInformation
             } else {
                 VStack {
-                    if vm.isSomeFilterActivated {
+                    if viewModel.isSomeFilterActivated {
                         HStack(spacing: 5) {
                             VStack {
                                 statusFilterIndication
                                 tagsFilterIndication
                             }
-                            Button { vm.clearFilters() } label: { Image(systemName: "xmark.circle.fill") }
+                            Button { viewModel.clearFilters() } label: { Image(systemName: "xmark.circle.fill") }
                         }
                         .padding(4)
                         .border(Color.secondary, width: 1)
@@ -244,7 +243,7 @@ struct CoachWorkoutsView: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if !vm.workouts.isEmpty {
+                if !viewModel.workouts.isEmpty {
                     tagsFilterMenu
                     statusFilterMenu
                 }
@@ -252,26 +251,26 @@ struct CoachWorkoutsView: View {
                 editNewWorkoutButton
             }
         }
-        .actionSheet(isPresented: $vm.sentWorkoutEditionConfirmationDialogPresented) {
+        .actionSheet(isPresented: $viewModel.sentWorkoutEditionConfirmationDialogPresented) {
             ActionSheet(
                 title: Text("Edit an already sent workout ?"),
                 message: Text("Workout will stay sent until you save it as draft or delete it."),
                 buttons: [
                     .default(Text("Edit"), action: {
-                        vm.navigatingToEditView = true
+                        viewModel.navigatingToEditView = true
                     }),
                     .cancel()
                 ]
             )
         }
-        .alert(vm.alertContext) {}
+        .alert(viewModel.alertContext) {}
         .navigationBarTitle("Workouts", displayMode: .inline)
     }
 }
 
 struct CoachWorkoutsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoachWorkoutsView(vm: CoachWorkoutsViewModel(initialData: [Workout.sample]))
+        CoachWorkoutsView(viewModel: CoachWorkoutsViewModel(initialData: [Workout.sample]))
             .environmentObject(UserInfos(profile: Profile.coachSample))
             .environmentObject(CoachSession())
     }

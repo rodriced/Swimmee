@@ -43,11 +43,11 @@ class CoachTeamViewModel: ObservableObject {
 }
 
 struct CoachTeamView: View {
-    @StateObject var vm = CoachTeamViewModel()
+    @StateObject var viewModel = CoachTeamViewModel()
 
     var body: some View {
         Group {
-            switch vm.state {
+            switch viewModel.state {
             case .loading:
                 ProgressView()
             case let .info(message):
@@ -61,10 +61,10 @@ struct CoachTeamView: View {
             }
         }
         .task {
-            await vm.loadTeam()
+            await viewModel.loadTeam()
         }
         .refreshable {
-            await vm.loadTeam()
+            await viewModel.loadTeam()
         }
         .navigationBarTitle("My team")
     }

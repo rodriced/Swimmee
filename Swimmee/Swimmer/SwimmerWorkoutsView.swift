@@ -33,7 +33,7 @@ class SwimmerWorkoutsViewModel {
     }
 
     required init(initialData: LoadedData, config: Config = .default) {
-        print("SwimmerWorkoutsViewModel.init")
+//        print("SwimmerWorkoutsViewModel.init")
         (workoutsParams, newWorkoutsCount) = Self.formatLoadedData(initialData)
         self.config = config
     }
@@ -75,26 +75,24 @@ extension SwimmerWorkoutsViewModel: LoadableViewModel {
 }
 
 struct SwimmerWorkoutsView: View {
-    typealias ViewModel = SwimmerWorkoutsViewModel
-
     @EnvironmentObject var session: SwimmerSession
     @EnvironmentObject var router: UserRouter
 
-    @ObservedObject var vm: SwimmerWorkoutsViewModel
+    @ObservedObject var viewModel: SwimmerWorkoutsViewModel
 
-    init(_ vm: SwimmerWorkoutsViewModel) {
-        print("SwimmerWorkoutsView.init")
-        _vm = ObservedObject(initialValue: vm)
+    init(_ viewModel: SwimmerWorkoutsViewModel) {
+//        print("SwimmerWorkoutsView.init")
+        _viewModel = ObservedObject(initialValue: viewModel)
     }
 
     var newWorkoutsCountInfo: String {
-        let plural = vm.newWorkoutsCount > 1 ? "s" : ""
-        return "You have \(vm.newWorkoutsCount) new workout\(plural)"
+        let plural = viewModel.newWorkoutsCount > 1 ? "s" : ""
+        return "You have \(viewModel.newWorkoutsCount) new workout\(plural)"
     }
 
     var workoutsList: some View {
         Group {
-            let filteredWorkoutsParams = vm.filteredWorkoutsParams
+            let filteredWorkoutsParams = viewModel.filteredWorkoutsParams
             if filteredWorkoutsParams.isEmpty {
                 Spacer()
                 Text("No workouts found.")
@@ -105,10 +103,10 @@ struct SwimmerWorkoutsView: View {
                     WorkoutView(workout: workout, inReception: true, isRead: isRead)
                         .listRowSeparator(.hidden)
                         .onTapGesture {
-                            vm.setWorkoutAsRead(workout)
+                            viewModel.setWorkoutAsRead(workout)
                         }
                 }
-                .refreshable { vm.restartLoader?() }
+                .refreshable { viewModel.restartLoader?() }
                 .listStyle(.plain)
             }
         }
@@ -116,7 +114,7 @@ struct SwimmerWorkoutsView: View {
 
     var tagsFilterIndication: some View {
         Group {
-            if let tagsIndexSelected = vm.tagFilterSelection {
+            if let tagsIndexSelected = viewModel.tagFilterSelection {
                 (
                     Text("Tags : ")
                         .foregroundColor(.secondary)
@@ -131,7 +129,7 @@ struct SwimmerWorkoutsView: View {
 
     var tagsFilterMenu: some View {
         Menu {
-            Picker("TagsFilter", selection: $vm.tagFilterSelection) {
+            Picker("TagsFilter", selection: $viewModel.tagFilterSelection) {
                 Text("All").tag(nil as Int?)
                 ForEach(Array(zip(Workout.allTags.indices, Workout.allTags)), id: \.0) { index, tag in
                     Text(tag).tag(index as Int?)
@@ -145,7 +143,7 @@ struct SwimmerWorkoutsView: View {
 
     var body: some View {
         VStack(spacing: 30) {
-            if vm.workoutsParams.isEmpty {
+            if viewModel.workoutsParams.isEmpty {
                 if session.coachId == nil {
                     VStack {
                         Text("Your coach will publish some workouts here.\nBut you haven't selcted one.\n")
@@ -165,16 +163,16 @@ struct SwimmerWorkoutsView: View {
 
             } else {
                 VStack {
-                    if vm.isSomeFilterActivated {
+                    if viewModel.isSomeFilterActivated {
                         HStack(spacing: 5) {
                             VStack {
                                 tagsFilterIndication
                             }
-                            Button { vm.clearFilters() } label: { Image(systemName: "xmark.circle.fill") }
+                            Button { viewModel.clearFilters() } label: { Image(systemName: "xmark.circle.fill") }
                         }
                         .padding(4)
                         .border(Color.secondary, width: 1)
-                    } else if vm.newWorkoutsCount > 0 {
+                    } else if viewModel.newWorkoutsCount > 0 {
                         Text(newWorkoutsCountInfo)
                     }
                     workoutsList
@@ -183,7 +181,7 @@ struct SwimmerWorkoutsView: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if !vm.workoutsParams.isEmpty {
+                if !viewModel.workoutsParams.isEmpty {
                     tagsFilterMenu
                 }
             }

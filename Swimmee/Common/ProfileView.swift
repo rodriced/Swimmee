@@ -12,23 +12,23 @@ struct ProfileView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
-    @ObservedObject var vm: ProfileViewModel
+    @ObservedObject var viewModel: ProfileViewModel
 
-    init(vm: ProfileViewModel) {
+    init(viewModel: ProfileViewModel) {
 //        debugPrint("---- ProfileView created")
-        _vm = ObservedObject(initialValue: vm)
+        _viewModel = ObservedObject(initialValue: viewModel)
     }
 
     var profilePhoto: some View {
         Group {
-            switch vm.photoInfoEdited.state {
+            switch viewModel.photoInfoEdited.state {
             case let .new(uiImage: pickedPhoto, data: _, size: _, hash: _):
                 Image(uiImage: pickedPhoto)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
 
             case .initial:
-                if let photoUrl = vm.photoInfoEdited.initial?.url {
+                if let photoUrl = viewModel.photoInfoEdited.initial?.url {
                     WebImage(url: photoUrl)
                         .resizable()
                         .placeholder(Image("UserPhotoPlaceholder"))
@@ -53,21 +53,21 @@ struct ProfileView: View {
     var photoActionsMenu: some View {
         Group {
             Button {
-                vm.openPhotoPicker(.photoLibrary)
+                viewModel.openPhotoPicker(.photoLibrary)
             } label: {
                 Label("Photo from library", systemImage: "photo.on.rectangle")
             }
             Button {
-                vm.openPhotoPicker(.camera)
+                viewModel.openPhotoPicker(.camera)
             } label: {
                 Label("Use camera", systemImage: "camera")
             }
             Button {
-                vm.clearDisplayedPhoto()
+                viewModel.clearDisplayedPhoto()
             } label: {
                 Label("Remove photo", systemImage: "trash")
             }
-            .disabled(!vm.photoInfoEdited.isImagePresent)
+            .disabled(!viewModel.photoInfoEdited.isImagePresent)
         }
     }
 
@@ -84,15 +84,15 @@ struct ProfileView: View {
 
     var updateProfileButton: some View {
         Button {
-            vm.updateProfileConfirmationIsPresented = true
+            viewModel.updateProfileConfirmationIsPresented = true
         } label: {
             Text("Update").frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
-        .disabled(!vm.isReadyToSubmit)
-        .confirmationDialog("Confirm your profile update.", isPresented: $vm.updateProfileConfirmationIsPresented) {
+        .disabled(!viewModel.isReadyToSubmit)
+        .confirmationDialog("Confirm your profile update.", isPresented: $viewModel.updateProfileConfirmationIsPresented) {
             Button("Confirm update") {
-                vm.saveProfile()
+                viewModel.saveProfile()
                 presentationMode.wrappedValue.dismiss()
             }
         }
@@ -101,20 +101,20 @@ struct ProfileView: View {
 
     var deleteAccountButton: some View {
         Button {
-            vm.reauthenticationViewIsPresented = true
+            viewModel.reauthenticationViewIsPresented = true
         } label: {
             Text("Delete my account")
         }
         .foregroundColor(Color.red)
-        .sheet(isPresented: $vm.reauthenticationViewIsPresented) {
+        .sheet(isPresented: $viewModel.reauthenticationViewIsPresented) {
             ReauthenticationView(
                 viewModel: SignSharedViewModel(formType: .signIn),
                 message: "You must reauthenticate to confirm\nthe deletion of your account.",
-                reauthenticationSuccess: $vm.deleteAccountConfirmationIsPresented
+                reauthenticationSuccess: $viewModel.deleteAccountConfirmationIsPresented
             )
-            .confirmationDialog("Confirme your account deletion", isPresented: $vm.deleteAccountConfirmationIsPresented) {
-                Button("Confirm deletion", role: .destructive, action: vm.deleteAccount)
-                Button("Cancel", role: .cancel) { vm.reauthenticationViewIsPresented = false }
+            .confirmationDialog("Confirme your account deletion", isPresented: $viewModel.deleteAccountConfirmationIsPresented) {
+                Button("Confirm deletion", role: .destructive, action: viewModel.deleteAccount)
+                Button("Cancel", role: .cancel) { viewModel.reauthenticationViewIsPresented = false }
             } message: {
                 Text("Your account is going to be deleted. Ok?")
             }
@@ -136,7 +136,7 @@ struct ProfileView: View {
 
             HStack {
                 Text("I'm a")
-                Text("\(vm.initialProfile.userType.rawValue)").font(.headline)
+                Text("\(viewModel.initialProfile.userType.rawValue)").font(.headline)
             }
         }
     }
@@ -144,12 +144,12 @@ struct ProfileView: View {
     var formPart2: some View {
         VStack(spacing: 5) {
             VStack {
-                FormTextField(title: "First name", value: $vm.firstName, inError: vm.firstNameInError)
-                FormTextField(title: "Last name", value: $vm.lastName, inError: vm.lastNameInError)
+                FormTextField(title: "First name", value: $viewModel.firstName, inError: viewModel.firstNameInError)
+                FormTextField(title: "Last name", value: $viewModel.lastName, inError: viewModel.lastNameInError)
             }
 
             VStack {
-                FormTextField(title: "Email", value: $vm.email, inError: vm.emailInError)
+                FormTextField(title: "Email", value: $viewModel.email, inError: viewModel.emailInError)
                     .autocapitalization(.none)
             }
 
@@ -190,15 +190,15 @@ struct ProfileView: View {
         }
         .navigationBarTitle("My profile")
         .padding()
-        .sheet(isPresented: $vm.isPhotoPickerPresented) {
-            ImagePicker(sourceType: vm.photoPickerImageSource, selectedImage: $vm.pickedPhoto)
+        .sheet(isPresented: $viewModel.isPhotoPickerPresented) {
+            ImagePicker(sourceType: viewModel.photoPickerImageSource, selectedImage: $viewModel.pickedPhoto)
         }
-        .task { vm.startPublishers() }
+        .task { viewModel.startPublishers() }
 
-        .navigationBarBackButtonHidden(vm.isReadyToSubmit)
+        .navigationBarBackButtonHidden(viewModel.isReadyToSubmit)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                if vm.isReadyToSubmit {
+                if viewModel.isReadyToSubmit {
                     Button("Cancel") { presentationMode.wrappedValue.dismiss() }
                 }
             }
@@ -209,7 +209,7 @@ struct ProfileView: View {
 // struct ProfileView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        NavigationView {
-//            ProfileView(vm: ProfileViewModel(profile: Profile.coachSample))
+//            ProfileView(viewModel: ProfileViewModel(profile: Profile.coachSample))
 //        }
 //    }
 // }

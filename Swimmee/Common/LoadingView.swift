@@ -28,14 +28,14 @@ protocol LoadableViewModel: ObservableObject {
     var restartLoader: (() -> Void)? { get set }
 }
 
- #if DEBUG
-    var _debugStreamRef = 0
-    var debugStreamRef: Int {
-        let current = _debugStreamRef
-        _debugStreamRef += 1
-        return current
-    }
-#endif
+//#if DEBUG
+//    var _debugStreamRef = 0
+//    var debugStreamRef: Int {
+//        let current = _debugStreamRef
+//        _debugStreamRef += 1
+//        return current
+//    }
+//#endif
 
 class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     typealias LoadPublisher = AnyPublisher<TargetViewModel.LoadedData, Error>
@@ -59,14 +59,14 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     init(publisherBuiler: @escaping () -> LoadPublisher,
          targetViewModelConfig: TargetViewModel.Config)
     {
-        print("LoadingViewModel.init")
+//        print("LoadingViewModel.init")
         self.publisherBuilder = publisherBuiler
         self.targetViewModelConfig = targetViewModelConfig
     }
 
-    deinit {
-        print("LoadingViewModel.deinit")
-    }
+//    deinit {
+//        print("LoadingViewModel.deinit")
+//    }
 
     let publisherBuilder: () -> LoadPublisher
     let targetViewModelConfig: TargetViewModel.Config
@@ -75,20 +75,21 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 
     var targetViewModel: TargetViewModel?
 
-    func createTargetVM(loadedData: TargetViewModel.LoadedData) -> TargetViewModel {
+    func createTargetViewModel(loadedData: TargetViewModel.LoadedData) -> TargetViewModel {
         let vm = TargetViewModel(initialData: loadedData, config: targetViewModelConfig)
         vm.restartLoader = startLoader
         return vm
     }
 
-    var cancellable: Cancellable? {
-        didSet {
-            print("LoadingViewModel.cancellable set ? \(cancellable != nil)")
-        }
-    }
+    var cancellable: Cancellable?
+//    {
+//        didSet {
+//            print("LoadingViewModel.cancellable set ? \(cancellable != nil)")
+//        }
+//    }
 
     func load() {
-        print("LoadingViewModel.load")
+//        print("LoadingViewModel.load")
 
         state = .loading
 
@@ -97,12 +98,12 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 
     func startLoader() {
         cancellable = publisherBuilder()
-        #if DEBUG
-            .print("LoadingViewModel loader stream ref \(debugStreamRef)")
-        #endif
+//        #if DEBUG
+//            .print("LoadingViewModel loader stream ref \(debugStreamRef)")
+//        #endif
 //            .retry(1)
             .sink { [weak self] completion in
-                print("LoadingViewModel loader handleEvents \(String(describing: completion))")
+//                print("LoadingViewModel loader handleEvents \(String(describing: completion))")
 
                 if case .failure(let error) = completion {
                     self?.state = .failure(error)
@@ -110,11 +111,11 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
             } receiveValue: { [weak self] data in
                 guard let self else { return }
 
-                if let targetVM = self.targetViewModel {
-                    targetVM.refreshedLoadedData(data)
+                if let targetViewModel = self.targetViewModel {
+                    targetViewModel.refreshedLoadedData(data)
                 } else {
-                    let targetVM = self.createTargetVM(loadedData: data)
-                    self.targetViewModel = targetVM
+                    let targetViewModel = self.createTargetViewModel(loadedData: data)
+                    self.targetViewModel = targetViewModel
                 }
                 if self.state != .ready { self.state = .ready }
             }
@@ -124,11 +125,11 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 //
 //                switch result {
 //                case .success(let item):
-//                    if let targetVM = self.targetVM {
-//                        targetVM.refreshedLoadedData(item)
+//                    if let targetViewModel = self.targetViewModel {
+//                        targetViewModel.refreshedLoadedData(item)
 //                    } else {
-//                        let targetVM = self.createTargetVM(loadedData: item)
-//                        self.targetVM = targetVM
+//                        let targetViewModel = self.createTargetVM(loadedData: item)
+//                        self.targetViewModel = targetViewModel
 //                    }
 //                    if self.state != .ready { self.state = .ready }
 //
@@ -140,7 +141,7 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 }
 
 struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
-    @StateObject var loadingVM: LoadingViewModel<TargetViewModel>
+    @StateObject var loadingViewModel: LoadingViewModel<TargetViewModel>
 
     let targetView: (TargetViewModel) -> TargetView
 
@@ -148,8 +149,8 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
          targetViewModelConfig: TargetViewModel.Config = .default,
          @ViewBuilder targetView: @escaping (TargetViewModel) -> TargetView)
     {
-        print("LoadingView.init")
-        self._loadingVM = StateObject(wrappedValue:
+//        print("LoadingView.init")
+        self._loadingViewModel = StateObject(wrappedValue:
             LoadingViewModel(publisherBuiler: publisherBuiler, targetViewModelConfig: targetViewModelConfig)
         )
         self.targetView = targetView
@@ -157,21 +158,21 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
 
     var body: some View {
         Group {
-            DebugHelper.viewBodyPrint("LoadingView.body state = \(loadingVM.state)")
-            switch loadingVM.state {
+//            DebugHelper.viewBodyPrint("LoadingView.body state = \(loadingViewModel.state)")
+            switch loadingViewModel.state {
             case .idle:
                 Color.clear
-                    .onAppear(perform: loadingVM.load)
+                    .onAppear(perform: loadingViewModel.load)
             case .loading:
                 ProgressView()
             case .ready:
-                if let targetVM = loadingVM.targetViewModel {
-                    targetView(targetVM)
+                if let targetViewModel = loadingViewModel.targetViewModel {
+                    targetView(targetViewModel)
                 } else {
                     VStack {
                         Text("Fatal error.\nVerify your connectivity\nand come back on this page.")
                         Button("Retry") {
-                            loadingVM.state = .idle
+                            loadingViewModel.state = .idle
                         }
                     }
                 }
@@ -179,7 +180,7 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
                 VStack {
                     Text("\(error.localizedDescription)\nVerify your connectivity\nand come back on this page.")
                     Button("Retry") {
-                        loadingVM.state = .idle
+                        loadingViewModel.state = .idle
                     }
                 }
             }

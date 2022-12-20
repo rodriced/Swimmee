@@ -8,7 +8,6 @@
 import SwiftUI
 
 class EditMessageViewModel: ObservableObject {
-//    @Published var message: Message = .empty
     let messageAPI: UserMessageCollectionAPI
     let originalMessage: Message
     @Published var message: Message
@@ -36,7 +35,7 @@ class EditMessageViewModel: ObservableObject {
 
     func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
         Task {
-            var messageToSave = message // Working on a copy prevent reactive behaviours of the original message on UI
+            var messageToSave = message
             messageToSave.isSent = andSendIt
 
             var replaceAsNew = false
@@ -45,7 +44,6 @@ class EditMessageViewModel: ObservableObject {
             case (_, true):
                 replaceAsNew = true
                 messageToSave.date = .now
-            // TODO: A draft message sent for the first time should not be send as new message because it has never been read by anyone (we track read message with dbId and there is no reason here to generate a new one to set as unread for all swimmers)
 //            case (false, true):
 //                messageToSave.date = .now
             case (_, false):
@@ -79,8 +77,9 @@ class EditMessageViewModel: ObservableObject {
 }
 
 struct EditMessageView: View {
-    @StateObject var vm: EditMessageViewModel
     @Environment(\.presentationMode) private var presentationMode
+
+    @StateObject var viewModel: EditMessageViewModel
 
     @State var deleteConfirmationPresented = false
     @State var unsendAndSaveAsDraftConfirmationPresented = false
@@ -92,7 +91,7 @@ struct EditMessageView: View {
 
     init(message: Message) {
 //        print("EditMessageView.init (titile = \(message.title)")
-        _vm = StateObject(wrappedValue: EditMessageViewModel(message: message))
+        _viewModel = StateObject(wrappedValue: EditMessageViewModel(message: message))
     }
 
     func dismiss() {
@@ -101,8 +100,8 @@ struct EditMessageView: View {
 
     var bottomButtonsBar: some View {
         func doIfFormValidated(action: () -> Void) {
-            guard vm.validateTitle() else {
-                vm.alertContext.message = "Put something in title and retry."
+            guard viewModel.validateTitle() else {
+                viewModel.alertContext.message = "Put something in title and retry."
                 isTitleFocused = true
                 return
             }
@@ -110,13 +109,13 @@ struct EditMessageView: View {
             action()
         }
 
-        let config = vm.message.isSent ?
+        let config = viewModel.message.isSent ?
             (saveAsDraft: (
                 buttonLabel: "Unsend and save as draft",
                 confirmationTitle: "Unsend and save as draft ?",
                 confirmationPresented: $unsendAndSaveAsDraftConfirmationPresented,
                 confirmationButton: { Button("Confirm Save as draft") {
-                    vm.saveMessage(andSendIt: false, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: false, completion: dismiss)
                 }}
             ),
             sendButton: (
@@ -124,7 +123,7 @@ struct EditMessageView: View {
                 confirmationTitle: "Replace sent message ?",
                 confirmationPresented: $resendConfirmationPresented,
                 confirmationButton: { Button("Confirm Replace") {
-                    vm.saveMessage(andSendIt: true, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: true, completion: dismiss)
                 }}
             ))
             :
@@ -133,7 +132,7 @@ struct EditMessageView: View {
                 confirmationTitle: "Save as draft ?",
                 confirmationPresented: $saveAsDraftConfirmationPresented,
                 confirmationButton: { Button("Confirm Save as draft") {
-                    vm.saveMessage(andSendIt: false, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: false, completion: dismiss)
                 }}
             ),
             sendButton: (
@@ -141,7 +140,7 @@ struct EditMessageView: View {
                 confirmationTitle: "Send message ?",
                 confirmationPresented: $sendConfirmationPresented,
                 confirmationButton: { Button("Confirm Send") {
-                    vm.saveMessage(andSendIt: true, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: true, completion: dismiss)
                 }}
             ))
 
@@ -154,7 +153,7 @@ struct EditMessageView: View {
             }
             .foregroundColor(Color.black)
             .tint(Color.orange.opacity(0.7))
-            .disabled(!vm.canTryToSaveAsDraft)
+            .disabled(!viewModel.canTryToSaveAsDraft)
             .confirmationDialog(config.saveAsDraft.confirmationTitle, isPresented: config.saveAsDraft.confirmationPresented, actions: config.saveAsDraft.confirmationButton)
 
             Button {
@@ -163,7 +162,7 @@ struct EditMessageView: View {
                 Text(config.sendButton.buttonLabel)
                     .frame(maxWidth: .infinity)
             }
-            .disabled(!vm.canTryToSend)
+            .disabled(!viewModel.canTryToSend)
             .confirmationDialog(config.sendButton.confirmationTitle, isPresented: config.sendButton.confirmationPresented, actions: config.sendButton.confirmationButton)
         }
         .buttonStyle(.borderedProminent)
@@ -172,23 +171,23 @@ struct EditMessageView: View {
     var body: some View {
         VStack {
 //            DebugHelper.viewBodyPrint("EditMessageView")
-            if vm.message.isSent {
+            if viewModel.message.isSent {
                 Label("Message is published", systemImage: "exclamationmark.triangle")
                     .foregroundColor(.mint)
             }
 
             Form {
                 Section {
-                    TextField("Title", text: $vm.message.title)
+                    TextField("Title", text: $viewModel.message.title)
                         .focused($isTitleFocused)
                 }
-                TextEditorWithPlaceholder(text: $vm.message.content, placeholder: "Content", height: 400)
+                TextEditorWithPlaceholder(text: $viewModel.message.content, placeholder: "Content", height: 400)
             }
 
             bottomButtonsBar
                 .padding()
         }
-        .navigationBarTitle(vm.originalMessage.isNew ? "Create message" : "Edit message", displayMode: .inline)
+        .navigationBarTitle(viewModel.originalMessage.isNew ? "Create message" : "Edit message", displayMode: .inline)
         .navigationBarBackButtonHidden()
 
         .toolbar {
@@ -199,7 +198,7 @@ struct EditMessageView: View {
                     Image(systemName: "trash").foregroundColor(Color.red)
                 }
                 .confirmationDialog("Delete message ?", isPresented: $deleteConfirmationPresented) {
-                    Button("Delete message ?") { vm.deleteMessage(completion: dismiss) }
+                    Button("Delete message ?") { viewModel.deleteMessage(completion: dismiss) }
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
@@ -207,7 +206,7 @@ struct EditMessageView: View {
             }
         }
 
-        .alert(vm.alertContext) {}
+        .alert(viewModel.alertContext) {}
     }
 }
 

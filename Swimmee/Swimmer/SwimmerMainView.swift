@@ -56,10 +56,10 @@ class SwimmerMainViewModel: ObservableObject {
 }
 
 struct SwimmerMainView: View {
-    @StateObject var session: SwimmerSession
-    @StateObject var vm = SwimmerMainViewModel()
-    
     @StateObject var router = UserRouter()
+    @StateObject var session: SwimmerSession
+
+    @StateObject var viewModel = SwimmerMainViewModel()
 
     init(profile: Profile) {
 //        print("SwimmerMainView.init")
@@ -81,7 +81,7 @@ struct SwimmerMainView: View {
                 )
             }
             .navigationViewStyle(.stack)
-            .badge(vm.unreadWorkoutsCount)
+            .badge(viewModel.unreadWorkoutsCount)
             .tabItem {
                 Label("Workouts", systemImage: "stopwatch")
             }
@@ -100,7 +100,7 @@ struct SwimmerMainView: View {
                 )
             }
             .navigationViewStyle(.stack)
-            .badge(vm.unreadMessagesCount)
+            .badge(viewModel.unreadMessagesCount)
             .tabItem {
                 Label("Messages", systemImage: "mail.stack")
             }
@@ -120,7 +120,7 @@ struct SwimmerMainView: View {
             session.listenChanges()
         }
         .task {
-            vm.startListeners(
+            viewModel.startListeners(
                 unreadWorkoutsCountPublisher: session.unreadWorkoutsCountPublisher.eraseToAnyPublisher(),
                 unreadMessagesCountPublisher: session.unreadMessagesCountPublisher.eraseToAnyPublisher()
             )

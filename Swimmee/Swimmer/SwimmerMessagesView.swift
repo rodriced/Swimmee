@@ -23,7 +23,7 @@ class SwimmerMessagesViewModel {
     @Published var newMessagesCount: Int
 
     required init(initialData: LoadedData, config: Config = .default) {
-        print("SwimmerMessagesViewModel.init")
+//        print("SwimmerMessagesViewModel.init")
         (messagesParams, newMessagesCount) = Self.formatLoadedData(initialData)
         self.config = config
     }
@@ -58,38 +58,36 @@ extension SwimmerMessagesViewModel: LoadableViewModel {
 }
 
 struct SwimmerMessagesView: View {
-    typealias ViewModel = SwimmerMessagesViewModel
-
     @EnvironmentObject var session: SwimmerSession
     @EnvironmentObject var router: UserRouter
 
-    @ObservedObject var vm: SwimmerMessagesViewModel
+    @ObservedObject var viewModel: SwimmerMessagesViewModel
 
-    init(_ vm: SwimmerMessagesViewModel) {
-        print("SwimmerMessagesView.init")
-        _vm = ObservedObject(initialValue: vm)
+    init(_ viewModel: SwimmerMessagesViewModel) {
+//        print("SwimmerMessagesView.init")
+        _viewModel = ObservedObject(initialValue: viewModel)
     }
 
     var newMessagesCountInfo: String {
-        let plural = vm.newMessagesCount > 1 ? "s" : ""
-        return "You have \(vm.newMessagesCount) new message\(plural)"
+        let plural = viewModel.newMessagesCount > 1 ? "s" : ""
+        return "You have \(viewModel.newMessagesCount) new message\(plural)"
     }
 
     var messagesList: some View {
-        List(vm.messagesParams, id: \.0.id) { message, isRead in
+        List(viewModel.messagesParams, id: \.0.id) { message, isRead in
             MessageView(message: message, inReception: true, isRead: isRead)
                 .listRowSeparator(.hidden)
                 .onTapGesture {
-                    vm.setMessageAsRead(message)
+                    viewModel.setMessageAsRead(message)
                 }
         }
-        .refreshable { vm.restartLoader?() }
+        .refreshable { viewModel.restartLoader?() }
         .listStyle(.plain)
     }
 
     var body: some View {
         VStack(spacing: 30) {
-            if vm.messagesParams.isEmpty {
+            if viewModel.messagesParams.isEmpty {
                 if session.coachId == nil {
                     VStack {
                         Text("Your coach will publish some messages here.\nBut you haven't selcted one.\n")
@@ -108,7 +106,7 @@ struct SwimmerMessagesView: View {
                 }
 
             } else {
-                if vm.newMessagesCount > 0 {
+                if viewModel.newMessagesCount > 0 {
                     Text(newMessagesCountInfo)
                 }
                 messagesList

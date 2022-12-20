@@ -44,7 +44,7 @@ class CoachMessagesViewModel: ObservableObject {
     @Published var alertContext = AlertContext()
 
     required init(initialData: [Message], config: Config = .default) {
-        print("CoachMessagesViewModel.init")
+//        print("CoachMessagesViewModel.init")
         messages = initialData
         self.config = config
     }
@@ -93,56 +93,37 @@ extension CoachMessagesViewModel: LoadableViewModel {
 struct CoachMessagesView: View {
     @EnvironmentObject var userInfos: UserInfos
     @EnvironmentObject var session: CoachSession
-    @ObservedObject var vm: CoachMessagesViewModel
-//    @StateObject var vm: CoachMessagesViewModel
+    
+    @ObservedObject var viewModel: CoachMessagesViewModel
 
-    init(vm: CoachMessagesViewModel) {
-        print("CoachMessagesView.init")
-//        self._vm = StateObject(wrappedValue: vm)
-        _vm = ObservedObject(initialValue: vm)
+    init(viewModel: CoachMessagesViewModel) {
+//        print("CoachMessagesView.init")
+        _viewModel = ObservedObject(initialValue: viewModel)
     }
 
     var messagesList: some View {
-//        if let selectedMessage = vm.selectedMessage {
-//            NavigationLink(isActive: $vm.navigatingToEditView) {
-//                EditMessageView(message: selectedMessage)
-//            } label: {
-//                EmptyView()
-//            }
-//        }
-
         List {
-            ForEach(vm.filteredMessages) { message in
-                NavigationLink(tag: message, selection: $vm.selectedMessage) {
+            ForEach(viewModel.filteredMessages) { message in
+                NavigationLink(tag: message, selection: $viewModel.selectedMessage) {
                     EditMessageView(message: message)
                 } label: {
                     MessageView(message: message, inReception: false)
                 }
-//                Button {
-//                    vm.goEditingMessage(message)
-//                } label: {
-//                    HStack {
-//                        MessageView(message: message, inReception: session.isSwimmer)
-//                        Image(systemName: "chevron.forward")
-//                            .font(Font.system(.footnote))
-//                            .foregroundColor(Color.gray)
-//                    }
-//                }
                 .listRowSeparator(.hidden)
             }
-            .onDelete(perform: vm.deleteMessage)
+            .onDelete(perform: viewModel.deleteMessage)
         }
         .listStyle(.plain)
     }
 
     var filterStateIndication: some View {
         Group {
-            if vm.filter != .all {
+            if viewModel.filter != .all {
                 (
                     Text("Filter enabled : ")
                         .foregroundColor(.secondary)
-                        + Text(vm.filter.rawValue)
-                        .foregroundColor(vm.filter == .draft ? .orange : .mint)
+                        + Text(viewModel.filter.rawValue)
+                        .foregroundColor(viewModel.filter == .draft ? .orange : .mint)
                         .bold()
                 )
                 .font(Font.system(.caption))
@@ -152,7 +133,7 @@ struct CoachMessagesView: View {
 
     var filterMenu: some View {
         Menu {
-            Picker("Filter", selection: $vm.filter) {
+            Picker("Filter", selection: $viewModel.filter) {
                 ForEach(CoachMessagesFilter.allCases) { filter in
                     Text(filter.rawValue).tag(filter)
                 }
@@ -187,9 +168,9 @@ struct CoachMessagesView: View {
 
     var body: some View {
         VStack(spacing: 30) {
-            DebugHelper.viewBodyPrint("CoachMessagesView.body")
+//            DebugHelper.viewBodyPrint("CoachMessagesView.body")
 
-            if vm.messages.isEmpty {
+            if viewModel.messages.isEmpty {
                 emptyListInformation
             } else {
                 filterStateIndication
@@ -198,33 +179,33 @@ struct CoachMessagesView: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if !vm.messages.isEmpty {
+                if !viewModel.messages.isEmpty {
                     filterMenu
                 }
 
                 editNewMessageButton
             }
         }
-        .actionSheet(isPresented: $vm.sentMessageEditionConfirmationDialogPresented) {
+        .actionSheet(isPresented: $viewModel.sentMessageEditionConfirmationDialogPresented) {
             ActionSheet(
                 title: Text("Edit an already sent message ?"),
                 message: Text("Message will stay sent until you save it as draft or delete it."),
                 buttons: [
                     .default(Text("Edit"), action: {
-                        vm.navigatingToEditView = true
+                        viewModel.navigatingToEditView = true
                     }),
                     .cancel()
                 ]
             )
         }
-        .alert(vm.alertContext) {}
+        .alert(viewModel.alertContext) {}
         .navigationBarTitle("Messages", displayMode: .inline)
     }
 }
 
 struct CoachMessagesView_Previews: PreviewProvider {
     static var previews: some View {
-        CoachMessagesView(vm: CoachMessagesViewModel(initialData: [Message.sample]))
+        CoachMessagesView(viewModel: CoachMessagesViewModel(initialData: [Message.sample]))
             .environmentObject(UserInfos(profile: Profile.coachSample))
             .environmentObject(CoachSession())
     }
