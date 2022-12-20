@@ -8,16 +8,12 @@
 import SwiftUI
 
 struct CoachMainView: View {
-//    @EnvironmentObject var userInfos: UserInfos
+    @StateObject var router = UserRouter()
     @StateObject var session = CoachSession()
 
-//    init() {
-    ////        print("SignedInView.init")
-//        _session = StateObject(wrappedValue: CoachSession(initialProfile: profile))
-//    }
-
     var body: some View {
-        TabView {
+        TabView(selection: $router.tabsTarget) {
+            
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
@@ -30,6 +26,7 @@ struct CoachMainView: View {
             .tabItem {
                 Label("Workouts", systemImage: "stopwatch")
             }
+            .tag(UserRouter.TabTarget.workouts)
 
             NavigationView {
                 LoadingView(
@@ -43,6 +40,7 @@ struct CoachMainView: View {
             .tabItem {
                 Label("Messages", systemImage: "mail.stack")
             }
+            .tag(UserRouter.TabTarget.messages)
 
             NavigationView {
                 SettingsView()
@@ -51,7 +49,10 @@ struct CoachMainView: View {
             .tabItem {
                 Label("Settings", systemImage: "gearshape")
             }
+            .tag(UserRouter.TabTarget.settings)
+            
         }
+        .environmentObject(router)
         .environmentObject(session)
     }
 }
