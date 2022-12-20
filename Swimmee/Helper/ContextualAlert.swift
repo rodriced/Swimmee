@@ -30,7 +30,7 @@ class AlertContext: ObservableObject {
 
     var message: String = "" {
         didSet {
-            print("AlertContext.message = \(message)")
+//            print("AlertContext.message = \(message)")
             if !message.isEmpty { isPresented = true }
         }
     }

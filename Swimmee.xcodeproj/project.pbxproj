@@ -40,7 +40,7 @@
 		DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888928F449140065CBD6 /* CoachMainView.swift */; };
 		DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888B28F455970065CBD6 /* SettingsView.swift */; };
 		DC3C889028F4A38D0065CBD6 /* MenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */; };
-		DC3C889228F4AA2B0065CBD6 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */; };
+		DC3C889228F4AA2B0065CBD6 /* ViewModifierExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889128F4AA2B0065CBD6 /* ViewModifierExtension.swift */; };
 		DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */; };
 		DC3C889B28F4C4F50065CBD6 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */; };
 		DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C889C28F4C5830065CBD6 /* Workout.swift */; };
@@ -91,7 +91,9 @@
 		DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */; };
 		DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA8F82919AF0000F936E7 /* SessionTests.swift */; };
 		DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */; };
-		DCDBE7E72915D77A00386076 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDBE7E62915D77A00386076 /* AlertHelper.swift */; };
+		DCDBE7E72915D77A00386076 /* ContextualAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDBE7E62915D77A00386076 /* ContextualAlert.swift */; };
+		DCDCFD1229525D5400993398 /* TopBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDCFD1129525D5400993398 /* TopBorder.swift */; };
+		DCDCFD1529525F8500993398 /* FormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDCFD1429525F8500993398 /* FormTextField.swift */; };
 		DCEB593629500954009168BF /* EditWorkoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEB593529500954009168BF /* EditWorkoutViewModelTests.swift */; };
 		DCF3237E28FB37180030626C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237D28FB37180030626C /* FirebaseAuth */; };
 		DCF3238028FB37180030626C /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3237F28FB37180030626C /* FirebaseAuthCombine-Community */; };
@@ -101,7 +103,7 @@
 		DCF3238828FB37180030626C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3238728FB37180030626C /* FirebaseStorage */; };
 		DCF3238A28FB37180030626C /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DCF3238928FB37180030626C /* FirebaseStorageCombine-Community */; };
 		DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */; };
-		DCFBCF4E29074B1900F0BF35 /* FormViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */; };
+		DCFBCF4E29074B1900F0BF35 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4D29074B1900F0BF35 /* TextFieldStyle.swift */; };
 		DCFBCF5029074B7D00F0BF35 /* ReauthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */; };
 		DCFBCF522908B1DE00F0BF35 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
@@ -148,7 +150,7 @@
 		DC3C888928F449140065CBD6 /* CoachMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMainView.swift; sourceTree = "<group>"; };
 		DC3C888B28F455970065CBD6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DC3C888F28F4A38D0065CBD6 /* MenuLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLabel.swift; sourceTree = "<group>"; };
-		DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		DC3C889128F4AA2B0065CBD6 /* ViewModifierExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifierExtension.swift; sourceTree = "<group>"; };
 		DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMessageView.swift; sourceTree = "<group>"; };
 		DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		DC3C889C28F4C5830065CBD6 /* Workout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
@@ -200,10 +202,12 @@
 		DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitleView.swift; sourceTree = "<group>"; };
 		DCAEA8F82919AF0000F936E7 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
-		DCDBE7E62915D77A00386076 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
+		DCDBE7E62915D77A00386076 /* ContextualAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualAlert.swift; sourceTree = "<group>"; };
+		DCDCFD1129525D5400993398 /* TopBorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBorder.swift; sourceTree = "<group>"; };
+		DCDCFD1429525F8500993398 /* FormTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		DCEB593529500954009168BF /* EditWorkoutViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWorkoutViewModelTests.swift; sourceTree = "<group>"; };
 		DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugHelpers.swift; sourceTree = "<group>"; };
-		DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewHelpers.swift; sourceTree = "<group>"; };
+		DCFBCF4D29074B1900F0BF35 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
 		DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReauthenticationView.swift; sourceTree = "<group>"; };
 		DCFBCF512908B1DE00F0BF35 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -317,9 +321,7 @@
 				DC920B8429376FC0000EE664 /* Swift */,
 				DC920B7B29366B44000EE664 /* Combine */,
 				DC920B7829366933000EE664 /* Form */,
-				DC3C889128F4AA2B0065CBD6 /* ViewModifiers.swift */,
-				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
-				DCDBE7E62915D77A00386076 /* AlertHelper.swift */,
+				DCDBE7E62915D77A00386076 /* ContextualAlert.swift */,
 				DC920B6F2934B851000EE664 /* ImageHelper.swift */,
 			);
 			path = Helper;
@@ -392,12 +394,7 @@
 				DC3C888228F424640065CBD6 /* Model */,
 				DCF3238E28FB5BCE0030626C /* API */,
 				DC3C888E28F47C7D0065CBD6 /* Helper */,
-				DCBAD88F29246B0800376A3E /* Component */,
-				DC3C888D28F47C210065CBD6 /* Main */,
-				DC05720E293C24AA0037A387 /* Account */,
-				DC3C889328F4ACF80065CBD6 /* Common */,
-				DC3C889728F4AD9C0065CBD6 /* Coach */,
-				DC3C889428F4AD370065CBD6 /* Swimmer */,
+				DCDCFD0E29525AED00993398 /* View */,
 			);
 			path = Swimmee;
 			sourceTree = "<group>";
@@ -441,7 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				DC920B7629355ABF000EE664 /* ValueValidation.swift */,
-				DCFBCF4D29074B1900F0BF35 /* FormViewHelpers.swift */,
+				DCDCFD1429525F8500993398 /* FormTextField.swift */,
 				DC920B79293669D0000EE664 /* FormField.swift */,
 				DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */,
 			);
@@ -485,6 +482,47 @@
 				DC057215293E54DF0037A387 /* UserCollectionAPI.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		DCDCFD0E29525AED00993398 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DCDCFD0F29525BBB00993398 /* Shared */,
+				DC3C888D28F47C210065CBD6 /* Main */,
+				DC05720E293C24AA0037A387 /* Account */,
+				DC3C889328F4ACF80065CBD6 /* Common */,
+				DC3C889728F4AD9C0065CBD6 /* Coach */,
+				DC3C889428F4AD370065CBD6 /* Swimmer */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DCDCFD0F29525BBB00993398 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				DCDCFD1329525EB900993398 /* Helper */,
+				DCBAD88F29246B0800376A3E /* Component */,
+				DCDCFD1029525C5700993398 /* View Modifier */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		DCDCFD1029525C5700993398 /* View Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				DC3C889128F4AA2B0065CBD6 /* ViewModifierExtension.swift */,
+				DCFBCF4D29074B1900F0BF35 /* TextFieldStyle.swift */,
+				DCDCFD1129525D5400993398 /* TopBorder.swift */,
+			);
+			path = "View Modifier";
+			sourceTree = "<group>";
+		};
+		DCDCFD1329525EB900993398 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		DCF3238E28FB5BCE0030626C /* API */ = {
@@ -646,9 +684,11 @@
 				DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */,
 				DC3C88A128F4DFCF0065CBD6 /* CoachWorkoutsView.swift in Sources */,
 				DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */,
+				DCDCFD1529525F8500993398 /* FormTextField.swift in Sources */,
 				DC2C22472943E2CA005BBC19 /* SwimmeeMain.swift in Sources */,
 				DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */,
 				DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */,
+				DCDCFD1229525D5400993398 /* TopBorder.swift in Sources */,
 				DC3C888828F42BAE0065CBD6 /* Profile.swift in Sources */,
 				DC0C05BE2948EE970014C829 /* UserSession.swift in Sources */,
 				DC057205293A1EBC0037A387 /* FirebaseAccountAPI.swift in Sources */,
@@ -679,8 +719,8 @@
 				DC6CCE30290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift in Sources */,
 				DC920B7729355ABF000EE664 /* ValueValidation.swift in Sources */,
 				DC920B7F29367556000EE664 /* PhotoInfoEdited.swift in Sources */,
-				DCFBCF4E29074B1900F0BF35 /* FormViewHelpers.swift in Sources */,
-				DC3C889228F4AA2B0065CBD6 /* ViewModifiers.swift in Sources */,
+				DCFBCF4E29074B1900F0BF35 /* TextFieldStyle.swift in Sources */,
+				DC3C889228F4AA2B0065CBD6 /* ViewModifierExtension.swift in Sources */,
 				DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */,
 				DC3E998F28FF42C3008E274C /* FirebaseImageStorageAPI.swift in Sources */,
 				DC3C888428F426250065CBD6 /* Message.swift in Sources */,
@@ -693,7 +733,7 @@
 				DC920B7A293669D0000EE664 /* FormField.swift in Sources */,
 				DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */,
 				DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */,
-				DCDBE7E72915D77A00386076 /* AlertHelper.swift in Sources */,
+				DCDBE7E72915D77A00386076 /* ContextualAlert.swift in Sources */,
 				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
 				DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */,
 				DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */,

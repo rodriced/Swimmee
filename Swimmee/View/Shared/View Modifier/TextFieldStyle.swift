@@ -28,14 +28,3 @@ extension View {
     }
 }
 
-struct FormTextField: View {
-    let title: String
-    @Binding var value: String
-    var inError: Bool
-
-    var body: some View {
-        TextField(title, text: $value)
-            .disableAutocorrection(true)
-            .roundedStyleWithErrorIndicator(inError: inError)
-    }
-}
