@@ -42,18 +42,21 @@ struct SettingsView: View {
                 }
             }
 
-            Button {
-                logoutConfirmationIsPresented = true
-            } label: {
-                MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
-            }
-            .confirmationDialog("You are going to logout from Swimmee.", isPresented: $logoutConfirmationIsPresented) {
-                Button("Confirm logout") {
-                    if API.shared.account.signOut() == false {
-                        alertContext.message = "Sign out Error"
+            Section {
+                Button {
+                    logoutConfirmationIsPresented = true
+                } label: {
+                    MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
+                }
+                .confirmationDialog("You are going to logout from Swimmee.", isPresented: $logoutConfirmationIsPresented) {
+                    Button("Confirm logout") {
+                        if API.shared.account.signOut() == false {
+                            alertContext.message = "Sign out Error"
+                        }
                     }
                 }
             }
+            
 //
 //            Section {
 //                Button {
@@ -70,7 +73,12 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
-            .environmentObject(Session())
+        Group {
+            SettingsView()
+                .environmentObject(UserInfos(profile: Profile.coachSample))
+            SettingsView()
+                .environmentObject(UserInfos(profile: Profile.swimmerSample))
+        }
+        .environmentObject(UserRouter())
     }
 }
