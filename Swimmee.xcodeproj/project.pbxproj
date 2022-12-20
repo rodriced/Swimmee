@@ -22,7 +22,7 @@
 		DC0C05C22948F8490014C829 /* SwimmerSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */; };
 		DC100C33294B713300317F78 /* WorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC100C32294B713300317F78 /* WorkoutTests.swift */; };
 		DC100C35294B76C600317F78 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC100C34294B76C600317F78 /* MessageTests.swift */; };
-		DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* SignedInView.swift */; };
+		DC1037F028F72D75005E5B57 /* AuthenticatedMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1037EF28F72D75005E5B57 /* AuthenticatedMainView.swift */; };
 		DC150D572946A678001DB9B0 /* SwimmerCoachViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */; };
 		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
 		DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD8292B7D81007BC2ED /* UserCellView.swift */; };
@@ -145,7 +145,7 @@
 		DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerSessionTests.swift; sourceTree = "<group>"; };
 		DC100C32294B713300317F78 /* WorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTests.swift; sourceTree = "<group>"; };
 		DC100C34294B76C600317F78 /* MessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTests.swift; sourceTree = "<group>"; };
-		DC1037EF28F72D75005E5B57 /* SignedInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignedInView.swift; sourceTree = "<group>"; };
+		DC1037EF28F72D75005E5B57 /* AuthenticatedMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedMainView.swift; sourceTree = "<group>"; };
 		DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachViewModelTests.swift; sourceTree = "<group>"; };
 		DC232BD8292B7D81007BC2ED /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
 		DC2B10932950FA0B002F6641 /* UserRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRouter.swift; sourceTree = "<group>"; };
@@ -288,7 +288,6 @@
 		DC05720E293C24AA0037A387 /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				DC920B7329355981000EE664 /* SignSharedViewModel.swift */,
 				DCA62DF828F00E0900F87C9B /* SignUpView.swift */,
 				DC8859A928E26F2B0032E0FB /* SignInView.swift */,
 				DCFBCF4F29074B7D00F0BF35 /* ReauthenticationView.swift */,
@@ -328,7 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				DCA62DF628EF64E200F87C9B /* MainView.swift */,
-				DC1037EF28F72D75005E5B57 /* SignedInView.swift */,
+				DC1037EF28F72D75005E5B57 /* AuthenticatedMainView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -407,9 +406,18 @@
 		DC80A58229526FE400F16CE6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				DC2B10932950FA0B002F6641 /* UserRouter.swift */,
 				DC05720F293C26510037A387 /* ProfileViewModel.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		DC80A59529527F5700F16CE6 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				DC920B7329355981000EE664 /* SignSharedViewModel.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		DC88597328E269E10032E0FB = {
@@ -568,7 +576,8 @@
 			isa = PBXGroup;
 			children = (
 				DCDCFD1F295269D200993398 /* Shared */,
-				DCDCFD1E2952694D00993398 /* Global */,
+				DCDCFD1E2952694D00993398 /* Main */,
+				DC80A59529527F5700F16CE6 /* Account */,
 				DC80A58229526FE400F16CE6 /* Common */,
 				DC80A58029526EC100F16CE6 /* Coach */,
 				DC80A58129526ECD00F16CE6 /* Swimmer */,
@@ -644,14 +653,13 @@
 			path = Swimmer;
 			sourceTree = "<group>";
 		};
-		DCDCFD1E2952694D00993398 /* Global */ = {
+		DCDCFD1E2952694D00993398 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				DC80A57A29526B9400F16CE6 /* Session.swift */,
 				DC0C05BD2948EE970014C829 /* UserInfos.swift */,
-				DC2B10932950FA0B002F6641 /* UserRouter.swift */,
 			);
-			path = Global;
+			path = Main;
 			sourceTree = "<group>";
 		};
 		DCDCFD1F295269D200993398 /* Shared */ = {
@@ -881,7 +889,7 @@
 				DC057209293A9CDB0037A387 /* CustomError.swift in Sources */,
 				DC920B7A293669D0000EE664 /* FormField.swift in Sources */,
 				DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */,
-				DC1037F028F72D75005E5B57 /* SignedInView.swift in Sources */,
+				DC1037F028F72D75005E5B57 /* AuthenticatedMainView.swift in Sources */,
 				DCDBE7E72915D77A00386076 /* ContextualAlert.swift in Sources */,
 				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
 				DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */,

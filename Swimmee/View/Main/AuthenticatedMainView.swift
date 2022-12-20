@@ -1,5 +1,5 @@
 //
-//  SignedInView.swift
+//  AuthenticatedMainView.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 06/10/2022.
@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct SignedInView: View {
+struct AuthenticatedMainView: View {
     let initialProfile: Profile
     @StateObject var userInfos: UserInfos
 
     init(profile: Profile) {
-//        print("SignedInView.init")
+//        print("AuthenticatedMainView.init")
         self.initialProfile = profile
         _userInfos = StateObject(wrappedValue: UserInfos(profile: profile))
     }
 
     var body: some View {
         Group {
-//            DebugHelper.viewBodyPrint("SignedInView")
+//            DebugHelper.viewBodyPrint("AuthenticatedMainView")
             switch userInfos.userType {
             case .coach:
                 CoachMainView()
@@ -35,6 +35,6 @@ struct SignedInView: View {
 
 struct SignedInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignedInView(profile: Profile.swimmerSample)
+        AuthenticatedMainView(profile: Profile.swimmerSample)
     }
 }

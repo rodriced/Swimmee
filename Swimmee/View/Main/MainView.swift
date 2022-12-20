@@ -21,7 +21,7 @@ struct MainView: View {
                 }
                 .navigationViewStyle(.stack)
             case .signedIn(let initialProfile):
-                SignedInView(profile: initialProfile)
+                AuthenticatedMainView(profile: initialProfile)
             case .failure:
 //                Text(error.localizedDescription)
                 Color.clear
