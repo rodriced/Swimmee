@@ -8,23 +8,23 @@
 import Combine
 import SwiftUI
 
-class SwimmerMainVM: ObservableObject {
+class SwimmerMainViewModel: ObservableObject {
     @Published var newWorkoutsCount: String?
     @Published var unreadWorkoutsCount: String?
     @Published var unreadMessagesCount: String?
 //    {
 //        didSet {
-//            print("SwimmerMainVM.unreadMessagesCount.didSet : \(unreadMessagesCount.debugDescription)")
+//            print("SwimmerMainViewModel.unreadMessagesCount.didSet : \(unreadMessagesCount.debugDescription)")
 //        }
 //    }
 
-    init() {
-        print("SwimmerMainVM.init")
-    }
-
-    deinit {
-        print("SwimmerMainVM.deinit")
-    }
+//    init() {
+//        print("SwimmerMainViewModel.init")
+//    }
+//
+//    deinit {
+//        print("SwimmerMainViewModel.deinit")
+//    }
 
     var unreadWorkoutsCountPublisher: AnyPublisher<Int, Error>?
     var unreadMessagesCountPublisher: AnyPublisher<Int, Error>?
@@ -32,7 +32,7 @@ class SwimmerMainVM: ObservableObject {
     func startListeners(unreadWorkoutsCountPublisher: AnyPublisher<Int, Error>,
                         unreadMessagesCountPublisher: AnyPublisher<Int, Error>)
     {
-        print("SwimmerMainVM.startListeners")
+//        print("SwimmerMainViewModel.startListeners")
 
         self.unreadWorkoutsCountPublisher = unreadWorkoutsCountPublisher
         self.unreadMessagesCountPublisher = unreadMessagesCountPublisher
@@ -57,14 +57,12 @@ class SwimmerMainVM: ObservableObject {
 
 struct SwimmerMainView: View {
     @StateObject var session: SwimmerSession
-    @StateObject var vm = SwimmerMainVM()
+    @StateObject var vm = SwimmerMainViewModel()
     
     @StateObject var router = UserRouter()
 
     init(profile: Profile) {
-        print("SwimmerMainView.init")
-
-//        print("SignedInView.init")
+//        print("SwimmerMainView.init")
         _session = StateObject(wrappedValue: SwimmerSession(initialProfile: profile))
     }
 
