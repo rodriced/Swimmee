@@ -99,8 +99,18 @@ struct EditWorkoutView: View {
         _viewModel = StateObject(wrappedValue: EditWorkoutViewModel(workout: workout))
     }
 
-    // MARK: Duration picker
+    // MARK: - Date and Duration Pickers
 
+    var datePicker: some View {
+        DatePicker(selection: $viewModel.workout.date, displayedComponents: .date) {
+            HStack {
+                Image(systemName: "calendar")
+                Text("Planned date")
+            }
+            .foregroundColor(Color.secondary)
+        }
+    }
+    
     static let durationPickerData: [(Int, String)] =
         stride(from: 15, to: 241, by: 15).map { totalInMinutes in
 
@@ -117,16 +127,15 @@ struct EditWorkoutView: View {
                 Text(label).tag(totalInMinutes)
             }
         } label: {
-            Label {
-                Text("Duration")
-            } icon: {
+            HStack {
                 Image(systemName: "timer")
+                Text("Duration")
             }
             .foregroundColor(Color.secondary)
         }
     }
 
-    // MARK: Bottom buttons
+    // MARK: - Bottom buttons
 
     var bottomButtonsBar: some View {
         func doIfFormValidated(action: () -> Void) {
@@ -198,7 +207,7 @@ struct EditWorkoutView: View {
         .buttonStyle(.borderedProminent)
     }
 
-    // MARK: Layout organization
+    // MARK: - Layout organization
 
     var formPart1: some View {
         Group {
@@ -207,15 +216,7 @@ struct EditWorkoutView: View {
                     .focused($isTitleFocused)
             }
 
-            DatePicker(selection: $viewModel.workout.date, displayedComponents: .date) {
-                Label {
-                    Text("Planned date")
-                } icon: {
-                    Image(systemName: "calendar")
-                }
-                .foregroundColor(Color.secondary)
-            }
-
+            datePicker
             durationPicker
         }
     }
