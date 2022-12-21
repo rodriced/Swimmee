@@ -14,6 +14,8 @@ struct ProfileView: View {
 
     @ObservedObject var viewModel: ProfileViewModel
 
+    @State var notImplementedAlertPresented = false
+
     init(viewModel: ProfileViewModel) {
 //        debugPrint("---- ProfileView created")
         _viewModel = ObservedObject(initialValue: viewModel)
@@ -113,10 +115,14 @@ struct ProfileView: View {
                 reauthenticationSuccess: $viewModel.deleteAccountConfirmationIsPresented
             )
             .confirmationDialog("Confirme your account deletion", isPresented: $viewModel.deleteAccountConfirmationIsPresented) {
-                Button("Confirm deletion", role: .destructive, action: viewModel.deleteAccount)
+                //                Button("Confirm deletion", role: .destructive, action: viewModel.deleteAccount)
+                Button("Confirm deletion", role: .destructive) { notImplementedAlertPresented = true }
                 Button("Cancel", role: .cancel) { viewModel.reauthenticationViewIsPresented = false }
             } message: {
                 Text("Your account is going to be deleted. Ok?")
+            }
+            .alert("Functionality not implemented", isPresented: $notImplementedAlertPresented) {
+                Button("Return to profile") { viewModel.reauthenticationViewIsPresented = false }
             }
         }
     }
@@ -206,7 +212,7 @@ struct ProfileView: View {
     }
 }
 
- struct ProfileView_Previews: PreviewProvider {
+struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
@@ -217,4 +223,4 @@ struct ProfileView: View {
             }
         }
     }
- }
+}
