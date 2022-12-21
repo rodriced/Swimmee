@@ -51,7 +51,6 @@
 		DC3C88A528F4E8EA0065CBD6 /* CoachTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */; };
 		DC3C88A728F4F4A70065CBD6 /* SwimmerCoachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */; };
 		DC3E998F28FF42C3008E274C /* FirebaseImageStorageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E998E28FF42C3008E274C /* FirebaseImageStorageAPI.swift */; };
-		DC3E999329001F7E008E274C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E999229001F7E008E274C /* User.swift */; };
 		DC4E558D2946401700C508FA /* WorkoutTagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */; };
 		DC4E558F2946418A00C508FA /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E558E2946418A00C508FA /* Samples.swift */; };
 		DC4E559129464EEA00C508FA /* CoachTeamViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E559029464EEA00C508FA /* CoachTeamViewModelTests.swift */; };
@@ -173,7 +172,6 @@
 		DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachTeamView.swift; sourceTree = "<group>"; };
 		DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachView.swift; sourceTree = "<group>"; };
 		DC3E998E28FF42C3008E274C /* FirebaseImageStorageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseImageStorageAPI.swift; sourceTree = "<group>"; };
-		DC3E999229001F7E008E274C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTagsTests.swift; sourceTree = "<group>"; };
 		DC4E558E2946418A00C508FA /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
 		DC4E559029464EEA00C508FA /* CoachTeamViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachTeamViewModelTests.swift; sourceTree = "<group>"; };
@@ -317,7 +315,6 @@
 		DC3C888228F424640065CBD6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DC3E999229001F7E008E274C /* User.swift */,
 				DC3C888728F42BAE0065CBD6 /* Profile.swift */,
 				DC3C889C28F4C5830065CBD6 /* Workout.swift */,
 				DC3C888328F426250065CBD6 /* Message.swift */,
@@ -886,7 +883,6 @@
 				DC3E998F28FF42C3008E274C /* FirebaseImageStorageAPI.swift in Sources */,
 				DC3C888428F426250065CBD6 /* Message.swift in Sources */,
 				DC057210293C26510037A387 /* ProfileViewModel.swift in Sources */,
-				DC3E999329001F7E008E274C /* User.swift in Sources */,
 				DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */,
 				DC3C88A528F4E8EA0065CBD6 /* CoachTeamView.swift in Sources */,
 				DC9A435B2922880B00485B1F /* CoachMessagesView.swift in Sources */,
