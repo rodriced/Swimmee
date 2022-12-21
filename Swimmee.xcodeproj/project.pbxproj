@@ -26,6 +26,7 @@
 		DC150D572946A678001DB9B0 /* SwimmerCoachViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */; };
 		DC232BD7292B0D84007BC2ED /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DC232BD6292B0D84007BC2ED /* SDWebImageSwiftUI */; };
 		DC232BD9292B7D81007BC2ED /* UserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC232BD8292B7D81007BC2ED /* UserCellView.swift */; };
+		DC2409362952A686002A4CBB /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2409352952A686002A4CBB /* Samples.swift */; };
 		DC2B10942950FA0B002F6641 /* UserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2B10932950FA0B002F6641 /* UserRouter.swift */; };
 		DC2C22452943C7B0005BBC19 /* AccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22442943C7B0005BBC19 /* AccountAPI.swift */; };
 		DC2C22472943E2CA005BBC19 /* SwimmeeMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */; };
@@ -148,6 +149,7 @@
 		DC1037EF28F72D75005E5B57 /* AuthenticatedMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedMainView.swift; sourceTree = "<group>"; };
 		DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachViewModelTests.swift; sourceTree = "<group>"; };
 		DC232BD8292B7D81007BC2ED /* UserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellView.swift; sourceTree = "<group>"; };
+		DC2409352952A686002A4CBB /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
 		DC2B10932950FA0B002F6641 /* UserRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRouter.swift; sourceTree = "<group>"; };
 		DC2C22442943C7B0005BBC19 /* AccountAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAPI.swift; sourceTree = "<group>"; };
 		DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmeeMain.swift; sourceTree = "<group>"; };
@@ -317,8 +319,8 @@
 			children = (
 				DC3E999229001F7E008E274C /* User.swift */,
 				DC3C888728F42BAE0065CBD6 /* Profile.swift */,
-				DC3C888328F426250065CBD6 /* Message.swift */,
 				DC3C889C28F4C5830065CBD6 /* Workout.swift */,
+				DC3C888328F426250065CBD6 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -461,6 +463,7 @@
 			isa = PBXGroup;
 			children = (
 				DC88598628E269E20032E0FB /* Preview Assets.xcassets */,
+				DC2409352952A686002A4CBB /* Samples.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -829,6 +832,7 @@
 				DC80A5862952726C00F16CE6 /* EditMessageViewModel.swift in Sources */,
 				DC8859AC28E26FE00032E0FB /* ProfileView.swift in Sources */,
 				DC3C88A128F4DFCF0065CBD6 /* CoachWorkoutsView.swift in Sources */,
+				DC2409362952A686002A4CBB /* Samples.swift in Sources */,
 				DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */,
 				DC80A58C2952739D00F16CE6 /* CoachTeamViewModel.swift in Sources */,
 				DCDCFD1529525F8500993398 /* FormTextField.swift in Sources */,

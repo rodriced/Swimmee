@@ -39,14 +39,6 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
         workout.title != title || workout.content != content
     }
     
-    static var sample = Workout(userId: UUID().uuidString, title: "Workout", content: "100m free\n200m ...")
-    
-    func toSamples(_ nbElements: Int) -> [Workout] {
-        (1 ... nbElements).map {
-            Workout(userId: UUID().uuidString, title: title + String($0), content: content)
-        }
-    }
-
     var tagsCache: Set<Int> = []
 }
 

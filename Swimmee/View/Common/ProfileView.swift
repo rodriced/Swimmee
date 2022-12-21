@@ -206,10 +206,15 @@ struct ProfileView: View {
     }
 }
 
-// struct ProfileView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationView {
-//            ProfileView(viewModel: ProfileViewModel(profile: Profile.coachSample))
-//        }
-//    }
-// }
+ struct ProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            NavigationView {
+                ProfileView(viewModel: ProfileViewModel(initialData: Profile.coachSample))
+            }
+            NavigationView {
+                ProfileView(viewModel: ProfileViewModel(initialData: Profile.swimmerSample))
+            }
+        }
+    }
+ }

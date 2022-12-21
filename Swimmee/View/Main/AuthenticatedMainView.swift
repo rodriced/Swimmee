@@ -33,8 +33,3 @@ struct AuthenticatedMainView: View {
     }
 }
 
-struct SignedInView_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthenticatedMainView(profile: Profile.swimmerSample)
-    }
-}

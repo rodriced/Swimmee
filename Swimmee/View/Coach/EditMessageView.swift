@@ -141,10 +141,10 @@ struct EditMessageView: View {
     }
 }
 
-struct EditMessageView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            EditMessageView(message: Message.sample)
-        }
-    }
-}
+//struct EditMessageView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            EditMessageView(message: Message.sample)
+//        }
+//    }
+//}

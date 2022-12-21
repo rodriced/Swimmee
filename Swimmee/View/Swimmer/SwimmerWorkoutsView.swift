@@ -123,8 +123,18 @@ struct SwimmerWorkoutsView: View {
     }
 }
 
-// struct SwimmerWorkoutsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SwimmerWorkoutsView()
-//    }
-// }
+ struct SwimmerWorkoutsView_Previews: PreviewProvider {
+     static let workouts: [Workout] = {
+         var workout = Workout.sample
+         workout.dbId = "DbId"
+         return workout.toSamples(5)
+     }()
+
+     static var previews: some View {
+         SwimmerWorkoutsView(SwimmerWorkoutsViewModel(initialData:
+             (workouts, Set((1 ... 2).map { workouts[$0].dbId! }))
+         ))
+         .environmentObject(UserInfos(profile: Profile.swimmerSample))
+         .environmentObject(CoachSession())
+     }
+ }

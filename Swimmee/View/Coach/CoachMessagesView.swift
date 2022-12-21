@@ -122,7 +122,7 @@ struct CoachMessagesView: View {
 
 struct CoachMessagesView_Previews: PreviewProvider {
     static var previews: some View {
-        CoachMessagesView(viewModel: CoachMessagesViewModel(initialData: [Message.sample]))
+        CoachMessagesView(viewModel: CoachMessagesViewModel(initialData: Message.sample.toSamples(5)))
             .environmentObject(UserInfos(profile: Profile.coachSample))
             .environmentObject(CoachSession())
     }

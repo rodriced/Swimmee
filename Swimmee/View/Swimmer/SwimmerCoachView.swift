@@ -10,7 +10,11 @@ import SwiftUI
 struct SwimmerCoachView: View {
     @EnvironmentObject var session: SwimmerSession
     
-    @StateObject var viewModel = SwimmerCoachViewModel()
+    @StateObject var viewModel: SwimmerCoachViewModel
+
+    init(viewModel: SwimmerCoachViewModel = SwimmerCoachViewModel()) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var chosenCoachHeader: some View {
         Group {
@@ -79,10 +83,11 @@ struct SwimmerCoachView: View {
     }
 }
 
-// struct SwimmerCoachView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationView {
-//            SwimmerCoachView()
-//        }
-//    }
-// }
+ struct SwimmerCoachView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            SwimmerCoachView()
+                .environmentObject(SwimmerSession(initialProfile: Profile.swimmerSample))
+        }
+    }
+ }

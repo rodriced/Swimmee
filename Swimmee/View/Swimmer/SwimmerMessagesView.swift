@@ -47,7 +47,7 @@ struct SwimmerMessagesView: View {
                             router.routeTo(setting: .coachSelection)
                         } label: {
                             Text("You can do it in settings ")
-                            + Text(Image(systemName: "arrow.forward"))
+                                + Text(Image(systemName: "arrow.forward"))
                         }
                     }
                 } else {
@@ -66,8 +66,18 @@ struct SwimmerMessagesView: View {
     }
 }
 
-// struct SwimmerMessagesView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SwimmerMessagesView()
-//    }
-// }
+struct SwimmerMessagesView_Previews: PreviewProvider {
+    static let messages: [Message] = {
+        var message = Message.sample
+        message.dbId = "DbId"
+        return message.toSamples(5)
+    }()
+
+    static var previews: some View {
+        SwimmerMessagesView(SwimmerMessagesViewModel(initialData:
+            (messages, Set((1 ... 2).map { messages[$0].dbId! }))
+        ))
+        .environmentObject(UserInfos(profile: Profile.swimmerSample))
+        .environmentObject(CoachSession())
+    }
+}

@@ -36,12 +36,4 @@ struct Message: Identifiable, Codable, DbIdentifiable, Hashable {
     func hasTextDifferent(from message: Message) -> Bool {
         message.title != title || message.content != content
     }
-        
-    static var sample = Message(userId: UUID().uuidString, title: "Message", content: "Bla bla bla\nBlalbla blaaaaaa")
-    
-    func toSamples(_ nbElements: Int) -> [Message] {
-        (1 ... nbElements).map {
-            Message(userId: UUID().uuidString, title: title + String($0), content: content)
-        }
-    }
 }

@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct CoachTeamView: View {
-    @StateObject var viewModel = CoachTeamViewModel()
+    @StateObject var viewModel: CoachTeamViewModel
+
+    init(viewModel: CoachTeamViewModel = CoachTeamViewModel()) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         Group {
@@ -36,7 +40,13 @@ struct CoachTeamView: View {
 }
 
 struct CoachTeamView_Previews: PreviewProvider {
+    class FakeProfileAPI: ProfileCoachAPI {
+        func loadTeam() async throws -> [Profile] {
+            Profile.swimmerSample.toSamples(with: 5)
+        }
+    }
+
     static var previews: some View {
-        CoachTeamView()
+        CoachTeamView(viewModel: CoachTeamViewModel(profileAPI: FakeProfileAPI()))
     }
 }

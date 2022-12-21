@@ -172,7 +172,7 @@ struct CoachWorkoutsView: View {
 
 struct CoachWorkoutsView_Previews: PreviewProvider {
     static var previews: some View {
-        CoachWorkoutsView(viewModel: CoachWorkoutsViewModel(initialData: [Workout.sample]))
+        CoachWorkoutsView(viewModel: CoachWorkoutsViewModel(initialData: Workout.sample.toSamples(5)))
             .environmentObject(UserInfos(profile: Profile.coachSample))
             .environmentObject(CoachSession())
     }

@@ -208,10 +208,10 @@ struct EditWorkoutView: View {
     }
 }
 
-struct EditWorkoutView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            EditWorkoutView(workout: Workout.sample)
-        }
-    }
-}
+//struct EditWorkoutView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            EditWorkoutView(workout: Workout.sample)
+//        }
+//    }
+//}
