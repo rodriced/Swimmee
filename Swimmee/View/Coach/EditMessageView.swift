@@ -46,7 +46,7 @@ struct EditMessageView: View {
                 confirmationTitle: "Unsend and save as draft ?",
                 confirmationPresented: $unsendAndSaveAsDraftConfirmationPresented,
                 confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveMessage(andSendIt: false, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: false)
                 }}
             ),
             sendButton: (
@@ -54,7 +54,7 @@ struct EditMessageView: View {
                 confirmationTitle: "Replace sent message ?",
                 confirmationPresented: $resendConfirmationPresented,
                 confirmationButton: { Button("Confirm Replace") {
-                    viewModel.saveMessage(andSendIt: true, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: true)
                 }}
             ))
             :
@@ -63,7 +63,7 @@ struct EditMessageView: View {
                 confirmationTitle: "Save as draft ?",
                 confirmationPresented: $saveAsDraftConfirmationPresented,
                 confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveMessage(andSendIt: false, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: false)
                 }}
             ),
             sendButton: (
@@ -71,7 +71,7 @@ struct EditMessageView: View {
                 confirmationTitle: "Send message ?",
                 confirmationPresented: $sendConfirmationPresented,
                 confirmationButton: { Button("Confirm Send") {
-                    viewModel.saveMessage(andSendIt: true, completion: dismiss)
+                    viewModel.saveMessage(andSendIt: true)
                 }}
             ))
 

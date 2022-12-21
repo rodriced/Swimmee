@@ -33,7 +33,7 @@ class EditMessageViewModel: ObservableObject {
         self.messageAPI = messageAPI
     }
 
-    func saveMessage(andSendIt: Bool, completion: (() -> Void)?) {
+    func saveMessage(andSendIt: Bool, completion: (() -> Void)? = nil) {
         Task {
             var messageToSave = message
             messageToSave.isSent = andSendIt

@@ -34,7 +34,7 @@ class EditWorkoutViewModel: ObservableObject {
         workout.isSent || (!workout.isSent && workout.hasTextDifferent(from: originalWorkout))
     }
 
-    func saveWorkout(andSendIt: Bool, completion: (() -> Void)?) {
+    func saveWorkout(andSendIt: Bool, completion: (() -> Void)? = nil) {
         Task {
             var workoutToSave = workout // Working on a copy prevent reactive behaviours of the original workout on UI
             workoutToSave.isSent = andSendIt

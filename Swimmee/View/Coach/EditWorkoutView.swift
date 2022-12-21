@@ -83,7 +83,7 @@ struct EditWorkoutView: View {
                 confirmationTitle: "Unsend and save as draft ?",
                 confirmationPresented: $unsendAndSaveAsDraftConfirmationPresented,
                 confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveWorkout(andSendIt: false, completion: dismiss)
+                    viewModel.saveWorkout(andSendIt: false)
                 }}
             ),
             sendButton: (
@@ -91,7 +91,7 @@ struct EditWorkoutView: View {
                 confirmationTitle: "Replace sent workout ?",
                 confirmationPresented: $resendConfirmationPresented,
                 confirmationButton: { Button("Confirm Replace") {
-                    viewModel.saveWorkout(andSendIt: true, completion: dismiss)
+                    viewModel.saveWorkout(andSendIt: true)
                 }}
             ))
             :
@@ -100,7 +100,7 @@ struct EditWorkoutView: View {
                 confirmationTitle: "Save as draft ?",
                 confirmationPresented: $saveAsDraftConfirmationPresented,
                 confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveWorkout(andSendIt: false, completion: dismiss)
+                    viewModel.saveWorkout(andSendIt: false)
                 }}
             ),
             sendButton: (
@@ -108,7 +108,7 @@ struct EditWorkoutView: View {
                 confirmationTitle: "Send workout ?",
                 confirmationPresented: $sendConfirmationPresented,
                 confirmationButton: { Button("Confirm Send") {
-                    viewModel.saveWorkout(andSendIt: true, completion: dismiss)
+                    viewModel.saveWorkout(andSendIt: true)
                 }}
             ))
 
