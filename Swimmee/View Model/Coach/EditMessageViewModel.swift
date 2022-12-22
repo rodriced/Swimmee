@@ -33,7 +33,13 @@ class EditMessageViewModel: ObservableObject {
         self.messageAPI = messageAPI
     }
 
-    func saveMessage(andSendIt: Bool, completion: (() -> Void)? = nil) {
+    func saveMessage(andSendIt: Bool, onValidationError: (() -> Void)? = nil) {
+        guard validateTitle() else {
+            alertContext.message = "Put something in title and retry."
+            onValidationError?()
+            return
+        }
+        
         Task {
             var messageToSave = message
             messageToSave.isSent = andSendIt
@@ -52,7 +58,6 @@ class EditMessageViewModel: ObservableObject {
 
             do {
                 _ = try await messageAPI.save(messageToSave, replaceAsNew: replaceAsNew)
-                completion?()
             } catch {
                 alertContext.message = error.localizedDescription
             }

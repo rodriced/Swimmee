@@ -74,10 +74,7 @@ final class EditMessageViewModelTests: XCTestCase {
         
         sut.message.content = newContent
         
-        let expectation = expectation(description: "Waiting for completion")
-        sut.saveMessage(andSendIt: false, completion: { expectation.fulfill() })
-        
-        wait(for: [expectation], timeout: 1)
+        sut.saveMessage(andSendIt: false, onValidationError: { XCTFail() })
     }
     
     func testSendUnsentMessage() {
@@ -98,12 +95,8 @@ final class EditMessageViewModelTests: XCTestCase {
             return expectedSavedMessage.userId
         }
         let sut = EditMessageViewModel(message: aMessage, messageAPI: messageAPI)
-        
-        let expectation = expectation(description: "Waiting for completion")
-        
-        sut.saveMessage(andSendIt: true, completion: { expectation.fulfill() })
-        
-        wait(for: [expectation], timeout: 1)
+                
+        sut.saveMessage(andSendIt: true, onValidationError: { XCTFail() })
     }
     
     func testSaveAsDraftSentMessage() {
@@ -122,12 +115,8 @@ final class EditMessageViewModelTests: XCTestCase {
             return expectedSavedMessage.userId
         }
         let sut = EditMessageViewModel(message: aMessage, messageAPI: messageAPI)
-        
-        let expectation = expectation(description: "Waiting for completion")
-        
-        sut.saveMessage(andSendIt: false, completion: { expectation.fulfill() })
-        
-        wait(for: [expectation], timeout: 1)
+                
+        sut.saveMessage(andSendIt: false, onValidationError: { XCTFail() })
     }
     
     func testReplaceSentMessage() {
@@ -144,14 +133,29 @@ final class EditMessageViewModelTests: XCTestCase {
             return expectedSavedMessage.userId
         }
         let sut = EditMessageViewModel(message: aMessage, messageAPI: messageAPI)
+                
+        sut.saveMessage(andSendIt: true, onValidationError: { XCTFail() })
+    }
+
+    func testSaveMessageWithValidationError() {
+        let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         
-        let expectation = expectation(description: "Waiting for completion")
+        let messageAPI = MockUserMessageCollectionAPI()
+        let sut = EditMessageViewModel(message: aMessage, messageAPI: messageAPI)
+        sut.message.title = ""
         
-        sut.saveMessage(andSendIt: true, completion: { expectation.fulfill() })
+        let expectation = expectation(description: "Waiting for onError")
+        
+        assertPublishedValue(sut.alertContext.$isPresented, equals: true) {
+            sut.saveMessage(andSendIt: false, onValidationError: { expectation.fulfill() })
+        }
         
         wait(for: [expectation], timeout: 1)
+        
+        XCTAssertEqual(sut.alertContext.message, "Put something in title and retry.")
     }
     
+
     func testSaveMessageWithNetworkError() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         
@@ -163,7 +167,7 @@ final class EditMessageViewModelTests: XCTestCase {
         sut.message.content = "New cntent"
         
         assertPublishedValue(sut.alertContext.$isPresented, equals: true) {
-            sut.saveMessage(andSendIt: false, completion: { XCTFail() })
+            sut.saveMessage(andSendIt: false, onValidationError: { XCTFail() })
         }
         
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")

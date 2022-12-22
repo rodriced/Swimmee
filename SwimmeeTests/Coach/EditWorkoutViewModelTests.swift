@@ -74,10 +74,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         
         sut.workout.content = newContent
         
-        let expectation = expectation(description: "Waiting for completion")
-        sut.saveWorkout(andSendIt: false, completion: { expectation.fulfill() })
-        
-        wait(for: [expectation], timeout: 1)
+        sut.saveWorkout(andSendIt: false, onValidationError: { XCTFail() })
     }
     
     func testSendUnsentWorkout() {
@@ -98,12 +95,8 @@ final class EditWorkoutViewModelTests: XCTestCase {
             return expectedSavedWorkout.userId
         }
         let sut = EditWorkoutViewModel(workout: aWorkout, workoutAPI: workoutAPI)
-        
-        let expectation = expectation(description: "Waiting for completion")
-        
-        sut.saveWorkout(andSendIt: true, completion: { expectation.fulfill() })
-        
-        wait(for: [expectation], timeout: 1)
+                
+        sut.saveWorkout(andSendIt: true, onValidationError: { XCTFail() })
     }
     
     func testSaveAsDraftSentWorkout() {
@@ -122,12 +115,8 @@ final class EditWorkoutViewModelTests: XCTestCase {
             return expectedSavedWorkout.userId
         }
         let sut = EditWorkoutViewModel(workout: aWorkout, workoutAPI: workoutAPI)
-        
-        let expectation = expectation(description: "Waiting for completion")
-        
-        sut.saveWorkout(andSendIt: false, completion: { expectation.fulfill() })
-        
-        wait(for: [expectation], timeout: 1)
+                
+        sut.saveWorkout(andSendIt: false, onValidationError: { XCTFail() })
     }
     
     func testReplaceSentWorkout() {
@@ -144,12 +133,26 @@ final class EditWorkoutViewModelTests: XCTestCase {
             return expectedSavedWorkout.userId
         }
         let sut = EditWorkoutViewModel(workout: aWorkout, workoutAPI: workoutAPI)
+                
+        sut.saveWorkout(andSendIt: true, onValidationError: { XCTFail() })
+    }
+    
+    func testSaveWorkoutWithValidationError() {
+        let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
         
-        let expectation = expectation(description: "Waiting for completion")
+        let workoutAPI = MockUserWorkoutCollectionAPI()
+        let sut = EditWorkoutViewModel(workout: aWorkout, workoutAPI: workoutAPI)
+        sut.workout.title = ""
         
-        sut.saveWorkout(andSendIt: true, completion: { expectation.fulfill() })
+        let expectation = expectation(description: "Waiting for onError")
+        
+        assertPublishedValue(sut.alertContext.$isPresented, equals: true) {
+            sut.saveWorkout(andSendIt: false, onValidationError: { expectation.fulfill() })
+        }
         
         wait(for: [expectation], timeout: 1)
+        
+        XCTAssertEqual(sut.alertContext.message, "Put something in title and retry.")
     }
     
     func testSaveWorkoutWithNetworkError() {
@@ -161,11 +164,11 @@ final class EditWorkoutViewModelTests: XCTestCase {
         }
         let sut = EditWorkoutViewModel(workout: aWorkout, workoutAPI: workoutAPI)
         sut.workout.content = "New cntent"
-        
+                
         assertPublishedValue(sut.alertContext.$isPresented, equals: true) {
-            sut.saveWorkout(andSendIt: false, completion: { XCTFail() })
+            sut.saveWorkout(andSendIt: false, onValidationError: { XCTFail() })
         }
-        
+                
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")
     }
     

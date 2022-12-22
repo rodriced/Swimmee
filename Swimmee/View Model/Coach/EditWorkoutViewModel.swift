@@ -34,7 +34,13 @@ class EditWorkoutViewModel: ObservableObject {
         workout.isSent || (!workout.isSent && workout.hasTextDifferent(from: originalWorkout))
     }
 
-    func saveWorkout(andSendIt: Bool, completion: (() -> Void)? = nil) {
+    func saveWorkout(andSendIt: Bool, onValidationError: (() -> Void)? = nil) {
+        guard validateTitle() else {
+            alertContext.message = "Put something in title and retry."
+            onValidationError?()
+            return
+        }
+        
         Task {
             var workoutToSave = workout // Working on a copy prevent reactive behaviours of the original workout on UI
             workoutToSave.isSent = andSendIt
@@ -54,7 +60,6 @@ class EditWorkoutViewModel: ObservableObject {
 
             do {
                 _ = try await workoutAPI.save(workoutToSave, replaceAsNew: replaceAsNew)
-                completion?()
             } catch {
                 alertContext.message = error.localizedDescription
             }

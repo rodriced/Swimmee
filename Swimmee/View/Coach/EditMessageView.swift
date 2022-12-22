@@ -9,101 +9,103 @@ import SwiftUI
 
 struct EditMessageView: View {
     @Environment(\.presentationMode) private var presentationMode
+    private func dismiss() { presentationMode.wrappedValue.dismiss() }
 
     @StateObject var viewModel: EditMessageViewModel
 
     @State var deleteConfirmationPresented = false
-    @State var unsendAndSaveAsDraftConfirmationPresented = false
-    @State var resendConfirmationPresented = false
-    @State var saveAsDraftConfirmationPresented = false
-    @State var sendConfirmationPresented = false
-
     @FocusState private var isTitleFocused: Bool
 
     init(message: Message) {
 //        print("EditMessageView.init (titile = \(message.title)")
         _viewModel = StateObject(wrappedValue: EditMessageViewModel(message: message))
     }
+    
+    // MARK: - Components
 
-    func dismiss() {
-        presentationMode.wrappedValue.dismiss()
+    // MARK: Delete button
+    
+    var deleteButton: some View {
+        Button {
+            deleteConfirmationPresented = true
+        } label: {
+            Image(systemName: "trash").foregroundColor(Color.red)
+        }
+        .confirmationDialog("Delete message ?", isPresented: $deleteConfirmationPresented) {
+            Button("Delete message ?") { viewModel.deleteMessage(completion: dismiss) }
+        }
+    }
+
+    // MARK: Bottom buttons
+
+    struct SaveAsDraftButtonModifier: ViewModifier {
+        func body(content: Content) -> some View {
+            content.foregroundColor(Color.black)
+                .tint(Color.orange.opacity(0.7))
+        }
+    }
+
+    var unsentAndSaveAsDraftButton: some View {
+        ButtonWithConfirmation(label: "Unsend and save as draft",
+                     isDisabled: !viewModel.canTryToSaveAsDraft,
+                     confirmationTitle: "Unsend and save as draft ?",
+                     confirmationButtonLabel: "Confirm Save as draft",
+                     buttonModifier: SaveAsDraftButtonModifier(),
+                     action: {
+                         viewModel.saveMessage(andSendIt: false, onValidationError: { isTitleFocused = true })
+                     })
+    }
+
+    var resendButton: some View {
+        ButtonWithConfirmation(label: "Replace (Re-send)",
+                     isDisabled: !viewModel.canTryToSend,
+                     confirmationTitle: "Replace already sent message ?",
+                     confirmationButtonLabel: "Confirm Replace ?",
+                     action: {
+                         viewModel.saveMessage(andSendIt: true, onValidationError: { isTitleFocused = true })
+                     })
+    }
+
+    var saveAsDraftButton: some View {
+        ButtonWithConfirmation(label: "Save as draft",
+                     isDisabled: !viewModel.canTryToSaveAsDraft,
+                     confirmationTitle: "Save as draft ?",
+                     confirmationButtonLabel: "Confirm Save as draft",
+                     buttonModifier: SaveAsDraftButtonModifier(),
+                     action: {
+                         viewModel.saveMessage(andSendIt: false, onValidationError: { isTitleFocused = true })
+                     })
+    }
+
+    var sendButton: some View {
+        ButtonWithConfirmation(label: "Send",
+                     isDisabled: !viewModel.canTryToSend,
+                     confirmationTitle: "Send ?",
+                     confirmationButtonLabel: "Send message ?",
+                     action: {
+                         viewModel.saveMessage(andSendIt: true, onValidationError: { isTitleFocused = true })
+                     })
     }
 
     var bottomButtonsBar: some View {
-        func doIfFormValidated(action: () -> Void) {
-            guard viewModel.validateTitle() else {
-                viewModel.alertContext.message = "Put something in title and retry."
-                isTitleFocused = true
-                return
+        HStack {
+            if viewModel.message.isSent {
+                unsentAndSaveAsDraftButton
+                resendButton
+            } else {
+                saveAsDraftButton
+                sendButton
             }
-
-            action()
         }
-
-        let config = viewModel.message.isSent ?
-            (saveAsDraft: (
-                buttonLabel: "Unsend and save as draft",
-                confirmationTitle: "Unsend and save as draft ?",
-                confirmationPresented: $unsendAndSaveAsDraftConfirmationPresented,
-                confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveMessage(andSendIt: false)
-                }}
-            ),
-            sendButton: (
-                buttonLabel: "Replace (Re-send)",
-                confirmationTitle: "Replace sent message ?",
-                confirmationPresented: $resendConfirmationPresented,
-                confirmationButton: { Button("Confirm Replace") {
-                    viewModel.saveMessage(andSendIt: true)
-                }}
-            ))
-            :
-            (saveAsDraft: (
-                buttonLabel: "Save as draft",
-                confirmationTitle: "Save as draft ?",
-                confirmationPresented: $saveAsDraftConfirmationPresented,
-                confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveMessage(andSendIt: false)
-                }}
-            ),
-            sendButton: (
-                buttonLabel: "Send",
-                confirmationTitle: "Send message ?",
-                confirmationPresented: $sendConfirmationPresented,
-                confirmationButton: { Button("Confirm Send") {
-                    viewModel.saveMessage(andSendIt: true)
-                }}
-            ))
-
-        return HStack {
-            Button {
-                config.saveAsDraft.confirmationPresented.wrappedValue = true
-            } label: {
-                Text(config.saveAsDraft.buttonLabel)
-                    .frame(maxWidth: .infinity)
-            }
-            .foregroundColor(Color.black)
-            .tint(Color.orange.opacity(0.7))
-            .disabled(!viewModel.canTryToSaveAsDraft)
-            .confirmationDialog(config.saveAsDraft.confirmationTitle, isPresented: config.saveAsDraft.confirmationPresented, actions: config.saveAsDraft.confirmationButton)
-
-            Button {
-                config.sendButton.confirmationPresented.wrappedValue = true
-            } label: {
-                Text(config.sendButton.buttonLabel)
-                    .frame(maxWidth: .infinity)
-            }
-            .disabled(!viewModel.canTryToSend)
-            .confirmationDialog(config.sendButton.confirmationTitle, isPresented: config.sendButton.confirmationPresented, actions: config.sendButton.confirmationButton)
-        }
-        .buttonStyle(.borderedProminent)
     }
+    
+    // MARK: - Layout organization
 
     var body: some View {
         VStack {
 //            DebugHelper.viewBodyPrint("EditMessageView")
             if viewModel.message.isSent {
-                Label("Message is published", systemImage: "exclamationmark.triangle")
+                Label("Message is sent", systemImage: "exclamationmark.triangle")
                     .foregroundColor(.mint)
             }
 
@@ -123,14 +125,7 @@ struct EditMessageView: View {
 
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button {
-                    deleteConfirmationPresented = true
-                } label: {
-                    Image(systemName: "trash").foregroundColor(Color.red)
-                }
-                .confirmationDialog("Delete message ?", isPresented: $deleteConfirmationPresented) {
-                    Button("Delete message ?") { viewModel.deleteMessage(completion: dismiss) }
-                }
+                deleteButton
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") { dismiss() }
@@ -141,10 +136,10 @@ struct EditMessageView: View {
     }
 }
 
-//struct EditMessageView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationView {
-//            EditMessageView(message: Message.sample)
-//        }
-//    }
-//}
+struct EditMessageView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            EditMessageView(message: Message.sample)
+        }
+    }
+}

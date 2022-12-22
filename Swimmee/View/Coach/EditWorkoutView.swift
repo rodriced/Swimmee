@@ -9,18 +9,13 @@ import SwiftUI
 
 struct EditWorkoutView: View {
     @Environment(\.presentationMode) private var presentationMode
-    func dismiss() { presentationMode.wrappedValue.dismiss() }
+    private func dismiss() { presentationMode.wrappedValue.dismiss() }
 
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
-    @StateObject var viewModel: EditWorkoutViewModel
+    @StateObject private var viewModel: EditWorkoutViewModel
 
-    @State var deleteConfirmationPresented = false
-    @State var unsendAndSaveAsDraftConfirmationPresented = false
-    @State var resendConfirmationPresented = false
-    @State var saveAsDraftConfirmationPresented = false
-    @State var sendConfirmationPresented = false
-
+    @State private var deleteConfirmationPresented = false
     @FocusState private var isTitleFocused: Bool
 
     init(workout: Workout) {
@@ -28,7 +23,9 @@ struct EditWorkoutView: View {
         _viewModel = StateObject(wrappedValue: EditWorkoutViewModel(workout: workout))
     }
 
-    // MARK: - Date and Duration Pickers
+    // MARK: - Components
+    
+    // MARK: Date and Duration Pickers
 
     var datePicker: some View {
         DatePicker(selection: $viewModel.workout.date, displayedComponents: .date) {
@@ -39,7 +36,7 @@ struct EditWorkoutView: View {
             .foregroundColor(Color.secondary)
         }
     }
-    
+
     static let durationPickerData: [(Int, String)] =
         stride(from: 15, to: 241, by: 15).map { totalInMinutes in
 
@@ -63,77 +60,81 @@ struct EditWorkoutView: View {
             .foregroundColor(Color.secondary)
         }
     }
+    
+    // MARK: Delete button
+    
+    var deleteButton: some View {
+        Button {
+            deleteConfirmationPresented = true
+        } label: {
+            Image(systemName: "trash").foregroundColor(Color.red)
+        }
+        .confirmationDialog("Delete workout ?", isPresented: $deleteConfirmationPresented) {
+            Button("Delete workout ?") { viewModel.deleteWorkout(completion: dismiss) }
+        }
+    }
 
-    // MARK: - Bottom buttons
+    // MARK: Bottom buttons
+
+    struct SaveAsDraftButtonModifier: ViewModifier {
+        func body(content: Content) -> some View {
+            content.foregroundColor(Color.black)
+                .tint(Color.orange.opacity(0.7))
+        }
+    }
+
+    var unsentAndSaveAsDraftButton: some View {
+        ButtonWithConfirmation(label: "Unpublish and save as draft",
+                     isDisabled: !viewModel.canTryToSaveAsDraft,
+                     confirmationTitle: "Unpublish and save as draft ?",
+                     confirmationButtonLabel: "Confirm Save as draft",
+                     buttonModifier: SaveAsDraftButtonModifier(),
+                     action: {
+                         viewModel.saveWorkout(andSendIt: false, onValidationError: { isTitleFocused = true })
+                     })
+    }
+
+    var resendButton: some View {
+        ButtonWithConfirmation(label: "Replace (Re-publish)",
+                     isDisabled: !viewModel.canTryToSend,
+                     confirmationTitle: "Replace already published workout ?",
+                     confirmationButtonLabel: "Confirm Replace ?",
+                     action: {
+                         viewModel.saveWorkout(andSendIt: true, onValidationError: { isTitleFocused = true })
+                     })
+    }
+
+    var saveAsDraftButton: some View {
+        ButtonWithConfirmation(label: "Save as draft",
+                     isDisabled: !viewModel.canTryToSaveAsDraft,
+                     confirmationTitle: "Save as draft ?",
+                     confirmationButtonLabel: "Confirm Save as draft",
+                     buttonModifier: SaveAsDraftButtonModifier(),
+                     action: {
+                         viewModel.saveWorkout(andSendIt: false, onValidationError: { isTitleFocused = true })
+                     })
+    }
+
+    var sendButton: some View {
+        ButtonWithConfirmation(label: "Publish",
+                     isDisabled: !viewModel.canTryToSend,
+                     confirmationTitle: "Publish ?",
+                     confirmationButtonLabel: "Publish workout ?",
+                     action: {
+                         viewModel.saveWorkout(andSendIt: true, onValidationError: { isTitleFocused = true })
+                     })
+    }
 
     var bottomButtonsBar: some View {
-        func doIfFormValidated(action: () -> Void) {
-            guard viewModel.validateTitle() else {
-                viewModel.alertContext.message = "Put something in title and retry."
-                isTitleFocused = true
-                return
+        HStack {
+            if viewModel.workout.isSent {
+                unsentAndSaveAsDraftButton
+                resendButton
+            } else {
+                saveAsDraftButton
+                sendButton
             }
-
-            action()
         }
-
-        let config = viewModel.workout.isSent ?
-            (saveAsDraft: (
-                buttonLabel: "Unsend and save as draft",
-                confirmationTitle: "Unsend and save as draft ?",
-                confirmationPresented: $unsendAndSaveAsDraftConfirmationPresented,
-                confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveWorkout(andSendIt: false)
-                }}
-            ),
-            sendButton: (
-                buttonLabel: "Replace (Re-send)",
-                confirmationTitle: "Replace sent workout ?",
-                confirmationPresented: $resendConfirmationPresented,
-                confirmationButton: { Button("Confirm Replace") {
-                    viewModel.saveWorkout(andSendIt: true)
-                }}
-            ))
-            :
-            (saveAsDraft: (
-                buttonLabel: "Save as draft",
-                confirmationTitle: "Save as draft ?",
-                confirmationPresented: $saveAsDraftConfirmationPresented,
-                confirmationButton: { Button("Confirm Save as draft") {
-                    viewModel.saveWorkout(andSendIt: false)
-                }}
-            ),
-            sendButton: (
-                buttonLabel: "Send",
-                confirmationTitle: "Send workout ?",
-                confirmationPresented: $sendConfirmationPresented,
-                confirmationButton: { Button("Confirm Send") {
-                    viewModel.saveWorkout(andSendIt: true)
-                }}
-            ))
-
-        return HStack {
-            Button {
-                config.saveAsDraft.confirmationPresented.wrappedValue = true
-            } label: {
-                Text(config.saveAsDraft.buttonLabel)
-                    .frame(maxWidth: .infinity)
-            }
-            .foregroundColor(Color.black)
-            .tint(Color.orange.opacity(0.7))
-            .disabled(!viewModel.canTryToSaveAsDraft)
-            .confirmationDialog(config.saveAsDraft.confirmationTitle, isPresented: config.saveAsDraft.confirmationPresented, actions: config.saveAsDraft.confirmationButton)
-
-            Button {
-                config.sendButton.confirmationPresented.wrappedValue = true
-            } label: {
-                Text(config.sendButton.buttonLabel)
-                    .frame(maxWidth: .infinity)
-            }
-            .disabled(!viewModel.canTryToSend)
-            .confirmationDialog(config.sendButton.confirmationTitle, isPresented: config.sendButton.confirmationPresented, actions: config.sendButton.confirmationButton)
-        }
-        .buttonStyle(.borderedProminent)
     }
 
     // MARK: - Layout organization
@@ -190,14 +191,7 @@ struct EditWorkoutView: View {
 
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button {
-                    deleteConfirmationPresented = true
-                } label: {
-                    Image(systemName: "trash").foregroundColor(Color.red)
-                }
-                .confirmationDialog("Delete workout ?", isPresented: $deleteConfirmationPresented) {
-                    Button("Delete workout ?") { viewModel.deleteWorkout(completion: dismiss) }
-                }
+                deleteButton
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") { dismiss() }
@@ -208,10 +202,10 @@ struct EditWorkoutView: View {
     }
 }
 
-//struct EditWorkoutView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NavigationView {
-//            EditWorkoutView(workout: Workout.sample)
-//        }
-//    }
-//}
+ struct EditWorkoutView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            EditWorkoutView(workout: Workout.sample)
+        }
+    }
+ }

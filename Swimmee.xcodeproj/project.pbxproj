@@ -83,6 +83,7 @@
 		DC80A5902952751700F16CE6 /* SwimmerMessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A58F2952751700F16CE6 /* SwimmerMessagesViewModel.swift */; };
 		DC80A5922952757600F16CE6 /* SwimmerWorkoutsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A5912952757600F16CE6 /* SwimmerWorkoutsViewModel.swift */; };
 		DC80A594295275E400F16CE6 /* SwimmerCoachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC80A593295275E400F16CE6 /* SwimmerCoachViewModel.swift */; };
+		DC85479029539FA200A09A02 /* ButtonWithConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC85478F29539FA200A09A02 /* ButtonWithConfirmation.swift */; };
 		DC863A512920531900934B62 /* PublisherExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC863A502920531900934B62 /* PublisherExtension.swift */; };
 		DC88598028E269E20032E0FB /* SwimmeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC88597F28E269E20032E0FB /* SwimmeeApp.swift */; };
 		DC88598428E269E20032E0FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC88598328E269E20032E0FB /* Assets.xcassets */; };
@@ -204,6 +205,7 @@
 		DC80A58F2952751700F16CE6 /* SwimmerMessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesViewModel.swift; sourceTree = "<group>"; };
 		DC80A5912952757600F16CE6 /* SwimmerWorkoutsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerWorkoutsViewModel.swift; sourceTree = "<group>"; };
 		DC80A593295275E400F16CE6 /* SwimmerCoachViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerCoachViewModel.swift; sourceTree = "<group>"; };
+		DC85478F29539FA200A09A02 /* ButtonWithConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithConfirmation.swift; sourceTree = "<group>"; };
 		DC863A502920531900934B62 /* PublisherExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherExtension.swift; sourceTree = "<group>"; };
 		DC88597C28E269E20032E0FB /* Swimmee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swimmee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC88597F28E269E20032E0FB /* SwimmeeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeApp.swift; sourceTree = "<group>"; };
@@ -517,6 +519,7 @@
 				DCDCFD1429525F8500993398 /* FormTextField.swift */,
 				DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */,
 				DC232BD8292B7D81007BC2ED /* UserCellView.swift */,
+				DC85478F29539FA200A09A02 /* ButtonWithConfirmation.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -866,6 +869,7 @@
 				DC3C888A28F449140065CBD6 /* CoachMainView.swift in Sources */,
 				DC7477692953377C00B61A9D /* ImageStorageAPI.swift in Sources */,
 				DC3C888C28F455970065CBD6 /* SettingsView.swift in Sources */,
+				DC85479029539FA200A09A02 /* ButtonWithConfirmation.swift in Sources */,
 				DC920B702934B851000EE664 /* ImageHelper.swift in Sources */,
 				DC2C22492943F031005BBC19 /* SwimmeeAppForTesting.swift in Sources */,
 				DCFBCF5029074B7D00F0BF35 /* ReauthenticationView.swift in Sources */,
