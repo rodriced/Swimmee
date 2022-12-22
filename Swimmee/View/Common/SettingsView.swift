@@ -47,16 +47,17 @@ struct SettingsView: View {
                     logoutConfirmationIsPresented = true
                 } label: {
                     MenuLabel(title: "Logout", systemImage: "rectangle.portrait.and.arrow.right", color: Color.orange)
+                        .foregroundColor(.primary)
                 }
                 .confirmationDialog("You are going to logout from Swimmee.", isPresented: $logoutConfirmationIsPresented) {
-                    Button("Confirm logout") {
+                    Button("Confirm Logout") {
                         if API.shared.account.signOut() == false {
                             alertContext.message = "Sign out Error"
                         }
                     }
                 }
             }
-            
+
 //
 //            Section {
 //                Button {
