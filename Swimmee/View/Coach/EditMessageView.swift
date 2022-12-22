@@ -125,10 +125,12 @@ struct EditMessageView: View {
 
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                deleteButton
+                if !viewModel.originalMessage.isNew {
+                    deleteButton
+                }
             }
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") { dismiss() }
+                Button("Cancel", action: dismiss)
             }
         }
 

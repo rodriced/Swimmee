@@ -191,10 +191,12 @@ struct EditWorkoutView: View {
 
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                deleteButton
+                if !viewModel.originalWorkout.isNew {
+                    deleteButton
+                }
             }
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") { dismiss() }
+                Button("Cancel", action: dismiss)
             }
         }
 
