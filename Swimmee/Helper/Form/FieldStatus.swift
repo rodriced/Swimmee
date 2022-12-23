@@ -1,5 +1,5 @@
 //
-//  FormField.swift
+//  FieldStatus.swift
 //  Swimmee
 //
 //  Created by Rodolphe Desruelles on 29/11/2022.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class FormField<Value: Equatable> {
+class FieldStatus<Value: Equatable> {
     let valuePublisher: Published<Value>.Publisher
     let validate: (Value) -> Bool
     let compareWith: ((Value) -> Bool)?
@@ -53,12 +53,12 @@ class FormField<Value: Equatable> {
 
 //    func startPublishers() {
 //        modified.sink {
-//            print("FormField.modified = \($0)")
+//            print("FieldStatus.modified = \($0)")
 //        }
 //        .store(in: &cancellables)
 //
 //        validated.sink {
-//            print("FormField.validated = \($0)")
+//            print("FieldStatus.validated = \($0)")
 //        }
 //        .store(in: &cancellables)
 //
@@ -68,7 +68,7 @@ class FormField<Value: Equatable> {
 }
 
 class FormFields<Value: Equatable> {
-    var fields: [FormField<Value>] = []
+    var fields: [FieldStatus<Value>] = []
 
     lazy var publishers = fields.map(\.publisher)
     lazy var modified = fields.map(\.modified).combineLatest()

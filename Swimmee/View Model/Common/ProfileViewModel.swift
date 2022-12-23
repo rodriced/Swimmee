@@ -10,9 +10,12 @@ import UIKit
 
 class ProfileViewModel: LoadableViewModel {
     struct Config: ViewModelConfig {
+        // Injected API
         let saveProfie: (Profile) async throws -> Void
         let deleteCurrrentAccount: () async throws -> Void
         let imageStorage: ImageStorageAPI
+
+        // Time interval between user input ending and validation launching
         let debounceDelay: RunLoop.SchedulerTimeType.Stride
 
         static let `default` =
@@ -24,7 +27,7 @@ class ProfileViewModel: LoadableViewModel {
 
     let config: Config
 
-    // MARK: Form view properties
+    // MARK: - Form view properties
 
     let initialProfile: Profile
 
@@ -48,12 +51,8 @@ class ProfileViewModel: LoadableViewModel {
     }
 
     @Published var isReadyToSubmit: Bool = false
-    @Published var updateProfileConfirmationIsPresented = false
 
-    @Published var reauthenticationViewIsPresented = false
-    @Published var deleteAccountConfirmationIsPresented = false
-
-    // MARK: Protocol LoadableViewModel implementation
+    // MARK: - Protocol LoadableViewModel implementation
 
     required init(initialData: Profile, config: Config = .default) {
         debugPrint("---- ProfileViewModel.init")
@@ -72,47 +71,36 @@ class ProfileViewModel: LoadableViewModel {
     func refreshedLoadedData(_ loadedData: Profile) {}
     var restartLoader: (() -> Void)?
 
-    // MARK: Debug
+    // MARK: - Form fields validation status
 
-    deinit {
-        debugPrint("---- ProfileViewModel deinit")
-    }
+    private lazy var firstNameStatus = FieldStatus(valuePublisher: $firstName,
+                                                   validate: ValueValidation.validateFirstName,
+                                                   initialValue: initialProfile.firstName,
+                                                   debounceDelay: config.debounceDelay)
 
-    // MARK: Form validation model
+    private lazy var lastNameStatus = FieldStatus(valuePublisher: $lastName,
+                                                  validate: ValueValidation.validateLastName,
+                                                  initialValue: initialProfile.lastName,
+                                                  debounceDelay: config.debounceDelay)
 
-    private lazy var firstNameField = FormField(valuePublisher: $firstName,
-                                                validate: ValueValidation.validateFirstName,
-                                                initialValue: initialProfile.firstName,
-                                                debounceDelay: config.debounceDelay)
-
-    private lazy var lastNameField = FormField(valuePublisher: $lastName,
-                                               validate: ValueValidation.validateLastName,
-                                               initialValue: initialProfile.lastName,
+    private lazy var emailStatus = FieldStatus(valuePublisher: $email,
+                                               validate: ValueValidation.validateEmail,
+                                               initialValue: initialProfile.email,
                                                debounceDelay: config.debounceDelay)
 
-    private lazy var emailField = FormField(valuePublisher: $email,
-                                            validate: ValueValidation.validateEmail,
-                                            initialValue: initialProfile.email,
-                                            debounceDelay: config.debounceDelay)
+    private lazy var photoStatus = FieldStatus(valuePublisher: photoInfoEdited.$state,
+                                               compareWith: { $0 != .initial },
+                                               debounceDelay: 0)
 
-    private lazy var photoInfoField = FormField(valuePublisher: photoInfoEdited.$state,
-                                                // TODO: Must fix link bug between photoInfoEdited.state and readOnlyPhotoInfoEditedState (State of Update button don't return to its initial state when we do the same with photo)
-                                                // BUT SEEMS OK NOW. TO BE VERIFIED
-                                                compareWith: { $0 != .initial },
-                                                debounceDelay: 0)
-
-    // MARK: Form validation logic
-
-    private lazy var formPublishers: [any ConnectablePublisher] =
-        [firstNameField.publisher, lastNameField.publisher, emailField.publisher, photoInfoField.publisher]
+    // MARK: - Form validation logic
 
     private lazy var formModified =
-        [firstNameField.modified, lastNameField.modified, emailField.modified, photoInfoField.modified]
+        [firstNameStatus.modified, lastNameStatus.modified, emailStatus.modified, photoStatus.modified]
             .combineLatest()
             .map { $0.contains(true) }
 
     private lazy var formValidated =
-        [firstNameField.validated, lastNameField.validated, emailField.validated, photoInfoField.validated]
+        [firstNameStatus.validated, lastNameStatus.validated, emailStatus.validated, photoStatus.validated]
             .combineLatest()
             .map { $0.allSatisfy { $0 } }
 
@@ -126,16 +114,20 @@ class ProfileViewModel: LoadableViewModel {
         formReadyToSubmit
             .assign(to: &$isReadyToSubmit)
 
-        firstNameField.validated.not().assign(to: &$firstNameInError)
-        lastNameField.validated.not().assign(to: &$lastNameInError)
-        emailField.validated.not().assign(to: &$emailInError)
+        firstNameStatus.validated.not().assign(to: &$firstNameInError)
+        lastNameStatus.validated.not().assign(to: &$lastNameInError)
+        emailStatus.validated.not().assign(to: &$emailInError)
 
-        formPublishers.forEach {
-            $0.connect().store(in: &cancellables)
-        }
+        let fieldsStatusPublishers: [any ConnectablePublisher] =
+            [firstNameStatus.publisher, lastNameStatus.publisher, emailStatus.publisher, photoStatus.publisher]
+
+        fieldsStatusPublishers
+            .forEach {
+                $0.connect().store(in: &cancellables)
+            }
     }
 
-    // MARK: Form actions
+    // MARK: - Form actions
 
     func openPhotoPicker(_ source: UIImagePickerController.SourceType) {
         isPhotoPickerPresented = true
@@ -153,7 +145,7 @@ class ProfileViewModel: LoadableViewModel {
             profile.firstName = firstName
             profile.lastName = lastName
             profile.email = email
-            
+
             if photoInfoEdited.state != .initial {
                 profile.photoInfo = await photoInfoEdited.save(as: initialProfile.userId)
             }

@@ -10,18 +10,34 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
-    @ObservedObject var viewModel: ProfileViewModel
+    @ObservedObject private var viewModel: ProfileViewModel
 
-    @State var notImplementedAlertPresented = false
+    @State private var deleteAccountVerificationViewIsPresented = false
+    @State private var deleteAccountConfirmationIsPresented = false
+
+    @State private var notImplementedAlertPresented = false
 
     init(viewModel: ProfileViewModel) {
-//        debugPrint("---- ProfileView created")
         _viewModel = ObservedObject(initialValue: viewModel)
     }
 
-    var profilePhoto: some View {
+    // MARK: - Photo components
+
+    var photoField: some View {
+        ZStack(alignment: verticalSizeClass == .compact ? .bottomLeading : .bottomTrailing) {
+            Menu {
+                photoActionsMenu
+            } label: {
+                photo
+            }
+            photoActionsMenuButton
+                .offset(x: verticalSizeClass == .compact ? -10 : 10)
+        }
+    }
+
+    var photo: some View {
         Group {
             switch viewModel.photoInfoEdited.state {
             case let .new(uiImage: pickedPhoto, data: _, size: _, hash: _):
@@ -84,62 +100,61 @@ struct ProfileView: View {
         }
     }
 
+    // MARK: - Form submit components
+
     var updateProfileButton: some View {
-        Button {
-            viewModel.updateProfileConfirmationIsPresented = true
-        } label: {
-            Text("Update").frame(maxWidth: .infinity)
+        ButtonWithConfirmation(
+            label: "Update",
+            isDisabled: !viewModel.isReadyToSubmit,
+            confirmationTitle: "Confirm your profile update.",
+            confirmationButtonLabel: "Confirm Update"
+        ) {
+            viewModel.saveProfile()
+            presentationMode.wrappedValue.dismiss()
         }
-        .buttonStyle(.borderedProminent)
-        .disabled(!viewModel.isReadyToSubmit)
-        .confirmationDialog("Confirm your profile update.", isPresented: $viewModel.updateProfileConfirmationIsPresented) {
-            Button("Confirm update") {
-                viewModel.saveProfile()
-                presentationMode.wrappedValue.dismiss()
-            }
+    }
+
+    // MARK: - Delete account components
+
+    var deleteAccountVerificationView: some View {
+        ReauthenticationView(
+            viewModel: SignSharedViewModel(formType: .signIn),
+            message: "You must reauthenticate to confirm\nthe deletion of your account.",
+            reauthenticationSuccess: $deleteAccountConfirmationIsPresented
+        )
+        .confirmationDialog("Confirme your account deletion", isPresented: $deleteAccountConfirmationIsPresented) {
+            //                Button("Confirm deletion", role: .destructive, action: viewModel.deleteAccount)
+            Button("Confirm deletion", role: .destructive) { notImplementedAlertPresented = true }
+            Button("Cancel", role: .cancel) { deleteAccountVerificationViewIsPresented = false }
+        } message: {
+            Text("Your account is going to be deleted. Ok?")
         }
-        .keyboardShortcut(.defaultAction)
+        .alert("Functionality not implemented", isPresented: $notImplementedAlertPresented) {
+            Button("Return to profile") { deleteAccountVerificationViewIsPresented = false }
+        }
     }
 
     var deleteAccountButton: some View {
         Button {
-            viewModel.reauthenticationViewIsPresented = true
+            deleteAccountVerificationViewIsPresented = true
         } label: {
             Text("Delete my account")
         }
         .foregroundColor(Color.red)
-        .sheet(isPresented: $viewModel.reauthenticationViewIsPresented) {
-            ReauthenticationView(
-                viewModel: SignSharedViewModel(formType: .signIn),
-                message: "You must reauthenticate to confirm\nthe deletion of your account.",
-                reauthenticationSuccess: $viewModel.deleteAccountConfirmationIsPresented
-            )
-            .confirmationDialog("Confirme your account deletion", isPresented: $viewModel.deleteAccountConfirmationIsPresented) {
-                //                Button("Confirm deletion", role: .destructive, action: viewModel.deleteAccount)
-                Button("Confirm deletion", role: .destructive) { notImplementedAlertPresented = true }
-                Button("Cancel", role: .cancel) { viewModel.reauthenticationViewIsPresented = false }
-            } message: {
-                Text("Your account is going to be deleted. Ok?")
-            }
-            .alert("Functionality not implemented", isPresented: $notImplementedAlertPresented) {
-                Button("Return to profile") { viewModel.reauthenticationViewIsPresented = false }
-            }
+        .sheet(isPresented: $deleteAccountVerificationViewIsPresented) {
+            deleteAccountVerificationView
         }
     }
 
+    // MARK: - Layout organization
+
     var formPart1: some View {
         VStack {
-            ZStack(alignment: verticalSizeClass == .compact ? .bottomLeading : .bottomTrailing) {
-                Menu {
-                    photoActionsMenu
-                } label: {
-                    profilePhoto
-                }
-                photoActionsMenuButton
-                    .offset(x: verticalSizeClass == .compact ? -10 : 10)
-            }
+            photoField
+
             Spacer()
 
+            // User type indication
             HStack {
                 Text("I'm a")
                 Text("\(viewModel.initialProfile.userType.rawValue)").font(.headline)
@@ -151,11 +166,14 @@ struct ProfileView: View {
         VStack(spacing: 5) {
             VStack {
                 FormTextField(title: "First name", value: $viewModel.firstName, inError: viewModel.firstNameInError)
+                    .textContentType(.givenName)
                 FormTextField(title: "Last name", value: $viewModel.lastName, inError: viewModel.lastNameInError)
+                    .textContentType(.familyName)
             }
 
             VStack {
                 FormTextField(title: "Email", value: $viewModel.email, inError: viewModel.emailInError)
+                    .textContentType(.emailAddress)
                     .autocapitalization(.none)
             }
 
@@ -164,7 +182,6 @@ struct ProfileView: View {
             updateProfileButton
 
             Divider().overlay(Color.red).frame(height: 30)
-//                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
 
             deleteAccountButton
         }

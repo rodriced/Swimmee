@@ -94,7 +94,7 @@
 		DC920B702934B851000EE664 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B6F2934B851000EE664 /* ImageHelper.swift */; };
 		DC920B7429355981000EE664 /* SignSharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7329355981000EE664 /* SignSharedViewModel.swift */; };
 		DC920B7729355ABF000EE664 /* ValueValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7629355ABF000EE664 /* ValueValidation.swift */; };
-		DC920B7A293669D0000EE664 /* FormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B79293669D0000EE664 /* FormField.swift */; };
+		DC920B7A293669D0000EE664 /* FieldStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B79293669D0000EE664 /* FieldStatus.swift */; };
 		DC920B7D29366BB4000EE664 /* CollectionCombineLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */; };
 		DC920B7F29367556000EE664 /* PhotoInfoEdited.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */; };
 		DC9A434F2921950100485B1F /* FirestoreExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9A434E2921950100485B1F /* FirestoreExtension.swift */; };
@@ -218,7 +218,7 @@
 		DC920B6F2934B851000EE664 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		DC920B7329355981000EE664 /* SignSharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSharedViewModel.swift; sourceTree = "<group>"; };
 		DC920B7629355ABF000EE664 /* ValueValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueValidation.swift; sourceTree = "<group>"; };
-		DC920B79293669D0000EE664 /* FormField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormField.swift; sourceTree = "<group>"; };
+		DC920B79293669D0000EE664 /* FieldStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldStatus.swift; sourceTree = "<group>"; };
 		DC920B7C29366BB4000EE664 /* CollectionCombineLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCombineLatest.swift; sourceTree = "<group>"; };
 		DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEdited.swift; sourceTree = "<group>"; };
 		DC9A434E2921950100485B1F /* FirestoreExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreExtension.swift; sourceTree = "<group>"; };
@@ -488,7 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				DC920B7629355ABF000EE664 /* ValueValidation.swift */,
-				DC920B79293669D0000EE664 /* FormField.swift */,
+				DC920B79293669D0000EE664 /* FieldStatus.swift */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -895,7 +895,7 @@
 				DC3C88A528F4E8EA0065CBD6 /* CoachTeamView.swift in Sources */,
 				DC9A435B2922880B00485B1F /* CoachMessagesView.swift in Sources */,
 				DC057209293A9CDB0037A387 /* CustomError.swift in Sources */,
-				DC920B7A293669D0000EE664 /* FormField.swift in Sources */,
+				DC920B7A293669D0000EE664 /* FieldStatus.swift in Sources */,
 				DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */,
 				DC1037F028F72D75005E5B57 /* AuthenticatedMainView.swift in Sources */,
 				DCDBE7E72915D77A00386076 /* ContextualAlert.swift in Sources */,
