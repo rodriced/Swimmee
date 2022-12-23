@@ -186,6 +186,9 @@ struct EditWorkoutView: View {
             bottomButtonsBar
                 .padding()
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
         .navigationBarTitle(viewModel.originalWorkout.isNew ? "Create workout" : "Edit workout", displayMode: .inline)
         .navigationBarBackButtonHidden()
 

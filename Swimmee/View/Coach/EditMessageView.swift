@@ -120,6 +120,9 @@ struct EditMessageView: View {
             bottomButtonsBar
                 .padding()
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
         .navigationBarTitle(viewModel.originalMessage.isNew ? "Create message" : "Edit message", displayMode: .inline)
         .navigationBarBackButtonHidden()
 

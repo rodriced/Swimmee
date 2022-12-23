@@ -128,6 +128,9 @@ struct SignUpView: View {
             }
         }
         .padding()
+        .onTapGesture {
+            hideKeyboard()
+        }
         .alert(viewModel.alertcontext) {}
         .navigationBarTitle("Join swimmee", displayMode: .inline)
     }

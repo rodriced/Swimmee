@@ -211,8 +211,11 @@ struct ProfileView: View {
                 portraitView
             }
         }
-        .navigationBarTitle("My profile")
         .padding()
+        .onTapGesture {
+            hideKeyboard()
+        }
+        .navigationBarTitle("My profile")
         .sheet(isPresented: $viewModel.isPhotoPickerPresented) {
             ImagePicker(sourceType: viewModel.photoPickerImageSource, selectedImage: $viewModel.pickedPhoto)
         }

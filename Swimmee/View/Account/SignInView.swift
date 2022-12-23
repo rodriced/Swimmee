@@ -82,8 +82,11 @@ struct SignInView: View {
                 portraitView
             }
         }
-        .alert(viewModel.alertcontext) {}
         .padding()
+        .onTapGesture {
+            hideKeyboard()
+        }
+        .alert(viewModel.alertcontext) {}
         .navigationBarTitle("Sign In", displayMode: .inline)
     }
 }
