@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct ReauthenticationView: View {
-    @Environment(\.presentationMode) var presentationMode
-    var defaultBorderColor = RoundedBorderTextFieldStyle()
+    @Environment(\.presentationMode) private var presentationMode
 
     @StateObject var viewModel: SignSharedViewModel
+    
     let message: String
     @Binding var reauthenticationSuccess: Bool
 
     var body: some View {
         NavigationView {
             VStack {
-                //            AppTitleView()
                 Spacer()
 
                 Text(message)
@@ -28,13 +27,12 @@ struct ReauthenticationView: View {
                 Spacer()
 
                 VStack(spacing: 30) {
-                    TextField("Email", text: $viewModel.email)
-                        .disableAutocorrection(true)
+                    FormTextField("Email", value: $viewModel.email, inError: viewModel.emailInError)
+                        .textContentType(.emailAddress)
                         .autocapitalization(.none)
-                        .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
 
-                    SecureField("Password", text: $viewModel.password)
-                        .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
+                    FormTextField("Password", value: $viewModel.password, inError: viewModel.passwordInError, isSecure: true)
+                        .textContentType(.password)
                 }
 
                 Spacer()
@@ -51,7 +49,6 @@ struct ReauthenticationView: View {
                 .buttonStyle(.borderedProminent)
                 .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
                 .keyboardShortcut(.defaultAction)
-//                .onChange(of: viewModel.submitSuccess) { $reauthenticationSuccess.wrappedValue = viewModel.submitSuccess }
             }
             .padding()
             .onTapGesture {

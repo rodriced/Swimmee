@@ -8,31 +8,30 @@
 import SwiftUI
 
 struct SignInView: View {
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+
     @StateObject var viewModel = SignSharedViewModel(formType: .signIn)
+
+    // MARK: - Layout organization
     
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-
-    var defaultBorderColor = RoundedBorderTextFieldStyle()
-
-    var part1: some View {
+    private var part1: some View {
         VStack {
             AppTitleView()
         }
     }
 
-    var part2: some View {
+    private var part2: some View {
         VStack {
             Spacer()
 
             VStack(spacing: 30) {
-                TextField("Email", text: $viewModel.email)
-                    .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
-                    .disableAutocorrection(true)
+                FormTextField("Email", value: $viewModel.email, inError: viewModel.emailInError)
+                    .textContentType(.emailAddress)
                     .autocapitalization(.none)
                     .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
 
-                SecureField("Password", text: $viewModel.password)
-                    .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
+                FormTextField("Password", value: $viewModel.password, inError: viewModel.passwordInError, isSecure: true)
+                    .textContentType(.password)
                     .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
             }
 
@@ -60,14 +59,14 @@ struct SignInView: View {
         }
     }
 
-    var portraitView: some View {
+    private var portraitView: some View {
         VStack {
             part1
             part2
         }
     }
 
-    var landscapeView: some View {
+    private var landscapeView: some View {
         HStack(spacing: 10) {
             part1
             part2

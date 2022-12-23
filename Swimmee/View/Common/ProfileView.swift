@@ -22,7 +22,7 @@ struct ProfileView: View {
 
     // MARK: - Photo components
 
-    var photoField: some View {
+    private var photoField: some View {
         ZStack(alignment: verticalSizeClass == .compact ? .bottomLeading : .bottomTrailing) {
             // Photo action menu will open when you tap on the dedicated button or on the photo itself
             Menu {
@@ -35,7 +35,7 @@ struct ProfileView: View {
         }
     }
 
-    var photo: some View {
+    private var photo: some View {
         Group {
             switch viewModel.photoInfoEdited.state {
             case let .new(uiImage: pickedPhoto, data: _, size: _, hash: _):
@@ -66,7 +66,7 @@ struct ProfileView: View {
         .shadow(radius: 6)
     }
 
-    var photoActionsMenu: some View {
+    private var photoActionsMenu: some View {
         Group {
             Button {
                 viewModel.openPhotoPicker(.photoLibrary)
@@ -87,7 +87,7 @@ struct ProfileView: View {
         }
     }
 
-    var photoActionsMenuButton: some View {
+    private var photoActionsMenuButton: some View {
         Menu {
             photoActionsMenu
         } label: {
@@ -100,7 +100,7 @@ struct ProfileView: View {
 
     // MARK: - Button components
 
-    var updateProfileButton: some View {
+    private var updateProfileButton: some View {
         ButtonWithConfirmation(
             label: "Update",
             isDisabled: !viewModel.isReadyToSubmit,
@@ -112,7 +112,7 @@ struct ProfileView: View {
         }
     }
 
-    var deleteAccountButton: some View {
+    private var deleteAccountButton: some View {
         Button {
             deleteAccountViewIsPresented = true
         } label: {
@@ -126,7 +126,7 @@ struct ProfileView: View {
 
     // MARK: - Layout organization
 
-    var formPart1: some View {
+    private var formPart1: some View {
         VStack {
             photoField
 
@@ -140,17 +140,17 @@ struct ProfileView: View {
         }
     }
 
-    var formPart2: some View {
+    private var formPart2: some View {
         VStack(spacing: 5) {
             VStack {
-                FormTextField(title: "First name", value: $viewModel.firstName, inError: viewModel.firstNameInError)
+                FormTextField("First name", value: $viewModel.firstName, inError: viewModel.firstNameInError)
                     .textContentType(.givenName)
-                FormTextField(title: "Last name", value: $viewModel.lastName, inError: viewModel.lastNameInError)
+                FormTextField("Last name", value: $viewModel.lastName, inError: viewModel.lastNameInError)
                     .textContentType(.familyName)
             }
 
             VStack {
-                FormTextField(title: "Email", value: $viewModel.email, inError: viewModel.emailInError)
+                FormTextField("Email", value: $viewModel.email, inError: viewModel.emailInError)
                     .textContentType(.emailAddress)
                     .autocapitalization(.none)
             }
@@ -166,7 +166,7 @@ struct ProfileView: View {
         .textFieldStyle(.roundedBorder)
     }
 
-    var portraitView: some View {
+    private var portraitView: some View {
         VStack {
             formPart1
             Spacer()
@@ -174,7 +174,7 @@ struct ProfileView: View {
         }
     }
 
-    var landscapeView: some View {
+    private var landscapeView: some View {
         HStack(spacing: 20) {
             formPart1
             formPart2

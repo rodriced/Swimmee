@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @StateObject private var viewModel = SignSharedViewModel(formType: .signUp)
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @StateObject private var viewModel = SignSharedViewModel(formType: .signUp)
 
     @State private var userTypePickerOpened = false
     @State private var coachTypePicked = false
@@ -40,7 +40,9 @@ struct SignUpView: View {
             .onChange(of: viewModel.userType, perform: viewModel.formFieldChanged)
     }
 
-    var part1: some View {
+    // MARK: - Layout organization
+
+    private var part1: some View {
         VStack {
             Spacer()
             AppTitleView()
@@ -50,34 +52,31 @@ struct SignUpView: View {
         }
     }
 
-    var part2: some View {
+    private var part2: some View {
         VStack {
             Spacer()
 
             VStack(spacing: 30) {
                 VStack {
-                    TextField("First name", text: $viewModel.firstName)
-                        .roundedStyleWithErrorIndicator(inError: viewModel.firstNameInError)
-                        .disableAutocorrection(true)
+                    FormTextField("First name", value: $viewModel.firstName, inError: viewModel.firstNameInError)
+                        .textContentType(.givenName)
                         .onChange(of: viewModel.firstName, perform: viewModel.formFieldChanged)
 
-                    TextField("Last name", text: $viewModel.lastName)
-                        .roundedStyleWithErrorIndicator(inError: viewModel.lastNameInError)
-                        .disableAutocorrection(true)
+                    FormTextField("Last name", value: $viewModel.lastName, inError: viewModel.lastNameInError)
+                        .textContentType(.familyName)
                         .onChange(of: viewModel.lastName, perform: viewModel.formFieldChanged)
                 }
 
                 userTypePicker
 
                 VStack {
-                    TextField("Email", text: $viewModel.email)
-                        .roundedStyleWithErrorIndicator(inError: viewModel.emailInError)
-                        .disableAutocorrection(true)
+                    FormTextField("Email", value: $viewModel.email, inError: viewModel.emailInError)
+                        .textContentType(.emailAddress)
                         .autocapitalization(.none)
                         .onChange(of: viewModel.email, perform: viewModel.formFieldChanged)
 
-                    SecureField("Password", text: $viewModel.password)
-                        .roundedStyleWithErrorIndicator(inError: viewModel.passwordInError)
+                    FormTextField("Password", value: $viewModel.password, inError: viewModel.passwordInError, isSecure: true)
+                        .textContentType(.newPassword)
                         .onChange(of: viewModel.password, perform: viewModel.formFieldChanged)
                 }
             }
@@ -101,14 +100,14 @@ struct SignUpView: View {
         }
     }
 
-    var portraitView: some View {
+    private var portraitView: some View {
         VStack {
             part1
             part2
         }
     }
 
-    var landscapeView: some View {
+    private var landscapeView: some View {
         HStack(spacing: 10) {
             part1
             part2
