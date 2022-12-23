@@ -40,7 +40,7 @@ struct SignInView: View {
             Button {
                 viewModel.signIn()
             } label: {
-                if viewModel.submiting {
+                if viewModel.submitState == .inProgress {
                     ProgressView().frame(maxWidth: .infinity)
                 } else {
                     Text("Log in").frame(maxWidth: .infinity)

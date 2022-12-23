@@ -12,7 +12,7 @@ class SignSharedViewModel: ObservableObject {
         case userTypeWithoutValue = "User type hasn't value. It can't happened so it's a bug ! Please, send a report."
     }
 
-    static let formValidationErrorMessage = "Fields in red contain errors. Correct them and retry."
+    static let formValidationErrorMessage = "Fields in red contain errors or are empty. Correct them and retry."
 
     enum FormType { case signUp, signIn }
 
@@ -36,8 +36,8 @@ class SignSharedViewModel: ObservableObject {
     @Published private(set) var emailInError = false
     @Published private(set) var passwordInError = false
 
-    @Published private(set) var submiting = false
-    @Published private(set) var submitSuccess = false
+    enum SubmitState { case pending, inProgress, success, falilure }
+    @Published private(set) var submitState = SubmitState.pending
 
     private var formWasValidatedWithError = false
 
@@ -50,20 +50,18 @@ class SignSharedViewModel: ObservableObject {
             return
         }
 
-        submiting = true
+        submitState = .inProgress
 
         Task {
             do {
                 try await action()
 
                 await MainActor.run {
-                    submiting = false
-                    submitSuccess = true
+                    submitState = .success
                 }
             } catch {
                 await MainActor.run {
-                    submiting = false
-
+                    submitState = .falilure
                     alertcontext.message = error.localizedDescription
                 }
             }

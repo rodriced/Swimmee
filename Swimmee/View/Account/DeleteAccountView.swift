@@ -15,9 +15,8 @@ struct DeleteAccountView: View {
 
     var body: some View {
         ReauthenticationView(
-            viewModel: SignSharedViewModel(formType: .signIn),
             message: "You must reauthenticate to confirm\nthe deletion of your account.",
-            reauthenticationSuccess: $deleteAccountConfirmationIsPresented
+            successCompletion: {deleteAccountConfirmationIsPresented = true}
         )
         .confirmationDialog("Confirme your account deletion", isPresented: $deleteAccountConfirmationIsPresented) {
 //            Button("Confirm deletion", role: .destructive, action: viewModel.deleteAccount)

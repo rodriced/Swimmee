@@ -86,7 +86,7 @@ struct SignUpView: View {
             Button {
                 viewModel.signUp()
             } label: {
-                if viewModel.submiting {
+                if viewModel.submitState == .inProgress {
                     ProgressView().frame(maxWidth: .infinity)
                 } else {
                     Text("Create account").frame(maxWidth: .infinity)
