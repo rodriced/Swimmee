@@ -14,10 +14,7 @@ struct ProfileView: View {
 
     @ObservedObject private var viewModel: ProfileViewModel
 
-    @State private var deleteAccountVerificationViewIsPresented = false
-    @State private var deleteAccountConfirmationIsPresented = false
-
-    @State private var notImplementedAlertPresented = false
+    @State private var deleteAccountViewIsPresented = false
 
     init(viewModel: ProfileViewModel) {
         _viewModel = ObservedObject(initialValue: viewModel)
@@ -27,6 +24,7 @@ struct ProfileView: View {
 
     var photoField: some View {
         ZStack(alignment: verticalSizeClass == .compact ? .bottomLeading : .bottomTrailing) {
+            // Photo action menu will open when you tap on the dedicated button or on the photo itself
             Menu {
                 photoActionsMenu
             } label: {
@@ -100,7 +98,7 @@ struct ProfileView: View {
         }
     }
 
-    // MARK: - Form submit components
+    // MARK: - Button components
 
     var updateProfileButton: some View {
         ButtonWithConfirmation(
@@ -114,35 +112,15 @@ struct ProfileView: View {
         }
     }
 
-    // MARK: - Delete account components
-
-    var deleteAccountVerificationView: some View {
-        ReauthenticationView(
-            viewModel: SignSharedViewModel(formType: .signIn),
-            message: "You must reauthenticate to confirm\nthe deletion of your account.",
-            reauthenticationSuccess: $deleteAccountConfirmationIsPresented
-        )
-        .confirmationDialog("Confirme your account deletion", isPresented: $deleteAccountConfirmationIsPresented) {
-            //                Button("Confirm deletion", role: .destructive, action: viewModel.deleteAccount)
-            Button("Confirm deletion", role: .destructive) { notImplementedAlertPresented = true }
-            Button("Cancel", role: .cancel) { deleteAccountVerificationViewIsPresented = false }
-        } message: {
-            Text("Your account is going to be deleted. Ok?")
-        }
-        .alert("Functionality not implemented", isPresented: $notImplementedAlertPresented) {
-            Button("Return to profile") { deleteAccountVerificationViewIsPresented = false }
-        }
-    }
-
     var deleteAccountButton: some View {
         Button {
-            deleteAccountVerificationViewIsPresented = true
+            deleteAccountViewIsPresented = true
         } label: {
             Text("Delete my account")
         }
         .foregroundColor(Color.red)
-        .sheet(isPresented: $deleteAccountVerificationViewIsPresented) {
-            deleteAccountVerificationView
+        .sheet(isPresented: $deleteAccountViewIsPresented) {
+            DeleteAccountView(cancelCompletion: { deleteAccountViewIsPresented = false })
         }
     }
 
