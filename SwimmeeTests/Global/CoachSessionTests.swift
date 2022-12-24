@@ -14,26 +14,25 @@ import XCTest
 
 final class CoachSessionTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
-    
+
     private func newMockCoachSession(
         workoutAPI: UserWorkoutCollectionAPI = MockUserWorkoutCollectionAPI(),
         messageAPI: UserMessageCollectionAPI = MockUserMessageCollectionAPI()
     ) -> CoachSession {
         CoachSession(workoutAPI: workoutAPI, messageAPI: messageAPI)
     }
-    
-    
+
     func testWorkoutsPublisher() {
         let aProfile = Samples.aProfile(of: .coach)
         let aWorkoutList = Samples.aWorkoutsList(userId: aProfile.userId)
-        
+
         let workoutAPI = MockUserWorkoutCollectionAPI()
         workoutAPI.mockListPublisher = {
             Just(aWorkoutList).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
-        
+
         let sut = newMockCoachSession(workoutAPI: workoutAPI)
-        
+
         sut.workoutsPublisher.sink(
             receiveCompletion: { completion in
                 if case .failure = completion {
@@ -44,7 +43,7 @@ final class CoachSessionTests: XCTestCase {
         )
         .store(in: &cancellables)
     }
-    
+
     func testMessagesPublisher() {
         let aProfile = Samples.aProfile(of: .coach)
         let aMessagesList = Samples.aMessagesList(userId: aProfile.userId)
@@ -66,5 +65,4 @@ final class CoachSessionTests: XCTestCase {
         )
         .store(in: &cancellables)
     }
-
 }

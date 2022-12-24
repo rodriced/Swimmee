@@ -14,13 +14,13 @@ class MockUserMessageCollectionAPI: MockUserCollectionAPI<Message>, UserMessageC
 
 class MockUserCollectionAPI<Item: DbIdentifiable> {
     var mockListPublisher: () -> AnyPublisher<[Item], Error> = { BadContextCallInMockFail(); fatalError() }
-    var mockSave: (Item, Bool) async throws -> String = {_, _ in BadContextCallInMockFail(); fatalError() }
+    var mockSave: (Item, Bool) async throws -> String = { _, _ in BadContextCallInMockFail(); fatalError() }
     var mockDelete: (String) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
-    
+
     func listPublisher(owner: OwnerFilter = .currentUser, isSent: Bool? = nil) -> AnyPublisher<[Item], Error> {
         mockListPublisher()
     }
-    
+
     func save(_ item: Item, replaceAsNew: Bool = false) async throws -> String {
         try await mockSave(item, replaceAsNew)
     }

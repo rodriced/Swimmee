@@ -40,7 +40,7 @@ final class SwimmerSessionTests: XCTestCase {
         aWorkoutList[0].isSent = true
         aWorkoutList[1].isSent = true
         aWorkoutList[2].isSent = true
-        
+
         var aSwimmer = Samples.aSwimmerProfile
         aSwimmer.coachId = aCoach.userId
         aSwimmer.readWorkoutsIds = [aWorkoutList[1].dbId!]
@@ -57,8 +57,8 @@ final class SwimmerSessionTests: XCTestCase {
         }
 
         let sut = newMockSwimmerSession(initialProfile: aSwimmer, profileAPI: profileAPI, workoutAPI: workoutAPI)
-        
-        sut.workoutsPublisher.drop {$0 != aWorkoutList}.sink(
+
+        sut.workoutsPublisher.drop { $0 != aWorkoutList }.sink(
             receiveCompletion: { completion in
                 if case .failure = completion {
                     XCTFail()
@@ -68,7 +68,7 @@ final class SwimmerSessionTests: XCTestCase {
         )
         .store(in: &cancellables)
 
-        sut.readWorkoutsIdsPublisher.drop {$0 != aSwimmer.readWorkoutsIds}.sink(
+        sut.readWorkoutsIdsPublisher.drop { $0 != aSwimmer.readWorkoutsIds }.sink(
             receiveCompletion: { completion in
                 if case .failure = completion {
                     XCTFail()
@@ -78,7 +78,7 @@ final class SwimmerSessionTests: XCTestCase {
         )
         .store(in: &cancellables)
 
-        sut.unreadWorkoutsCountPublisher.drop {$0 != expectedUnreadWorkouts}.sink(
+        sut.unreadWorkoutsCountPublisher.drop { $0 != expectedUnreadWorkouts }.sink(
             receiveCompletion: { completion in
                 if case .failure = completion {
                     XCTFail()
@@ -89,9 +89,8 @@ final class SwimmerSessionTests: XCTestCase {
         .store(in: &cancellables)
 
         sut.listenChanges()
-
     }
-    
+
     func testMessagesPublishers() {
         let aCoach = Samples.aCoachProfile
 
@@ -99,7 +98,7 @@ final class SwimmerSessionTests: XCTestCase {
         aMessageList[0].isSent = true
         aMessageList[1].isSent = true
         aMessageList[2].isSent = true
-        
+
         var aSwimmer = Samples.aSwimmerProfile
         aSwimmer.coachId = aCoach.userId
         aSwimmer.readMessagesIds = [aMessageList[1].dbId!]
@@ -116,8 +115,8 @@ final class SwimmerSessionTests: XCTestCase {
         }
 
         let sut = newMockSwimmerSession(initialProfile: aSwimmer, profileAPI: profileAPI, messageAPI: messageAPI)
-        
-        sut.messagesPublisher.drop {$0 != aMessageList}.sink(
+
+        sut.messagesPublisher.drop { $0 != aMessageList }.sink(
             receiveCompletion: { completion in
                 if case .failure = completion {
                     XCTFail()
@@ -127,7 +126,7 @@ final class SwimmerSessionTests: XCTestCase {
         )
         .store(in: &cancellables)
 
-        sut.readMessagesIdsPublisher.drop {$0 != aSwimmer.readMessagesIds}.sink(
+        sut.readMessagesIdsPublisher.drop { $0 != aSwimmer.readMessagesIds }.sink(
             receiveCompletion: { completion in
                 if case .failure = completion {
                     XCTFail()
@@ -137,7 +136,7 @@ final class SwimmerSessionTests: XCTestCase {
         )
         .store(in: &cancellables)
 
-        sut.unreadMessagesCountPublisher.drop {$0 != expectedUnreadMessages}.sink(
+        sut.unreadMessagesCountPublisher.drop { $0 != expectedUnreadMessages }.sink(
             receiveCompletion: { completion in
                 if case .failure = completion {
                     XCTFail()
@@ -148,6 +147,5 @@ final class SwimmerSessionTests: XCTestCase {
         .store(in: &cancellables)
 
         sut.listenChanges()
-
     }
 }

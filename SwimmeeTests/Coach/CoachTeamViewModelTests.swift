@@ -16,11 +16,6 @@ final class CoachTeamViewModelTests: XCTestCase {
 
         let profileAPI = MockProfilePI()
         profileAPI.mockLoadTeam = {
-//            await withCheckedContinuation { continuation in
-//                DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(2))) {
-//                    continuation.resume(returning: aTeam)
-//                }
-//            }
             aTeam
         }
 
@@ -28,9 +23,6 @@ final class CoachTeamViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.state, .loading)
 
-//        assertPublishedValues(
-//            sut.$state,
-//            equals: [.loading, .normal(aTeam)])
         assertPublishedValue(
             sut.$state,
             equals: .normal(aTeam)
@@ -39,14 +31,6 @@ final class CoachTeamViewModelTests: XCTestCase {
                 await sut.loadTeam()
             }
         }
-
-//        let expectation = publisherExpectation(
-//            sut.$state,
-//            equals: [.loading, .normal(Samples.aTeam)])
-//
-//        Task {
-//            await sut.loadTeam()
-//        }
     }
 
     func testEmptyTeamWorkflow() {

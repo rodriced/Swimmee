@@ -25,7 +25,7 @@ final class CoachMessagesViewModelTests: XCTestCase {
         let sut = CoachMessagesViewModel(initialData: aMessagesList, config: config)
 
         XCTAssertEqual(sut.filter, .all)
-        
+
         XCTAssertEqual(sut.messages, aMessagesList)
         XCTAssertEqual(sut.filteredMessages, aMessagesList)
 
@@ -33,7 +33,7 @@ final class CoachMessagesViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.messages, aMessagesList)
         XCTAssertEqual(sut.filteredMessages, expectedDraftMessages)
-        
+
         sut.filter = .sent
 
         XCTAssertEqual(sut.messages, aMessagesList)
@@ -52,7 +52,7 @@ final class CoachMessagesViewModelTests: XCTestCase {
         XCTAssertEqual(sut.selectedMessage, nil)
         XCTAssertFalse(sut.sentMessageEditionConfirmationDialogPresented)
         XCTAssertFalse(sut.navigatingToEditView)
-        
+
         aMessage.isSent = false
         sut.goEditingMessage(aMessage)
 
@@ -103,14 +103,14 @@ final class CoachMessagesViewModelTests: XCTestCase {
         let sut = CoachMessagesViewModel(initialData: aMessagesList, config: config)
 
         XCTAssertFalse(sut.alertContext.isPresented)
-        
+
         assertPublishedValue(
             sut.alertContext.$isPresented,
             equals: true
         ) {
             sut.deleteMessage(at: IndexSet(integer: 1))
         }
-        
+
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")
     }
 }

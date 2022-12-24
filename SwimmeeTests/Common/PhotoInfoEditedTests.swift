@@ -76,7 +76,7 @@ final class PhotoInfoEditedTests: XCTestCase {
         sut.updateWith(uiImage: image1)
         XCTAssertEqual(sut.state, .initial)
         XCTAssertEqual(sut.isImagePresent, true)
-        
+
         // initial none -> image1 -> initial none
         sut = mockPhotoInfoEdited(nil)
         sut.updateWith(uiImage: image1)

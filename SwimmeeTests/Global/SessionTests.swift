@@ -11,37 +11,21 @@ import XCTest
 @testable import Swimmee
 
 final class SessionTests: XCTestCase {
-    static let mockAccountAPI = {
-        let mock = MockAccountAPI()
-        mock.mockSignOut = { true }
-        return mock
-    }()
-    
-    var cancellables = Set<AnyCancellable>()
-    
-    override func setUp() {
-        
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-        
     func testAlertAppear_WhenAuthenticationStateIsUpdatedToFailure0() throws {
-        let session = Session(accountAPI: Self.mockAccountAPI)
+        let session = Session(accountAPI: MockAccountAPI())
         
         XCTAssertFalse(session.authenticationFailureAlert.isPresented)
         
         let expectation1 = publisherExpectation(
             session.authenticationFailureAlert.$isPresented.print("$errorAlertIsPresenting").dropFirst(),
-            equals: true, store: &cancellables
+            equals: true
         )
         
         let expectedConnectionStatus: [AuthenticationState] = [.undefined, .failure(AccountError.authenticationFailure)]
         
         let expectation2 = publisherExpectation(
             session.$authenticationState,
-            equals: expectedConnectionStatus, store: &cancellables
+            equals: expectedConnectionStatus
         )
         
         session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
@@ -57,34 +41,8 @@ final class SessionTests: XCTestCase {
             case errorAlertIsPresenting(Bool)
         }
 
-        let session = Session(accountAPI: Self.mockAccountAPI)
+        let session = Session(accountAPI: MockAccountAPI())
         
-//        XCTAssertFalse(session.errorAlertIsPresenting)
-//        XCTAssertEqual(session.authenticationState, .undefined)
-//
-//        let expectation = publisherExpectation(
-//            session.$errorAlertIsPresenting.dropFirst().map(MergeValue.errorAlertIsPresenting)
-//                .merge(with:
-//                        session.$authenticationState.dropFirst().map(MergeValue.authenticationState)
-//                      ),
-//            equals: [
-//                .authenticationState(.failure(AccountError.authenticationFailure)),
-//                .errorAlertIsPresenting(true)
-//            ]
-//        )
-        
-//        let expectation = publisherExpectation(
-//            session.$errorAlertIsPresenting.map(MergedValue.errorAlertIsPresenting)
-//                .merge(with:
-//                    session.$authenticationState.map(MergedValue.authenticationState)
-//                )
-//                .dropFirst(2), // dont test initial values
-//            equals: [
-//                .authenticationState(.failure(AccountError.authenticationFailure)),
-//                .errorAlertIsPresenting(true)
-//            ]
-//        )
-
         let expectation = publisherExpectation(
             Publishers.Merge(
                 session.authenticationFailureAlert.$isPresented.map(MergedValue.errorAlertIsPresenting),
@@ -94,7 +52,7 @@ final class SessionTests: XCTestCase {
             equals: [
                 .authenticationState(.failure(AccountError.authenticationFailure)),
                 .errorAlertIsPresenting(true)
-            ], store: &cancellables
+            ]
         )
 
         session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
@@ -109,10 +67,8 @@ final class SessionTests: XCTestCase {
             case authenticationState(AuthenticationState)
             case bool(Bool)
             
-            init?<T: Equatable>(_ value: T)
-            {
-                switch value.self
-                {
+            init?<T: Equatable>(_ value: T) {
+                switch value.self {
                 case let v as AuthenticationState:
                     self = .authenticationState(v)
                 case let v as Bool:
@@ -121,18 +77,11 @@ final class SessionTests: XCTestCase {
                     return nil
                 }
             }
-
         }
 
-        let session = Session(accountAPI: Self.mockAccountAPI)
-//        let p = session.$errorAlertIsPresenting.map(MergedValue.errorAlertIsPresenting).eraseToAnyPublisher()
-//        let p = session.$errorAlertIsPresenting.eraseToAnyPublisher()
+        let session = Session(accountAPI: MockAccountAPI())
 
         let publisher =
-//            session.$errorAlertIsPresenting.map(MergedValue.errorAlertIsPresenting)
-//                .merge(with:
-//                    session.$authenticationState.map(MergedValue.authenticationState)
-//                )
             Publishers.Merge(
                 session.authenticationFailureAlert.$isPresented.map(Wrapped.bool),
                 session.$authenticationState.map(Wrapped.authenticationState)
@@ -144,7 +93,7 @@ final class SessionTests: XCTestCase {
             .bool(true)
         ]
         
-        assertPublishedValues(publisher, equals: expectedValues, store: &cancellables) {
+        assertPublishedValues(publisher, equals: expectedValues) {
             session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
         }
                 

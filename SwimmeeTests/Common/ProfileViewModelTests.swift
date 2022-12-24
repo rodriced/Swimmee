@@ -13,13 +13,6 @@ import XCTest
 final class ProfileViewModelTests: XCTestCase {
     private let aCoachProfile = Profile(userId: "", userType: .coach, firstName: "aFirstName", lastName: "aLastName", email: "an@e.mail")
 
-    private var defaultMockImageStorageAPI: MockImageStorageAPI {
-        let mockImageStorageAPI = MockImageStorageAPI()
-        mockImageStorageAPI.mockUpload = { _, _ in URL(string: "https://an.url")! }
-        mockImageStorageAPI.mockDelete = { _ in }
-        return mockImageStorageAPI
-    }
-
     private func profileViewModelSubmitSuccess(aProfile: Profile, imageStorageAPI: MockImageStorageAPI = MockImageStorageAPI(), accountAPI: AccountAPI = MockAccountAPI()) -> ProfileViewModel {
         let profileAPI = MockProfilePI()
         profileAPI.mockSave = { _ in }
@@ -33,20 +26,6 @@ final class ProfileViewModelTests: XCTestCase {
 
         return ProfileViewModel(initialData: aProfile, config: config)
     }
-
-//    private func profileViewModelSubmitFail(aProfile: Profile) -> ProfileViewModel {
-//        let profileAPI = MockProfilePI()
-//        profileAPI.mockSave = { _ in throw TestError.errorForTesting }
-//
-//        let config = ProfileViewModel.Config(
-//            profileAPI: profileAPI,
-//            imageStorage: defaultMockImageStorageAPI,
-//            accountAPI: MockAccountAPI(),
-//            debounceDelay: 0
-//        )
-//
-//        return ProfileViewModel(initialData: aProfile, config: config)
-//    }
 
     func testGivenNewForm_WhenNoAction_ThenFormHaveNoErrorAndProfileDataInFields() {
         let aProfile = Profile.coachSample
@@ -148,15 +127,15 @@ final class ProfileViewModelTests: XCTestCase {
         let newState = PhotoInfoEdited.State.new(uiImage: Samples.anUIImage, data: Samples.aPngImage, size: Samples.aPngImage.count, hash: Samples.aPngImage.hashValue)
 
         XCTAssertEqual(sut.photoInfoEdited.state, newState)
-        
+
         sut.saveProfile()
-        
+
         wait(for: [expectation], timeout: 1)
     }
 
     func testGivenAProfileFormWithAPhoto_WhenPhotoIsRemoved_ThenPhotoInfoEditedIsUpdated() {
         let expectation = expectation(description: "Waiting for delete photo")
-        
+
         var aProfile = aCoachProfile
         aProfile.photoInfo = Samples.aPhotoInfo
 
@@ -174,11 +153,10 @@ final class ProfileViewModelTests: XCTestCase {
         XCTAssertEqual(sut.photoInfoEdited.state, .initial)
 
         sut.clearDisplayedPhoto()
-
         XCTAssertEqual(sut.photoInfoEdited.state, .removed)
-        
+
         sut.saveProfile()
-        
+
         wait(for: [expectation], timeout: 1)
     }
 
@@ -192,7 +170,7 @@ final class ProfileViewModelTests: XCTestCase {
 
         let config = ProfileViewModel.Config(
             profileAPI: MockProfilePI(),
-            imageStorage: defaultMockImageStorageAPI,
+            imageStorage: MockImageStorageAPI(),
             accountAPI: accountAPI,
             debounceDelay: 0
         )
@@ -209,7 +187,7 @@ final class ProfileViewModelTests: XCTestCase {
         var aProfile = aCoachProfile
         aProfile.photoInfo = Samples.aPhotoInfo
 
-        let initialPhotoInfoEdited = PhotoInfoEdited(Samples.aPhotoInfo, imageStorage: defaultMockImageStorageAPI)
+        let initialPhotoInfoEdited = PhotoInfoEdited(Samples.aPhotoInfo, imageStorage: MockImageStorageAPI())
 
         let profileAPI = MockProfilePI()
         profileAPI.mockSave = { profileToSave in
@@ -218,7 +196,7 @@ final class ProfileViewModelTests: XCTestCase {
 
         let config = ProfileViewModel.Config(
             profileAPI: profileAPI,
-            imageStorage: defaultMockImageStorageAPI,
+            imageStorage: MockImageStorageAPI(),
             accountAPI: MockAccountAPI(),
             debounceDelay: 0
         )
@@ -236,15 +214,15 @@ final class ProfileViewModelTests: XCTestCase {
 
         sut.saveProfile()
     }
-    
+
     func testGivenAProfileForm_WhenEmailIsModifiedAndFormSubmited_ThenEmailIsUpdated() {
         let expectation = expectation(description: "Waiting for updated Email")
 
-        var aProfile = aCoachProfile
-        var newEmail = "updated@with.new.email"
+        let aProfile = aCoachProfile
+        let newEmail = "updated@with.new.email"
 
         let accountAPI = MockAccountAPI()
-        accountAPI.mockUpdateEmail = {email in
+        accountAPI.mockUpdateEmail = { email in
             XCTAssertEqual(email, newEmail)
             expectation.fulfill()
         }
@@ -256,18 +234,18 @@ final class ProfileViewModelTests: XCTestCase {
         ) {
             sut.email = newEmail
         }
-        
+
         sut.saveProfile()
-        
+
         wait(for: [expectation], timeout: 1)
     }
 
     func testGivenAProfileForm_WhenEmailIsModifiedAndFormSubmitedWithNetworkError_ThenAlertIsTriggered() {
-        var aProfile = aCoachProfile
-        var newEmail = "updated@with.new.email"
+        let aProfile = aCoachProfile
+        let newEmail = "updated@with.new.email"
 
         let accountAPI = MockAccountAPI()
-        accountAPI.mockUpdateEmail = {email in
+        accountAPI.mockUpdateEmail = { _ in
             throw TestError.fakeNetworkError
         }
 
@@ -279,7 +257,7 @@ final class ProfileViewModelTests: XCTestCase {
         ) {
             sut.email = newEmail
         }
-                        
+
         assertPublishedValue(
             sut.alertContext.$isPresented, equals: true
         ) {
@@ -288,5 +266,4 @@ final class ProfileViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")
     }
-
 }

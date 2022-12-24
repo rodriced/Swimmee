@@ -12,14 +12,14 @@ import XCTest
 final class MessageTests: XCTestCase {
     func testIsNew() {
         var aMessage = Samples.aMessage(userId: Samples.aUserId)
-     
+
         aMessage.dbId = nil
         XCTAssertEqual(aMessage.isNew, true)
 
         aMessage.dbId = Samples.aRandomDbId
         XCTAssertEqual(aMessage.isNew, false)
     }
-    
+
     func testHasTextDifferent() {
         let message1 = Message(userId: Samples.aUserId(ref: 1), title: "A Title", content: "A content")
         let message2 = Message(userId: Samples.aUserId(ref: 2), title: "Another Title", content: "A content")
@@ -31,5 +31,4 @@ final class MessageTests: XCTestCase {
         XCTAssertEqual(message1.hasTextDifferent(from: message3), true)
         XCTAssertEqual(message1.hasTextDifferent(from: message4), true)
     }
-
 }

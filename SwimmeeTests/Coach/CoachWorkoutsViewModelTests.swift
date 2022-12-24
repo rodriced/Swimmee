@@ -26,7 +26,7 @@ final class CoachWorkoutsViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.tagFilterSelection, nil)
         XCTAssertEqual(sut.statusFilterSelection, .all)
-        
+
         XCTAssertEqual(sut.workouts, aWorkoutsList)
         XCTAssertEqual(sut.filteredWorkouts, aWorkoutsList)
 
@@ -34,14 +34,14 @@ final class CoachWorkoutsViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.workouts, aWorkoutsList)
         XCTAssertEqual(sut.filteredWorkouts, expectedDraftWorkouts)
-        
+
         sut.statusFilterSelection = .sent
 
         XCTAssertEqual(sut.workouts, aWorkoutsList)
         XCTAssertEqual(sut.filteredWorkouts, expectedSentWorkouts)
-        
+
         sut.clearFilters()
-        
+
         XCTAssertEqual(sut.tagFilterSelection, nil)
         XCTAssertEqual(sut.statusFilterSelection, .all)
         XCTAssertEqual(sut.filteredWorkouts, aWorkoutsList)
@@ -59,7 +59,7 @@ final class CoachWorkoutsViewModelTests: XCTestCase {
         XCTAssertEqual(sut.selectedWorkout, nil)
         XCTAssertFalse(sut.sentWorkoutEditionConfirmationDialogPresented)
         XCTAssertFalse(sut.navigatingToEditView)
-        
+
         aWorkout.isSent = false
         sut.goEditingWorkout(aWorkout)
 
@@ -110,14 +110,14 @@ final class CoachWorkoutsViewModelTests: XCTestCase {
         let sut = CoachWorkoutsViewModel(initialData: aWorkoutsList, config: config)
 
         XCTAssertFalse(sut.alertContext.isPresented)
-        
+
         assertPublishedValue(
             sut.alertContext.$isPresented,
             equals: true
         ) {
             sut.deleteWorkout(at: IndexSet(integer: 1))
         }
-        
+
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")
     }
 }

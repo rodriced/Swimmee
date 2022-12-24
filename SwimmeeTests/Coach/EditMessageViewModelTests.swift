@@ -155,7 +155,6 @@ final class EditMessageViewModelTests: XCTestCase {
         XCTAssertEqual(sut.alertContext.message, "Put something in title and retry.")
     }
     
-
     func testSaveMessageWithNetworkError() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         

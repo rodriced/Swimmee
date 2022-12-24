@@ -137,7 +137,7 @@ final class SignSharedViewModelTests: XCTestCase {
         }
     }
     
-    private func             GivenCorrectValuesEnteredInForm_WhenSubmitFail_ThenFormHaveErrors(submitType: SubmitType) {
+    private func GivenCorrectValuesEnteredInForm_WhenSubmitFail_ThenFormHaveErrors(submitType: SubmitType) {
         let aProfile = Profile.coachSample
         
         let mockAccountAPI = MockAccountAPI()
@@ -193,7 +193,7 @@ final class SignSharedViewModelTests: XCTestCase {
 
     func testGivenCorrectValuesEnteredInFormsOfEachType_WhenSubmitFail_ThenFormHaveErrors() {
         for submitType in SubmitType.allCases {
-                        GivenCorrectValuesEnteredInForm_WhenSubmitFail_ThenFormHaveErrors(submitType: submitType)
+            GivenCorrectValuesEnteredInForm_WhenSubmitFail_ThenFormHaveErrors(submitType: submitType)
         }
     }
 }
