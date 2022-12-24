@@ -16,6 +16,7 @@ class MockAccountAPI: AccountAPI {
     var mockSignIn: () throws -> Profile = { BadContextCallInMockFail(); fatalError() }
     var mockReauthenticate: () throws -> Void = { BadContextCallInMockFail(); fatalError() }
     var mockSignOut: () -> Bool = { BadContextCallInMockFail(); fatalError() }
+    var mockUpdateEmail: (String) async throws -> Void = {_ in BadContextCallInMockFail(); fatalError() }
 
     var currentUserId: UserId? { currentProfile?.userId }
 
@@ -57,5 +58,9 @@ class MockAccountAPI: AccountAPI {
             return true
         }
         return false
+    }
+    
+    func updateEmail(to newEmail: String) async throws {
+        try await mockUpdateEmail(newEmail)
     }
 }

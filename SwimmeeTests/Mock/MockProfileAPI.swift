@@ -14,7 +14,7 @@ class MockProfilePI: ProfileAPI {
     var mockFuture: () -> AnyPublisher<Profile, Error> = { BadContextCallInMockFail(); fatalError() }
     var mockPublisher: () -> AnyPublisher<Profile, Error> = { BadContextCallInMockFail(); fatalError() }
     var mockLoad: () async throws -> Profile = { BadContextCallInMockFail(); fatalError() }
-    var mockSave: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
+    var mockSave: (Profile) async throws -> Void = {_ in BadContextCallInMockFail(); fatalError() }
 
     var mockLoadTeam: () async throws -> [Profile] = { BadContextCallInMockFail(); fatalError() }
 
@@ -36,7 +36,7 @@ class MockProfilePI: ProfileAPI {
         try await mockLoad()
     }
     func save(_ profile: Profile) async throws {
-        try await mockSave()
+        try await mockSave(profile)
     }
 
     func loadTeam() async throws -> [Profile] {

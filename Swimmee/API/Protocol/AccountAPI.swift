@@ -68,6 +68,8 @@ protocol AccountAPI {
     func reauthenticate(email: String, password: String) async throws
     
     func signOut() -> Bool
+    
+    func updateEmail(to newEmail: String) async throws
 }
 
 extension AccountAPI {

@@ -116,4 +116,8 @@ class FirebaseAccountAPI: AccountAPI {
             return false
         }
     }
+    
+    func updateEmail(to newEmail: String) async throws{
+        try await auth.currentUser?.updateEmail(to: newEmail)
+    }
 }

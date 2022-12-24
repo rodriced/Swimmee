@@ -10,10 +10,13 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(\.presentationMode) private var presentationMode
+    private func dismiss() { presentationMode.wrappedValue.dismiss() }
+
     @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     @ObservedObject private var viewModel: ProfileViewModel
 
+    @State private var reauthenticationViewIsPresented = false
     @State private var deleteAccountViewIsPresented = false
 
     init(viewModel: ProfileViewModel) {
@@ -99,16 +102,47 @@ struct ProfileView: View {
     }
 
     // MARK: - Button components
-
+    
+    var reauthenticationView: some View {
+        ReauthenticationView(
+            title: "Profile Update",
+            message: "you are going to save a new email.\n\nYou must reauthenticate\nto update your profile.",
+            emailTitle: "Enter your old email",
+            buttonLabel: "Confirm Update",
+            successCompletion: {
+                viewModel.saveProfile()
+                dismiss()
+            }
+        )
+    }
+    
     private var updateProfileButton: some View {
-        ButtonWithConfirmation(
-            label: "Update",
-            isDisabled: !viewModel.isReadyToSubmit,
-            confirmationTitle: "Confirm your profile update.",
-            confirmationButtonLabel: "Confirm Update"
-        ) {
-            viewModel.saveProfile()
-            presentationMode.wrappedValue.dismiss()
+        Group {
+            if viewModel.emailIsModified {
+                Button {
+                    reauthenticationViewIsPresented = true
+                } label: {
+//                    Text("Update")
+                    Label("Update", systemImage: "key.viewfinder")
+                        .frame(maxWidth: .infinity)
+                }
+                .disabled(!viewModel.isReadyToSubmit)
+                .buttonStyle(.borderedProminent)
+                .sheet(isPresented: $reauthenticationViewIsPresented) {
+                    reauthenticationView
+                }
+
+            } else {
+                ButtonWithConfirmation(
+                    label: "Update",
+                    isDisabled: !viewModel.isReadyToSubmit,
+                    confirmationTitle: "Confirm your profile update.",
+                    confirmationButtonLabel: "Confirm Update"
+                ) {
+                    viewModel.saveProfile()
+                    dismiss()
+                }
+            }
         }
     }
 
@@ -121,6 +155,7 @@ struct ProfileView: View {
         .foregroundColor(Color.red)
         .sheet(isPresented: $deleteAccountViewIsPresented) {
             DeleteAccountView(cancelCompletion: { deleteAccountViewIsPresented = false })
+//            DeleteAccountView(cancelCompletion: {})
         }
     }
 
@@ -203,7 +238,7 @@ struct ProfileView: View {
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 if viewModel.isReadyToSubmit {
-                    Button("Cancel") { presentationMode.wrappedValue.dismiss() }
+                    Button("Cancel", action: dismiss)
                 }
             }
         }

@@ -11,17 +11,17 @@ import UIKit
 class ProfileViewModel: LoadableViewModel {
     struct Config: ViewModelConfig {
         // Injected API
-        let saveProfie: (Profile) async throws -> Void
-        let deleteCurrrentAccount: () async throws -> Void
+        let profileAPI: ProfileCommonAPI
         let imageStorage: ImageStorageAPI
+        let accountAPI: AccountAPI
 
         // Time interval between user input ending and validation launching
         let debounceDelay: RunLoop.SchedulerTimeType.Stride
 
         static let `default` =
-            Config(saveProfie: API.shared.profile.save,
-                   deleteCurrrentAccount: API.shared.account.deleteCurrrentAccount,
+            Config(profileAPI: API.shared.profile,
                    imageStorage: API.shared.imageStorage,
+                   accountAPI: API.shared.account,
                    debounceDelay: 0.5)
     }
 
@@ -32,11 +32,16 @@ class ProfileViewModel: LoadableViewModel {
     let initialProfile: Profile
 
     @Published var firstName: String
-    @Published var lastName: String
-    @Published var email: String
     @Published var firstNameInError = false
+
+    @Published var lastName: String
     @Published var lastNameInError = false
+
+    @Published var email: String
     @Published var emailInError = false
+    var emailIsModified: Bool {
+        email != initialProfile.email
+    }
 
     let photoInfoEdited: PhotoInfoEdited
 
@@ -51,6 +56,8 @@ class ProfileViewModel: LoadableViewModel {
     }
 
     @Published var isReadyToSubmit: Bool = false
+
+    @Published var alertContext = AlertContext()
 
     // MARK: - Protocol LoadableViewModel implementation
 
@@ -141,16 +148,23 @@ class ProfileViewModel: LoadableViewModel {
 
     func saveProfile() {
         Task {
-            var profile = initialProfile
-            profile.firstName = firstName
-            profile.lastName = lastName
-            profile.email = email
+            var profileToSave = initialProfile
+            profileToSave.firstName = firstName
+            profileToSave.lastName = lastName
+            profileToSave.email = email
 
             if photoInfoEdited.state != .initial {
-                profile.photoInfo = await photoInfoEdited.save(as: initialProfile.userId)
+                profileToSave.photoInfo = await photoInfoEdited.save(as: initialProfile.userId)
             }
 
-            try? await config.saveProfie(profile)
+            do {
+                if emailIsModified {
+                    try await config.accountAPI.updateEmail(to: profileToSave.email)
+                }
+                try await config.profileAPI.save(profileToSave)
+            } catch {
+                alertContext.message = error.localizedDescription
+            }
         }
     }
 
@@ -159,7 +173,7 @@ class ProfileViewModel: LoadableViewModel {
         // To be tested. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
         Task {
             do {
-                try await config.deleteCurrrentAccount()
+                try await config.accountAPI.deleteCurrrentAccount()
             } catch {
                 print("API.shared.account.deleteCurrrentAccount error catched : \(error.localizedDescription)")
             }
