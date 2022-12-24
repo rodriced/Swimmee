@@ -64,7 +64,7 @@ final class SignSharedViewModelTests: XCTestCase {
             sut.reauthenticate()
         }
         
-        XCTAssertFalse(sut.submitSuccess)
+        XCTAssertEqual(sut.submitState, .pending)
         
         XCTAssertTrue(sut.emailInError)
         XCTAssertTrue(sut.passwordInError)
@@ -95,8 +95,8 @@ final class SignSharedViewModelTests: XCTestCase {
         let sut = SignSharedViewModel(formType: submitType.formType, accountAPI: mockAccountAPI)
         
         let expectation1 = publisherExpectation(
-            sut.$submitSuccess.dropFirst(),
-            equals: true
+            sut.$submitState.dropFirst(),
+            equals: [.inProgress, .success]
         )
         
         sut.email = aProfile.email
@@ -149,8 +149,8 @@ final class SignSharedViewModelTests: XCTestCase {
         
         let expectation1 = publisherExpectation(
             //            sut.$submitSuccess.print("$submitSuccess").removeDuplicates().first { $0 == false },
-            sut.$submitSuccess,
-            equals: false
+            sut.$submitState,
+            equals: [.inProgress, .falilure]
         )
 
         let expectation2 = publisherExpectation(
