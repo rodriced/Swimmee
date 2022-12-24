@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct ReauthenticationView: View {
+struct ReauthenticationView<Message: View>: View {
     @Environment(\.presentationMode) private var presentationMode
     private func dismiss() { presentationMode.wrappedValue.dismiss() }
 
     @StateObject private var viewModel = SignSharedViewModel(formType: .signIn)
 
     private let title: String
-    private let message: String
+    private let message: () -> Message
     private let emailTitle: String
     private let passwordTitle: String
     private let buttonLabel: String
@@ -22,7 +22,7 @@ struct ReauthenticationView: View {
     private var cancelCompletion: (() -> Void)?
 
     init(title: String = "Reauthenticate",
-         message: String = "You nust reauthenticate to continue.",
+         @ViewBuilder message: @escaping () -> Message = { Text("You nust reauthenticate to continue.") },
          emailTitle: String = "Email",
          passwordTitle: String = "Password",
          buttonLabel: String = "Ok",
@@ -35,6 +35,7 @@ struct ReauthenticationView: View {
         self.passwordTitle = passwordTitle
         self.buttonLabel = buttonLabel
         self.successCompletion = successCompletion
+        self.cancelCompletion = cancelCompletion
     }
 
     private var formfields: some View {
@@ -67,7 +68,7 @@ struct ReauthenticationView: View {
             VStack {
                 Spacer()
 
-                Text(message)
+                message()
                     .multilineTextAlignment(.center)
                     .font(.system(.headline))
 
@@ -85,17 +86,15 @@ struct ReauthenticationView: View {
             .navigationBarTitle(title, displayMode: .inline)
             .navigationBarItems(leading:
                 Button {
-                    cancelCompletion?()
                     dismiss()
+                    cancelCompletion?()
                 } label: { Text("Cancel").bold() }
             )
             .onReceive(viewModel.$submitState) {
                 switch $0 {
                 case .success:
+                    dismiss()
                     successCompletion?()
-                        ?? dismiss()
-//                case .falilure:
-//                    cancelCompletion?()
                 default:
                     ()
                 }
@@ -106,8 +105,6 @@ struct ReauthenticationView: View {
 
 struct ReauthenticationView2_Previews: PreviewProvider {
     static var previews: some View {
-        ReauthenticationView(
-            message: "Explication message.\nMultiline...\nCentered"
-        )
+        ReauthenticationView()
     }
 }

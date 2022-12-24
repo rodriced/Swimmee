@@ -14,6 +14,8 @@ struct ProfileView: View {
 
     @Environment(\.verticalSizeClass) private var verticalSizeClass
 
+//    @EnvironmentObject private var appSession: Session
+
     @ObservedObject private var viewModel: ProfileViewModel
 
     @State private var reauthenticationViewIsPresented = false
@@ -101,12 +103,16 @@ struct ProfileView: View {
         }
     }
 
-    // MARK: - Button components
-    
-    var reauthenticationView: some View {
+    // MARK: - Profile update components
+
+    private var profileSecureUpdateConfirmationView: some View {
         ReauthenticationView(
             title: "Profile Update",
-            message: "you are going to save a new email.\n\nYou must reauthenticate\nto update your profile.",
+            message: {
+                Text("you have modified your email.")
+                    .foregroundColor(.red)
+                Text("\nYou must reauthenticate\nto confirm the update of your profile.")
+            },
             emailTitle: "Enter your old email",
             buttonLabel: "Confirm Update",
             successCompletion: {
@@ -115,21 +121,20 @@ struct ProfileView: View {
             }
         )
     }
-    
+
     private var updateProfileButton: some View {
         Group {
             if viewModel.emailIsModified {
                 Button {
                     reauthenticationViewIsPresented = true
                 } label: {
-//                    Text("Update")
                     Label("Update", systemImage: "key.viewfinder")
                         .frame(maxWidth: .infinity)
                 }
                 .disabled(!viewModel.isReadyToSubmit)
                 .buttonStyle(.borderedProminent)
                 .sheet(isPresented: $reauthenticationViewIsPresented) {
-                    reauthenticationView
+                    profileSecureUpdateConfirmationView
                 }
 
             } else {
@@ -146,16 +151,32 @@ struct ProfileView: View {
         }
     }
 
+    // MARK: - Delete account components
+
+    private var deleteAccountView: some View {
+        ReauthenticationView(
+            title: "Account deletion",
+            message: {
+                Text("You must reauthenticate to confirm\nthe deletion of your account.")
+                    .foregroundColor(.red)
+            },
+            buttonLabel: "Confirm deletion",
+            successCompletion: {
+//                appSession.deleteCurrentAccount()
+                dismiss()
+            }
+        )
+    }
+
     private var deleteAccountButton: some View {
         Button {
             deleteAccountViewIsPresented = true
         } label: {
-            Text("Delete my account")
+            Label("Delete my account", systemImage: "key.viewfinder")
         }
         .foregroundColor(Color.red)
         .sheet(isPresented: $deleteAccountViewIsPresented) {
-            DeleteAccountView(cancelCompletion: { deleteAccountViewIsPresented = false })
-//            DeleteAccountView(cancelCompletion: {})
+            deleteAccountView
         }
     }
 
