@@ -17,7 +17,7 @@ final class SwimmerWorkoutsViewModelTests: XCTestCase {
 
         let expectedWorkoutsParams = aWorkoutsList.map { (workout: $0, isRead: readWorkoutsIds.contains($0.dbId!)) }
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         let config = SwimmerWorkoutsViewModel.Config(profileAPI: profileAPI)
 
         let sut = SwimmerWorkoutsViewModel(initialData: (aWorkoutsList, Set(readWorkoutsIds)), config: config)
@@ -33,7 +33,7 @@ final class SwimmerWorkoutsViewModelTests: XCTestCase {
     func testSuccessfullSetWorkoutAsRead() {
         let aWorkoutsList = Samples.aWorkoutsList(userId: "COACH_ID")
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockSetWorkoutAsRead = { dbId in
             XCTAssertEqual(dbId, aWorkoutsList[0].dbId!)
         }

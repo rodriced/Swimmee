@@ -10,7 +10,7 @@
 import Combine
 import Foundation
 
-class MockProfilePI: ProfileAPI {
+class MockProfileAPI: ProfileAPI {
     var mockFuture: () -> AnyPublisher<Profile, Error> = { BadContextCallInMockFail(); fatalError() }
     var mockPublisher: () -> AnyPublisher<Profile, Error> = { BadContextCallInMockFail(); fatalError() }
     var mockLoad: () async throws -> Profile = { BadContextCallInMockFail(); fatalError() }

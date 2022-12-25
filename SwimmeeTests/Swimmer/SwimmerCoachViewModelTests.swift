@@ -28,7 +28,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         for selectedCoach in [Samples.aCoachProfile, nil] {
             let anEmptyCoachsList: [Profile] = []
             
-            let profileAPI = MockProfilePI()
+            let profileAPI = MockProfileAPI()
             profileAPI.mockLoadCoachs = { anEmptyCoachsList }
             
             let sut = SwimmerCoachViewModel(profileAPI: profileAPI)
@@ -48,7 +48,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
 
     func testWhenCoachsListLoadingFinishesWithError_ThenStateIsInfoWithMessage() {
         for selectedCoach in [Samples.aCoachProfile, nil] {
-            let profileAPI = MockProfilePI()
+            let profileAPI = MockProfileAPI()
             profileAPI.mockLoadCoachs = { throw TestError.fakeNetworkError }
             
             let sut = SwimmerCoachViewModel(profileAPI: profileAPI)
@@ -69,7 +69,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
     func testWhenCoachsListIsLoadedWithNoSelectedOne_ThenStateIsNorma() {
         let aCoachsList = Samples.aCoachsList
             
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockLoadCoachs = {
             aCoachsList
         }
@@ -92,7 +92,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         let aCoachsList = Samples.aCoachsList
         let selectedCoach = aCoachsList[3]
             
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockLoadCoachs = {
             aCoachsList
         }
@@ -115,7 +115,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         let aCoachsList = Samples.aCoachsList
         let selectedCoach = Samples.aCoachProfile
             
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockLoadCoachs = {
             aCoachsList
         }
@@ -138,7 +138,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         let aCoachsList = Samples.aCoachsList
         let selectedCoach = aCoachsList[3]
             
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockUpdateCoach = {}
             
         let sut = SwimmerCoachViewModel(profileAPI: profileAPI)
@@ -158,7 +158,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         let aCoachsList = Samples.aCoachsList
         let newSelectedCoach = aCoachsList[3]
             
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockUpdateCoach = {}
             
         let sut = SwimmerCoachViewModel(profileAPI: profileAPI)
@@ -179,7 +179,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         let selectedCoach = aCoachsList[3]
         let newSelectedCoach = aCoachsList[4]
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockUpdateCoach = {}
             
         let sut = SwimmerCoachViewModel(profileAPI: profileAPI)
@@ -199,7 +199,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         let aCoachsList = Samples.aCoachsList
         let selectedCoach = aCoachsList[3]
             
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockUpdateCoach = { throw TestError.fakeNetworkError }
             
         let sut = SwimmerCoachViewModel(profileAPI: profileAPI)
@@ -221,7 +221,7 @@ final class SwimmerCoachViewModelTests: XCTestCase {
         let coach1 = Samples.aProfile(of: .coach, ref: 1)
         let coach2 = Samples.aProfile(of: .coach, ref: 2)
 
-        let sut = SwimmerCoachViewModel(profileAPI: MockProfilePI())
+        let sut = SwimmerCoachViewModel(profileAPI: MockProfileAPI())
         
         XCTAssertEqual(sut.confirmationPresented, false)
         

@@ -14,7 +14,7 @@ final class ProfileViewModelTests: XCTestCase {
     private let aCoachProfile = Profile(userId: "", userType: .coach, firstName: "aFirstName", lastName: "aLastName", email: "an@e.mail")
 
     private func profileViewModelSubmitSuccess(aProfile: Profile, imageStorageAPI: MockImageStorageAPI = MockImageStorageAPI(), accountAPI: AccountAPI = MockAccountAPI()) -> ProfileViewModel {
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockSave = { _ in }
 
         let config = ProfileViewModel.Config(
@@ -169,7 +169,7 @@ final class ProfileViewModelTests: XCTestCase {
         accountAPI.mockDeleteCurrrentAccount = { expectation.fulfill() }
 
         let config = ProfileViewModel.Config(
-            profileAPI: MockProfilePI(),
+            profileAPI: MockProfileAPI(),
             imageStorage: MockImageStorageAPI(),
             accountAPI: accountAPI,
             debounceDelay: 0
@@ -189,7 +189,7 @@ final class ProfileViewModelTests: XCTestCase {
 
         let initialPhotoInfoEdited = PhotoInfoEdited(Samples.aPhotoInfo, imageStorage: MockImageStorageAPI())
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockSave = { profileToSave in
             XCTAssertNotNil(profileToSave.photoInfo)
         }

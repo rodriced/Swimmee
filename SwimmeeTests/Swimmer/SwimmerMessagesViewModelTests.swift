@@ -17,7 +17,7 @@ final class SwimmerMessagesViewModelTests: XCTestCase {
 
         let expectedMessagesParams = aMessagesList.map { (message: $0, isRead: readMeassagesIds.contains($0.dbId!)) }
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         let config = SwimmerMessagesViewModel.Config(profileAPI: profileAPI)
 
         let sut = SwimmerMessagesViewModel(initialData: (aMessagesList, Set(readMeassagesIds)), config: config)
@@ -33,7 +33,7 @@ final class SwimmerMessagesViewModelTests: XCTestCase {
     func testSuccessfullSetMessageAsRead() {
         let aMessagesList = Samples.aMessagesList(userId: "COACH_ID")
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockSetMessageAsRead = { dbId in
             XCTAssertEqual(dbId, aMessagesList[0].dbId!)
         }

@@ -14,7 +14,7 @@ final class CoachTeamViewModelTests: XCTestCase {
     func testNormalTeamWorkflow() {
         let aTeam = Samples.aTeam
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockLoadTeam = {
             aTeam
         }
@@ -36,7 +36,7 @@ final class CoachTeamViewModelTests: XCTestCase {
     func testEmptyTeamWorkflow() {
         let anEmptyTeam: [Profile] = []
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockLoadTeam = { anEmptyTeam }
 
         let sut = CoachTeamViewModel(profileAPI: profileAPI)
@@ -54,7 +54,7 @@ final class CoachTeamViewModelTests: XCTestCase {
     }
 
     func testNetworkErrorWorkflow() {
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockLoadTeam = { throw TestError.fakeNetworkError }
 
         let sut = CoachTeamViewModel(profileAPI: profileAPI)

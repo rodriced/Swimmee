@@ -17,7 +17,7 @@ final class SwimmerSessionTests: XCTestCase {
 
     private func newMockSwimmerSession(
         initialProfile: Profile,
-        profileAPI: ProfileCommonAPI = MockProfilePI(),
+        profileAPI: ProfileCommonAPI = MockProfileAPI(),
         workoutAPI: UserWorkoutCollectionAPI = MockUserWorkoutCollectionAPI(),
         messageAPI: UserMessageCollectionAPI = MockUserMessageCollectionAPI()
     ) -> SwimmerSession {
@@ -47,7 +47,7 @@ final class SwimmerSessionTests: XCTestCase {
 
         let expectedUnreadWorkouts = 2
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockPublisher = {
             Just(aSwimmer).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
@@ -105,7 +105,7 @@ final class SwimmerSessionTests: XCTestCase {
 
         let expectedUnreadMessages = 2
 
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockPublisher = {
             Just(aSwimmer).setFailureType(to: Error.self).eraseToAnyPublisher()
         }

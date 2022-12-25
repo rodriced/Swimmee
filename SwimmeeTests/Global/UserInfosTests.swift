@@ -17,7 +17,7 @@ final class UserInfosTests: XCTestCase {
 
     private func newMockUserInfosTests(
         profile: Profile,
-        profileAPI: ProfileCommonAPI = MockProfilePI()
+        profileAPI: ProfileCommonAPI = MockProfileAPI()
     ) -> UserInfos {
         UserInfos(profile: profile, profileAPI: profileAPI)
     }

@@ -18,7 +18,7 @@ final class SessionTests: XCTestCase {
         accountAPI.mockCurrentUserIdPublisher = {
             currentUserIdPublisher.eraseToAnyPublisher()
         }
-        let profileAPI = MockProfilePI()
+        let profileAPI = MockProfileAPI()
         profileAPI.mockFuture = {
             Fail(outputType: Profile.self, failure: AccountError.profileLoadingError)
                 .eraseToAnyPublisher()
