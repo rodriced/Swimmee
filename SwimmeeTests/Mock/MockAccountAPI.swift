@@ -11,6 +11,8 @@ import Combine
 import Foundation
 
 class MockAccountAPI: AccountAPI {
+    var mockCurrentUserIdPublisher: () -> AnyPublisher<UserId?, Never> = { BadContextCallInMockFail(); fatalError() }
+
     var mockSignUp: () throws -> Profile = { BadContextCallInMockFail(); fatalError() }
     var mockDeleteCurrrentAccount: () throws -> Void = { BadContextCallInMockFail(); fatalError() }
     var mockSignIn: () throws -> Profile = { BadContextCallInMockFail(); fatalError() }
@@ -20,17 +22,21 @@ class MockAccountAPI: AccountAPI {
 
     var currentUserId: UserId? { currentProfile?.userId }
 
-    func AuthenticationStatePublisher() -> AnyPublisher<AuthenticationState, Never> {
-        $currentProfile.map { profile in
-            guard let profile else { return AuthenticationState.signedOut }
-            return AuthenticationState.signedIn(profile)
-        }
-        .eraseToAnyPublisher()
-    }
+//    func AuthenticationStatePublisher() -> AnyPublisher<AuthenticationState, Never> {
+//        $currentProfile.map { profile in
+//            guard let profile else { return AuthenticationState.signedOut }
+//            return AuthenticationState.signedIn(profile)
+//        }
+//        .eraseToAnyPublisher()
+//    }
 
     var accounts: [String: String] = [:]
     var profiles: [String: Profile] = [:]
     @Published var currentProfile: Profile?
+
+    func currentUserIdPublisher() -> AnyPublisher<UserId?, Never> {
+        mockCurrentUserIdPublisher()
+    }
 
     func signUp(email: String, password: String, userType: UserType, firstName: String, lastName: String) async throws -> Profile {
         let profile = try mockSignUp()

@@ -16,29 +16,10 @@ class FirebaseAccountAPI: AccountAPI {
         auth.currentUser?.uid
     }
 
-    private func currentUserIdPublisher() -> AnyPublisher<UserId?, Never> {
+    func currentUserIdPublisher() -> AnyPublisher<UserId?, Never> {
         auth.authStateDidChangePublisher()
             .map { user in
                 user?.uid
-            }
-            .eraseToAnyPublisher()
-    }
-
-    func AuthenticationStatePublisher() -> AnyPublisher<AuthenticationState, Never> {
-        currentUserIdPublisher()
-            .flatMap { userId in
-                switch userId {
-                case .none:
-                    return Just(AuthenticationState.signedOut)
-                        .eraseToAnyPublisher()
-                case .some(let userId):
-                    return API.shared.profile.future(userId: userId)
-                        .map(AuthenticationState.signedIn)
-                        .catch { _ in
-                            Just(AuthenticationState.failure(AccountError.profileLoadingError))
-                        }
-                        .eraseToAnyPublisher()
-                }
             }
             .eraseToAnyPublisher()
     }
@@ -85,6 +66,7 @@ class FirebaseAccountAPI: AccountAPI {
         guard let userId = currentUserId else {
             return
         }
+        
         try await API.shared.profile.delete(userId: userId)
         try? await API.shared.imageStorage.delete(userId)
 

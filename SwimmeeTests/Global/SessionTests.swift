@@ -12,91 +12,40 @@ import XCTest
 
 final class SessionTests: XCTestCase {
     func testAlertAppear_WhenAuthenticationStateIsUpdatedToFailure0() throws {
-        let session = Session(accountAPI: MockAccountAPI())
-        
-        XCTAssertFalse(session.authenticationFailureAlert.isPresented)
-        
+        let currentUserIdPublisher: CurrentValueSubject<UserId?, Never> = CurrentValueSubject(UserId?.none)
+
+        let accountAPI = MockAccountAPI()
+        accountAPI.mockCurrentUserIdPublisher = {
+            currentUserIdPublisher.eraseToAnyPublisher()
+        }
+        let profileAPI = MockProfilePI()
+        profileAPI.mockFuture = {
+            Fail(outputType: Profile.self, failure: AccountError.profileLoadingError)
+                .eraseToAnyPublisher()
+        }
+        let session = Session(accountAPI: accountAPI, profileAPI: profileAPI)
+
+        XCTAssertEqual(session.state, .undefined)
+        XCTAssertEqual(session.stateFailureAlert.isPresented, false)
+
         let expectation1 = publisherExpectation(
-            session.authenticationFailureAlert.$isPresented.print("$errorAlertIsPresenting").dropFirst(),
+            session.stateFailureAlert.$isPresented.print("$errorAlertIsPresenting"),
             equals: true
         )
-        
-        let expectedConnectionStatus: [AuthenticationState] = [.undefined, .failure(AccountError.authenticationFailure)]
-        
+
+        let expectedConnectionStatus: [SessionState] = [.undefined, .signedOut, .failure(AccountError.profileLoadingError)]
+
         let expectation2 = publisherExpectation(
-            session.$authenticationState,
+            session.$state.print("session.$sate"),
             equals: expectedConnectionStatus
+//            equals: .failure(AccountError.authenticationFailure)
         )
-        
-        session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
-        
+
+        session.startStateWorkflow()
+        currentUserIdPublisher.send(Samples.aCoachUserId)
+
         wait(for: [expectation1, expectation2], timeout: 5)
-        
-        XCTAssertEqual(session.authenticationFailureAlert.message, "Authentication failure")
-    }
-    
-    func testAlertAppear_WhenConnectionStatusIsUpdatedToFailure() throws {
-        enum MergedValue: Equatable {
-            case authenticationState(AuthenticationState)
-            case errorAlertIsPresenting(Bool)
-        }
 
-        let session = Session(accountAPI: MockAccountAPI())
-        
-        let expectation = publisherExpectation(
-            Publishers.Merge(
-                session.authenticationFailureAlert.$isPresented.map(MergedValue.errorAlertIsPresenting),
-                session.$authenticationState.map(MergedValue.authenticationState)
-            )
-            .dropFirst(2), // dont test initial values
-            equals: [
-                .authenticationState(.failure(AccountError.authenticationFailure)),
-                .errorAlertIsPresenting(true)
-            ]
-        )
-
-        session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
-        
-        wait(for: [expectation], timeout: 5)
-        
-        XCTAssertEqual(session.authenticationFailureAlert.message, "Authentication failure")
-    }
-
-    func testAlertAppear_WhenConnectionStatusIsUpdatedToFailure2() throws {
-        enum Wrapped: Equatable {
-            case authenticationState(AuthenticationState)
-            case bool(Bool)
-            
-            init?<T: Equatable>(_ value: T) {
-                switch value.self {
-                case let v as AuthenticationState:
-                    self = .authenticationState(v)
-                case let v as Bool:
-                    self = .bool(v)
-                default:
-                    return nil
-                }
-            }
-        }
-
-        let session = Session(accountAPI: MockAccountAPI())
-
-        let publisher =
-            Publishers.Merge(
-                session.authenticationFailureAlert.$isPresented.map(Wrapped.bool),
-                session.$authenticationState.map(Wrapped.authenticationState)
-            )
-            .dropFirst(2) // dont test initial values
-        
-        let expectedValues: [Wrapped] = [
-            .authenticationState(.failure(AccountError.authenticationFailure)),
-            .bool(true)
-        ]
-        
-        assertPublishedValues(publisher, equals: expectedValues) {
-            session.updateAuthenticationState(.failure(AccountError.authenticationFailure))
-        }
-                
-        XCTAssertEqual(session.authenticationFailureAlert.message, "Authentication failure")
+        XCTAssertEqual(session.stateFailureAlert.message, "User profile could not be loaded.")
     }
 }

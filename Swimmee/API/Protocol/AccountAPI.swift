@@ -13,6 +13,7 @@ enum AccountError: CustomError {
     case emailAlreadyUsed
     case authenticationFailure
     case noUserSignedIn
+    case userReplacedByAnother
 
     var description: String {
         switch self {
@@ -26,25 +27,8 @@ enum AccountError: CustomError {
             return "Authentication failure"
         case .noUserSignedIn:
             return "No user authenticated"
-        }
-    }
-}
-
-enum AuthenticationState: Equatable {
-    case undefined, signedIn(Profile), signedOut, failure(Error)
-    
-    static func == (lhs: AuthenticationState, rhs: AuthenticationState) -> Bool {
-        switch (lhs, rhs) {
-        case (.signedIn(let lhsProfile), .signedIn(let rhsProfile)) where lhsProfile.userId == rhsProfile.userId:
-            return true
-            
-        case (.undefined, .undefined),
-             (.signedOut, .signedOut),
-            (.failure(_), .failure(_)):
-            return true
-    
-        default:
-            return false
+        case .userReplacedByAnother:
+            return "The current user has been replaced by another in the same session. It's not a normal behaviour... "
         }
     }
 }
@@ -54,9 +38,8 @@ protocol AccountAPI {
     
     var currentUserId: UserId? { get }
     func getCurrentUserId() throws -> UserId
-
-    func AuthenticationStatePublisher() -> AnyPublisher<AuthenticationState, Never>
-
+    func currentUserIdPublisher() -> AnyPublisher<UserId?, Never>
+    
     @discardableResult
     func signUp(email: String, password: String, userType: UserType, firstName: String, lastName: String) async throws -> Profile
     

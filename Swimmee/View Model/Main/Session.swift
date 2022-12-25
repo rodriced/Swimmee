@@ -7,43 +7,123 @@
 
 import Combine
 
-class Session: ObservableObject {
-    let accountAPI: AccountAPI
+enum SessionState: Equatable {
+    case undefined, signedIn(Profile), signedOut, failure(Error), deletingAccount, accountDeleted
 
-    init(accountAPI: AccountAPI = API.shared.account) {
-        print("Session.init")
-        self.accountAPI = accountAPI
-    }
-
-    @Published var authenticationFailureAlert = AlertContext()
-
-    @Published var authenticationState = AuthenticationState.undefined {
-        didSet {
-            if case .failure(let error) = authenticationState {
-                authenticationFailureAlert.message = error.localizedDescription
-            }
-        }
-    }
-
-    func errorAlertOkButtonCompletion() {
-        _ = accountAPI.signOut()
-    }
-
-    func updateAuthenticationState(_ newState: AuthenticationState) {
-//        print("session.updateSignedInState")
-        switch (authenticationState, newState) {
-        case (.signedIn(let profile), .signedIn(let newProfile)) where profile.userId != newProfile.userId:
-            fatalError("session.updateSignedInState: user has changed (impossible state")
+    static func == (lhs: SessionState, rhs: SessionState) -> Bool {
+        switch (lhs, rhs) {
+        case (.signedIn(let lhsProfile), .signedIn(let rhsProfile)) where lhsProfile.userId == rhsProfile.userId:
+            // 2 users are considered different if they do not have the same userId
+            return true
 
         case (.undefined, .undefined),
              (.signedOut, .signedOut),
              (.failure(_), .failure(_)),
-             (.signedIn(_), .signedIn(_)):
-//            print("session.updateSignedInState: Nothing has changed")
-            ()
+             (.deletingAccount, .deletingAccount),
+             (.accountDeleted, .accountDeleted):
+            return true
 
         default:
-            authenticationState = newState
+            return false
         }
+    }
+
+    var isFailure: Bool {
+        if case .failure = self { return true }
+        return false
+    }
+}
+
+class Session: ObservableObject {
+    private let accountAPI: AccountAPI
+    private let profileAPI: ProfileCommonAPI
+
+    @Published var state = SessionState.undefined
+    @Published var stateFailureAlert = AlertContext()
+
+    init(accountAPI: AccountAPI = API.shared.account,
+         profileAPI: ProfileCommonAPI = API.shared.profile)
+    {
+        self.accountAPI = accountAPI
+        self.profileAPI = profileAPI
+    }
+
+    // MARK: - Session state workflow managed by a publisher
+
+    var cancellable: AnyCancellable?
+
+    func startStateWorkflow() {
+        
+        // When state is .failure then alert message will contain the error description
+        cancellable = $state
+            .filter(\.isFailure)
+            .flatMap {
+                if case .failure(let error) = $0 {
+                    return Just(error.localizedDescription).eraseToAnyPublisher()
+                }
+                return Empty().eraseToAnyPublisher()
+            }
+            .sink { self.stateFailureAlert.message = $0 }
+
+        // State main workflow (authentication and account deletion)
+        accountAPI.currentUserIdPublisher()
+            .flatMap { userId in
+                switch (self.state, userId) {
+                //
+                // Abnormal behaviour //
+                // ------------------//
+                case (.signedIn(let profile), .some(let userId)) where profile.userId != userId:
+                    // Normaly impossible case : user replaced by another in the same session !
+                    return Just(SessionState.failure(AccountError.userReplacedByAnother))
+                        .eraseToAnyPublisher()
+
+                // Account deletion workflow //
+                // ---------------------------//
+                case (.deletingAccount, .none): // Profile does not exist anymore
+                    // so it's the end of the delete account process
+                    return Just(SessionState.accountDeleted)
+                        .eraseToAnyPublisher()
+
+                case (.deletingAccount, .some), // Account deletion process in progress
+                     (.accountDeleted, _): // End of the account deletion. Next state will be .signOut
+                    return Empty(completeImmediately: false, outputType: SessionState.self, failureType: Never.self)
+                        .eraseToAnyPublisher()
+
+                // Normal workflow //
+                // -----------------//
+                case (_, .none):
+                    return Just(SessionState.signedOut)
+                        .eraseToAnyPublisher()
+
+                case (_, .some(let userId)):
+                    return self.profileAPI.future(userId: userId)
+                        .map(SessionState.signedIn)
+                        .catch { _ in
+                            Just(SessionState.failure(AccountError.profileLoadingError))
+                        }
+                        .eraseToAnyPublisher()
+                }
+            }
+            .equatableAssign(to: &$state)
+    }
+
+    func abort() {
+        _ = accountAPI.signOut()
+    }
+
+    func deleteCurrentAccount() {
+        state = .deletingAccount
+
+        Task {
+            do {
+                try await accountAPI.deleteCurrrentAccount()
+            } catch {
+                state = .failure(error)
+            }
+        }
+    }
+
+    func accountDeletionCompletion() {
+        state = .signedOut
     }
 }

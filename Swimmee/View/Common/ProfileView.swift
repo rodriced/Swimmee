@@ -14,7 +14,7 @@ struct ProfileView: View {
 
     @Environment(\.verticalSizeClass) private var verticalSizeClass
 
-//    @EnvironmentObject private var appSession: Session
+    @EnvironmentObject private var mainSession: Session
 
     @ObservedObject private var viewModel: ProfileViewModel
 
@@ -162,7 +162,7 @@ struct ProfileView: View {
             },
             buttonLabel: "Confirm deletion",
             successCompletion: {
-//                appSession.deleteCurrentAccount()
+                mainSession.deleteCurrentAccount()
                 dismiss()
             }
         )
@@ -215,9 +215,11 @@ struct ProfileView: View {
 
             updateProfileButton
 
-            Divider().overlay(Color.red).frame(height: 30)
-
-            deleteAccountButton
+            if viewModel.initialProfile.userType == .swimmer {
+                // TODO: account deletion for coach to be done
+                Divider().overlay(Color.red).frame(height: 30)
+                deleteAccountButton
+            }
         }
         .textFieldStyle(.roundedBorder)
     }
