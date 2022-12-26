@@ -50,10 +50,10 @@ struct SignInView: View {
             .opacity(viewModel.isReadyToSubmit ? 1 : 0.5)
             .keyboardShortcut(.defaultAction)
 
-            NavigationLink("I have lost my password...") {
-                Text("Not implemented")
-                    .foregroundColor(.secondary)
-            }
+//            NavigationLink("I have lost my password...") {
+//                Text("Not implemented")
+//                    .foregroundColor(.secondary)
+//            }
 
             Spacer()
         }

@@ -5,8 +5,8 @@
 //  Created by Rodolphe Desruelles on 29/11/2022.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 // FieldStatus is a class which when associated with felds of form,
 // permits to manage validation with publishers
@@ -53,21 +53,6 @@ class FieldStatus<Value: Equatable> {
     lazy var validated = publisher.map(isValidated).eraseToAnyPublisher()
 
     var cancellables = Set<AnyCancellable>()
-
-//    func startPublishers() {
-//        modified.sink {
-//            print("FieldStatus.modified = \($0)")
-//        }
-//        .store(in: &cancellables)
-//
-//        validated.sink {
-//            print("FieldStatus.validated = \($0)")
-//        }
-//        .store(in: &cancellables)
-//
-//        publisher.connect()
-//            .store(in: &cancellables)
-//    }
 }
 
 class FormFields<Value: Equatable> {

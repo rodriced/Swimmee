@@ -33,8 +33,6 @@ class SwimmerSession: ObservableObject {
          workoutAPI: UserWorkoutCollectionAPI = API.shared.workout,
          messageAPI: UserMessageCollectionAPI = API.shared.message)
     {
-        print("SwimmerSession.init")
-
         self.profileAPI = profileAPI
         self.workoutAPI = workoutAPI
         self.messageAPI = messageAPI
@@ -66,17 +64,14 @@ class SwimmerSession: ObservableObject {
             .flatMap {
                 coachId -> AnyPublisher<[Workout], Error> in
                 self.workoutAPI.listPublisher(owner: .user(coachId ?? ""), isSent: true)
-//                    .print("workout.listPublisher")
                     .eraseToAnyPublisher()
             }
-//            .print("swimmerWorkoutsPublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 
     lazy var readWorkoutsIdsPublisher =
         $readWorkoutsIds
             .setFailureType(to: Error.self)
-//            .print("unreadWorkoutsPublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 
@@ -98,17 +93,14 @@ class SwimmerSession: ObservableObject {
             .flatMap {
                 coachId -> AnyPublisher<[Message], Error> in
                 self.messageAPI.listPublisher(owner: .user(coachId ?? ""), isSent: true)
-//                    .print("message.listPublisher")
                     .eraseToAnyPublisher()
             }
-//            .print("swimmerMessagesPublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 
     lazy var readMessagesIdsPublisher =
         $readMessagesIds
             .setFailureType(to: Error.self)
-//            .print("unreadMessagesPublisher")
             .multicast { CurrentValueSubject([]) }
             .autoconnect()
 

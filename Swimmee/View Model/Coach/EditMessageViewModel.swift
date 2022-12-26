@@ -23,7 +23,6 @@ class EditMessageViewModel: ObservableObject {
     @Published var alertContext = AlertContext()
 
     init(message: Message, messageAPI: UserMessageCollectionAPI = API.shared.message) {
-//        print("EditMessageViewModel.init (message)")
         self.originalMessage = message
         self.message = message
         self.messageAPI = messageAPI

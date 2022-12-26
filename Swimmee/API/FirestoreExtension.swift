@@ -36,7 +36,6 @@ public extension Query
         var isListenerEnabled = false // To indicate if we can create a new listener when request is received
 
         let newSnapshotListener = { [self] in
-//            print("snapshotOnSubscriptionPublisher.newSnapshotListener")
             addSnapshotListener(includeMetadataChanges: includeMetadataChanges)
             { snapshot, error in
                 if let error = error
@@ -52,14 +51,12 @@ public extension Query
         }
 
         let receiveSubscription: (Subscription) -> Void = { _ in
-//            print("snapshotOnSubscriptionPublisher.receiveSubscription")
             guard !isListenerEnabled else { return }
             listenerHandle = newSnapshotListener()
             isListenerEnabled = true
         }
 
         let cancel = { [weak listenerHandle] in
-//            print("snapshotOnSubscriptionPublisher.receivedCancel")
             listenerHandle?.remove()
             listenerHandle = nil
             isListenerEnabled = false
@@ -90,7 +87,6 @@ public extension Query
                     }
                     else if let snapshot = snapshot
                     {
-//                    print("snapshotBufferedPublisher : currentValue updated")
                         currentValue = snapshot
                         subject.send(snapshot)
                     }
@@ -100,7 +96,6 @@ public extension Query
             .handleEvents(
                 receiveCancel: listenerHandle.remove,
                 receiveRequest: { _ in
-//                    print("snapshotBufferedPublisher.receivedRequest \(demand.description)")
                     guard let currentValue else { return }
                     subject.send(currentValue)
                 }

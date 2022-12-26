@@ -14,7 +14,6 @@ struct SwimmerMessagesView: View {
     @ObservedObject var viewModel: SwimmerMessagesViewModel
 
     init(_ viewModel: SwimmerMessagesViewModel) {
-//        print("SwimmerMessagesView.init")
         _viewModel = ObservedObject(initialValue: viewModel)
     }
 

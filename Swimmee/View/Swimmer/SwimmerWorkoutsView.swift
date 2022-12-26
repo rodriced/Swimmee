@@ -14,7 +14,6 @@ struct SwimmerWorkoutsView: View {
     @ObservedObject var viewModel: SwimmerWorkoutsViewModel
 
     init(_ viewModel: SwimmerWorkoutsViewModel) {
-//        print("SwimmerWorkoutsView.init")
         _viewModel = ObservedObject(initialValue: viewModel)
     }
 

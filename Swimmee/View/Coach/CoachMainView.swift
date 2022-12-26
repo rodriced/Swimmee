@@ -13,7 +13,11 @@ struct CoachMainView: View {
 
     var body: some View {
         TabView(selection: $router.tabsTarget) {
-            
+
+            //
+            // Workouts tab
+            //
+
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
@@ -27,6 +31,10 @@ struct CoachMainView: View {
                 Label("Workouts", systemImage: "stopwatch")
             }
             .tag(UserRouter.TabTarget.workouts)
+
+            //
+            // Messages tab
+            //
 
             NavigationView {
                 LoadingView(
@@ -42,6 +50,10 @@ struct CoachMainView: View {
             }
             .tag(UserRouter.TabTarget.messages)
 
+            //
+            // Settings tab
+            //
+
             NavigationView {
                 SettingsView()
             }
@@ -50,7 +62,7 @@ struct CoachMainView: View {
                 Label("Settings", systemImage: "gearshape")
             }
             .tag(UserRouter.TabTarget.settings)
-            
+
         }
         .environmentObject(router)
         .environmentObject(session)

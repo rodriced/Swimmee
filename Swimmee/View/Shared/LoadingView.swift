@@ -108,7 +108,6 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
          targetViewModelConfig: TargetViewModel.Config = .default,
          @ViewBuilder targetView: @escaping (TargetViewModel) -> TargetView)
     {
-//        print("LoadingView.init")
         self._loadingViewModel = StateObject(wrappedValue:
             LoadingViewModel(publisherBuiler: publisherBuiler, targetViewModelConfig: targetViewModelConfig)
         )
@@ -117,7 +116,6 @@ struct LoadingView<TargetViewModel: LoadableViewModel, TargetView: View>: View {
 
     var body: some View {
         Group {
-//            DebugHelper.viewBodyPrint("LoadingView.body state = \(loadingViewModel.state)")
             switch loadingViewModel.state {
             case .idle:
                 Color.clear

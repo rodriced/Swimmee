@@ -19,8 +19,6 @@ class CoachSession: ObservableObject {
     init(workoutAPI: UserWorkoutCollectionAPI = API.shared.workout,
          messageAPI: UserMessageCollectionAPI = API.shared.message)
     {
-        print("CoachSession.init")
-
         self.workoutAPI = workoutAPI
         self.messageAPI = messageAPI
     }

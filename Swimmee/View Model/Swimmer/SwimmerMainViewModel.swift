@@ -18,8 +18,6 @@ class SwimmerMainViewModel: ObservableObject {
     func startListeners(unreadWorkoutsCountPublisher: AnyPublisher<Int, Error>,
                         unreadMessagesCountPublisher: AnyPublisher<Int, Error>)
     {
-//        print("SwimmerMainViewModel.startListeners")
-
         self.unreadWorkoutsCountPublisher = unreadWorkoutsCountPublisher
         self.unreadMessagesCountPublisher = unreadMessagesCountPublisher
 

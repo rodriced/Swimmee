@@ -15,12 +15,16 @@ struct SwimmerMainView: View {
     @StateObject var viewModel = SwimmerMainViewModel()
 
     init(profile: Profile) {
-//        print("SwimmerMainView.init")
         _session = StateObject(wrappedValue: SwimmerSession(initialProfile: profile))
     }
 
     var body: some View {
         TabView(selection: $router.tabsTarget) {
+
+            //
+            // Workouts tab
+            //
+
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
@@ -29,7 +33,7 @@ struct SwimmerMainView: View {
                             session.readWorkoutsIdsPublisher
                         )
                         .eraseToAnyPublisher()
-                    }, // TODO: Manage error when there is no chosen coach
+                    },
                     targetView: SwimmerWorkoutsView.init
                 )
             }
@@ -40,6 +44,10 @@ struct SwimmerMainView: View {
             }
             .tag(UserRouter.TabTarget.workouts)
 
+            //
+            // Messages tab
+            //
+
             NavigationView {
                 LoadingView(
                     publisherBuiler: {
@@ -48,7 +56,7 @@ struct SwimmerMainView: View {
                             session.readMessagesIdsPublisher
                         )
                         .eraseToAnyPublisher()
-                    }, // TODO: Manage error when there is no chosen coach
+                    },
                     targetView: SwimmerMessagesView.init
                 )
             }
@@ -59,6 +67,10 @@ struct SwimmerMainView: View {
             }
             .tag(UserRouter.TabTarget.messages)
 
+            //
+            // Settings tab
+            //
+
             NavigationView {
                 SettingsView()
             }
@@ -67,8 +79,11 @@ struct SwimmerMainView: View {
                 Label("Settings", systemImage: "gearshape")
             }
             .tag(UserRouter.TabTarget.settings)
+
         }
         .environmentObject(router)
+        .environmentObject(session)
+
         .task {
             session.listenChanges()
         }
@@ -78,7 +93,6 @@ struct SwimmerMainView: View {
                 unreadMessagesCountPublisher: session.unreadMessagesCountPublisher.eraseToAnyPublisher()
             )
         }
-        .environmentObject(session)
     }
 }
 

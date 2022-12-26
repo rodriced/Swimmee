@@ -14,9 +14,10 @@ struct CoachWorkoutsView: View {
     @ObservedObject var viewModel: CoachWorkoutsViewModel
 
     init(viewModel: CoachWorkoutsViewModel) {
-//        print("CoachWorkoutsView.init")
         _viewModel = ObservedObject(initialValue: viewModel)
     }
+
+    // MARK: - Components
 
     var workoutsList: some View {
         Group {
@@ -122,8 +123,6 @@ struct CoachWorkoutsView: View {
 
     var body: some View {
         VStack(spacing: 30) {
-//            DebugHelper.viewBodyPrint("CoachWorkoutsView.body")
-
             if viewModel.workouts.isEmpty {
                 emptyListInformation
             } else {

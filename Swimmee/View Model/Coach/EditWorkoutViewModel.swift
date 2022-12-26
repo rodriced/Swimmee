@@ -23,7 +23,6 @@ class EditWorkoutViewModel: ObservableObject {
     @Published var alertContext = AlertContext()
 
     init(workout: Workout, workoutAPI: UserWorkoutCollectionAPI = API.shared.workout) {
-//        print("EditWorkoutViewModel.init (workout)")
         self.originalWorkout = workout
         self.workout = workout
         self.workoutAPI = workoutAPI

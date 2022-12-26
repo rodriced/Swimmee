@@ -29,14 +29,14 @@ final class SessionTests: XCTestCase {
         XCTAssertEqual(session.stateFailureAlert.isPresented, false)
 
         let expectation1 = publisherExpectation(
-            session.stateFailureAlert.$isPresented.print("$errorAlertIsPresenting"),
+            session.stateFailureAlert.$isPresented,
             equals: true
         )
 
         let expectedConnectionStatus: [SessionState] = [.undefined, .signedOut, .failure(AccountError.profileLoadingError)]
 
         let expectation2 = publisherExpectation(
-            session.$state.print("session.$sate"),
+            session.$state,
             equals: expectedConnectionStatus
 //            equals: .failure(AccountError.authenticationFailure)
         )

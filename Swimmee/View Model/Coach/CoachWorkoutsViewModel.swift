@@ -62,8 +62,6 @@ class CoachWorkoutsViewModel: LoadableViewModel {
     //
     
     required init(initialData: [Workout], config: Config = .default) {
-//        print("CoachWorkoutsViewModel.init")
-
         self.workouts = initialData
         self.config = config
         

@@ -55,7 +55,6 @@ class CoachMessagesViewModel: LoadableViewModel {
     //
     
     required init(initialData: [Message], config: Config = .default) {
-//        print("CoachMessagesViewModel.init")
         messages = initialData
         self.config = config
     }

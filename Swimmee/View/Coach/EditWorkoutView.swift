@@ -19,7 +19,6 @@ struct EditWorkoutView: View {
     @FocusState private var isTitleFocused: Bool
 
     init(workout: Workout) {
-//        print("EditWorkoutView.init (titile = \(workout.title)")
         _viewModel = StateObject(wrappedValue: EditWorkoutViewModel(workout: workout))
     }
 
@@ -171,7 +170,6 @@ struct EditWorkoutView: View {
 
     var body: some View {
         VStack {
-//            DebugHelper.viewBodyPrint("EditWorkoutView")
             if viewModel.workout.isSent {
                 Label("Workout is published", systemImage: "exclamationmark.triangle")
                     .foregroundColor(.mint)

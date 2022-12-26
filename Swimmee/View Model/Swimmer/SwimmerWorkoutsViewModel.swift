@@ -44,7 +44,6 @@ class SwimmerWorkoutsViewModel: LoadableViewModel {
     //
 
     required init(initialData: LoadedData, config: Config = .default) {
-//        print("SwimmerWorkoutsViewModel.init")
         (workoutsParams, newWorkoutsCount) = Self.formatLoadedData(initialData)
         self.config = config
     }

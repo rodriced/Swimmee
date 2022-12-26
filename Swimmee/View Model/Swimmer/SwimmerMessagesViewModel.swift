@@ -30,7 +30,6 @@ class SwimmerMessagesViewModel: LoadableViewModel {
     //
 
     required init(initialData: LoadedData, config: Config = .default) {
-//        print("SwimmerMessagesViewModel.init")
         (messagesParams, newMessagesCount) = Self.formatLoadedData(initialData)
         self.config = config
     }

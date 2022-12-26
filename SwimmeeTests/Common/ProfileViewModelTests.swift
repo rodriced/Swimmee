@@ -56,8 +56,6 @@ final class ProfileViewModelTests: XCTestCase {
             sut.firstName = aProfile.firstName + "adding"
         }
 
-//        print(sut.firstName, sut.lastName, sut.email, sut.photoInfoEdited.state)
-
         assertPublishedValue(
             sut.$isReadyToSubmit, equals: false
         ) {
@@ -84,7 +82,6 @@ final class ProfileViewModelTests: XCTestCase {
                 .map(String.init(describing:)), // To make tuple "Equatable"
             equals: "(false, false)"
         ) {
-//            print("--> Will modify : \(sut.email)")
             sut.email = "bad email"
         }
     }

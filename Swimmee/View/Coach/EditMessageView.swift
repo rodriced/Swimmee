@@ -17,7 +17,6 @@ struct EditMessageView: View {
     @FocusState private var isTitleFocused: Bool
 
     init(message: Message) {
-//        print("EditMessageView.init (titile = \(message.title)")
         _viewModel = StateObject(wrappedValue: EditMessageViewModel(message: message))
     }
     
@@ -103,7 +102,6 @@ struct EditMessageView: View {
 
     var body: some View {
         VStack {
-//            DebugHelper.viewBodyPrint("EditMessageView")
             if viewModel.message.isSent {
                 Label("Message is sent", systemImage: "exclamationmark.triangle")
                     .foregroundColor(.mint)

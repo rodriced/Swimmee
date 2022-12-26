@@ -62,8 +62,6 @@ class ProfileViewModel: LoadableViewModel {
     // MARK: - Protocol LoadableViewModel implementation
 
     required init(initialData: Profile, config: Config = .default) {
-        debugPrint("---- ProfileViewModel.init")
-
         self.config = config
 
         self.initialProfile = initialData

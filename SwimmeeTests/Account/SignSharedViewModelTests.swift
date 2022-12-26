@@ -148,13 +148,11 @@ final class SignSharedViewModelTests: XCTestCase {
         let sut = SignSharedViewModel(formType: submitType.formType, accountAPI: mockAccountAPI)
         
         let expectation1 = publisherExpectation(
-            //            sut.$submitSuccess.print("$submitSuccess").removeDuplicates().first { $0 == false },
             sut.$submitState,
             equals: [.inProgress, .falilure]
         )
 
         let expectation2 = publisherExpectation(
-            //            sut.$errorAlertIsPresenting.print("$errorAlertIsPresenting").removeDuplicates().first { $0 == true },
             sut.alertcontext.$isPresented.dropFirst(),
             equals: true
         )
