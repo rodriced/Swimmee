@@ -11,6 +11,8 @@ import XCTest
 
 extension XCTestCase
 {
+    // 'publisherExpectation' create a special expectation for a publisher
+    // that fullfill when a defined value is emited.
     func publisherExpectation<Value: Equatable, P: Publisher>(
         _ publisher: P,
         equals expectedValue: Value,
@@ -37,6 +39,8 @@ extension XCTestCase
         return (expectation, cancellable)
     }
 
+    // This other form of 'publisherExpectation' create a special expectation for a publisher
+    // that fullfill when a defined sequence of values are emited.
     func publisherExpectation<Value: Equatable, P: Publisher>(
         _ publisher: P,
         equals expectedValues: [Value],
@@ -66,6 +70,8 @@ extension XCTestCase
         return (expectation, cancellable)
     }
 
+    // This form of 'wait' function has the same behaviour as the standart one
+    // but for an expectation created by 'publisherExpectation'
     func wait(
         for expectations: [(XCTestExpectation, AnyCancellable?)],
         timeout seconds: TimeInterval
@@ -78,6 +84,10 @@ extension XCTestCase
         }
     }
 
+    // 'assertPublishedValue' combine:
+    // - a 'publisherExpectation' waiting for the emission of a value,
+    // - the execution of some custom code,
+    // - and a 'wait'
     func assertPublishedValue<Value: Equatable, P: Publisher>(
         _ publisher: P,
         equals expectedValue: Value,
@@ -95,6 +105,10 @@ extension XCTestCase
         wait(for: [expectation], timeout: timeout)
     }
 
+    // this othe form of 'assertPublishedValue' combine:
+    // - a 'publisherExpectation' waiting for the emission of a sequence of values,
+    // - the execution of some custom code,
+    // - and a 'wait'
     func assertPublishedValues<Value: Equatable, P: Publisher>(
         _ publisher: P,
         equals expectedValues: [Value],
