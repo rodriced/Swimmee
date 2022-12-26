@@ -9,14 +9,11 @@
 
 import XCTest
 
-class SwimmeeUnitTesting {}
-
-func BadContextCallInMockFail(file: StaticString = #filePath, line: UInt = #line) { XCTFail("Can't achieve test. Mock bad initialization", file: file, line: line) }
+func MockFunctionNotInitialized(file: StaticString = #filePath, line: UInt = #line) { XCTFail("Mock function is called in a test, but it is not initialized has it should be.", file: file, line: line) }
 
 enum TestError: String, CustomError {
     var description: String { rawValue }
 
-    case badContextCall
     case errorForTesting
     case fakeNetworkError
 }

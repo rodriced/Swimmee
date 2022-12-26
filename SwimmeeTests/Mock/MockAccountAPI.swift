@@ -11,14 +11,14 @@ import Combine
 import Foundation
 
 class MockAccountAPI: AccountAPI {
-    var mockCurrentUserIdPublisher: () -> AnyPublisher<UserId?, Never> = { BadContextCallInMockFail(); fatalError() }
+    var mockCurrentUserIdPublisher: () -> AnyPublisher<UserId?, Never> = { MockFunctionNotInitialized(); fatalError() }
 
-    var mockSignUp: () throws -> Profile = { BadContextCallInMockFail(); fatalError() }
-    var mockDeleteCurrrentAccount: () throws -> Void = { BadContextCallInMockFail(); fatalError() }
-    var mockSignIn: () throws -> Profile = { BadContextCallInMockFail(); fatalError() }
-    var mockReauthenticate: () throws -> Void = { BadContextCallInMockFail(); fatalError() }
-    var mockSignOut: () -> Bool = { BadContextCallInMockFail(); fatalError() }
-    var mockUpdateEmail: (String) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
+    var mockSignUp: () throws -> Profile = { MockFunctionNotInitialized(); fatalError() }
+    var mockDeleteCurrrentAccount: () throws -> Void = { MockFunctionNotInitialized(); fatalError() }
+    var mockSignIn: () throws -> Profile = { MockFunctionNotInitialized(); fatalError() }
+    var mockReauthenticate: () throws -> Void = { MockFunctionNotInitialized(); fatalError() }
+    var mockSignOut: () -> Bool = { MockFunctionNotInitialized(); fatalError() }
+    var mockUpdateEmail: (String) async throws -> Void = { _ in MockFunctionNotInitialized(); fatalError() }
 
     var currentUserId: UserId? { currentProfile?.userId }
 

@@ -10,9 +10,9 @@
 import Foundation
 
 class MockImageStorageAPI: ImageStorageAPI {
-    var mockUpload: (String, Data) async throws -> URL = { _, _ in BadContextCallInMockFail(); fatalError() }
-    var mockDownload: (String) async throws -> Data = { _ in BadContextCallInMockFail(); fatalError() }
-    var mockDelete: (String) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
+    var mockUpload: (String, Data) async throws -> URL = { _, _ in MockFunctionNotInitialized(); fatalError() }
+    var mockDownload: (String) async throws -> Data = { _ in MockFunctionNotInitialized(); fatalError() }
+    var mockDelete: (String) async throws -> Void = { _ in MockFunctionNotInitialized(); fatalError() }
 
     func upload(_ name: String, with data: Data) async throws -> URL {
         return try await mockUpload(name, data)

@@ -11,19 +11,19 @@ import Combine
 import Foundation
 
 class MockProfileAPI: ProfileAPI {
-    var mockFuture: () -> AnyPublisher<Profile, Error> = { BadContextCallInMockFail(); fatalError() }
-    var mockPublisher: () -> AnyPublisher<Profile, Error> = { BadContextCallInMockFail(); fatalError() }
-    var mockLoad: () async throws -> Profile = { BadContextCallInMockFail(); fatalError() }
-    var mockSave: (Profile) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
+    var mockFuture: () -> AnyPublisher<Profile, Error> = { MockFunctionNotInitialized(); fatalError() }
+    var mockPublisher: () -> AnyPublisher<Profile, Error> = { MockFunctionNotInitialized(); fatalError() }
+    var mockLoad: () async throws -> Profile = { MockFunctionNotInitialized(); fatalError() }
+    var mockSave: (Profile) async throws -> Void = { _ in MockFunctionNotInitialized(); fatalError() }
 
-    var mockLoadTeam: () async throws -> [Profile] = { BadContextCallInMockFail(); fatalError() }
+    var mockLoadTeam: () async throws -> [Profile] = { MockFunctionNotInitialized(); fatalError() }
 
-    var mockLoadCoachs: () async throws -> [Profile] = { BadContextCallInMockFail(); fatalError() }
-    var mockUpdateCoach: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
-    var mockSetWorkoutAsRead: (_ workoutDbId: Workout.DbId) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
-    var mockSetMessageAsRead: (_ messageDbId: Message.DbId) async throws -> Void = { _ in BadContextCallInMockFail(); fatalError() }
+    var mockLoadCoachs: () async throws -> [Profile] = { MockFunctionNotInitialized(); fatalError() }
+    var mockUpdateCoach: () async throws -> Void = { MockFunctionNotInitialized(); fatalError() }
+    var mockSetWorkoutAsRead: (_ workoutDbId: Workout.DbId) async throws -> Void = { _ in MockFunctionNotInitialized(); fatalError() }
+    var mockSetMessageAsRead: (_ messageDbId: Message.DbId) async throws -> Void = { _ in MockFunctionNotInitialized(); fatalError() }
 
-    var mockDelete: () async throws -> Void = { BadContextCallInMockFail(); fatalError() }
+    var mockDelete: () async throws -> Void = { MockFunctionNotInitialized(); fatalError() }
 
     func future(userId: String?) -> AnyPublisher<Profile, Error> {
         mockFuture()
