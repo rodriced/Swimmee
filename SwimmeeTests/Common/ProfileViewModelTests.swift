@@ -157,29 +157,6 @@ final class ProfileViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
 
-    func testWhenDeleteAccountIsAsked_ThenAccountAPIIsCalled() {
-        let expectation = expectation(description: "Waiting for delete account API call")
-
-        let aProfile = aCoachProfile
-
-        let accountAPI = MockAccountAPI()
-        accountAPI.mockDeleteCurrrentAccount = { expectation.fulfill() }
-
-        let config = ProfileViewModel.Config(
-            profileAPI: MockProfileAPI(),
-            imageStorage: MockImageStorageAPI(),
-            accountAPI: accountAPI,
-            debounceDelay: 0
-        )
-
-        let sut = ProfileViewModel(initialData: aProfile, config: config)
-        sut.startPublishers()
-
-        sut.deleteAccount()
-
-        wait(for: [expectation], timeout: 1)
-    }
-
     func testGivenAProfileFormWithAPhoto_WhenFormIsModifiedAndSaved_ThenPhotoIsNotRemoved() {
         var aProfile = aCoachProfile
         aProfile.photoInfo = Samples.aPhotoInfo
