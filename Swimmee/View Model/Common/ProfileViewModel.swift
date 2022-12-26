@@ -165,16 +165,4 @@ class ProfileViewModel: LoadableViewModel {
             }
         }
     }
-
-    func deleteAccount() {
-        // TODO: Implement this with Firebase function
-        // To be tested. Blocking main thread to prevent ececution of swiftui ui update until account deletion (photo, profile, auth user) completion to prevent inconsistent state
-        Task {
-            do {
-                try await config.accountAPI.deleteCurrrentAccount()
-            } catch {
-                print("API.shared.account.deleteCurrrentAccount error catched : \(error.localizedDescription)")
-            }
-        }
-    }
 }
