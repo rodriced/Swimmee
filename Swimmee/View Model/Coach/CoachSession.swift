@@ -7,7 +7,12 @@
 
 import Combine
 
+// CoachSession provide workouts and messages publishers for live updates in the application coach's part
+
 class CoachSession: ObservableObject {
+    
+    // MARK: - Config
+
     let workoutAPI: UserWorkoutCollectionAPI
     let messageAPI: UserMessageCollectionAPI
 
@@ -19,6 +24,8 @@ class CoachSession: ObservableObject {
         self.workoutAPI = workoutAPI
         self.messageAPI = messageAPI
     }
+
+    // MARK: - Publishers
 
     lazy var workoutsPublisher =
         workoutAPI.listPublisher(owner: .currentUser, isSent: nil)

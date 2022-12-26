@@ -5,7 +5,12 @@
 //  Created by Rodolphe Desruelles on 06/10/2022.
 //
 
+
 import Combine
+
+// Session is the view model of the main view.
+// It manage the state (SessionState) of the whole application, mainly the authentication state
+// with a particular state when the user delete his account.
 
 enum SessionState: Equatable {
     case undefined, signedIn(Profile), signedOut, failure(Error), deletingAccount, accountDeleted
@@ -48,7 +53,7 @@ class Session: ObservableObject {
         self.profileAPI = profileAPI
     }
 
-    // MARK: - Session state workflow managed by a publisher
+    // MARK: - Session state workflow managed by publishers
 
     var cancellable: AnyCancellable?
 
@@ -107,16 +112,21 @@ class Session: ObservableObject {
             .equatableAssign(to: &$state)
     }
 
+    // When unrecoverable Error happens, user is logged out to prevent possible data corruption
     func abort() {
         _ = accountAPI.signOut()
     }
 
+    // MARK: -- Account deletion management
+    
     func deleteCurrentAccount() {
         state = .deletingAccount
 
         Task {
             do {
                 try await accountAPI.deleteCurrrentAccount()
+                // when the user account is finaly deleted, it triggers the publication of new auth id with a nil value.
+                // Then the state will get automatically the value .acccountDeleted
             } catch {
                 state = .failure(error)
             }

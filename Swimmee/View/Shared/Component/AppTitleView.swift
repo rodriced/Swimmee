@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// Main application title with image
+
 struct AppTitleView: View {
     var body: some View {
         ZStack {

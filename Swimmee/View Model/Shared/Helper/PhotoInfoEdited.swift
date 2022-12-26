@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// PhotoInfoEdited is used to manage edition of profile user photo in form
+// (whose image data will be in storage and metadata in Profile photoInfo property)
+
 public class PhotoInfoEdited: ObservableObject {
     enum State: Equatable {
         case initial
@@ -38,6 +41,8 @@ public class PhotoInfoEdited: ObservableObject {
     let initial: PhotoInfo?
     let imageStorage: ImageStorageAPI
 
+    // State of the edited photo in form
+    // (initial = not changed, removed = removed existing photo, new = newly added photo)
     @Published private(set) var state = State.initial
 
     var isImagePresent: Bool {
@@ -50,6 +55,7 @@ public class PhotoInfoEdited: ObservableObject {
         }
     }
 
+    // state is updated according to the state of the photo in form and the initial state
     func updateWith(uiImage: UIImage?) {
         guard let uiImage else {
             switch state {

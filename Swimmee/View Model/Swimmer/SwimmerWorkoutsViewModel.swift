@@ -7,7 +7,10 @@
 
 import Combine
 
-class SwimmerWorkoutsViewModel {
+class SwimmerWorkoutsViewModel: LoadableViewModel {
+
+    // MARK: - Config
+
     struct Config: ViewModelConfig {
         let profileAPI: ProfileSwimmerAPI
 
@@ -15,6 +18,10 @@ class SwimmerWorkoutsViewModel {
     }
 
     let config: Config
+
+    //
+    // MARK: - Properties
+    //
 
     typealias LoadedData = ([Workout], Set<Workout.DbId>)
     typealias WorkoutsParams = [(workout: Workout, isRead: Bool)]
@@ -32,11 +39,21 @@ class SwimmerWorkoutsViewModel {
         }
     }
 
+    //
+    // MARK: - Protocol LoadableViewModel implementation
+    //
+
     required init(initialData: LoadedData, config: Config = .default) {
 //        print("SwimmerWorkoutsViewModel.init")
         (workoutsParams, newWorkoutsCount) = Self.formatLoadedData(initialData)
         self.config = config
     }
+
+    func refreshedLoadedData(_ loadedData: LoadedData) {
+        (workoutsParams, newWorkoutsCount) = Self.formatLoadedData(loadedData)
+    }
+
+    var restartLoader: (() -> Void)?
 
     static func formatLoadedData(_ loadedData: LoadedData) -> (WorkoutsParams, Int) {
         var workouts = loadedData.0
@@ -54,7 +71,9 @@ class SwimmerWorkoutsViewModel {
         return (workoutsParams, newWorkoutsCount)
     }
 
-    var restartLoader: (() -> Void)?
+    //
+    // MARK: - Actions
+    //
 
     func clearFilters() {
         tagFilterSelection = nil
@@ -65,11 +84,5 @@ class SwimmerWorkoutsViewModel {
         Task {
             try? await config.profileAPI.setWorkoutAsRead(dbId)
         }
-    }
-}
-
-extension SwimmerWorkoutsViewModel: LoadableViewModel {
-    func refreshedLoadedData(_ loadedData: LoadedData) {
-        (workoutsParams, newWorkoutsCount) = Self.formatLoadedData(loadedData)
     }
 }

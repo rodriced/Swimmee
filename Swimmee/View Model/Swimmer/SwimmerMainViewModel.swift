@@ -11,19 +11,6 @@ class SwimmerMainViewModel: ObservableObject {
     @Published var newWorkoutsCount: String?
     @Published var unreadWorkoutsCount: String?
     @Published var unreadMessagesCount: String?
-//    {
-//        didSet {
-//            print("SwimmerMainViewModel.unreadMessagesCount.didSet : \(unreadMessagesCount.debugDescription)")
-//        }
-//    }
-
-//    init() {
-//        print("SwimmerMainViewModel.init")
-//    }
-//
-//    deinit {
-//        print("SwimmerMainViewModel.deinit")
-//    }
 
     var unreadWorkoutsCountPublisher: AnyPublisher<Int, Error>?
     var unreadMessagesCountPublisher: AnyPublisher<Int, Error>?

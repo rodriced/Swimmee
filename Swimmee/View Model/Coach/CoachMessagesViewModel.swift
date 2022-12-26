@@ -16,7 +16,10 @@ enum CoachMessagesFilter: String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-class CoachMessagesViewModel: ObservableObject {
+class CoachMessagesViewModel: LoadableViewModel {
+
+    // MARK: - Config
+
     struct Config: ViewModelConfig {
         let messageAPI: UserMessageCollectionAPI
         
@@ -25,6 +28,10 @@ class CoachMessagesViewModel: ObservableObject {
     
     let config: Config
 
+    //
+    // MARK: - Properties
+    //
+    
     @Published var messages: [Message]
 
     @Published var filter = CoachMessagesFilter.all
@@ -43,14 +50,26 @@ class CoachMessagesViewModel: ObservableObject {
 
     @Published var alertContext = AlertContext()
 
+    //
+    // MARK: - Protocol LoadableViewModel implementation
+    //
+    
     required init(initialData: [Message], config: Config = .default) {
 //        print("CoachMessagesViewModel.init")
         messages = initialData
         self.config = config
     }
+    
+    func refreshedLoadedData(_ loadedData: [Message]) {
+        messages = loadedData
+    }
 
     var restartLoader: (() -> Void)?
 
+    //
+    // MARK: - Actions
+    //
+    
     func goEditingMessage(_ message: Message) {
         selectedMessage = message
 
@@ -79,13 +98,5 @@ class CoachMessagesViewModel: ObservableObject {
                 alertContext.message = error.localizedDescription
             }
         }
-    }
-}
-
-extension CoachMessagesViewModel: LoadableViewModel {
-    typealias LoadedData = [Message]
-
-    func refreshedLoadedData(_ loadedData: [Message]) {
-        messages = loadedData
     }
 }

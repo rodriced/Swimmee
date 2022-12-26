@@ -8,11 +8,18 @@
 import Combine
 
 class CoachTeamViewModel: ObservableObject {
+    
+    // MARK: - Config
+
     let profileAPI: ProfileCoachAPI
     
     init(profileAPI: ProfileCoachAPI = API.shared.profile) {
         self.profileAPI = profileAPI
     }
+    
+    //
+    // MARK: - Properties
+    //
     
     enum ViewState: Equatable {
         case loading
@@ -22,6 +29,10 @@ class CoachTeamViewModel: ObservableObject {
     
     @Published var state = ViewState.loading
 
+    //
+    // MARK: - Actions
+    //
+    
     @MainActor
     func loadTeam() async {
         state = .loading

@@ -7,6 +7,8 @@
 
 import Combine
 
+// SignSharedViewModel is a view model shared between SignUp, SignIn and Reauthntication views
+
 class SignSharedViewModel: ObservableObject {
     enum SignUpError: String, Error {
         case userTypeWithoutValue = "User type hasn't value. It can't happened so it's a bug ! Please, send a report."

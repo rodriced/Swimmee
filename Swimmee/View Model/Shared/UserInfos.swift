@@ -7,6 +7,8 @@
 
 import Combine
 
+// UserInfos contains fixed user characteristics
+
 class UserInfos: ObservableObject {
     let profileAPI: ProfileCommonAPI
 

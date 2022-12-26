@@ -12,21 +12,18 @@ struct AuthenticatedMainView: View {
     @StateObject var userInfos: UserInfos
 
     init(profile: Profile) {
-//        print("AuthenticatedMainView.init")
         self.initialProfile = profile
         _userInfos = StateObject(wrappedValue: UserInfos(profile: profile))
     }
 
     var body: some View {
         Group {
-//            DebugHelper.viewBodyPrint("AuthenticatedMainView")
             switch userInfos.userType {
             case .coach:
                 CoachMainView()
-//                    .environmentObject(session)
+                
             case .swimmer:
                 SwimmerMainView(profile: initialProfile)
-//                    .environmentObject(session)
             }
         }
         .environmentObject(userInfos)

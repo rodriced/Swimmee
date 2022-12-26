@@ -8,9 +8,30 @@
 import Combine
 
 class EditMessageViewModel: ObservableObject {
+    
+    // MARK: - Config
+    
     let messageAPI: UserMessageCollectionAPI
+
+    //
+    // MARK: - Properties
+    //
+    
     let originalMessage: Message
     @Published var message: Message
+
+    @Published var alertContext = AlertContext()
+
+    init(message: Message, messageAPI: UserMessageCollectionAPI = API.shared.message) {
+//        print("EditMessageViewModel.init (message)")
+        self.originalMessage = message
+        self.message = message
+        self.messageAPI = messageAPI
+    }
+
+    //
+    // MARK: - Form validation
+    //
 
     func validateTitle() -> Bool {
         !message.title.trimmingCharacters(in: .whitespaces).isEmpty
@@ -24,15 +45,10 @@ class EditMessageViewModel: ObservableObject {
         message.isSent || (!message.isSent && message.hasTextDifferent(from: originalMessage))
     }
 
-    @Published var alertContext = AlertContext()
-
-    init(message: Message, messageAPI: UserMessageCollectionAPI = API.shared.message) {
-//        print("EditMessageViewModel.init (message)")
-        self.originalMessage = message
-        self.message = message
-        self.messageAPI = messageAPI
-    }
-
+    //
+    // MARK: - Actions
+    //
+    
     func saveMessage(andSendIt: Bool, onValidationError: (() -> Void)? = nil) {
         guard validateTitle() else {
             alertContext.message = "Put something in title and retry."

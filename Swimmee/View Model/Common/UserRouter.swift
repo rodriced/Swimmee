@@ -7,6 +7,8 @@
 
 import Combine
 
+// UserRouter is a the main router to manage direct access to the pages of the application authenticated parts
+
 class UserRouter: ObservableObject {
     enum TabTarget: Hashable { case workouts, messages, settings }
     enum SettingTarget: Hashable { case profile, coachSelection, team }

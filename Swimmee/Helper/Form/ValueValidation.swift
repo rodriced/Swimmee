@@ -5,6 +5,8 @@
 //  Created by Rodolphe Desruelles on 28/11/2022.
 //
 
+// MARK: Rules to verify the validity of the different field types in the forms contained in the application
+
 import Foundation
 
 class ValueValidation {

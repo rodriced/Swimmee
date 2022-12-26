@@ -58,6 +58,8 @@
 		DC532D5329476F75003F9E89 /* SwimmerMessagesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */; };
 		DC532D552947707B003F9E89 /* MockUserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */; };
 		DC556817294FD51400A20D52 /* EditMessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */; };
+		DC5D87B82959351F00BC1094 /* DbIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D87B72959351F00BC1094 /* DbIdentifiable.swift */; };
+		DC5D87BA2959604E00BC1094 /* WorkoutTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D87B92959604E00BC1094 /* WorkoutTags.swift */; };
 		DC5D9B3D294A718B00C771C5 /* PhotoInfoEditedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */; };
 		DC5FBCAA294F809400DD3E05 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCA9294F809400DD3E05 /* FirebaseAnalytics */; };
 		DC5FBCAC294F809400DD3E05 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCAB294F809400DD3E05 /* FirebaseAnalyticsSwift */; };
@@ -182,6 +184,8 @@
 		DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesViewModelTests.swift; sourceTree = "<group>"; };
 		DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserCollectionAPI.swift; sourceTree = "<group>"; };
 		DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMessageViewModelTests.swift; sourceTree = "<group>"; };
+		DC5D87B72959351F00BC1094 /* DbIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbIdentifiable.swift; sourceTree = "<group>"; };
+		DC5D87B92959604E00BC1094 /* WorkoutTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTags.swift; sourceTree = "<group>"; };
 		DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEditedTests.swift; sourceTree = "<group>"; };
 		DC6C550229435A03009DDB0B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		DC6C55052943979C009DDB0B /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
@@ -324,6 +328,7 @@
 				DC3C888728F42BAE0065CBD6 /* Profile.swift */,
 				DC3C889C28F4C5830065CBD6 /* Workout.swift */,
 				DC3C888328F426250065CBD6 /* Message.swift */,
+				DC5D87B92959604E00BC1094 /* WorkoutTags.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -529,6 +534,7 @@
 		DCDBE7E8291844F600386076 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				DC5D87B72959351F00BC1094 /* DbIdentifiable.swift */,
 				DC2C22442943C7B0005BBC19 /* AccountAPI.swift */,
 				DC7477682953377C00B61A9D /* ImageStorageAPI.swift */,
 				DC057217293EAFC00037A387 /* ProfileAPI.swift */,
@@ -844,6 +850,7 @@
 				DCDCFD1529525F8500993398 /* FormTextField.swift in Sources */,
 				DC2C22472943E2CA005BBC19 /* SwimmeeMain.swift in Sources */,
 				DCA62DF728EF64E200F87C9B /* MainView.swift in Sources */,
+				DC5D87BA2959604E00BC1094 /* WorkoutTags.swift in Sources */,
 				DC8859AA28E26F2B0032E0FB /* SignInView.swift in Sources */,
 				DCDCFD1229525D5400993398 /* TopBorder.swift in Sources */,
 				DC3C888828F42BAE0065CBD6 /* Profile.swift in Sources */,
@@ -876,6 +883,7 @@
 				DC920B702934B851000EE664 /* ImageHelper.swift in Sources */,
 				DC2C22492943F031005BBC19 /* SwimmeeAppForTesting.swift in Sources */,
 				DC80A57F29526E7E00F16CE6 /* SwimmerSession.swift in Sources */,
+				DC5D87B82959351F00BC1094 /* DbIdentifiable.swift in Sources */,
 				DC3C889F28F4D4040065CBD6 /* SwimmerWorkoutsView.swift in Sources */,
 				DC863A512920531900934B62 /* PublisherExtension.swift in Sources */,
 				DC057216293E54DF0037A387 /* UserCollectionAPI.swift in Sources */,

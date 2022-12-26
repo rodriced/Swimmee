@@ -16,7 +16,10 @@ enum CoachWorkoutsStatusFilter: String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-class CoachWorkoutsViewModel: ObservableObject {
+class CoachWorkoutsViewModel: LoadableViewModel {
+    
+    // MARK: - Config
+    
     struct Config: ViewModelConfig {
         let workoutAPI: UserWorkoutCollectionAPI
 
@@ -25,6 +28,10 @@ class CoachWorkoutsViewModel: ObservableObject {
 
     let config: Config
 
+    //
+    // MARK: - Properties
+    //
+    
     @Published var workouts: [Workout]
 
     @Published var statusFilterSelection = CoachWorkoutsStatusFilter.all
@@ -50,6 +57,10 @@ class CoachWorkoutsViewModel: ObservableObject {
 
     @Published var alertContext = AlertContext()
 
+    //
+    // MARK: - Protocol LoadableViewModel implementation
+    //
+    
     required init(initialData: [Workout], config: Config = .default) {
 //        print("CoachWorkoutsViewModel.init")
 
@@ -59,8 +70,17 @@ class CoachWorkoutsViewModel: ObservableObject {
         Workout.updateTagsCache(for: &self.workouts)
     }
 
+    func refreshedLoadedData(_ loadedData: [Workout]) {
+        workouts = loadedData
+        Workout.updateTagsCache(for: &self.workouts)
+    }
+    
     var restartLoader: (() -> Void)?
 
+    //
+    // MARK: - Actions
+    //
+    
     func clearFilters() {
         statusFilterSelection = .all
         tagFilterSelection = nil
@@ -93,14 +113,5 @@ class CoachWorkoutsViewModel: ObservableObject {
                 alertContext.message = error.localizedDescription
             }
         }
-    }
-}
-
-extension CoachWorkoutsViewModel: LoadableViewModel {
-    typealias LoadedData = [Workout]
-
-    func refreshedLoadedData(_ loadedData: [Workout]) {
-        workouts = loadedData
-        Workout.updateTagsCache(for: &self.workouts)
     }
 }

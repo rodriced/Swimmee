@@ -8,6 +8,9 @@
 import Foundation
 import Combine
 
+// FieldStatus is a class which when associated with felds of form,
+// permits to manage validation with publishers
+
 class FieldStatus<Value: Equatable> {
     let valuePublisher: Published<Value>.Publisher
     let validate: (Value) -> Bool

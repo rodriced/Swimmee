@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// Helper to make easier alert management
+
 struct ContextualAlertViewModifier<A: View>: ViewModifier {
     @StateObject var context: AlertContext
     var actions: () -> A

@@ -5,10 +5,13 @@
 //  Created by Rodolphe Desruelles on 15/11/2022.
 //
 
-import SwiftUI
-
 import Combine
 import SwiftUI
+
+// LoadingView encapsulate another view that need to initialize its view model with asynchrone data
+// and manage intermediate state and possible error that can happen during loading
+
+// The view model of the encapsulated view must conform to LoadableViewModel protocol
 
 protocol ViewModelConfig {
     static var `default`: Self { get }
@@ -27,15 +30,6 @@ protocol LoadableViewModel: ObservableObject {
     func refreshedLoadedData(_ loadedData: LoadedData)
     var restartLoader: (() -> Void)? { get set }
 }
-
-//#if DEBUG
-//    var _debugStreamRef = 0
-//    var debugStreamRef: Int {
-//        let current = _debugStreamRef
-//        _debugStreamRef += 1
-//        return current
-//    }
-//#endif
 
 class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     typealias LoadPublisher = AnyPublisher<TargetViewModel.LoadedData, Error>
@@ -59,14 +53,9 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     init(publisherBuiler: @escaping () -> LoadPublisher,
          targetViewModelConfig: TargetViewModel.Config)
     {
-//        print("LoadingViewModel.init")
         self.publisherBuilder = publisherBuiler
         self.targetViewModelConfig = targetViewModelConfig
     }
-
-//    deinit {
-//        print("LoadingViewModel.deinit")
-//    }
 
     let publisherBuilder: () -> LoadPublisher
     let targetViewModelConfig: TargetViewModel.Config
@@ -82,15 +71,8 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
     }
 
     var cancellable: Cancellable?
-//    {
-//        didSet {
-//            print("LoadingViewModel.cancellable set ? \(cancellable != nil)")
-//        }
-//    }
 
     func load() {
-//        print("LoadingViewModel.load")
-
         state = .loading
 
         startLoader()
@@ -98,13 +80,8 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
 
     func startLoader() {
         cancellable = publisherBuilder()
-//        #if DEBUG
-//            .print("LoadingViewModel loader stream ref \(debugStreamRef)")
-//        #endif
 //            .retry(1)
             .sink { [weak self] completion in
-//                print("LoadingViewModel loader handleEvents \(String(describing: completion))")
-
                 if case .failure(let error) = completion {
                     self?.state = .failure(error)
                 }
@@ -119,24 +96,6 @@ class LoadingViewModel<TargetViewModel: LoadableViewModel>: ObservableObject {
                 }
                 if self.state != .ready { self.state = .ready }
             }
-
-//            .sink { [weak self] result in
-//                guard let self else { return }
-//
-//                switch result {
-//                case .success(let item):
-//                    if let targetViewModel = self.targetViewModel {
-//                        targetViewModel.refreshedLoadedData(item)
-//                    } else {
-//                        let targetViewModel = self.createTargetVM(loadedData: item)
-//                        self.targetViewModel = targetViewModel
-//                    }
-//                    if self.state != .ready { self.state = .ready }
-//
-//                case .failure(let error):
-//                    self.state = .failure(error)
-//                }
-//            }
     }
 }
 

@@ -9,12 +9,18 @@ import Combine
 import SwiftUI
 
 class SwimmerCoachViewModel: ObservableObject {
+
+    // MARK: - Config
+
     let profileAPI: ProfileSwimmerAPI
 
     init(profileAPI: ProfileSwimmerAPI = API.shared.profile) {
         self.profileAPI = profileAPI
     }
 
+    //
+    // MARK: - Properties
+    //
 
     enum ViewState: Equatable {
         case loading
@@ -34,6 +40,10 @@ class SwimmerCoachViewModel: ObservableObject {
             if !confirmationPresented { confirmation = Self.emptyConfirmation }
         }
     }
+
+    //
+    // MARK: - Confirmation dialogs actions
+    //
 
     typealias Confirmation = (title: String, message: String, button: () -> Button<Text>)
     var confirmation: Confirmation = SwimmerCoachViewModel.emptyConfirmation
@@ -72,6 +82,10 @@ class SwimmerCoachViewModel: ObservableObject {
         )
         confirmationPresented = true
     }
+
+    //
+    // MARK: - Actions
+    //
 
     @MainActor
     func loadCoachs(withSelected coachId: UserId?) async {

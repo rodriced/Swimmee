@@ -7,7 +7,10 @@
 
 import Combine
 
-class SwimmerMessagesViewModel {
+class SwimmerMessagesViewModel: LoadableViewModel {
+    
+    // MARK: - Config
+
     struct Config: ViewModelConfig {
         let profileAPI: ProfileSwimmerAPI
 
@@ -19,8 +22,12 @@ class SwimmerMessagesViewModel {
     typealias LoadedData = ([Message], Set<Message.DbId>)
     typealias MessagesParams = [(message: Message, isRead: Bool)]
 
-    @Published var messagesParams: [(message: Message, isRead: Bool)]
+    @Published var messagesParams: MessagesParams
     @Published var newMessagesCount: Int
+
+    //
+    // MARK: - Protocol LoadableViewModel implementation
+    //
 
     required init(initialData: LoadedData, config: Config = .default) {
 //        print("SwimmerMessagesViewModel.init")
@@ -28,7 +35,13 @@ class SwimmerMessagesViewModel {
         self.config = config
     }
 
-    static func formatLoadedData(_ loadedData: LoadedData) -> (MessagesParams, Int) {
+    func refreshedLoadedData(_ loadedData: LoadedData) {
+        (messagesParams, newMessagesCount) = Self.formatLoadedData(loadedData)
+    }
+
+    var restartLoader: (() -> Void)?
+
+    private static func formatLoadedData(_ loadedData: LoadedData) -> (MessagesParams, Int) {
         let (messages, readMessagesIds) = loadedData
 
         let messagesParams =
@@ -41,18 +54,14 @@ class SwimmerMessagesViewModel {
         return (messagesParams, newMessagesCount)
     }
 
-    var restartLoader: (() -> Void)?
+    //
+    // MARK: - Actions
+    //
 
     func setMessageAsRead(_ message: Message) {
         guard let dbId = message.dbId else { return }
         Task {
             try? await config.profileAPI.setMessageAsRead(dbId)
         }
-    }
-}
-
-extension SwimmerMessagesViewModel: LoadableViewModel {
-    func refreshedLoadedData(_ loadedData: LoadedData) {
-        (messagesParams, newMessagesCount) = Self.formatLoadedData(loadedData)
     }
 }

@@ -8,8 +8,15 @@
 import Combine
 
 class EditWorkoutViewModel: ObservableObject {
+
+    // MARK: - Config
+
     let workoutAPI: UserWorkoutCollectionAPI
 
+    //
+    // MARK: - Properties
+    //
+    
     let originalWorkout: Workout
     @Published var workout: Workout
 
@@ -21,6 +28,10 @@ class EditWorkoutViewModel: ObservableObject {
         self.workout = workout
         self.workoutAPI = workoutAPI
     }
+
+    //
+    // MARK: - Form validation
+    //
 
     func validateTitle() -> Bool {
         !workout.title.trimmingCharacters(in: .whitespaces).isEmpty
@@ -34,13 +45,17 @@ class EditWorkoutViewModel: ObservableObject {
         workout.isSent || (!workout.isSent && workout.hasTextDifferent(from: originalWorkout))
     }
 
+    //
+    // MARK: - Actions
+    //
+
     func saveWorkout(andSendIt: Bool, onValidationError: (() -> Void)? = nil) {
         guard validateTitle() else {
             alertContext.message = "Put something in title and retry."
             onValidationError?()
             return
         }
-        
+
         Task {
             var workoutToSave = workout // Working on a copy prevent reactive behaviours of the original workout on UI
             workoutToSave.isSent = andSendIt

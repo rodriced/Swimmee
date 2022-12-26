@@ -7,11 +7,21 @@
 
 import Combine
 
+// SwimmerhSession provide coach profiles, workouts and messages publishers
+// for live updates in the application swimmer's part
+
 class SwimmerSession: ObservableObject {
+
+    // MARK: - Config
+
     let profileAPI: ProfileCommonAPI
     let workoutAPI: UserWorkoutCollectionAPI
     let messageAPI: UserMessageCollectionAPI
 
+    //
+    // MARK: - Properties
+    //
+    
     @Published var coachId: UserId?
     @Published var readWorkoutsIds: Set<Workout.DbId>
     @Published var readMessagesIds: Set<Message.DbId>
@@ -34,6 +44,10 @@ class SwimmerSession: ObservableObject {
         self.readMessagesIds = initialProfile.readMessagesIds ?? []
     }
 
+    //
+    // MARK: - Publishers
+    //
+    
     func listenChanges() {
         cancellable = profileAPI.publisher(userId: nil)
             .sink { _ in

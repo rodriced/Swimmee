@@ -10,6 +10,9 @@ import Foundation
 @main
 enum SwimmeeMain {
     static func main() {
+        //
+        // When unit testing is detected, a minimal user interface is used
+        //
         guard NSClassFromString("XCTest") == nil else {
             SwimmeeAppForTesting.main()
             return

@@ -11,16 +11,6 @@ import SwiftUI
 struct SwimmeeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-//    init() {
-//        #if swift(>=5.7)
-//        print("Swift version >= 5.7")
-//
-//        #elseif swift(>=5.6)
-//        print("Swift 5.6")
-//
-//        #endif
-//    }
-
     var body: some Scene {
         WindowGroup {
             MainView()

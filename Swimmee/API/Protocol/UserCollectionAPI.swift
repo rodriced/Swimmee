@@ -8,10 +8,6 @@
 import Combine
 import Foundation
 
-protocol DbIdentifiable: Codable {
-    var dbId: String? { get set }
-}
-
 enum OwnerFilter {
     case currentUser
     case user(UserId)

@@ -5,6 +5,8 @@
 //  Created by Rodolphe Desruelles on 21/12/2022.
 //
 
+// MARK: Some model samples used in Previews
+
 import Foundation
 
 extension Profile {

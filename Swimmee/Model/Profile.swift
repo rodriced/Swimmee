@@ -7,8 +7,6 @@
 
 import Foundation
 
-typealias UserId = String
-
 public enum UserType: String, CaseIterable, Identifiable, Codable {
     public var id: Self { self }
 
@@ -18,19 +16,25 @@ public enum UserType: String, CaseIterable, Identifiable, Codable {
     var isSwimmer: Bool { self == .swimmer }
 }
 
+// PhotoInfo store some metadata about the user photo
 public struct PhotoInfo: Hashable, Codable, Equatable {
     let url: URL, size: Int, hash: Int
-    
+
     init(url: URL, data: Data) {
         self.url = url
         self.size = data.count
         self.hash = data.hashValue
     }
-    
+
+    // 2 photos are considered equal if they have the same size and hash value
     public static func == (lhs: PhotoInfo, rhs: PhotoInfo) -> Bool {
         lhs.size == rhs.size && lhs.hash == rhs.hash
     }
 }
+
+typealias UserId = String
+
+// Profile contains data about the user (swimmer or coach)
 
 public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatable {
     typealias DbId = String
@@ -39,9 +43,9 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
         case id, userId, userType, firstName, lastName, email, photoInfo, coachId, readWorkoutsIds, readMessagesIds
     }
 
-    var dbId: DbId?
-    public var id: UUID
-    var userId: UserId
+    var dbId: DbId? // Database object identifier
+    public var id: UUID // Dedicated to SwiftUI view identity system
+    var userId: UserId // Uniquely identifies the owner user
     let userType: UserType
 
     var firstName: String
@@ -58,7 +62,7 @@ public struct Profile: Identifiable, Hashable, Codable, DbIdentifiable, Equatabl
         "\(firstName) \(lastName)"
     }
 
-    init(id: UUID = UUID(), userId: String, userType: UserType, firstName: String, lastName: String, email: String, readWorkoutsIds: Set<DbId> = [],readMessagesIds: Set<DbId> = []) {
+    init(id: UUID = UUID(), userId: String, userType: UserType, firstName: String, lastName: String, email: String, readWorkoutsIds: Set<DbId> = [], readMessagesIds: Set<DbId> = []) {
         self.id = id
         self.userId = userId
         self.userType = userType

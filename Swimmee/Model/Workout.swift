@@ -7,6 +7,8 @@
 
 import Foundation
 
+// Workouts are created and published by coach to be used by swimmers of their team
+
 struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
     typealias DbId = String
     
@@ -14,9 +16,9 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
         case dbId, userId, date, duration, title, content, isSent
     }
     
-    var dbId: DbId?
-    var id = UUID()
-    var userId: UserId
+    var dbId: DbId? // Database object identifier
+    var id = UUID() // Dedicated to SwiftUI view identity system
+    var userId: UserId // Uniquely identifies the owner user
     var date: Date
     var duration: Int
     var title: String
@@ -40,36 +42,4 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
     }
     
     var tagsCache: Set<Int> = []
-}
-
-extension Workout {
-    static let allTags = ["backstroke", "breaststroke", "butterfly", "dolphin kick", "flutter kick", "freestyle", "frog kick", "medley", "relay"]
-    
-    static private func normalize(_ tag: String) -> String {
-        tag.filter { !$0.isWhitespace }.lowercased()
-    }
-    
-    static private var allNormalizedTags = allTags.map(normalize)
-    
-    static func updateTagsCache(for workout: inout Workout) {
-        workout.tagsCache = Self.buildTagsCache(from: "\(workout.title)\n\(workout.content)")
-    }
-    
-    static func updateTagsCache(for workouts: inout [Workout]) {
-        for index in workouts.indices {
-            updateTagsCache(for: &workouts[index])
-        }
-    }
-        
-    static private func buildTagsCache(from text: String) -> Set<Int> {
-        let normalizedText = Self.normalize(text)
-                
-        return Set(
-            allNormalizedTags.enumerated()
-                .filter { _, tag in
-                    normalizedText.contains(tag)
-                }
-                .map(\.0)
-        )
-    }
 }

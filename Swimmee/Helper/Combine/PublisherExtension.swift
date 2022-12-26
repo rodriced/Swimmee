@@ -8,6 +8,9 @@
 import Combine
 import Foundation
 
+// Publisher.asResut is a publisher operator that transforms the upstream publisher
+// to a new publisher with a Result as new output and Never as error
+
 extension Publisher {
     typealias AsResult = Result<Output, Failure>
 
@@ -18,6 +21,8 @@ extension Publisher {
     }
 }
 
+// Publisher.not is a publisher operator that inverts the upstream publisher boolean output
+
 extension Publisher
     where Output == Bool
 {
@@ -25,6 +30,9 @@ extension Publisher
         map { !$0 }
     }
 }
+
+// Publisher.equatableAssign is a publisher operator that is equivalent to assign operator
+// but change the the destination published value only when it's new
 
 extension Publisher
     where Output: Equatable, Failure == Never
@@ -49,19 +57,3 @@ extension Publisher
 //        .assign(to: &to)
 //    }
 }
-
-// extension Publisher {
-//    func mapInner<T>(_ transform: @escaping (Self.Output) -> T) -> Publishers.Map<Self, T> {
-//        self.map { sequence in
-//            sequence.map(\.dbId)
-//        }
-//    }
-//
-//    func mapInner<TransformedOutput, T>(_ keyPath: KeyPath<Output.Element, T>) -> Publishers.Map<Self, TransformedOutput> where Output: Sequence, TransformedOutput: Sequence, TransformedOutput.Element == T {
-//        self.map { sequence in
-//            sequence.map { element in
-//                element[keyPath: keyPath]
-//            }
-//        }
-//    }
-// }

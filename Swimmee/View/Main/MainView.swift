@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// Parent view of the application
+// It manage the global states
+
 struct MainView: View {
     @StateObject var session = Session()
 
