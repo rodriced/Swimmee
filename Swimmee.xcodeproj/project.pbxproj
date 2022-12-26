@@ -61,6 +61,7 @@
 		DC5D87B82959351F00BC1094 /* DbIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D87B72959351F00BC1094 /* DbIdentifiable.swift */; };
 		DC5D87BA2959604E00BC1094 /* WorkoutTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D87B92959604E00BC1094 /* WorkoutTags.swift */; };
 		DC5D9B3D294A718B00C771C5 /* PhotoInfoEditedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */; };
+		DC5F47712959C4F200D6966B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DC5F47702959C4F200D6966B /* README.md */; };
 		DC5FBCAA294F809400DD3E05 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCA9294F809400DD3E05 /* FirebaseAnalytics */; };
 		DC5FBCAC294F809400DD3E05 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCAB294F809400DD3E05 /* FirebaseAnalyticsSwift */; };
 		DC5FBCAE294F844C00DD3E05 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DC5FBCAD294F844C00DD3E05 /* FirebaseCrashlytics */; };
@@ -187,6 +188,7 @@
 		DC5D87B72959351F00BC1094 /* DbIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbIdentifiable.swift; sourceTree = "<group>"; };
 		DC5D87B92959604E00BC1094 /* WorkoutTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTags.swift; sourceTree = "<group>"; };
 		DC5D9B3C294A718B00C771C5 /* PhotoInfoEditedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoEditedTests.swift; sourceTree = "<group>"; };
+		DC5F47702959C4F200D6966B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DC6C550229435A03009DDB0B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		DC6C55052943979C009DDB0B /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
 		DC6CCE2F290E8CD800DB8427 /* FirestoreUserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreUserCollectionAPI.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 			children = (
 				DC6C55052943979C009DDB0B /* .github */,
 				DC6C550229435A03009DDB0B /* .gitignore */,
+				DC5F47702959C4F200D6966B /* README.md */,
 				DC88597E28E269E20032E0FB /* Swimmee */,
 				DC88598F28E269E20032E0FB /* SwimmeeTests */,
 				DC88597D28E269E20032E0FB /* Products */,
@@ -801,6 +804,7 @@
 			files = (
 				DC88598728E269E20032E0FB /* Preview Assets.xcassets in Resources */,
 				DC88598428E269E20032E0FB /* Assets.xcassets in Resources */,
+				DC5F47712959C4F200D6966B /* README.md in Resources */,
 				DC2C224C2943FA6F005BBC19 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
