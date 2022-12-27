@@ -37,11 +37,11 @@ class EditWorkoutViewModel: ObservableObject {
     }
 
     var canTryToSend: Bool {
-        !workout.isSent || (workout.isSent && workout.hasTextDifferent(from: originalWorkout))
+        !workout.isSent || (workout.isSent && workout.hasContentDifferent(from: originalWorkout))
     }
 
     var canTryToSaveAsDraft: Bool {
-        workout.isSent || (!workout.isSent && workout.hasTextDifferent(from: originalWorkout))
+        workout.isSent || (!workout.isSent && workout.hasContentDifferent(from: originalWorkout))
     }
 
     //

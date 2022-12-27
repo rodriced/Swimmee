@@ -25,7 +25,7 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
     var content: String
     var isSent: Bool
     
-    init(dbId: DbId? = nil, userId: UserId, date: Date = .now, duration: Int = 90, title: String = "", content: String = "", isSent: Bool = false) {
+    init(dbId: DbId? = nil, userId: UserId, date: Date = .dateNow, duration: Int = 90, title: String = "", content: String = "", isSent: Bool = false) {
         self.dbId = dbId
         self.userId = userId
         self.date = date
@@ -37,8 +37,11 @@ struct Workout: Identifiable, Codable, DbIdentifiable, Hashable {
     
     var isNew: Bool { dbId == nil }
     
-    func hasTextDifferent(from workout: Workout) -> Bool {
-        workout.title != title || workout.content != content
+    func hasContentDifferent(from workout: Workout) -> Bool {
+        workout.title != title
+        || workout.content != content
+        || workout.date != date
+        || workout.duration != duration
     }
     
     var tagsCache: Set<Int> = []
