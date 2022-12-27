@@ -38,12 +38,7 @@ struct EditWorkoutView: View {
 
     static let durationPickerData: [(Int, String)] =
         stride(from: 15, to: 241, by: 15).map { totalInMinutes in
-
-            let hours = totalInMinutes / 60
-            let minutes = totalInMinutes % 60
-            let formatedMinutes = minutes < 10 ? "0\(minutes)" : "\(minutes)"
-
-            return (totalInMinutes, "\(hours)h\(formatedMinutes)")
+            (totalInMinutes, TimeHelper.formatToClockTime(timeInMinutes: totalInMinutes))
         }
 
     var durationPicker: some View {

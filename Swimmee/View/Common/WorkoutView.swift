@@ -40,7 +40,7 @@ struct WorkoutView: View {
 //            Text(workout.date, style: .time).font(.caption)
             Spacer()
             Label {
-                Text("\(workout.duration / 60)h\(workout.duration % 60)")
+                Text(TimeHelper.formatToClockTime(timeInMinutes: workout.duration))
             } icon: {
                 Image(systemName: "timer")
             }

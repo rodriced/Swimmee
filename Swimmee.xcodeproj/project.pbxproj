@@ -57,6 +57,7 @@
 		DC4E559329464FB900C508FA /* MockProfileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4E559229464FB900C508FA /* MockProfileAPI.swift */; };
 		DC532D5329476F75003F9E89 /* SwimmerMessagesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */; };
 		DC532D552947707B003F9E89 /* MockUserCollectionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */; };
+		DC546F80295BAF7D00114C14 /* TimeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC546F7F295BAF7D00114C14 /* TimeHelper.swift */; };
 		DC556817294FD51400A20D52 /* EditMessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */; };
 		DC5D87B82959351F00BC1094 /* DbIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D87B72959351F00BC1094 /* DbIdentifiable.swift */; };
 		DC5D87BA2959604E00BC1094 /* WorkoutTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5D87B92959604E00BC1094 /* WorkoutTags.swift */; };
@@ -185,6 +186,7 @@
 		DC4E559229464FB900C508FA /* MockProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileAPI.swift; sourceTree = "<group>"; };
 		DC532D5229476F75003F9E89 /* SwimmerMessagesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesViewModelTests.swift; sourceTree = "<group>"; };
 		DC532D542947707B003F9E89 /* MockUserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserCollectionAPI.swift; sourceTree = "<group>"; };
+		DC546F7F295BAF7D00114C14 /* TimeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelper.swift; sourceTree = "<group>"; };
 		DC556816294FD51400A20D52 /* EditMessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMessageViewModelTests.swift; sourceTree = "<group>"; };
 		DC5D87B72959351F00BC1094 /* DbIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbIdentifiable.swift; sourceTree = "<group>"; };
 		DC5D87B92959604E00BC1094 /* WorkoutTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTags.swift; sourceTree = "<group>"; };
@@ -519,6 +521,7 @@
 			children = (
 				DC057208293A9CDB0037A387 /* CustomError.swift */,
 				DC78CA68295B8CBB00102FAD /* DateExtension.swift */,
+				DC546F7F295BAF7D00114C14 /* TimeHelper.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -919,6 +922,7 @@
 				DC3C889D28F4C5830065CBD6 /* Workout.swift in Sources */,
 				DC1037F028F72D75005E5B57 /* AuthenticatedMainView.swift in Sources */,
 				DCDBE7E72915D77A00386076 /* ContextualAlert.swift in Sources */,
+				DC546F80295BAF7D00114C14 /* TimeHelper.swift in Sources */,
 				DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */,
 				DCFBCF4C2906D5F900F0BF35 /* DebugHelpers.swift in Sources */,
 				DC3C889928F4AFED0065CBD6 /* EditMessageView.swift in Sources */,
