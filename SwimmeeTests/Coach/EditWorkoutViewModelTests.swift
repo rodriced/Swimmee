@@ -12,7 +12,6 @@ import XCTest
 final class EditWorkoutViewModelTests: XCTestCase {
     func testNotSentWorkoutValidation() {
         let workoutAPI = MockUserWorkoutCollectionAPI()
-        //        let aWorkout = Samples.aWorkout(userId: Samples.aUserId)
         
         let aWorkout = Workout(userId: Samples.aUserId, title: "A Title", content: "A content", isSent: false)
         
@@ -34,7 +33,6 @@ final class EditWorkoutViewModelTests: XCTestCase {
     
     func testSentWorkoutValidation() {
         let workoutAPI = MockUserWorkoutCollectionAPI()
-        //        let aWorkout = Samples.aWorkout(userId: Samples.aUserId)
         
         let aWorkout = Workout(userId: Samples.aUserId, title: "A Title", content: "A content", isSent: true)
         
@@ -56,8 +54,8 @@ final class EditWorkoutViewModelTests: XCTestCase {
     
     func testSaveAsDraftUnsentWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
-        let newContent = "New cntent"
-        //        let expectedSavedWorkout = aWorkout
+
+        let newContent = "New content"
         let expectedSavedWorkout = {
             var workout = aWorkout
             workout.content = newContent
@@ -79,7 +77,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
     
     func testSendUnsentWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
-        var expectedSavedWorkout = {
+        let expectedSavedWorkout = {
             var workout = aWorkout
             workout.isSent = true
             return workout
@@ -87,9 +85,6 @@ final class EditWorkoutViewModelTests: XCTestCase {
         
         let workoutAPI = MockUserWorkoutCollectionAPI()
         workoutAPI.mockSave = { workoutToSave, replaceAsNew in
-            XCTAssertNotEqual(workoutToSave.date, expectedSavedWorkout.date)
-            expectedSavedWorkout.date = workoutToSave.date
-            
             XCTAssertEqual(workoutToSave, expectedSavedWorkout)
             XCTAssertEqual(replaceAsNew, true)
             return expectedSavedWorkout.userId
@@ -109,7 +104,6 @@ final class EditWorkoutViewModelTests: XCTestCase {
         
         let workoutAPI = MockUserWorkoutCollectionAPI()
         workoutAPI.mockSave = { workoutToSave, replaceAsNew in
-//            expectedSavedWorkout.date = workoutToSave.date
             XCTAssertEqual(workoutToSave, expectedSavedWorkout)
             XCTAssertEqual(replaceAsNew, false)
             return expectedSavedWorkout.userId
@@ -121,18 +115,23 @@ final class EditWorkoutViewModelTests: XCTestCase {
     
     func testReplaceSentWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: true)
-        var expectedSavedWorkout = aWorkout
-                
+
+        let newContent = "New content"
+        let expectedSavedWorkout = {
+            var workout = aWorkout
+            workout.content = newContent
+            return workout
+        }()
+
         let workoutAPI = MockUserWorkoutCollectionAPI()
         workoutAPI.mockSave = { workoutToSave, replaceAsNew in
-            XCTAssertNotEqual(workoutToSave.date, expectedSavedWorkout.date)
-            expectedSavedWorkout.date = workoutToSave.date
-            
             XCTAssertEqual(workoutToSave, expectedSavedWorkout)
             XCTAssertEqual(replaceAsNew, true)
             return expectedSavedWorkout.userId
         }
         let sut = EditWorkoutViewModel(workout: aWorkout, workoutAPI: workoutAPI)
+        
+        sut.workout.content = newContent
                 
         sut.saveWorkout(andSendIt: true, onValidationError: { XCTFail() })
     }
@@ -163,7 +162,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
             throw TestError.fakeNetworkError
         }
         let sut = EditWorkoutViewModel(workout: aWorkout, workoutAPI: workoutAPI)
-        sut.workout.content = "New cntent"
+        sut.workout.content = "New content"
                 
         assertPublishedValue(sut.alertContext.$isPresented, equals: true) {
             sut.saveWorkout(andSendIt: false, onValidationError: { XCTFail() })
