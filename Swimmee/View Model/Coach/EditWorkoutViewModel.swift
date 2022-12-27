@@ -64,8 +64,9 @@ class EditWorkoutViewModel: ObservableObject {
             switch (workout.isSent, andSendIt) {
             case (_, true):
                 replaceAsNew = true
-                workoutToSave.date = .now
-            // TODO: A draft workout sent for the first time should not be send as new workout because it has never been read by anyone (we track read workout with dbId and there is no reason here to generate a new one to set as unread for all swimmers)
+//                workoutToSave.date = .now
+                  // TODO: needed a publication date
+                
 //            case (false, true):
 //                workoutToSave.date = .now
             case (_, false):
