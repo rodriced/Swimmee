@@ -184,9 +184,10 @@ struct EditWorkoutView: View {
             bottomButtonsBar
                 .padding()
         }
-        .onTapGesture {
-            hideKeyboard()
-        }
+// FIXME: I have to comment this part because it blocks opening duration picker... To be investigated...
+//        .onTapGesture {
+//            hideKeyboard()
+//        }
         .navigationBarTitle(viewModel.originalWorkout.isNew ? "Create workout" : "Edit workout", displayMode: .inline)
         .navigationBarBackButtonHidden()
 
