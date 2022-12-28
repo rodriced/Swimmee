@@ -34,14 +34,14 @@ After signed in with email and password.
     - For workouts, you can filter the list by
         - contained swimming exercise types,
         - or status (draft or published).
-    - You can see your team that consists of swimmers who are subscribed to you.
+    - You can access to your team (swimmers who subscribed to your account).
 
 - As a swimmer:
-    - You can choose a coach among several and subscribe to one.
+    - You can pick a coach from a list and subscribe to one.
     - If you have subscribed to a coach you will receive messages from him and access to his published workouts. There is an indication to see if some workouts or messages are new.
     - For workouts, you can filter the list according to contained swimming exercise types.
 
-All users can modify their profile and add a photo.
+All users can edit their profile information and add a photo.
 
 Swimmer can delete their account but for now this fuctionnality is not implemented for the coaches.
 
