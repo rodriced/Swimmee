@@ -10,9 +10,9 @@
 import Foundation
 
 extension Profile {
-    static let coachSample = Profile(userId: UUID().uuidString, userType: .swimmer, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com")
+    static let coachSample = Profile(userId: UUID().uuidString, userType: .coach, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com")
 
-    static let swimmerSample = Profile(userId: UUID().uuidString, userType: .coach, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com")
+    static let swimmerSample = Profile(userId: UUID().uuidString, userType: .swimmer, firstName: "Laurent", lastName: "Dupont", email: "laurent.dupont@ggmail.com")
 
     func toSamples(with nbElements: Int) -> [Profile] {
         (1 ... nbElements).map {
