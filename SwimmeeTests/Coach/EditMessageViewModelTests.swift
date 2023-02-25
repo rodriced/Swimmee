@@ -10,7 +10,7 @@
 import XCTest
 
 final class EditMessageViewModelTests: XCTestCase {
-    func testNotSentMessageValidation() {
+    @MainActor func testNotSentMessageValidation() {
         let messageAPI = MockUserMessageCollectionAPI()
         //        let aMessage = Samples.aMessage(userId: Samples.aUserId)
         
@@ -32,7 +32,7 @@ final class EditMessageViewModelTests: XCTestCase {
         XCTAssertEqual(sut.canTryToSaveAsDraft, true)
     }
     
-    func testSentMessageValidation() {
+    @MainActor func testSentMessageValidation() {
         let messageAPI = MockUserMessageCollectionAPI()
         //        let aMessage = Samples.aMessage(userId: Samples.aUserId)
         
@@ -54,7 +54,7 @@ final class EditMessageViewModelTests: XCTestCase {
         XCTAssertEqual(sut.canTryToSaveAsDraft, true)
     }
     
-    func testSaveAsDraftUnsentMessage() {
+    @MainActor func testSaveAsDraftUnsentMessage() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         let newContent = "New cntent"
         //        let expectedSavedMessage = aMessage
@@ -77,7 +77,7 @@ final class EditMessageViewModelTests: XCTestCase {
         sut.saveMessage(andSendIt: false, onValidationError: { XCTFail() })
     }
     
-    func testSendUnsentMessage() {
+    @MainActor func testSendUnsentMessage() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         var expectedSavedMessage = {
             var message = aMessage
@@ -99,7 +99,7 @@ final class EditMessageViewModelTests: XCTestCase {
         sut.saveMessage(andSendIt: true, onValidationError: { XCTFail() })
     }
     
-    func testSaveAsDraftSentMessage() {
+    @MainActor func testSaveAsDraftSentMessage() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: true)
         let expectedSavedMessage = {
             var message = aMessage
@@ -119,7 +119,7 @@ final class EditMessageViewModelTests: XCTestCase {
         sut.saveMessage(andSendIt: false, onValidationError: { XCTFail() })
     }
     
-    func testReplaceSentMessage() {
+    @MainActor func testReplaceSentMessage() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: true)
         var expectedSavedMessage = aMessage
                 
@@ -137,7 +137,7 @@ final class EditMessageViewModelTests: XCTestCase {
         sut.saveMessage(andSendIt: true, onValidationError: { XCTFail() })
     }
 
-    func testSaveMessageWithValidationError() {
+    @MainActor func testSaveMessageWithValidationError() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         
         let messageAPI = MockUserMessageCollectionAPI()
@@ -155,7 +155,7 @@ final class EditMessageViewModelTests: XCTestCase {
         XCTAssertEqual(sut.alertContext.message, "Put something in title and retry.")
     }
     
-    func testSaveMessageWithNetworkError() {
+    @MainActor func testSaveMessageWithNetworkError() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         
         let messageAPI = MockUserMessageCollectionAPI()
@@ -172,7 +172,7 @@ final class EditMessageViewModelTests: XCTestCase {
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")
     }
     
-    func testDeleteMessage() {
+    @MainActor func testDeleteMessage() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         let expectedDeletedMessage = aMessage
         
@@ -188,7 +188,7 @@ final class EditMessageViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
 
-    func testDeleteMessageWithNetworkError() {
+    @MainActor func testDeleteMessageWithNetworkError() {
         let aMessage = Samples.aMessage(userId: Samples.aUserId, isSent: false)
         
         let messageAPI = MockUserMessageCollectionAPI()

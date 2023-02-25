@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct EditMessageView: View {
-    @Environment(\.presentationMode) private var presentationMode
-    private func dismiss() { presentationMode.wrappedValue.dismiss() }
+    @Environment(\.dismiss) private var dismiss
 
     @StateObject var viewModel: EditMessageViewModel
 
@@ -31,7 +30,7 @@ struct EditMessageView: View {
             Image(systemName: "trash").foregroundColor(Color.red)
         }
         .confirmationDialog("Delete message ?", isPresented: $deleteConfirmationPresented) {
-            Button("Delete message ?") { viewModel.deleteMessage(completion: dismiss) }
+            Button("Delete message ?") { viewModel.deleteMessage(completion: { dismiss() }) }
         }
     }
 
@@ -45,45 +44,65 @@ struct EditMessageView: View {
     }
 
     var unsentAndSaveAsDraftButton: some View {
-        ButtonWithConfirmation(label: "Unsend and save as draft",
-                     isDisabled: !viewModel.canTryToSaveAsDraft,
-                     confirmationTitle: "Unsend and save as draft ?",
-                     confirmationButtonLabel: "Confirm Save as draft",
-                     buttonModifier: SaveAsDraftButtonModifier(),
-                     action: {
-                         viewModel.saveMessage(andSendIt: false, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Unsend and save as draft",
+            isDisabled: !viewModel.canTryToSaveAsDraft,
+            confirmationTitle: "Unsend and save as draft ?",
+            confirmationButtonLabel: "Confirm Save as draft",
+            buttonModifier: SaveAsDraftButtonModifier(),
+            action: {
+                viewModel.saveMessage(andSendIt: false,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var resendButton: some View {
-        ButtonWithConfirmation(label: "Replace (Re-send)",
-                     isDisabled: !viewModel.canTryToSend,
-                     confirmationTitle: "Replace already sent message ?",
-                     confirmationButtonLabel: "Confirm Replace ?",
-                     action: {
-                         viewModel.saveMessage(andSendIt: true, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Replace (Re-send)",
+            isDisabled: !viewModel.canTryToSend,
+            confirmationTitle: "Replace already sent message ?",
+            confirmationButtonLabel: "Confirm Replace ?",
+            action: {
+                viewModel.saveMessage(andSendIt: true,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var saveAsDraftButton: some View {
-        ButtonWithConfirmation(label: "Save as draft",
-                     isDisabled: !viewModel.canTryToSaveAsDraft,
-                     confirmationTitle: "Save as draft ?",
-                     confirmationButtonLabel: "Confirm Save as draft",
-                     buttonModifier: SaveAsDraftButtonModifier(),
-                     action: {
-                         viewModel.saveMessage(andSendIt: false, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Save as draft",
+            isDisabled: !viewModel.canTryToSaveAsDraft,
+            confirmationTitle: "Save as draft ?",
+            confirmationButtonLabel: "Confirm Save as draft",
+            buttonModifier: SaveAsDraftButtonModifier(),
+            action: {
+                viewModel.saveMessage(andSendIt: false,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var sendButton: some View {
-        ButtonWithConfirmation(label: "Send",
-                     isDisabled: !viewModel.canTryToSend,
-                     confirmationTitle: "Send ?",
-                     confirmationButtonLabel: "Send message ?",
-                     action: {
-                         viewModel.saveMessage(andSendIt: true, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Send",
+            isDisabled: !viewModel.canTryToSend,
+            confirmationTitle: "Send ?",
+            confirmationButtonLabel: "Send message ?",
+            action: {
+                viewModel.saveMessage(andSendIt: true,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var bottomButtonsBar: some View {
@@ -131,7 +150,7 @@ struct EditMessageView: View {
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel", action: dismiss)
+                Button("Cancel", action: { dismiss() })
             }
         }
 

@@ -10,7 +10,7 @@
 import XCTest
 
 final class EditWorkoutViewModelTests: XCTestCase {
-    func testNotSentWorkoutValidation() {
+    @MainActor func testNotSentWorkoutValidation() {
         let workoutAPI = MockUserWorkoutCollectionAPI()
         
         let aWorkout = Workout(userId: Samples.aUserId, title: "A Title", content: "A content", isSent: false)
@@ -31,7 +31,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         XCTAssertEqual(sut.canTryToSaveAsDraft, true)
     }
     
-    func testSentWorkoutValidation() {
+    @MainActor func testSentWorkoutValidation() {
         let workoutAPI = MockUserWorkoutCollectionAPI()
         
         let aWorkout = Workout(userId: Samples.aUserId, title: "A Title", content: "A content", isSent: true)
@@ -52,7 +52,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         XCTAssertEqual(sut.canTryToSaveAsDraft, true)
     }
     
-    func testSaveAsDraftUnsentWorkout() {
+    @MainActor func testSaveAsDraftUnsentWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
 
         let newContent = "New content"
@@ -75,7 +75,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         sut.saveWorkout(andSendIt: false, onValidationError: { XCTFail() })
     }
     
-    func testSendUnsentWorkout() {
+    @MainActor func testSendUnsentWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
         let expectedSavedWorkout = {
             var workout = aWorkout
@@ -94,7 +94,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         sut.saveWorkout(andSendIt: true, onValidationError: { XCTFail() })
     }
     
-    func testSaveAsDraftSentWorkout() {
+    @MainActor func testSaveAsDraftSentWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: true)
         let expectedSavedWorkout = {
             var workout = aWorkout
@@ -113,7 +113,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         sut.saveWorkout(andSendIt: false, onValidationError: { XCTFail() })
     }
     
-    func testReplaceSentWorkout() {
+    @MainActor func testReplaceSentWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: true)
 
         let newContent = "New content"
@@ -136,7 +136,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         sut.saveWorkout(andSendIt: true, onValidationError: { XCTFail() })
     }
     
-    func testSaveWorkoutWithValidationError() {
+    @MainActor func testSaveWorkoutWithValidationError() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
         
         let workoutAPI = MockUserWorkoutCollectionAPI()
@@ -154,7 +154,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         XCTAssertEqual(sut.alertContext.message, "Put something in title and retry.")
     }
     
-    func testSaveWorkoutWithNetworkError() {
+    @MainActor func testSaveWorkoutWithNetworkError() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
         
         let workoutAPI = MockUserWorkoutCollectionAPI()
@@ -171,7 +171,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         XCTAssertEqual(sut.alertContext.message, "fakeNetworkError")
     }
     
-    func testDeleteWorkout() {
+    @MainActor func testDeleteWorkout() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
         let expectedDeletedWorkout = aWorkout
         
@@ -187,7 +187,7 @@ final class EditWorkoutViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
 
-    func testDeleteWorkoutWithNetworkError() {
+    @MainActor func testDeleteWorkoutWithNetworkError() {
         let aWorkout = Samples.aWorkout(userId: Samples.aUserId, isSent: false)
         
         let workoutAPI = MockUserWorkoutCollectionAPI()

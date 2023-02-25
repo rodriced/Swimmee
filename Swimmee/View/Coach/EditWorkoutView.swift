@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct EditWorkoutView: View {
-    @Environment(\.presentationMode) private var presentationMode
-    private func dismiss() { presentationMode.wrappedValue.dismiss() }
-
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     @StateObject private var viewModel: EditWorkoutViewModel
@@ -64,7 +62,7 @@ struct EditWorkoutView: View {
             Image(systemName: "trash").foregroundColor(Color.red)
         }
         .confirmationDialog("Delete workout ?", isPresented: $deleteConfirmationPresented) {
-            Button("Delete workout ?") { viewModel.deleteWorkout(completion: dismiss) }
+            Button("Delete workout ?") { viewModel.deleteWorkout(completion: { dismiss() }) }
         }
     }
 
@@ -78,45 +76,65 @@ struct EditWorkoutView: View {
     }
 
     var unsentAndSaveAsDraftButton: some View {
-        ButtonWithConfirmation(label: "Unpublish and save as draft",
-                     isDisabled: !viewModel.canTryToSaveAsDraft,
-                     confirmationTitle: "Unpublish and save as draft ?",
-                     confirmationButtonLabel: "Confirm Save as draft",
-                     buttonModifier: SaveAsDraftButtonModifier(),
-                     action: {
-                         viewModel.saveWorkout(andSendIt: false, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Unpublish and save as draft",
+            isDisabled: !viewModel.canTryToSaveAsDraft,
+            confirmationTitle: "Unpublish and save as draft ?",
+            confirmationButtonLabel: "Confirm Save as draft",
+            buttonModifier: SaveAsDraftButtonModifier(),
+            action: {
+                viewModel.saveWorkout(andSendIt: false,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var resendButton: some View {
-        ButtonWithConfirmation(label: "Replace (Re-publish)",
-                     isDisabled: !viewModel.canTryToSend,
-                     confirmationTitle: "Replace already published workout ?",
-                     confirmationButtonLabel: "Confirm Replace ?",
-                     action: {
-                         viewModel.saveWorkout(andSendIt: true, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Replace (Re-publish)",
+            isDisabled: !viewModel.canTryToSend,
+            confirmationTitle: "Replace already published workout ?",
+            confirmationButtonLabel: "Confirm Replace ?",
+            action: {
+                viewModel.saveWorkout(andSendIt: true,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var saveAsDraftButton: some View {
-        ButtonWithConfirmation(label: "Save as draft",
-                     isDisabled: !viewModel.canTryToSaveAsDraft,
-                     confirmationTitle: "Save as draft ?",
-                     confirmationButtonLabel: "Confirm Save as draft",
-                     buttonModifier: SaveAsDraftButtonModifier(),
-                     action: {
-                         viewModel.saveWorkout(andSendIt: false, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Save as draft",
+            isDisabled: !viewModel.canTryToSaveAsDraft,
+            confirmationTitle: "Save as draft ?",
+            confirmationButtonLabel: "Confirm Save as draft",
+            buttonModifier: SaveAsDraftButtonModifier(),
+            action: {
+                viewModel.saveWorkout(andSendIt: false,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var sendButton: some View {
-        ButtonWithConfirmation(label: "Publish",
-                     isDisabled: !viewModel.canTryToSend,
-                     confirmationTitle: "Publish ?",
-                     confirmationButtonLabel: "Publish workout ?",
-                     action: {
-                         viewModel.saveWorkout(andSendIt: true, onValidationError: { isTitleFocused = true })
-                     })
+        ButtonWithConfirmation(
+            label: "Publish",
+            isDisabled: !viewModel.canTryToSend,
+            confirmationTitle: "Publish ?",
+            confirmationButtonLabel: "Publish workout ?",
+            action: {
+                viewModel.saveWorkout(andSendIt: true,
+                                      onValidationError: { isTitleFocused = true },
+                                      onSuccess: { dismiss() }
+                )
+            }
+        )
     }
 
     var bottomButtonsBar: some View {
@@ -193,7 +211,7 @@ struct EditWorkoutView: View {
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel", action: dismiss)
+                Button("Cancel", action: { dismiss() })
             }
         }
 

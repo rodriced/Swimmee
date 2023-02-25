@@ -7,6 +7,7 @@
 
 import Combine
 
+@MainActor
 class EditMessageViewModel: ObservableObject {
     
     // MARK: - Config
@@ -48,7 +49,7 @@ class EditMessageViewModel: ObservableObject {
     // MARK: - Actions
     //
     
-    func saveMessage(andSendIt: Bool, onValidationError: (() -> Void)? = nil) {
+    func saveMessage(andSendIt: Bool, onValidationError: (() -> Void)? = nil, onSuccess: (() -> Void)? = nil) {
         guard validateTitle() else {
             alertContext.message = "Put something in title and retry."
             onValidationError?()
@@ -73,6 +74,7 @@ class EditMessageViewModel: ObservableObject {
 
             do {
                 _ = try await messageAPI.save(messageToSave, replaceAsNew: replaceAsNew)
+                onSuccess?()
             } catch {
                 alertContext.message = error.localizedDescription
             }

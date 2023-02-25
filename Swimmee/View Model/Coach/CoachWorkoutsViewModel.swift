@@ -106,9 +106,9 @@ class CoachWorkoutsViewModel: LoadableViewModel {
                 if let dbId = workoutToDelete.dbId {
                     try await config.workoutAPI.delete(id: dbId)
                 }
-                workouts.remove(atOffsets: offsets)
+                await MainActor.run { workouts.remove(atOffsets: offsets) }
             } catch {
-                alertContext.message = error.localizedDescription
+                await MainActor.run { alertContext.message = error.localizedDescription }
             }
         }
     }

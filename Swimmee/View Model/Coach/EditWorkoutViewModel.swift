@@ -7,6 +7,7 @@
 
 import Combine
 
+@MainActor
 class EditWorkoutViewModel: ObservableObject {
 
     // MARK: - Config
@@ -48,7 +49,8 @@ class EditWorkoutViewModel: ObservableObject {
     // MARK: - Actions
     //
 
-    func saveWorkout(andSendIt: Bool, onValidationError: (() -> Void)? = nil) {
+//    @MainActor
+    func saveWorkout(andSendIt: Bool, onValidationError: (() -> Void)? = nil, onSuccess: (() -> Void)? = nil) {
         guard validateTitle() else {
             alertContext.message = "Put something in title and retry."
             onValidationError?()
@@ -75,6 +77,7 @@ class EditWorkoutViewModel: ObservableObject {
 
             do {
                 _ = try await workoutAPI.save(workoutToSave, replaceAsNew: replaceAsNew)
+                onSuccess?()
             } catch {
                 alertContext.message = error.localizedDescription
             }

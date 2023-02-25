@@ -92,9 +92,9 @@ class CoachMessagesViewModel: LoadableViewModel {
                 if let dbId = messageToDelete.dbId {
                     try await config.messageAPI.delete(id: dbId)
                 }
-                messages.remove(atOffsets: offsets)
+                await MainActor.run { messages.remove(atOffsets: offsets) }
             } catch {
-                alertContext.message = error.localizedDescription
+                await MainActor.run { alertContext.message = error.localizedDescription }
             }
         }
     }
