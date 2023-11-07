@@ -31,7 +31,6 @@
 		DC2C22452943C7B0005BBC19 /* AccountAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22442943C7B0005BBC19 /* AccountAPI.swift */; };
 		DC2C22472943E2CA005BBC19 /* SwimmeeMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */; };
 		DC2C22492943F031005BBC19 /* SwimmeeAppForTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */; };
-		DC2C224C2943FA6F005BBC19 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC2C224B2943FA6F005BBC19 /* GoogleService-Info.plist */; };
 		DC2C224F294412B4005BBC19 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = DC2C224E294412B4005BBC19 /* FirebasePerformance */; };
 		DC3C887F28F3558E0065CBD6 /* SwimmerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */; };
 		DC3C888128F35B200065CBD6 /* SwimmerMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */; };
@@ -110,6 +109,7 @@
 		DCA62DFB28F00EDB00F87C9B /* AppTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */; };
 		DCAEA8F92919AF0000F936E7 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAEA8F82919AF0000F936E7 /* SessionTests.swift */; };
 		DCBAD89129246B8800376A3E /* TextEditorWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */; };
+		DCCB57DD29AB9EE300C09FE1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DCCB57DC29AB9EE200C09FE1 /* GoogleService-Info.plist */; };
 		DCDB7EAF2956045A00BC7BA2 /* ReauthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDB7EAE2956045A00BC7BA2 /* ReauthenticationView.swift */; };
 		DCDBE7E72915D77A00386076 /* ContextualAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDBE7E62915D77A00386076 /* ContextualAlert.swift */; };
 		DCDCFD1229525D5400993398 /* TopBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDCFD1129525D5400993398 /* TopBorder.swift */; };
@@ -148,7 +148,7 @@
 		DC057213293D0DED0037A387 /* MockImageStorageAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockImageStorageAPI.swift; sourceTree = "<group>"; };
 		DC057215293E54DF0037A387 /* UserCollectionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionAPI.swift; sourceTree = "<group>"; };
 		DC057217293EAFC00037A387 /* ProfileAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAPI.swift; sourceTree = "<group>"; };
-		DC0C05BD2948EE970014C829 /* UserInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserInfos.swift; path = ../Shared/UserInfos.swift; sourceTree = "<group>"; };
+		DC0C05BD2948EE970014C829 /* UserInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfos.swift; sourceTree = "<group>"; };
 		DC0C05BF2948F7C80014C829 /* CoachSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachSessionTests.swift; sourceTree = "<group>"; };
 		DC0C05C12948F8490014C829 /* SwimmerSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmerSessionTests.swift; sourceTree = "<group>"; };
 		DC100C32294B713300317F78 /* WorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTests.swift; sourceTree = "<group>"; };
@@ -161,7 +161,6 @@
 		DC2C22442943C7B0005BBC19 /* AccountAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAPI.swift; sourceTree = "<group>"; };
 		DC2C22462943E2CA005BBC19 /* SwimmeeMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwimmeeMain.swift; sourceTree = "<group>"; };
 		DC2C22482943F031005BBC19 /* SwimmeeAppForTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmeeAppForTesting.swift; sourceTree = "<group>"; };
-		DC2C224B2943FA6F005BBC19 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMainView.swift; sourceTree = "<group>"; };
 		DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwimmerMessagesView.swift; sourceTree = "<group>"; };
 		DC3C888328F426250065CBD6 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -206,7 +205,7 @@
 		DC7912E0291BD3140077B403 /* CombineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelper.swift; sourceTree = "<group>"; };
 		DC80A57A29526B9400F16CE6 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		DC80A57C29526E2600F16CE6 /* CoachSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachSession.swift; sourceTree = "<group>"; };
-		DC80A57E29526E7E00F16CE6 /* SwimmerSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwimmerSession.swift; path = "Swimmee/View Model/Swimmer/SwimmerSession.swift"; sourceTree = SOURCE_ROOT; };
+		DC80A57E29526E7E00F16CE6 /* SwimmerSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwimmerSession.swift; path = Swimmee/View/Swimmer/Main/SwimmerSession.swift; sourceTree = SOURCE_ROOT; };
 		DC80A583295270FF00F16CE6 /* CoachMessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachMessagesViewModel.swift; sourceTree = "<group>"; };
 		DC80A5852952726C00F16CE6 /* EditMessageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMessageViewModel.swift; sourceTree = "<group>"; };
 		DC80A587295272F000F16CE6 /* CoachWorkoutsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachWorkoutsViewModel.swift; sourceTree = "<group>"; };
@@ -240,6 +239,7 @@
 		DCA62DFA28F00EDB00F87C9B /* AppTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTitleView.swift; sourceTree = "<group>"; };
 		DCAEA8F82919AF0000F936E7 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		DCBAD89029246B8800376A3E /* TextEditorWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorWithPlaceholder.swift; sourceTree = "<group>"; };
+		DCCB57DC29AB9EE200C09FE1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCDB7EAE2956045A00BC7BA2 /* ReauthenticationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReauthenticationView.swift; sourceTree = "<group>"; };
 		DCDBE7E62915D77A00386076 /* ContextualAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualAlert.swift; sourceTree = "<group>"; };
 		DCDCFD1129525D5400993398 /* TopBorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBorder.swift; sourceTree = "<group>"; };
@@ -304,6 +304,7 @@
 		DC05720E293C24AA0037A387 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				DC920B7329355981000EE664 /* SignSharedViewModel.swift */,
 				DCA62DF828F00E0900F87C9B /* SignUpView.swift */,
 				DC8859A928E26F2B0032E0FB /* SignInView.swift */,
 				DCDB7EAE2956045A00BC7BA2 /* ReauthenticationView.swift */,
@@ -319,6 +320,125 @@
 				DC4E558C2946401700C508FA /* WorkoutTagsTests.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		DC14A2862AF99C5D0065EB9A /* AuthenticatedMain */ = {
+			isa = PBXGroup;
+			children = (
+				DC0C05BD2948EE970014C829 /* UserInfos.swift */,
+				DC1037EF28F72D75005E5B57 /* AuthenticatedMainView.swift */,
+			);
+			path = AuthenticatedMain;
+			sourceTree = "<group>";
+		};
+		DC14A2872AF99FBE0065EB9A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A57C29526E2600F16CE6 /* CoachSession.swift */,
+				DC3C888928F449140065CBD6 /* CoachMainView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		DC14A2882AF99FE40065EB9A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A57E29526E7E00F16CE6 /* SwimmerSession.swift */,
+				DC80A58D2952740000F16CE6 /* SwimmerMainViewModel.swift */,
+				DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		DC14A28B2AF9A2020065EB9A /* MessageEditor */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A5852952726C00F16CE6 /* EditMessageViewModel.swift */,
+				DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */,
+			);
+			path = MessageEditor;
+			sourceTree = "<group>";
+		};
+		DC14A28C2AF9A2290065EB9A /* WorkoutEditor */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A5892952734900F16CE6 /* EditWorkoutViewModel.swift */,
+				DC3C88A228F4E1430065CBD6 /* EditWorkoutView.swift */,
+			);
+			path = WorkoutEditor;
+			sourceTree = "<group>";
+		};
+		DC14A28D2AF9A2550065EB9A /* Team */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A58B2952739D00F16CE6 /* CoachTeamViewModel.swift */,
+				DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */,
+			);
+			path = Team;
+			sourceTree = "<group>";
+		};
+		DC14A28E2AF9A26B0065EB9A /* MessageList */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A583295270FF00F16CE6 /* CoachMessagesViewModel.swift */,
+				DC9A435A2922880B00485B1F /* CoachMessagesView.swift */,
+			);
+			path = MessageList;
+			sourceTree = "<group>";
+		};
+		DC14A28F2AF9A2970065EB9A /* WorkoutList */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A587295272F000F16CE6 /* CoachWorkoutsViewModel.swift */,
+				DC3C88A028F4DFCF0065CBD6 /* CoachWorkoutsView.swift */,
+			);
+			path = WorkoutList;
+			sourceTree = "<group>";
+		};
+		DC14A2902AF9A45C0065EB9A /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A57A29526B9400F16CE6 /* Session.swift */,
+				DCA62DF628EF64E200F87C9B /* MainView.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		DC14A2912AF9B27C0065EB9A /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				DC05720F293C26510037A387 /* ProfileViewModel.swift */,
+				DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */,
+				DC8859AB28E26FE00032E0FB /* ProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		DC14A2922AF9B4E50065EB9A /* MessageList */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A58F2952751700F16CE6 /* SwimmerMessagesViewModel.swift */,
+				DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */,
+			);
+			path = MessageList;
+			sourceTree = "<group>";
+		};
+		DC14A2932AF9B65F0065EB9A /* WorkoutList */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A5912952757600F16CE6 /* SwimmerWorkoutsViewModel.swift */,
+				DC3C889E28F4D4040065CBD6 /* SwimmerWorkoutsView.swift */,
+			);
+			path = WorkoutList;
+			sourceTree = "<group>";
+		};
+		DC14A2942AF9B6850065EB9A /* Team */ = {
+			isa = PBXGroup;
+			children = (
+				DC80A593295275E400F16CE6 /* SwimmerCoachViewModel.swift */,
+				DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */,
+			);
+			path = Team;
 			sourceTree = "<group>";
 		};
 		DC2C224D294412B4005BBC19 /* Frameworks */ = {
@@ -339,15 +459,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		DC3C888D28F47C210065CBD6 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				DCA62DF628EF64E200F87C9B /* MainView.swift */,
-				DC1037EF28F72D75005E5B57 /* AuthenticatedMainView.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		DC3C888E28F47C7D0065CBD6 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,7 +474,6 @@
 			isa = PBXGroup;
 			children = (
 				DC3C888B28F455970065CBD6 /* SettingsView.swift */,
-				DC8859AB28E26FE00032E0FB /* ProfileView.swift */,
 				DC3C889A28F4C4F50065CBD6 /* WorkoutView.swift */,
 				DC3C888528F426890065CBD6 /* MessageView.swift */,
 			);
@@ -373,10 +483,10 @@
 		DC3C889428F4AD370065CBD6 /* Swimmer */ = {
 			isa = PBXGroup;
 			children = (
-				DC3C887E28F3558E0065CBD6 /* SwimmerMainView.swift */,
-				DC3C888028F35B200065CBD6 /* SwimmerMessagesView.swift */,
-				DC3C889E28F4D4040065CBD6 /* SwimmerWorkoutsView.swift */,
-				DC3C88A628F4F4A70065CBD6 /* SwimmerCoachView.swift */,
+				DC14A2882AF99FE40065EB9A /* Main */,
+				DC14A2922AF9B4E50065EB9A /* MessageList */,
+				DC14A2932AF9B65F0065EB9A /* WorkoutList */,
+				DC14A2942AF9B6850065EB9A /* Team */,
 			);
 			path = Swimmer;
 			sourceTree = "<group>";
@@ -384,56 +494,14 @@
 		DC3C889728F4AD9C0065CBD6 /* Coach */ = {
 			isa = PBXGroup;
 			children = (
-				DC3C888928F449140065CBD6 /* CoachMainView.swift */,
-				DC9A435A2922880B00485B1F /* CoachMessagesView.swift */,
-				DC3C889828F4AFED0065CBD6 /* EditMessageView.swift */,
-				DC3C88A028F4DFCF0065CBD6 /* CoachWorkoutsView.swift */,
-				DC3C88A228F4E1430065CBD6 /* EditWorkoutView.swift */,
-				DC3C88A428F4E8EA0065CBD6 /* CoachTeamView.swift */,
+				DC14A2872AF99FBE0065EB9A /* Main */,
+				DC14A28E2AF9A26B0065EB9A /* MessageList */,
+				DC14A28B2AF9A2020065EB9A /* MessageEditor */,
+				DC14A28F2AF9A2970065EB9A /* WorkoutList */,
+				DC14A28C2AF9A2290065EB9A /* WorkoutEditor */,
+				DC14A28D2AF9A2550065EB9A /* Team */,
 			);
 			path = Coach;
-			sourceTree = "<group>";
-		};
-		DC80A58029526EC100F16CE6 /* Coach */ = {
-			isa = PBXGroup;
-			children = (
-				DC80A57C29526E2600F16CE6 /* CoachSession.swift */,
-				DC80A583295270FF00F16CE6 /* CoachMessagesViewModel.swift */,
-				DC80A5852952726C00F16CE6 /* EditMessageViewModel.swift */,
-				DC80A587295272F000F16CE6 /* CoachWorkoutsViewModel.swift */,
-				DC80A5892952734900F16CE6 /* EditWorkoutViewModel.swift */,
-				DC80A58B2952739D00F16CE6 /* CoachTeamViewModel.swift */,
-			);
-			path = Coach;
-			sourceTree = "<group>";
-		};
-		DC80A58129526ECD00F16CE6 /* Swimmer */ = {
-			isa = PBXGroup;
-			children = (
-				DC80A57E29526E7E00F16CE6 /* SwimmerSession.swift */,
-				DC80A58D2952740000F16CE6 /* SwimmerMainViewModel.swift */,
-				DC80A58F2952751700F16CE6 /* SwimmerMessagesViewModel.swift */,
-				DC80A5912952757600F16CE6 /* SwimmerWorkoutsViewModel.swift */,
-				DC80A593295275E400F16CE6 /* SwimmerCoachViewModel.swift */,
-			);
-			path = Swimmer;
-			sourceTree = "<group>";
-		};
-		DC80A58229526FE400F16CE6 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				DC2B10932950FA0B002F6641 /* UserRouter.swift */,
-				DC05720F293C26510037A387 /* ProfileViewModel.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		DC80A59529527F5700F16CE6 /* Account */ = {
-			isa = PBXGroup;
-			children = (
-				DC920B7329355981000EE664 /* SignSharedViewModel.swift */,
-			);
-			path = Account;
 			sourceTree = "<group>";
 		};
 		DC88597328E269E10032E0FB = {
@@ -461,14 +529,13 @@
 		DC88597E28E269E20032E0FB /* Swimmee */ = {
 			isa = PBXGroup;
 			children = (
-				DC2C224B2943FA6F005BBC19 /* GoogleService-Info.plist */,
+				DCCB57DC29AB9EE200C09FE1 /* GoogleService-Info.plist */,
 				DC88598328E269E20032E0FB /* Assets.xcassets */,
 				DC88598528E269E20032E0FB /* Preview Content */,
 				DCF3238E28FB5BCE0030626C /* API */,
 				DC3C888E28F47C7D0065CBD6 /* Helper */,
 				DCDCFD18295262C500993398 /* App entry point */,
 				DC3C888228F424640065CBD6 /* Model */,
-				DCDCFD162952618300993398 /* View Model */,
 				DCDCFD0E29525AED00993398 /* View */,
 			);
 			path = Swimmee;
@@ -556,8 +623,10 @@
 			isa = PBXGroup;
 			children = (
 				DCDCFD0F29525BBB00993398 /* Shared */,
-				DC3C888D28F47C210065CBD6 /* Main */,
+				DC14A2902AF9A45C0065EB9A /* Root */,
+				DC14A2862AF99C5D0065EB9A /* AuthenticatedMain */,
 				DC05720E293C24AA0037A387 /* Account */,
+				DC14A2912AF9B27C0065EB9A /* Profile */,
 				DC3C889328F4ACF80065CBD6 /* Common */,
 				DC3C889728F4AD9C0065CBD6 /* Coach */,
 				DC3C889428F4AD370065CBD6 /* Swimmer */,
@@ -568,6 +637,7 @@
 		DCDCFD0F29525BBB00993398 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				DC2B10932950FA0B002F6641 /* UserRouter.swift */,
 				DC920B652933CE4D000EE664 /* LoadingView.swift */,
 				DCDCFD1329525EB900993398 /* Helper */,
 				DCBAD88F29246B0800376A3E /* Component */,
@@ -592,27 +662,6 @@
 			children = (
 				DC81D643295545C8008EFCF9 /* HideKeyboard.swift */,
 				DCFBCF4B2906D5F900F0BF35 /* DebugHelpers.swift */,
-			);
-			path = Helper;
-			sourceTree = "<group>";
-		};
-		DCDCFD162952618300993398 /* View Model */ = {
-			isa = PBXGroup;
-			children = (
-				DCDCFD1F295269D200993398 /* Shared */,
-				DCDCFD1E2952694D00993398 /* Main */,
-				DC80A59529527F5700F16CE6 /* Account */,
-				DC80A58229526FE400F16CE6 /* Common */,
-				DC80A58029526EC100F16CE6 /* Coach */,
-				DC80A58129526ECD00F16CE6 /* Swimmer */,
-			);
-			path = "View Model";
-			sourceTree = "<group>";
-		};
-		DCDCFD172952619900993398 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-				DC920B7E29367556000EE664 /* PhotoInfoEdited.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -675,23 +724,6 @@
 				DC150D562946A678001DB9B0 /* SwimmerCoachViewModelTests.swift */,
 			);
 			path = Swimmer;
-			sourceTree = "<group>";
-		};
-		DCDCFD1E2952694D00993398 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				DC80A57A29526B9400F16CE6 /* Session.swift */,
-				DC0C05BD2948EE970014C829 /* UserInfos.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		DCDCFD1F295269D200993398 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				DCDCFD172952619900993398 /* Helper */,
-			);
-			path = Shared;
 			sourceTree = "<group>";
 		};
 		DCF3238E28FB5BCE0030626C /* API */ = {
@@ -809,9 +841,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC88598728E269E20032E0FB /* Preview Assets.xcassets in Resources */,
+				DCCB57DD29AB9EE300C09FE1 /* GoogleService-Info.plist in Resources */,
 				DC88598428E269E20032E0FB /* Assets.xcassets in Resources */,
 				DC5F47712959C4F200D6966B /* README.md in Resources */,
-				DC2C224C2943FA6F005BBC19 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
